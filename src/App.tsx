@@ -1,16 +1,17 @@
-import React, { FC } from "react";
+import ChatClient from "components/ChatClient";
+import { DataProvider } from "hooks";
 
-import "./styles/global.scss"; /* eslint-disable-line  */
+import { FC } from "react";
 
 interface AppProps {
-    backgroundColor?: string | "#000000"
+    backgroundColor?: string | "#000000";
 }
 
 const App: FC<AppProps> = () => {
     return (
-        <div className="chatClient">
-            <h1>what2study - ChatClient</h1>
-        </div>
+        <DataProvider>
+            <ChatClient />
+        </DataProvider>
     );
 };
 

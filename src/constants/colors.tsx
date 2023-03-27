@@ -1,24 +1,24 @@
-type HEXColor = `#${string}`
+type HEXColor = `#${string}`;
 
 interface Theme {
-    success: HEXColor,
-    warning: HEXColor,
-    danger: HEXColor,
-    backgroundColor: HEXColor,
+    success: HEXColor;
+    warning: HEXColor;
+    danger: HEXColor;
+    backgroundColor: HEXColor;
 }
 
-const lightTheme: Theme = {
+const lightTheme1: Theme = {
     success: "#00ff00",
     warning: "#ffcc00",
     danger: "#ff0000",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
 };
 
-const darkTheme: Theme = {
+const darkTheme1: Theme = {
     success: "#00ff00",
     warning: "#ffcc00",
     danger: "#ff0000",
-    backgroundColor: "#000000"
+    backgroundColor: "#000000",
 };
 
-export {lightTheme, darkTheme};
+export { lightTheme1, darkTheme1 };
