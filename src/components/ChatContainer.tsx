@@ -1,10 +1,8 @@
-import { IChatContainerProps } from "constants/types";
-import { useData } from "hooks";
-import { getChatContainerStyles } from "styles/components/ChatContainerStyles";
+import { IChatContainerProps, IframeType } from "constants/types";
 
 import { FC, SyntheticEvent, useState } from "react";
 import { GiGraduateCap } from "react-icons/gi";
-import { IoSend } from "react-icons/io5";
+import { IoSend, IoSettingsSharp } from "react-icons/io5";
 import { RiChatSmile3Fill, RiUser6Fill } from "react-icons/ri";
 
 import { IFrame } from "./IFrame";
@@ -28,13 +26,9 @@ const ChatContainer: FC<IChatContainerProps> = (props) => {
     const { isChatOpen } = props;
     const [message, setMessage] = useState<string>("");
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-    const { currentTheme } = useData();
+
     const [messages, setMessages] =
         useState<{ type: EMessageTypes; message: string }[]>(dummyMessages);
-    const styles = getChatContainerStyles(currentTheme, {
-        isChatOpen,
-        isInputFocused,
-    });
 
     const handleUserMessage = (e: SyntheticEvent): void => {
         e?.preventDefault();
@@ -46,65 +40,55 @@ const ChatContainer: FC<IChatContainerProps> = (props) => {
 
     return (
         <IFrame
-            style={
-                isChatOpen
-                    ? styles.containerIframe
-                    : styles.containerIframeClosed
+            iframeType={
+                isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED
             }
         >
-            <div style={styles.chatContainerWrapper}>
-                <div style={styles.header}>
-                    <GiGraduateCap style={styles.headerIcon} />
-                    <h1 style={styles.headerTitle}>What2Study</h1>
+            <div className="chatContainerWrapper">
+                <div className="header-wrapper">
+                    <div className="header">
+                        <GiGraduateCap className="header-icon" />
+                        <h1 className="header-title">What2Study</h1>
+                    </div>
+                    <div className="settings-wrapper">
+                        <button onClick={console.log} className="settings-button">
+                            <IoSettingsSharp className="settings-icon" />
+                        </button>
+                    </div>
                 </div>
-                <div style={styles.chatBox}>
+                <div className="chatContainer">
                     {messages.map(({ message, type }, index) => (
                         <div
                             key={index}
-                            style={{
-                                ...styles.messageWrapper,
-                                ...(type === EMessageTypes.BOT
-                                    ? styles.botMessageWrapper
-                                    : styles.userMessageWrapper),
-                            }}
+                            className={`messageWrapper ${
+                                type === EMessageTypes.BOT
+                                    ? "botMessageWrapper"
+                                    : "userMessageWrapper"
+                            }`}
                         >
-                            {type === EMessageTypes.BOT && (
-                                <RiChatSmile3Fill style={styles.botIcon} />
-                            )}
+                            {type === EMessageTypes.BOT && <RiChatSmile3Fill className="botIcon" />}
                             <div
-                                style={{
-                                    ...styles.message,
-                                    ...(type === EMessageTypes.BOT
-                                        ? styles.botMessage
-                                        : styles.userMessage),
-                                }}
+                                className={`message ${
+                                    type === EMessageTypes.BOT ? "botMessage" : "userMessage"
+                                }`}
                             >
                                 {message}
                             </div>
-                            {type === EMessageTypes.USER && (
-                                <RiUser6Fill style={styles.userIcon} />
-                            )}
+                            {type === EMessageTypes.USER && <RiUser6Fill className="userIcon" />}
                         </div>
                     ))}
                 </div>
-                <form
-                    style={styles.inputFormWrapper}
-                    onSubmit={handleUserMessage}
-                >
+                <form className="inputFormWrapper" onSubmit={handleUserMessage}>
                     <input
-                        style={styles.inputField}
+                        className={`inputField ${isInputFocused ? "inputFieldFocused" : ""}`}
                         type="text"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         onFocus={() => setIsInputFocused(true)}
                         onBlur={() => setIsInputFocused(false)}
                     />
-                    <button
-                        type="submit"
-                        style={styles.sendButton}
-                        onClick={handleUserMessage}
-                    >
-                        <IoSend style={styles.buttonIcon} />
+                    <button type="submit" className="sendButton" onClick={handleUserMessage}>
+                        <IoSend className="buttonIcon" />
                     </button>
                 </form>
             </div>

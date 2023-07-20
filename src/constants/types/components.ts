@@ -1,5 +1,7 @@
-import { CSSProperties, ReactNode } from "react";
+import {  ReactNode } from "react";
 import { IconType } from "react-icons";
+
+import { IframeType } from ".";
 
 export interface IOpenChatButtonProps {
     isChatOpen: boolean;
@@ -9,7 +11,7 @@ export interface IOpenChatButtonProps {
 
 export interface IIframeProps {
     children: ReactNode;
-    style?: CSSProperties;
+    iframeType: IframeType;
 }
 
 export interface IChatContainerProps {

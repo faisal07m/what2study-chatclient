@@ -3,7 +3,10 @@ import ReactDOM from "react-dom/client";
 
 import App from "./src/App";
 
-const defaultRoot = "what2study-chatclient";
+import "./src/styles/global.scss";
+import "./src/styles/_chatcontainer.scss";
+
+const defaultRoot = "what2studyChatclientWrapper";
 
 const W2SChatClient = (clientConfigurations = {}) => {
     const { rootId = defaultRoot, ...rest } = clientConfigurations;

@@ -34677,6 +34677,44 @@
       return t;
   }
 
+  function __awaiter(thisArg, _arguments, P, generator) {
+      function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+      return new (P || (P = Promise))(function (resolve, reject) {
+          function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+          function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+          function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+          step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+  }
+
+  function __generator(thisArg, body) {
+      var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+      return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+      function verb(n) { return function (v) { return step([n, v]); }; }
+      function step(op) {
+          if (f) throw new TypeError("Generator is already executing.");
+          while (g && (g = 0, op[0] && (_ = 0)), _) try {
+              if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+              if (y = 0, t) op = [op[0] & 2, t.value];
+              switch (op[0]) {
+                  case 0: case 1: t = op; break;
+                  case 4: _.label++; return { value: op[1], done: false };
+                  case 5: _.label++; y = op[1]; op = [0]; continue;
+                  case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                  default:
+                      if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                      if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                      if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                      if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                      if (t[2]) _.ops.pop();
+                      _.trys.pop(); continue;
+              }
+              op = body.call(thisArg, _);
+          } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+          if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+      }
+  }
+
   function __spreadArray(to, from, pack) {
       if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
           if (ar || !(i in from)) {
@@ -34693,18 +34731,119 @@
       EThemes["DARK_THEME_1"] = "DARK_THEME_1";
   })(EThemes || (EThemes = {}));
 
+  var IframeType;
+  (function (IframeType) {
+      IframeType[IframeType["CHAT_OPEN_BUTTON"] = 0] = "CHAT_OPEN_BUTTON";
+      IframeType[IframeType["CHAT_CONTAINER_OPEN"] = 1] = "CHAT_CONTAINER_OPEN";
+      IframeType[IframeType["CHAT_CONTAINER_CLOSED"] = 2] = "CHAT_CONTAINER_CLOSED";
+  })(IframeType || (IframeType = {}));
+
+  // Unique ID creation requires a high quality random # generator. In the browser we therefore
+  // require the crypto API and do not support built-in fallback to lower quality random number
+  // generators (like Math.random()).
+  let getRandomValues;
+  const rnds8 = new Uint8Array(16);
+  function rng() {
+    // lazy load so that environments that need to polyfill have a chance to do so
+    if (!getRandomValues) {
+      // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+      getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+
+      if (!getRandomValues) {
+        throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+      }
+    }
+
+    return getRandomValues(rnds8);
+  }
+
+  /**
+   * Convert array of 16 byte values to UUID string format of the form:
+   * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+   */
+
+  const byteToHex = [];
+
+  for (let i = 0; i < 256; ++i) {
+    byteToHex.push((i + 0x100).toString(16).slice(1));
+  }
+
+  function unsafeStringify(arr, offset = 0) {
+    // Note: Be careful editing this code!  It's been tuned for performance
+    // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+    return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+  }
+
+  const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+  var native = {
+    randomUUID
+  };
+
+  function v4(options, buf, offset) {
+    if (native.randomUUID && !buf && !options) {
+      return native.randomUUID();
+    }
+
+    options = options || {};
+    const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+    rnds[6] = rnds[6] & 0x0f | 0x40;
+    rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+    if (buf) {
+      offset = offset || 0;
+
+      for (let i = 0; i < 16; ++i) {
+        buf[offset + i] = rnds[i];
+      }
+
+      return buf;
+    }
+
+    return unsafeStringify(rnds);
+  }
+
   var DataContext = reactExports.createContext({});
   var DataProvider = function (props) {
       var children = props.children;
       var _a = reactExports.useState(false), isChatOpen = _a[0], setIsChatOpen = _a[1];
-      var _b = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _b[0], setCurrentTheme = _b[1];
+      var _b = reactExports.useState(""), sessionId = _b[0], setSessionId = _b[1];
+      var _c = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _c[0], setCurrentTheme = _c[1];
+      var generateNewSession = function () {
+          var newSessionId = v4();
+          localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
+          setSessionId(newSessionId);
+      };
+      var rehydrateExistingSession = function () { return __awaiter(void 0, void 0, void 0, function () {
+          var existingSessionId, isSessionValid;
+          var _a;
+          return __generator(this, function (_b) {
+              existingSessionId = (_a = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)) === null || _a === void 0 ? void 0 : _a.trim();
+              if (!existingSessionId) {
+                  generateNewSession();
+                  return [2 /*return*/];
+              }
+              isSessionValid = true;
+              if (isSessionValid) {
+                  setSessionId(existingSessionId);
+                  return [2 /*return*/];
+              }
+              generateNewSession();
+              return [2 /*return*/];
+          });
+      }); };
       var providerValue = {
+          sessionId: sessionId,
+          setSessionId: setSessionId,
           isChatOpen: isChatOpen,
           setIsChatOpen: setIsChatOpen,
           currentTheme: currentTheme,
           setCurrentTheme: setCurrentTheme,
       };
-      return (jsxRuntimeExports.jsx(DataContext.Provider, __assign$1({ value: providerValue }, { children: children })));
+      reactExports.useEffect(function () {
+          rehydrateExistingSession();
+      }, []);
+      return jsxRuntimeExports.jsx(DataContext.Provider, __assign$1({ value: providerValue }, { children: children }));
   };
   var useData = function () { return reactExports.useContext(DataContext); };
 
@@ -34784,133 +34923,6 @@
     return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"}}]})(props);
   }
 
-  var getChatContainerStyles = function (theme, options) {
-      var isInputFocused = options.isInputFocused;
-      return {
-          containerIframeClosed: {
-              display: "none",
-          },
-          containerIframe: {
-              boxShadow: "0px 2px 6px -2px #9b9b9b",
-              width: "400px",
-              height: "600px",
-              position: "fixed",
-              bottom: "90px",
-              right: "30px",
-              borderRadius: "12px",
-              backgroundColor: "#fff",
-          },
-          chatContainerWrapper: {
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              justifyContent: "space-between",
-          },
-          header: {
-              backgroundColor: "#0c8de9",
-              width: "100%",
-              height: "80px",
-              fontFamily: "Inter",
-              display: "flex",
-              alignItems: "center",
-              padding: "10px 24px",
-              boxSizing: "border-box",
-          },
-          headerIcon: {
-              color: "#ffffff",
-              fontSize: "24px",
-              marginRight: "10px",
-          },
-          headerTitle: {
-              color: "#ffffff",
-              margin: "0",
-              fontSize: "16px",
-              fontWeight: "600",
-          },
-          chatBox: {
-              fontFamily: "Inter",
-              height: "calc(100% - 80px - 72px)",
-              overflowY: "auto",
-          },
-          messageWrapper: {
-              display: "flex",
-              margin: "10px",
-              alignItems: "flex-end",
-          },
-          message: {
-              fontSize: "14px",
-              maxWidth: "64%",
-              padding: "15px",
-              borderRadius: "12px",
-          },
-          botMessageWrapper: {
-              justifyContent: "flex-start",
-          },
-          botMessage: {
-              backgroundColor: "#e0e0e0",
-              color: "#000000",
-              borderBottomLeftRadius: "0",
-          },
-          botIcon: {
-              fontSize: "16px",
-              backgroundColor: "#eaeaea",
-              padding: "6px",
-              color: "#000",
-              borderRadius: "50%",
-              marginRight: "8px",
-          },
-          userMessageWrapper: {
-              justifyContent: "flex-end",
-          },
-          userMessage: {
-              backgroundColor: "#0c8de9",
-              color: "#ffffff",
-              fontWeight: 500,
-              borderBottomRightRadius: "0",
-          },
-          userIcon: {
-              fontSize: "16px",
-              backgroundColor: "#eaeaea",
-              padding: "6px",
-              color: "#000",
-              borderRadius: "50%",
-              marginLeft: "8px",
-          },
-          inputFormWrapper: {
-              fontFamily: "Inter",
-              height: "72px",
-              position: "relative",
-              margin: 0,
-              padding: "10px 16px",
-              boxSizing: "border-box",
-          },
-          inputField: __assign$1({ width: "95%", border: "none", padding: "12px 20px", backgroundColor: "#e9e9e9", fontSize: "15px", fontFamily: "Inter", borderRadius: "30px", outline: "none" }, (isInputFocused
-              ? {
-                  outline: "2px solid #0c8de944",
-                  backgroundColor: "#ffffff",
-              }
-              : {})),
-          sendButton: {
-              position: "absolute",
-              right: "20px",
-              bottom: "16px",
-              border: "5px solid #fafafa",
-              borderRadius: "24px",
-              height: "48px",
-              width: "48px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#0c8de9",
-              cursor: "pointer",
-          },
-          buttonIcon: {
-              color: "#ffffff",
-              fontSize: "18px",
-          },
-      };
-  };
-
   // THIS FILE IS AUTO GENERATED
   function GiGraduateCap (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M256 89.61L22.486 177.18 256 293.937l111.22-55.61-104.337-31.9A16 16 0 0 1 256 208a16 16 0 0 1-16-16 16 16 0 0 1 16-16l-2.646 8.602 18.537 5.703a16 16 0 0 1 .008.056l27.354 8.365L455 246.645v12.146a16 16 0 0 0-7 13.21 16 16 0 0 0 7.293 13.406C448.01 312.932 448 375.383 448 400c16 10.395 16 10.775 32 0 0-24.614-.008-87.053-7.29-114.584A16 16 0 0 0 480 272a16 16 0 0 0-7-13.227v-25.42L413.676 215.1l75.838-37.92L256 89.61zM119.623 249L106.5 327.74c26.175 3.423 57.486 18.637 86.27 36.627 16.37 10.232 31.703 21.463 44.156 32.36 7.612 6.66 13.977 13.05 19.074 19.337 5.097-6.288 11.462-12.677 19.074-19.337 12.453-10.897 27.785-22.128 44.156-32.36 28.784-17.99 60.095-33.204 86.27-36.627L392.375 249h-6.25L256 314.063 125.873 249h-6.25z"}}]})(props);
@@ -34919,6 +34931,8 @@
   // THIS FILE IS AUTO GENERATED
   function IoSend (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0027.14 52 24.65 24.65 0 0016 72.59v113.29a24 24 0 0019.52 23.57l232.93 43.07a4 4 0 010 7.86L35.53 303.45A24 24 0 0016 327v113.31A23.57 23.57 0 0026.59 460a23.94 23.94 0 0013.22 4 24.55 24.55 0 009.52-1.93L476.4 285.94l.19-.09a32 32 0 000-58.8z"}}]})(props);
+  }function IoSettingsSharp (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M256 176a80 80 0 1080 80 80.24 80.24 0 00-80-80zm172.72 80a165.53 165.53 0 01-1.64 22.34l48.69 38.12a11.59 11.59 0 012.63 14.78l-46.06 79.52a11.64 11.64 0 01-14.14 4.93l-57.25-23a176.56 176.56 0 01-38.82 22.67l-8.56 60.78a11.93 11.93 0 01-11.51 9.86h-92.12a12 12 0 01-11.51-9.53l-8.56-60.78A169.3 169.3 0 01151.05 393L93.8 416a11.64 11.64 0 01-14.14-4.92L33.6 331.57a11.59 11.59 0 012.63-14.78l48.69-38.12A174.58 174.58 0 0183.28 256a165.53 165.53 0 011.64-22.34l-48.69-38.12a11.59 11.59 0 01-2.63-14.78l46.06-79.52a11.64 11.64 0 0114.14-4.93l57.25 23a176.56 176.56 0 0138.82-22.67l8.56-60.78A11.93 11.93 0 01209.94 26h92.12a12 12 0 0111.51 9.53l8.56 60.78A169.3 169.3 0 01361 119l57.2-23a11.64 11.64 0 0114.14 4.92l46.06 79.52a11.59 11.59 0 01-2.63 14.78l-48.69 38.12a174.58 174.58 0 011.64 22.66z"}}]})(props);
   }
 
   // THIS FILE IS AUTO GENERATED
@@ -34928,25 +34942,62 @@
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"g","attr":{},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M12 17c3.662 0 6.865 1.575 8.607 3.925l-1.842.871C17.347 20.116 14.847 19 12 19c-2.847 0-5.347 1.116-6.765 2.796l-1.841-.872C5.136 18.574 8.338 17 12 17zm0-15a5 5 0 0 1 5 5v3a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"}}]}]})(props);
   }
 
-  var getIFrameStyles = function () {
-      return {
-          widgetIframe: {
-              border: "none",
-          },
-      };
+  var isFirefox = typeof InstallTrigger !== "undefined";
+  var getStyles = function (iframeType) {
+      switch (iframeType) {
+          case IframeType.CHAT_CONTAINER_CLOSED:
+              return {
+                  border: "none",
+                  boxShadow: "0px 2px 6px -2px #9b9b9b",
+                  width: "400px",
+                  height: "600px",
+                  position: "fixed",
+                  bottom: "90px",
+                  right: "30px",
+                  borderRadius: "12px",
+                  backgroundColor: "#fff",
+                  display: "none",
+              };
+          case IframeType.CHAT_CONTAINER_OPEN:
+              return {
+                  border: "none",
+                  boxShadow: "0px 2px 6px -2px #9b9b9b",
+                  width: "400px",
+                  height: "600px",
+                  position: "fixed",
+                  bottom: "90px",
+                  right: "30px",
+                  borderRadius: "12px",
+                  backgroundColor: "#fff",
+              };
+          case IframeType.CHAT_OPEN_BUTTON:
+              return {
+                  border: "none",
+                  width: "54px",
+                  height: "54px",
+                  position: "fixed",
+                  bottom: "24px",
+                  right: "24px",
+              };
+          default:
+              return {
+                  border: "none",
+              };
+      }
   };
-
   var IFrame = function (props) {
       var _a, _b, _c;
-      var children = props.children, style = props.style, className = props.className, rest = __rest$1(props, ["children", "style", "className"]);
+      var children = props.children, iframeType = props.iframeType, rest = __rest$1(props, ["children", "iframeType"]);
       var _d = reactExports.useState(null), contentRef = _d[0], setContentRef = _d[1];
-      var styles = getIFrameStyles();
       var mountNode = (_b = (_a = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body;
       var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
+      var styles = getStyles(iframeType);
       var addStyles = function () {
-          var style = mountNodeDoc.createElement("style");
-          style.append("@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');");
-          mountNodeDoc.head.appendChild(style);
+          var link = mountNodeDoc.createElement("link");
+          link.href = "http://localhost:3000/dist/what2studyChatClientStyles.css";
+          link.rel = "stylesheet";
+          link.type = "text/css";
+          mountNodeDoc.head.appendChild(link);
       };
       reactExports.useEffect(function () {
           if (mountNode) {
@@ -34954,7 +35005,7 @@
               addStyles();
           }
       }, [mountNode]);
-      return (jsxRuntimeExports.jsx("iframe", __assign$1({ style: __assign$1(__assign$1({}, styles.widgetIframe), style), className: className }, rest, { ref: setContentRef }, { children: mountNode && reactDomExports.createPortal(children, mountNode) })));
+      return (jsxRuntimeExports.jsx("iframe", __assign$1({ style: styles }, rest, { onLoad: isFirefox ? function (e) { return setContentRef(e.target); } : undefined, ref: !isFirefox ? setContentRef : undefined }, { children: mountNode && reactDomExports.createPortal(children, mountNode) })));
   };
 
   var EMessageTypes;
@@ -34976,12 +35027,7 @@
       var isChatOpen = props.isChatOpen;
       var _a = reactExports.useState(""), message = _a[0], setMessage = _a[1];
       var _b = reactExports.useState(false), isInputFocused = _b[0], setIsInputFocused = _b[1];
-      var currentTheme = useData().currentTheme;
       var _c = reactExports.useState(dummyMessages), messages = _c[0], setMessages = _c[1];
-      var styles = getChatContainerStyles(currentTheme, {
-          isChatOpen: isChatOpen,
-          isInputFocused: isInputFocused,
-      });
       var handleUserMessage = function (e) {
           e === null || e === void 0 ? void 0 : e.preventDefault();
           setMessage("");
@@ -34990,39 +35036,12 @@
           setMessages(__spreadArray(__spreadArray([], messages, true), [{ type: EMessageTypes.USER, message: message }], false));
           setMessage("");
       };
-      return (jsxRuntimeExports.jsx(IFrame, __assign$1({ style: isChatOpen
-              ? styles.containerIframe
-              : styles.containerIframeClosed }, { children: jsxRuntimeExports.jsxs("div", __assign$1({ style: styles.chatContainerWrapper }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ style: styles.header }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { style: styles.headerIcon }), jsxRuntimeExports.jsx("h1", __assign$1({ style: styles.headerTitle }, { children: "What2Study" }))] })), jsxRuntimeExports.jsx("div", __assign$1({ style: styles.chatBox }, { children: messages.map(function (_a, index) {
+      return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon" }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title" }, { children: "What2Study" }))] })), jsxRuntimeExports.jsx("div", __assign$1({ className: "settings-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ onClick: console.log, className: "settings-button" }, { children: jsxRuntimeExports.jsx(IoSettingsSharp, { className: "settings-icon" }) })) }))] })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chatContainer" }, { children: messages.map(function (_a, index) {
                           var message = _a.message, type = _a.type;
-                          return (jsxRuntimeExports.jsxs("div", __assign$1({ style: __assign$1(__assign$1({}, styles.messageWrapper), (type === EMessageTypes.BOT
-                                  ? styles.botMessageWrapper
-                                  : styles.userMessageWrapper)) }, { children: [type === EMessageTypes.BOT && (jsxRuntimeExports.jsx(RiChatSmile3Fill, { style: styles.botIcon })), jsxRuntimeExports.jsx("div", __assign$1({ style: __assign$1(__assign$1({}, styles.message), (type === EMessageTypes.BOT
-                                          ? styles.botMessage
-                                          : styles.userMessage)) }, { children: message })), type === EMessageTypes.USER && (jsxRuntimeExports.jsx(RiUser6Fill, { style: styles.userIcon }))] }), index));
-                      }) })), jsxRuntimeExports.jsxs("form", __assign$1({ style: styles.inputFormWrapper, onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx("input", { style: styles.inputField, type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", style: styles.sendButton, onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { style: styles.buttonIcon }) }))] }))] })) })));
-  };
-
-  var getOpenButtonStyles = function (theme, options) {
-      var isChatOpen = options.isChatOpen;
-      return {
-          buttonIframeStyles: {
-              width: "54px",
-              height: "54px",
-              position: "fixed",
-              bottom: "24px",
-              right: "24px",
-          },
-          openButton: __assign$1({ width: "48px", height: "48px", margin: "3px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "#0c8de9", border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
-              ? {
-                  backgroundColor: "#f0f0f0",
-              }
-              : {})),
-          icon: __assign$1({ fontSize: "22px", color: "#ffffff" }, (isChatOpen
-              ? {
-                  color: "#000000",
-              }
-              : {})),
-      };
+                          return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(type === EMessageTypes.BOT
+                                  ? "botMessageWrapper"
+                                  : "userMessageWrapper") }, { children: [type === EMessageTypes.BOT && jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "message ".concat(type === EMessageTypes.BOT ? "botMessage" : "userMessage") }, { children: message })), type === EMessageTypes.USER && jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" })] }), index));
+                      }) })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] }))] })) })));
   };
 
   // THIS FILE IS AUTO GENERATED
@@ -35032,13 +35051,17 @@
 
   var OpenChatButton = function (props) {
       var isChatOpen = props.isChatOpen, setIsChatOpen = props.setIsChatOpen, icon = props.icon;
-      var currentTheme = useData().currentTheme;
-      var styles = getOpenButtonStyles(currentTheme, { isChatOpen: isChatOpen });
       var Icon = !isChatOpen ? icon : BiChevronDown;
       var handleOpenChatButtonClick = function () {
           setIsChatOpen(!isChatOpen);
       };
-      return (jsxRuntimeExports.jsx(IFrame, __assign$1({ style: styles.buttonIframeStyles }, { children: jsxRuntimeExports.jsx("button", __assign$1({ style: styles.openButton, onClick: handleOpenChatButtonClick }, { children: jsxRuntimeExports.jsx(Icon, { style: styles.icon }) })) })));
+      return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: IframeType.CHAT_OPEN_BUTTON }, { children: jsxRuntimeExports.jsx("button", __assign$1({ 
+              // inline styles for button as loading stylesheets takes time on browser (causes to show button without styles)
+              style: __assign$1({ width: "48px", height: "48px", margin: "3px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "#0c8de9", border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
+                  ? {
+                      backgroundColor: "#f0f0f0",
+                  }
+                  : {})), onClick: handleOpenChatButtonClick }, { children: jsxRuntimeExports.jsx(Icon, { style: __assign$1({ fontSize: "22px", color: "#ffffff" }, (isChatOpen ? { color: "#000000" } : {})) }) })) })));
   };
 
   var ChatClient = function () {
@@ -35046,12 +35069,13 @@
       return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsx(ChatContainer, { isChatOpen: isChatOpen }), jsxRuntimeExports.jsx(OpenChatButton, { icon: BsChatQuoteFill, isChatOpen: isChatOpen, setIsChatOpen: setIsChatOpen })] }));
   };
 
+  var LOCALSTORAGE_SESSION_ID_KEY = "what2studyUserSessionId";
   var App = function () {
       return (jsxRuntimeExports.jsx(DataProvider, { children: jsxRuntimeExports.jsx(ChatClient, {}) }));
   };
 
   var _excluded = ["rootId"];
-  var defaultRoot = "what2study-chatclient";
+  var defaultRoot = "what2studyChatclientWrapper";
   var W2SChatClient = function W2SChatClient() {
     var clientConfigurations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var _clientConfigurations = clientConfigurations.rootId,

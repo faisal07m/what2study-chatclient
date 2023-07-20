@@ -4,6 +4,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import typescript from "@rollup/plugin-typescript";
 import progress from "rollup-plugin-progress";
+import scss from "rollup-plugin-scss";
 
 const config = {
     input: "index.js",
@@ -25,9 +26,10 @@ const config = {
             preventAssignment: true,
         }),
         commonjs(),
-        // scss({
-        //     fileName: "styles.css",
-        // }),
+        scss({
+            fileName: "what2studyChatClientStyles.css",
+            watch: "./src/styles/_**",
+        }),
         typescript({ tsconfig: "./tsconfig.json" }),
     ],
 };
