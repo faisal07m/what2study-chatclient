@@ -53,6 +53,8 @@ const getStyles = (iframeType: IframeType) => {
     }
 };
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 export const IFrame: FC<IIframeProps> = (props) => {
     const { children, iframeType, ...rest } = props;
 
@@ -65,7 +67,7 @@ export const IFrame: FC<IIframeProps> = (props) => {
 
     const addStyles = () => {
         const link = mountNodeDoc.createElement("link");
-        link.href = "http://localhost:3000/dist/what2studyChatClientStyles.css";
+        link.href = "http://localhost:3000/dist/what2StudyClientStyles.css";
         link.rel = "stylesheet";
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);
@@ -77,6 +79,14 @@ export const IFrame: FC<IIframeProps> = (props) => {
             addStyles();
         }
     }, [mountNode]);
+
+    if (isDevelopment) {
+        return (
+            <div style={styles} className="development-div">
+                {children}
+            </div>
+        );
+    }
 
     return (
         <iframe

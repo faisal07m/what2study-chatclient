@@ -1,3 +1,5 @@
+import { IChatSettings } from "hooks";
+
 import { EThemes } from "./themes";
 
 export interface IUseData {
@@ -7,4 +9,8 @@ export interface IUseData {
     setIsChatOpen: (value: boolean) => void;
     currentTheme: EThemes;
     setCurrentTheme: (theme: EThemes) => void;
+    isSettingsPageOpen: boolean;
+    setIsSettingsPageOpen: (value: boolean) => void;
+    chatSettings: IChatSettings;
+    setChatSettings: (value: IChatSettings) => void;
 }

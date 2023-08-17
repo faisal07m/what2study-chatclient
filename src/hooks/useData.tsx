@@ -10,12 +10,30 @@ interface DataProviderProps {
     children: ReactNode;
 }
 
+export enum EChatDifficultyLevel {
+    CREATIVE = "CREATIVE",
+    BALANCED = "BALANCED",
+    PRECISE = "PRECISE",
+}
+
+export interface IChatSettings {
+    chatDifficultyLevel: EChatDifficultyLevel;
+    restoreChatOnReturn: boolean;
+    conversationFallbackAnalytics: boolean;
+}
+
 export const DataProvider: FC<DataProviderProps> = (props) => {
     const { children } = props;
 
-    const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+    const [isChatOpen, setIsChatOpen] = useState<boolean>(true);
+    const [isSettingsPageOpen, setIsSettingsPageOpen] = useState<boolean>(false);
     const [sessionId, setSessionId] = useState<string>("");
     const [currentTheme, setCurrentTheme] = useState<EThemes>(EThemes.LIGHT_THEME_1);
+    const [chatSettings, setChatSettings] = useState<IChatSettings>({
+        chatDifficultyLevel: EChatDifficultyLevel.PRECISE,
+        restoreChatOnReturn: true,
+        conversationFallbackAnalytics: false,
+    });
 
     const generateNewSession = () => {
         const newSessionId = uuidv4();
@@ -43,8 +61,12 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setSessionId,
         isChatOpen,
         setIsChatOpen,
+        isSettingsPageOpen,
+        setIsSettingsPageOpen,
         currentTheme,
         setCurrentTheme,
+        chatSettings,
+        setChatSettings,
     };
 
     useEffect(() => {

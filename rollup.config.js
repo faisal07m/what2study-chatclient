@@ -10,7 +10,7 @@ const config = {
     input: "index.js",
     output: {
         name: "What2Study",
-        file: "dist/bundle.js",
+        file: "dist/what2StudyClient.js",
         format: "umd",
     },
     plugins: [
@@ -22,12 +22,12 @@ const config = {
             babelHelpers: "bundled",
         }),
         replace({
-            "process.env.NODE_ENV": JSON.stringify("development"),
+            "process.env.NODE_ENV": JSON.stringify("production"),
             preventAssignment: true,
         }),
         commonjs(),
         scss({
-            fileName: "what2studyChatClientStyles.css",
+            fileName: "what2StudyClientStyles.css",
             watch: "./src/styles/_**",
         }),
         typescript({ tsconfig: "./tsconfig.json" }),

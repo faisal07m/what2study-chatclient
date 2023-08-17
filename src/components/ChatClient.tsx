@@ -11,7 +11,7 @@ const ChatClient: FC = () => {
 
     return (
         <Fragment>
-            <ChatContainer isChatOpen={isChatOpen} />
+            <ChatContainer />
             <OpenChatButton
                 icon={BsChatQuoteFill}
                 isChatOpen={isChatOpen}
