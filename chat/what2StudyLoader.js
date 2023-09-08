@@ -16,7 +16,7 @@
 
 const WHAT2STUDY_CONTAINER = "what2studyChatclientWrapper";
 const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
-const WHAT2STUDY_API = ""; // API URL
+const WHAT2STUDY_API = "http://localhost:1337"; // API URL
 
 (function () {
     const what2StudyClientSrc = "http://localhost:3000/dist/what2StudyClient.js";

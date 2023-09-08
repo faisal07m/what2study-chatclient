@@ -12,11 +12,11 @@ const getStyles = (iframeType: IframeType) => {
         case IframeType.CHAT_CONTAINER_CLOSED:
             return {
                 border: "none",
-                boxShadow: "0px 2px 6px -2px #9b9b9b",
+                boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                 width: "400px",
                 height: "600px",
                 position: "fixed",
-                bottom: "90px",
+                bottom: "100px",
                 right: "30px",
                 borderRadius: "12px",
                 backgroundColor: "#fff",
@@ -26,11 +26,11 @@ const getStyles = (iframeType: IframeType) => {
         case IframeType.CHAT_CONTAINER_OPEN:
             return {
                 border: "none",
-                boxShadow: "0px 2px 6px -2px #9b9b9b",
+                boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                 width: "400px",
                 height: "600px",
                 position: "fixed",
-                bottom: "90px",
+                bottom: "100px",
                 right: "30px",
                 borderRadius: "12px",
                 backgroundColor: "#fff",
@@ -44,6 +44,7 @@ const getStyles = (iframeType: IframeType) => {
                 position: "fixed",
                 bottom: "24px",
                 right: "24px",
+                borderRadius: "50%",
             };
 
         default:

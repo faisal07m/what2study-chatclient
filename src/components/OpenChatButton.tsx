@@ -1,17 +1,20 @@
 import { IOpenChatButtonProps, IframeType } from "constants/types";
+import { EPopupItem, useData } from "hooks";
 
 import { FC } from "react";
 import { BiChevronDown } from "react-icons/bi";
 
-import { IFrame } from "./IFrame";
+import { IFrame } from "../utilities/IFrame";
 
 const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
-    const { isChatOpen, setIsChatOpen, icon } = props;
+    const { icon } = props;
+    const { isChatOpen, setIsChatOpen, setPopupItem } = useData();
 
     const Icon = !isChatOpen ? icon : BiChevronDown;
 
     const handleOpenChatButtonClick = () => {
         setIsChatOpen(!isChatOpen);
+        setPopupItem(EPopupItem.NONE);
     };
 
     return (

@@ -4,6 +4,7 @@ import { DataProvider } from "hooks";
 import { FC } from "react";
 
 import "./styles/global.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface AppProps {
     backgroundColor?: string | "#000000";

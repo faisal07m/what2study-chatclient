@@ -16,6 +16,18 @@ export enum EChatDifficultyLevel {
     PRECISE = "PRECISE",
 }
 
+export enum EPopupItem {
+    SETTINGS = "SETTINGS",
+    FILTERS = "FILTERS",
+    BOT_INFO = "BOT_INFO",
+    NONE = "NONE",
+}
+
+export enum ERoute {
+    MAIN = "MAIN",
+    TALK_TO_HUMAN = "TALK_TO_HUMAN",
+}
+
 export interface IChatSettings {
     chatDifficultyLevel: EChatDifficultyLevel;
     restoreChatOnReturn: boolean;
@@ -34,6 +46,9 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         restoreChatOnReturn: true,
         conversationFallbackAnalytics: false,
     });
+    const [popupItem, setPopupItem] = useState<EPopupItem>(EPopupItem.NONE);
+    const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(true);
+    const [currentRoute, setCurrentRoute] = useState<ERoute>(ERoute.MAIN);
 
     const generateNewSession = () => {
         const newSessionId = uuidv4();
@@ -67,8 +82,15 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setCurrentTheme,
         chatSettings,
         setChatSettings,
+        popupItem,
+        setPopupItem,
+        isBotVolumeOn,
+        setIsBotVolumeOn,
+        currentRoute,
+        setCurrentRoute,
     };
 
+    // On chat client init
     useEffect(() => {
         rehydrateExistingSession();
     }, []);

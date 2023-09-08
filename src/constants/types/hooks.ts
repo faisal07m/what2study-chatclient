@@ -1,4 +1,4 @@
-import { IChatSettings } from "hooks";
+import { EPopupItem, ERoute, IChatSettings } from "hooks";
 
 import { EThemes } from "./themes";
 
@@ -13,4 +13,10 @@ export interface IUseData {
     setIsSettingsPageOpen: (value: boolean) => void;
     chatSettings: IChatSettings;
     setChatSettings: (value: IChatSettings) => void;
+    popupItem: EPopupItem;
+    setPopupItem: (value: EPopupItem) => void;
+    isBotVolumeOn: boolean;
+    setIsBotVolumeOn: (value: boolean) => void;
+    currentRoute: ERoute;
+    setCurrentRoute: (value: ERoute) => void;
 }

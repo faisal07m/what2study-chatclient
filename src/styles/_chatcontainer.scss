@@ -32,176 +32,190 @@
 
         .settings-wrapper {
             position: relative;
-            .settings-button {
-                cursor: pointer;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                outline: none;
-                background-color: transparent;
-                border: none;
-                .settings-icon {
-                    color: #ffffff;
-                    font-size: 20px;
-                }
-                &:hover {
-                    background-color: #eaeaea22;
-                }
-            }
-            .settings-menu {
-                z-index: 100;
-                position: absolute;
-                right: 6px;
-                top: 6px;
-                background-color: #ffffff;
-                border-radius: 6px;
-                box-shadow: 1px 1px 3px 0px #c6c6c6;
-                .settings-level-header {
-                    font-size: 14px;
-                    font-weight: 500;
-                    padding: 8px 10px 10px 8px;
-                    color: #333333;
-                }
-                .setting-level {
-                    width: 200px;
-                    font-size: 14px;
-                    padding: 5 10px 5px 8px;
-                    color: #333333;
-                    cursor: pointer;
-                    text-align: left;
-                    overflow: hidden;
-                    vertical-align: middle;
-                    background-color: transparent;
-                    border: none;
-                    outline: none;
-                    border-radius: 6px;
-                    &::not(:last-child) {
-                        border-bottom: 1px solid gray;
-                    }
-                }
-                .selected-level {
-                    background-color: #0c8de9;
-                    color: #ffffff;
-                }
-            }
-        }
-    }
-
-    .chatContainer {
-        height: calc(100% - 80px - 72px);
-        overflow-y: auto;
-
-        .messageWrapper {
-            display: flex;
-            margin: 10px;
-            align-items: flex-end;
-            .message {
-                font-size: 14px;
-                max-width: 64%;
-                padding: 15px;
-                border-radius: 12px;
-            }
-        }
-        .botMessageWrapper {
-            justify-content: flex-start;
-            margin-bottom: 30px;
-            .botIcon {
-                font-size: 16px;
-                background-color: #eaeaea;
-                padding: 6px;
-                color: #000;
-                border-radius: 50%;
-                margin-right: 8px;
-            }
-            .botMessage {
-                position: relative;
-                background-color: #e0e0e0;
-                color: #000000;
-                border-bottom-left-radius: 0;
-                .feedback-wrapper {
-                    position: absolute;
-                    bottom: -22px;
-                    left: -6px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    .feedback-button {
-                        background-color: transparent;
-                        outline: none;
-                        border: none;
-                        cursor: pointer;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        width: 22px;
-                        height: 22px;
-                        padding: 0;
-                        .feedback-icon {
-                            font-size: 16px;
-                            color: #585858;
-                        }
-                    }
-                }
-            }
-        }
-        .userMessageWrapper {
-            justify-content: flex-end;
-            .userIcon {
-                font-size: 16px;
-                background-color: #eaeaea;
-                padding: 6px;
-                color: #000;
-                border-radius: 50%;
-                margin-left: 8px;
-            }
-            .userMessage {
-                background-color: #0c8de9;
-                color: #ffffff;
-                font-weight: 500;
-                border-bottom-right-radius: 0;
-            }
-        }
-    }
-    .inputFormWrapper {
-        height: 72px;
-        position: relative;
-        margin: 0;
-        padding: 10px 16px;
-        box-sizing: border-box;
-        .inputField {
-            width: 95%;
-            border: none;
-            padding: 12px 20px;
-            background-color: #e9e9e9;
-            font-size: 15px;
-            border-radius: 30px;
-            outline: none;
-        }
-        .inputFieldFocused {
-            outline: 2px solid #0c8de944;
-            background-color: #ffffff;
-        }
-
-        .sendButton {
-            position: absolute;
-            right: 20px;
-            bottom: 16px;
-            border: 5px solid #fafafa;
-            border-radius: 24px;
-            height: 48px;
-            width: 48px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            background-color: #0c8de9;
-            cursor: pointer;
-            .buttonIcon {
-                color: #ffffff;
-                font-size: 18px;
-            }
         }
     }
 }
+
+// SCREEN MAIN START
+.info-talktohuman {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    box-sizing: content-box;
+    top: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1e57a111;
+    .info-button {
+        width: 28px;
+        height: 28px;
+        background-color: #bde4ff;
+        .app-icon-button-icon {
+            color: #035d9d;
+        }
+    }
+    .talk-to-human-btn {
+        padding: 8px 20px;
+        background-color: #1e57a1;
+        border: none;
+        border-radius: 16px;
+        font-weight: 500;
+        color: #ffffff;
+        cursor: pointer;
+        line-height: normal;
+        font-size: 14px;
+    }
+    .volume-button {
+        width: 28px;
+        height: 28px;
+        background-color: #c8c8c8;
+        .app-icon-button-icon {
+            color: #000;
+        }
+    }
+}
+
+.chatContainer {
+    height: calc(100% - 80px - 72px);
+    overflow-y: auto;
+
+    .messageWrapper {
+        display: flex;
+        margin: 10px;
+        align-items: flex-end;
+        .message {
+            font-size: 14px;
+            max-width: 72%;
+            padding: 15px;
+            border-radius: 12px;
+        }
+    }
+    .botMessageWrapper {
+        justify-content: flex-start;
+        margin-bottom: 30px;
+        .bot-iconWrapper {
+            width: 28px;
+            height: 28px;
+            margin-right: 8px;
+            border-radius: 50%;
+            background-color: #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .botIcon {
+                font-size: 16px;
+                color: #000;
+            }
+        }
+        .botMessage {
+            position: relative;
+            background-color: #e0e0e0;
+            color: #000000;
+            border-bottom-left-radius: 0;
+            .bot-msg-actions-wrapper {
+                position: absolute;
+                bottom: -14px;
+                right: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .action-button {
+                    background-color: #3073a4;
+                    border-radius: 50%;
+                    margin: 0 2px 0 2px;
+                    outline: none;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 26px;
+                    height: 26px;
+                    padding: 1px;
+                    .action-icon {
+                        font-size: 16px;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+    .userMessageWrapper {
+        justify-content: flex-end;
+        .user-iconWrapper {
+            width: 28px;
+            height: 28px;
+            margin-left: 8px;
+            border-radius: 50%;
+            background-color: #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .userIcon {
+                font-size: 16px;
+                color: #000;
+            }
+        }
+        .userMessage {
+            background-color: #0c8de9;
+            color: #ffffff;
+            font-weight: 500;
+            border-bottom-right-radius: 0;
+        }
+    }
+}
+.inputFormWrapper {
+    height: 72px;
+    position: relative;
+    margin: 0;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .voice-input-button {
+        background-color: #035d9d;
+        margin-right: 6px;
+        .app-icon-button-icon {
+            color: white;
+        }
+    }
+    .inputField {
+        width: calc(100% - 48px - 36px); // total - sendbutton - voicebutton
+        border: none;
+        padding: 8px 20px;
+        background-color: #e9e9e9;
+        font-size: 15px;
+        border-radius: 30px;
+        outline: none;
+    }
+    .inputFieldFocused {
+        outline: 2px solid #66bfff;
+        background-color: #ffffff;
+    }
+
+    .sendButton {
+        border: none;
+        border-radius: 24px;
+        height: 36px;
+        width: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 6px;
+        background-color: #0c8de9;
+        cursor: pointer;
+        .buttonIcon {
+            color: #ffffff;
+            font-size: 18px;
+        }
+    }
+}
+// SCREEN MAIN END
+
+// SCREEN TALK TO HUMAN START
+.screen-talk-to-human {
+}
+// SCREEN TALK TO HUMAN END

@@ -4,7 +4,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.What2Study = factory());
 })(this, (function () { 'use strict';
 
-  function _objectWithoutPropertiesLoose(source, excluded) {
+  function _objectWithoutPropertiesLoose$1(source, excluded) {
     if (source == null) return {};
     var target = {};
     var sourceKeys = Object.keys(source);
@@ -18,7 +18,7 @@
   }
   function _objectWithoutProperties(source, excluded) {
     if (source == null) return {};
-    var target = _objectWithoutPropertiesLoose(source, excluded);
+    var target = _objectWithoutPropertiesLoose$1(source, excluded);
     var key, i;
     if (Object.getOwnPropertySymbols) {
       var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -509,6 +509,84 @@
   	}
   } (jsxRuntime));
 
+  var DefaultContext = {
+    color: undefined,
+    size: undefined,
+    className: undefined,
+    style: undefined,
+    attr: undefined
+  };
+  var IconContext = React.createContext && React.createContext(DefaultContext);
+
+  var __assign$1 = undefined && undefined.__assign || function () {
+    __assign$1 = Object.assign || function (t) {
+      for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+      return t;
+    };
+    return __assign$1.apply(this, arguments);
+  };
+  var __rest$1 = undefined && undefined.__rest || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+      if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+    }
+    return t;
+  };
+  function Tree2Element(tree) {
+    return tree && tree.map(function (node, i) {
+      return React.createElement(node.tag, __assign$1({
+        key: i
+      }, node.attr), Tree2Element(node.child));
+    });
+  }
+  function GenIcon(data) {
+    // eslint-disable-next-line react/display-name
+    return function (props) {
+      return React.createElement(IconBase, __assign$1({
+        attr: __assign$1({}, data.attr)
+      }, props), Tree2Element(data.child));
+    };
+  }
+  function IconBase(props) {
+    var elem = function (conf) {
+      var attr = props.attr,
+        size = props.size,
+        title = props.title,
+        svgProps = __rest$1(props, ["attr", "size", "title"]);
+      var computedSize = size || conf.size || "1em";
+      var className;
+      if (conf.className) className = conf.className;
+      if (props.className) className = (className ? className + " " : "") + props.className;
+      return React.createElement("svg", __assign$1({
+        stroke: "currentColor",
+        fill: "currentColor",
+        strokeWidth: "0"
+      }, conf.attr, attr, svgProps, {
+        className: className,
+        style: __assign$1(__assign$1({
+          color: props.color || conf.color
+        }, conf.style), props.style),
+        height: computedSize,
+        width: computedSize,
+        xmlns: "http://www.w3.org/2000/svg"
+      }), title && React.createElement("title", null, title), props.children);
+    };
+    return IconContext !== undefined ? React.createElement(IconContext.Consumer, null, function (conf) {
+      return elem(conf);
+    }) : elem(DefaultContext);
+  }
+
+  // THIS FILE IS AUTO GENERATED
+  function BsFillMicFill (props) {
+    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"}},{"tag":"path","attr":{"d":"M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"}}]})(props);
+  }function BsChatQuoteFill (props) {
+    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"}}]})(props);
+  }
+
   /******************************************************************************
   Copyright (c) Microsoft Corporation.
 
@@ -524,18 +602,18 @@
   PERFORMANCE OF THIS SOFTWARE.
   ***************************************************************************** */
 
-  var __assign$1 = function() {
-      __assign$1 = Object.assign || function __assign(t) {
+  var __assign = function() {
+      __assign = Object.assign || function __assign(t) {
           for (var s, i = 1, n = arguments.length; i < n; i++) {
               s = arguments[i];
               for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
           }
           return t;
       };
-      return __assign$1.apply(this, arguments);
+      return __assign.apply(this, arguments);
   };
 
-  function __rest$1(s, e) {
+  function __rest(s, e) {
       var t = {};
       for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
           t[p] = s[p];
@@ -680,6 +758,18 @@
       EChatDifficultyLevel["BALANCED"] = "BALANCED";
       EChatDifficultyLevel["PRECISE"] = "PRECISE";
   })(EChatDifficultyLevel || (EChatDifficultyLevel = {}));
+  var EPopupItem;
+  (function (EPopupItem) {
+      EPopupItem["SETTINGS"] = "SETTINGS";
+      EPopupItem["FILTERS"] = "FILTERS";
+      EPopupItem["BOT_INFO"] = "BOT_INFO";
+      EPopupItem["NONE"] = "NONE";
+  })(EPopupItem || (EPopupItem = {}));
+  var ERoute;
+  (function (ERoute) {
+      ERoute["MAIN"] = "MAIN";
+      ERoute["TALK_TO_HUMAN"] = "TALK_TO_HUMAN";
+  })(ERoute || (ERoute = {}));
   var DataProvider = function (props) {
       var children = props.children;
       var _a = reactExports.useState(true), isChatOpen = _a[0], setIsChatOpen = _a[1];
@@ -691,6 +781,9 @@
           restoreChatOnReturn: true,
           conversationFallbackAnalytics: false,
       }), chatSettings = _e[0], setChatSettings = _e[1];
+      var _f = reactExports.useState(EPopupItem.NONE), popupItem = _f[0], setPopupItem = _f[1];
+      var _g = reactExports.useState(true), isBotVolumeOn = _g[0], setIsBotVolumeOn = _g[1];
+      var _h = reactExports.useState(ERoute.MAIN), currentRoute = _h[0], setCurrentRoute = _h[1];
       var generateNewSession = function () {
           var newSessionId = v4();
           localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
@@ -725,89 +818,25 @@
           setCurrentTheme: setCurrentTheme,
           chatSettings: chatSettings,
           setChatSettings: setChatSettings,
+          popupItem: popupItem,
+          setPopupItem: setPopupItem,
+          isBotVolumeOn: isBotVolumeOn,
+          setIsBotVolumeOn: setIsBotVolumeOn,
+          currentRoute: currentRoute,
+          setCurrentRoute: setCurrentRoute,
       };
+      // On chat client init
       reactExports.useEffect(function () {
           rehydrateExistingSession();
       }, []);
-      return jsxRuntimeExports.jsx(DataContext.Provider, __assign$1({ value: providerValue }, { children: children }));
+      return jsxRuntimeExports.jsx(DataContext.Provider, __assign({ value: providerValue }, { children: children }));
   };
   var useData = function () { return reactExports.useContext(DataContext); };
 
-  var DefaultContext = {
-    color: undefined,
-    size: undefined,
-    className: undefined,
-    style: undefined,
-    attr: undefined
+  var IconButton = function (props) {
+      var Icon = props.icon, onClick = props.onClick, title = props.title, className = props.className, rest = __rest(props, ["icon", "onClick", "title", "className"]);
+      return (jsxRuntimeExports.jsxs("button", __assign({ title: title, onClick: onClick, className: "app-icon-button ".concat(className) }, rest, { children: [jsxRuntimeExports.jsx("div", { className: "app-icon-button-anim" }), jsxRuntimeExports.jsx(Icon, { className: "app-icon-button-icon" })] })));
   };
-  var IconContext = React.createContext && React.createContext(DefaultContext);
-
-  var __assign = undefined && undefined.__assign || function () {
-    __assign = Object.assign || function (t) {
-      for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-      return t;
-    };
-    return __assign.apply(this, arguments);
-  };
-  var __rest = undefined && undefined.__rest || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-      if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-    }
-    return t;
-  };
-  function Tree2Element(tree) {
-    return tree && tree.map(function (node, i) {
-      return React.createElement(node.tag, __assign({
-        key: i
-      }, node.attr), Tree2Element(node.child));
-    });
-  }
-  function GenIcon(data) {
-    // eslint-disable-next-line react/display-name
-    return function (props) {
-      return React.createElement(IconBase, __assign({
-        attr: __assign({}, data.attr)
-      }, props), Tree2Element(data.child));
-    };
-  }
-  function IconBase(props) {
-    var elem = function (conf) {
-      var attr = props.attr,
-        size = props.size,
-        title = props.title,
-        svgProps = __rest(props, ["attr", "size", "title"]);
-      var computedSize = size || conf.size || "1em";
-      var className;
-      if (conf.className) className = conf.className;
-      if (props.className) className = (className ? className + " " : "") + props.className;
-      return React.createElement("svg", __assign({
-        stroke: "currentColor",
-        fill: "currentColor",
-        strokeWidth: "0"
-      }, conf.attr, attr, svgProps, {
-        className: className,
-        style: __assign(__assign({
-          color: props.color || conf.color
-        }, conf.style), props.style),
-        height: computedSize,
-        width: computedSize,
-        xmlns: "http://www.w3.org/2000/svg"
-      }), title && React.createElement("title", null, title), props.children);
-    };
-    return IconContext !== undefined ? React.createElement(IconContext.Consumer, null, function (conf) {
-      return elem(conf);
-    }) : elem(DefaultContext);
-  }
-
-  // THIS FILE IS AUTO GENERATED
-  function BsChatQuoteFill (props) {
-    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"}}]})(props);
-  }
 
   // THIS FILE IS AUTO GENERATED
   function GiGraduateCap (props) {
@@ -822,27 +851,8 @@
   }
 
   // THIS FILE IS AUTO GENERATED
-  function MdPrivacyTip (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z"}}]})(props);
-  }function MdEdit (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"}}]})(props);
-  }function MdThumbDownAlt (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M24 24H0V0h24v24z"}},{"tag":"path","attr":{"d":"M22 4h-2c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h2V4zM2.17 11.12c-.11.25-.17.52-.17.8V13c0 1.1.9 2 2 2h5.5l-.92 4.65c-.05.22-.02.46.08.66.23.45.52.86.88 1.22L10 22l6.41-6.41c.38-.38.59-.89.59-1.42V6.34C17 5.05 15.95 4 14.66 4h-8.1c-.71 0-1.36.37-1.72.97l-2.67 6.15z"}}]})(props);
-  }function MdThumbUpAlt (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M24 24H0V0h24v24z"}},{"tag":"path","attr":{"d":"M2 20h2c.55 0 1-.45 1-1v-9c0-.55-.45-1-1-1H2v11zm19.83-7.12c.11-.25.17-.52.17-.8V11c0-1.1-.9-2-2-2h-5.5l.92-4.65c.05-.22.02-.46-.08-.66a4.8 4.8 0 00-.88-1.22L14 2 7.59 8.41C7.21 8.79 7 9.3 7 9.83v7.84A2.34 2.34 0 009.34 20h8.11c.7 0 1.36-.37 1.72-.97l2.66-6.15z"}}]})(props);
-  }function MdOutlineThumbDownOffAlt (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm0 12l-4.34 4.34L12 14H3v-2l3-7h9v10zm4-12h4v12h-4V3z"}}]})(props);
-  }function MdOutlineThumbUpOffAlt (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M9 21h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.58 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2zM9 9l4.34-4.34L12 10h9v2l-3 7H9V9zM1 9h4v12H1V9z"}}]})(props);
-  }function MdOutlineKeyboardBackspace (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0V0z"}},{"tag":"path","attr":{"d":"M21 11H6.83l3.58-3.59L9 6l-6 6 6 6 1.41-1.41L6.83 13H21v-2z"}}]})(props);
-  }
-
-  // THIS FILE IS AUTO GENERATED
-  function RiChatSmile3Fill (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"g","attr":{},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M4.929 19.071A9.969 9.969 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10H2l2.929-2.929zM8 13a4 4 0 1 0 8 0H8z"}}]}]})(props);
-  }function RiUser6Fill (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"g","attr":{},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M12 17c3.662 0 6.865 1.575 8.607 3.925l-1.842.871C17.347 20.116 14.847 19 12 19c-2.847 0-5.347 1.116-6.765 2.796l-1.841-.872C5.136 18.574 8.338 17 12 17zm0-15a5 5 0 0 1 5 5v3a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"}}]}]})(props);
+  function LuSettings2 (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"round","strokeLinejoin":"round"},"child":[{"tag":"path","attr":{"d":"M20 7h-9"}},{"tag":"path","attr":{"d":"M14 17H5"}},{"tag":"circle","attr":{"cx":"17","cy":"17","r":"3"}},{"tag":"circle","attr":{"cx":"7","cy":"7","r":"3"}}]})(props);
   }
 
   var isFirefox = typeof InstallTrigger !== "undefined";
@@ -851,11 +861,11 @@
           case IframeType.CHAT_CONTAINER_CLOSED:
               return {
                   border: "none",
-                  boxShadow: "0px 2px 6px -2px #9b9b9b",
+                  boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                   width: "400px",
                   height: "600px",
                   position: "fixed",
-                  bottom: "90px",
+                  bottom: "100px",
                   right: "30px",
                   borderRadius: "12px",
                   backgroundColor: "#fff",
@@ -864,11 +874,11 @@
           case IframeType.CHAT_CONTAINER_OPEN:
               return {
                   border: "none",
-                  boxShadow: "0px 2px 6px -2px #9b9b9b",
+                  boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                   width: "400px",
                   height: "600px",
                   position: "fixed",
-                  bottom: "90px",
+                  bottom: "100px",
                   right: "30px",
                   borderRadius: "12px",
                   backgroundColor: "#fff",
@@ -881,6 +891,7 @@
                   position: "fixed",
                   bottom: "24px",
                   right: "24px",
+                  borderRadius: "50%",
               };
           default:
               return {
@@ -890,7 +901,7 @@
   };
   var IFrame = function (props) {
       var _a, _b, _c;
-      var children = props.children, iframeType = props.iframeType, rest = __rest$1(props, ["children", "iframeType"]);
+      var children = props.children, iframeType = props.iframeType, rest = __rest(props, ["children", "iframeType"]);
       var _d = reactExports.useState(null), contentRef = _d[0], setContentRef = _d[1];
       var mountNode = (_b = (_a = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body;
       var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
@@ -908,41 +919,354 @@
               addStyles();
           }
       }, [mountNode]);
-      return (jsxRuntimeExports.jsx("iframe", __assign$1({ style: styles }, rest, { onLoad: isFirefox ? function (e) { return setContentRef(e.target); } : undefined, ref: !isFirefox ? setContentRef : undefined }, { children: mountNode && reactDomExports.createPortal(children, mountNode) })));
+      return (jsxRuntimeExports.jsx("iframe", __assign({ style: styles }, rest, { onLoad: isFirefox ? function (e) { return setContentRef(e.target); } : undefined, ref: !isFirefox ? setContentRef : undefined }, { children: mountNode && reactDomExports.createPortal(children, mountNode) })));
   };
 
-  var difficultyLevel = [
-      { type: EChatDifficultyLevel.CREATIVE, text: "Creative" },
-      { type: EChatDifficultyLevel.BALANCED, text: "Balanced" },
-      { type: EChatDifficultyLevel.PRECISE, text: "Precise" },
-  ];
-  var SettingsItem = function (props) {
-      var Icon = props.icon, settingName = props.settingName, children = props.children;
-      return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-type-block" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-type-header" }, { children: [jsxRuntimeExports.jsx(Icon, { className: "setting-type-icon" }), jsxRuntimeExports.jsx("p", __assign$1({ className: "setting-type-heading" }, { children: settingName }))] })), jsxRuntimeExports.jsx("div", __assign$1({ className: "settings-list" }, { children: children }))] })));
+  /* eslint-disable */
+  var eventTypeMapping = {
+      click: "onClick",
+      focusin: "onFocus",
+      focusout: "onFocus",
+      mousedown: "onMouseDown",
+      mouseup: "onMouseUp",
+      touchstart: "onTouchStart",
+      touchend: "onTouchEnd",
   };
-  var SettingsMenu = function () {
-      var _a = useData(), isSettingsPageOpen = _a.isSettingsPageOpen, setIsSettingsPageOpen = _a.setIsSettingsPageOpen, chatSettings = _a.chatSettings, setChatSettings = _a.setChatSettings;
-      var chatDifficultyLevel = chatSettings.chatDifficultyLevel, conversationFallbackAnalytics = chatSettings.conversationFallbackAnalytics, restoreChatOnReturn = chatSettings.restoreChatOnReturn;
-      var handleChatSettings = function (setting) {
-          setChatSettings(__assign$1(__assign$1({}, chatSettings), setting));
+  var ClickAwayListener = function (_a) {
+      var _b;
+      var children = _a.children, onClickAway = _a.onClickAway, _c = _a.focusEvent, focusEvent = _c === void 0 ? "focusin" : _c, _d = _a.mouseEvent, mouseEvent = _d === void 0 ? "click" : _d, _e = _a.touchEvent, touchEvent = _e === void 0 ? "touchend" : _e;
+      var node = reactExports.useRef(null);
+      var bubbledEventTarget = reactExports.useRef(null);
+      var mountedRef = reactExports.useRef(false);
+      /**
+       * Prevents the bubbled event from getting triggered immediately
+       * https://github.com/facebook/react/issues/20074
+       */
+      reactExports.useEffect(function () {
+          setTimeout(function () {
+              mountedRef.current = true;
+          }, 0);
+          return function () {
+              mountedRef.current = false;
+          };
+      }, []);
+      var handleBubbledEvents = function (type) {
+          return function (event) {
+              bubbledEventTarget.current = event.target;
+              var handler = children === null || children === void 0 ? void 0 : children.props[type];
+              if (handler) {
+                  handler(event);
+              }
+          };
       };
-      var handleCloseSettings = function () {
-          setIsSettingsPageOpen(false);
+      var handleChildRef = function (childRef) {
+          node.current = childRef;
+          var ref = children.ref;
+          if (typeof ref === "function") {
+              ref(childRef);
+          }
+          else if (ref) {
+              ref.current = childRef;
+          }
       };
-      return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-menu ".concat(isSettingsPageOpen ? "settings-open" : "") }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-header" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ className: "settings-close-button", onClick: handleCloseSettings }, { children: jsxRuntimeExports.jsx(MdOutlineKeyboardBackspace, { className: "settings-close-icon" }) })), jsxRuntimeExports.jsx("h2", __assign$1({ className: "settings-heading" }, { children: "Settings" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-container" }, { children: [jsxRuntimeExports.jsx(SettingsItem, __assign$1({ icon: MdEdit, settingName: "Difficulty Level" }, { children: difficultyLevel.map(function (difficulty, index) {
-                              return (jsxRuntimeExports.jsxs("label", __assign$1({ className: "settings-list-item" }, { children: [difficulty.text, jsxRuntimeExports.jsx("input", { type: "radio", checked: chatDifficultyLevel === difficulty.type, name: "radio", className: "radio-button", onClick: function () {
-                                              return handleChatSettings({ chatDifficultyLevel: difficulty.type });
-                                          } })] }), index));
-                          }) })), jsxRuntimeExports.jsxs(SettingsItem, __assign$1({ icon: MdPrivacyTip, settingName: "Privacy" }, { children: [jsxRuntimeExports.jsxs("label", __assign$1({ className: "settings-list-item" }, { children: ["Restore Chat", jsxRuntimeExports.jsx("input", { type: "checkbox", checked: restoreChatOnReturn, onClick: function () {
-                                              return handleChatSettings({
-                                                  restoreChatOnReturn: !restoreChatOnReturn,
-                                              });
-                                          } })] })), jsxRuntimeExports.jsxs("label", __assign$1({ className: "settings-list-item" }, { children: ["Fallback Analytics", jsxRuntimeExports.jsx("input", { type: "checkbox", checked: conversationFallbackAnalytics, onClick: function () {
-                                              return handleChatSettings({
-                                                  conversationFallbackAnalytics: !conversationFallbackAnalytics,
-                                              });
-                                          } })] }))] }))] }))] })));
+      reactExports.useEffect(function () {
+          var _a, _b;
+          var nodeDocument = (_b = (_a = node.current) === null || _a === void 0 ? void 0 : _a.ownerDocument) !== null && _b !== void 0 ? _b : document;
+          var handleEvents = function (event) {
+              if (!mountedRef.current)
+                  return;
+              if ((node.current && node.current.contains(event.target)) ||
+                  bubbledEventTarget.current === event.target ||
+                  !nodeDocument.contains(event.target)) {
+                  return;
+              }
+              onClickAway(event);
+          };
+          nodeDocument.addEventListener(mouseEvent, handleEvents);
+          nodeDocument.addEventListener(touchEvent, handleEvents);
+          nodeDocument.addEventListener(focusEvent, handleEvents);
+          return function () {
+              nodeDocument.removeEventListener(mouseEvent, handleEvents);
+              nodeDocument.removeEventListener(touchEvent, handleEvents);
+              nodeDocument.removeEventListener(focusEvent, handleEvents);
+          };
+      }, [focusEvent, mouseEvent, onClickAway, touchEvent]);
+      var mappedMouseEvent = eventTypeMapping[mouseEvent];
+      var mappedTouchEvent = eventTypeMapping[touchEvent];
+      var mappedFocusEvent = eventTypeMapping[focusEvent];
+      return React.Children.only(reactExports.cloneElement(children, (_b = {
+              ref: handleChildRef
+          },
+          _b[mappedFocusEvent] = handleBubbledEvents(mappedFocusEvent),
+          _b[mappedMouseEvent] = handleBubbledEvents(mappedMouseEvent),
+          _b[mappedTouchEvent] = handleBubbledEvents(mappedTouchEvent),
+          _b)));
   };
+
+  // THIS FILE IS AUTO GENERATED
+  function RiChatSmile3Fill (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22H2L4.92893 19.0711C3.11929 17.2614 2 14.7614 2 12C2 6.47715 6.47715 2 12 2ZM16 13H8C8 15.2091 9.79086 17 12 17C14.2091 17 16 15.2091 16 13Z"}}]})(props);
+  }function RiCloseFill (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z"}}]})(props);
+  }function RiUser6Fill (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12.0009 17C15.6633 17 18.8659 18.5751 20.608 20.9247L18.766 21.796C17.3482 20.1157 14.8483 19 12.0009 19C9.15346 19 6.6535 20.1157 5.23577 21.796L3.39453 20.9238C5.13673 18.5747 8.33894 17 12.0009 17ZM12.0009 2C14.7623 2 17.0009 4.23858 17.0009 7V10C17.0009 12.7614 14.7623 15 12.0009 15C9.23945 15 7.00087 12.7614 7.00087 10V7C7.00087 4.23858 9.23945 2 12.0009 2Z"}}]})(props);
+  }
+
+  var PopupItemFilters = function () {
+      return (jsxRuntimeExports.jsx(PopupContents, __assign({ title: "Filters" }, { children: jsxRuntimeExports.jsx("h6", { children: "This is one filter." }) })));
+  };
+
+  var PopupItemInfo = function () {
+      return (jsxRuntimeExports.jsx(PopupContents, __assign({ title: "Info" }, { children: jsxRuntimeExports.jsx("h6", { children: "This is bot info." }) })));
+  };
+
+  var classnamesExports = {};
+  var classnames = {
+    get exports(){ return classnamesExports; },
+    set exports(v){ classnamesExports = v; },
+  };
+
+  /*!
+  	Copyright (c) 2018 Jed Watson.
+  	Licensed under the MIT License (MIT), see
+  	http://jedwatson.github.io/classnames
+  */
+
+  (function (module) {
+  	/* global define */
+
+  	(function () {
+
+  		var hasOwn = {}.hasOwnProperty;
+
+  		function classNames() {
+  			var classes = [];
+
+  			for (var i = 0; i < arguments.length; i++) {
+  				var arg = arguments[i];
+  				if (!arg) continue;
+
+  				var argType = typeof arg;
+
+  				if (argType === 'string' || argType === 'number') {
+  					classes.push(arg);
+  				} else if (Array.isArray(arg)) {
+  					if (arg.length) {
+  						var inner = classNames.apply(null, arg);
+  						if (inner) {
+  							classes.push(inner);
+  						}
+  					}
+  				} else if (argType === 'object') {
+  					if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+  						classes.push(arg.toString());
+  						continue;
+  					}
+
+  					for (var key in arg) {
+  						if (hasOwn.call(arg, key) && arg[key]) {
+  							classes.push(key);
+  						}
+  					}
+  				}
+  			}
+
+  			return classes.join(' ');
+  		}
+
+  		if (module.exports) {
+  			classNames.default = classNames;
+  			module.exports = classNames;
+  		} else {
+  			window.classNames = classNames;
+  		}
+  	}());
+  } (classnames));
+
+  var classNames = classnamesExports;
+
+  const DEFAULT_BREAKPOINTS = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs'];
+  const DEFAULT_MIN_BREAKPOINT = 'xs';
+  const ThemeContext = /*#__PURE__*/reactExports.createContext({
+    prefixes: {},
+    breakpoints: DEFAULT_BREAKPOINTS,
+    minBreakpoint: DEFAULT_MIN_BREAKPOINT
+  });
+  function useBootstrapPrefix(prefix, defaultPrefix) {
+    const {
+      prefixes
+    } = reactExports.useContext(ThemeContext);
+    return prefix || prefixes[defaultPrefix] || defaultPrefix;
+  }
+
+  const _excluded$1 = ["as", "disabled"];
+  function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+  function isTrivialHref(href) {
+    return !href || href.trim() === '#';
+  }
+  function useButtonProps({
+    tagName,
+    disabled,
+    href,
+    target,
+    rel,
+    role,
+    onClick,
+    tabIndex = 0,
+    type
+  }) {
+    if (!tagName) {
+      if (href != null || target != null || rel != null) {
+        tagName = 'a';
+      } else {
+        tagName = 'button';
+      }
+    }
+    const meta = {
+      tagName
+    };
+    if (tagName === 'button') {
+      return [{
+        type: type || 'button',
+        disabled
+      }, meta];
+    }
+    const handleClick = event => {
+      if (disabled || tagName === 'a' && isTrivialHref(href)) {
+        event.preventDefault();
+      }
+      if (disabled) {
+        event.stopPropagation();
+        return;
+      }
+      onClick == null ? void 0 : onClick(event);
+    };
+    const handleKeyDown = event => {
+      if (event.key === ' ') {
+        event.preventDefault();
+        handleClick(event);
+      }
+    };
+    if (tagName === 'a') {
+      // Ensure there's a href so Enter can trigger anchor button.
+      href || (href = '#');
+      if (disabled) {
+        href = undefined;
+      }
+    }
+    return [{
+      role: role != null ? role : 'button',
+      // explicitly undefined so that it overrides the props disabled in a spread
+      // e.g. <Tag {...props} {...hookProps} />
+      disabled: undefined,
+      tabIndex: disabled ? undefined : tabIndex,
+      href,
+      target: tagName === 'a' ? target : undefined,
+      'aria-disabled': !disabled ? undefined : disabled,
+      rel: tagName === 'a' ? rel : undefined,
+      onClick: handleClick,
+      onKeyDown: handleKeyDown
+    }, meta];
+  }
+  const Button$2 = /*#__PURE__*/reactExports.forwardRef((_ref, ref) => {
+    let {
+        as: asProp,
+        disabled
+      } = _ref,
+      props = _objectWithoutPropertiesLoose(_ref, _excluded$1);
+    const [buttonProps, {
+      tagName: Component
+    }] = useButtonProps(Object.assign({
+      tagName: asProp,
+      disabled
+    }, props));
+    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, Object.assign({}, props, buttonProps, {
+      ref: ref
+    }));
+  });
+  Button$2.displayName = 'Button';
+
+  const Button = /*#__PURE__*/reactExports.forwardRef(({
+    as,
+    bsPrefix,
+    variant = 'primary',
+    size,
+    active = false,
+    disabled = false,
+    className,
+    ...props
+  }, ref) => {
+    const prefix = useBootstrapPrefix(bsPrefix, 'btn');
+    const [buttonProps, {
+      tagName
+    }] = useButtonProps({
+      tagName: as,
+      disabled,
+      ...props
+    });
+    const Component = tagName;
+    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+      ...buttonProps,
+      ...props,
+      ref: ref,
+      disabled: disabled,
+      className: classNames(className, prefix, active && 'active', variant && `${prefix}-${variant}`, size && `${prefix}-${size}`, props.href && disabled && 'disabled')
+    });
+  });
+  Button.displayName = 'Button';
+  var Button$1 = Button;
+
+  var PopupItemSettings = function () {
+      return (jsxRuntimeExports.jsx(PopupContents, __assign({ title: "Settings" }, { children: jsxRuntimeExports.jsx(Button$1, { children: "Restart Intro" }) })));
+  };
+
+  var PopupContents = function (props) {
+      var title = props.title, children = props.children;
+      var setPopupItem = useData().setPopupItem;
+      return (jsxRuntimeExports.jsxs("div", __assign({ className: "popup-content" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "popup-content-header" }, { children: [jsxRuntimeExports.jsx("h3", __assign({ className: "popup-content-title" }, { children: title })), jsxRuntimeExports.jsx("button", __assign({ className: "popup-close-button", "aria-label": "Close", onClick: function () { return setPopupItem(EPopupItem.NONE); } }, { children: jsxRuntimeExports.jsx(RiCloseFill, { className: "popup-close-icon" }) }))] })), jsxRuntimeExports.jsx("div", __assign({ className: "popup-content-body" }, { children: children }))] })));
+  };
+  var getPopupContent = function (popupType) {
+      switch (popupType) {
+          case EPopupItem.SETTINGS:
+              return jsxRuntimeExports.jsx(PopupItemSettings, {});
+          case EPopupItem.FILTERS:
+              return jsxRuntimeExports.jsx(PopupItemFilters, {});
+          case EPopupItem.BOT_INFO:
+              return jsxRuntimeExports.jsx(PopupItemInfo, {});
+          default:
+              return jsxRuntimeExports.jsx(reactExports.Fragment, {});
+      }
+  };
+  var PopupScreen = function () {
+      var _a = useData(), popupItem = _a.popupItem, setPopupItem = _a.setPopupItem;
+      if (popupItem === EPopupItem.NONE)
+          return jsxRuntimeExports.jsx(reactExports.Fragment, {});
+      return (jsxRuntimeExports.jsx(ClickAwayListener, __assign({ onClickAway: function () { return setPopupItem(EPopupItem.NONE); } }, { children: jsxRuntimeExports.jsx("div", __assign({ className: "popup-screen" }, { children: getPopupContent(popupItem) })) })));
+  };
+
+  // THIS FILE IS AUTO GENERATED
+  function IoMdVolumeHigh (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M64 192v128h85.334L256 431.543V80.458L149.334 192H64zm288 64c0-38.399-21.333-72.407-53.333-88.863v176.636C330.667 328.408 352 294.4 352 256zM298.667 64v44.978C360.531 127.632 405.334 186.882 405.334 256c0 69.119-44.803 128.369-106.667 147.022V448C384 428.254 448 349.257 448 256c0-93.256-64-172.254-149.333-192z"}}]})(props);
+  }function IoMdVolumeOff (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M405.5 256c0 22.717-4.883 44.362-13.603 63.855l31.88 31.88C439.283 323.33 448 290.653 448 256c0-93.256-64-172.254-149-192v44.978C361 127.632 405.5 186.882 405.5 256zM256 80.458l-51.021 52.48L256 183.957zM420.842 396.885L91.116 67.157l-24 24 90.499 90.413-8.28 10.43H64v128h85.334L256 431.543V280l94.915 94.686C335.795 387.443 318 397.213 299 403.022V448c31-7.172 58.996-22.163 82.315-42.809l39.61 39.693 24-24.043-24.002-24.039-.081.083z"}},{"tag":"path","attr":{"d":"M352.188 256c0-38.399-21.188-72.407-53.188-88.863v59.82l50.801 50.801A100.596 100.596 0 0 0 352.188 256z"}}]})(props);
+  }
+
+  // THIS FILE IS AUTO GENERATED
+  function MdInfoOutline (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0V0z"}},{"tag":"path","attr":{"d":"M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"}}]})(props);
+  }function MdReplay (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"}}]})(props);
+  }function MdThumbDownAlt (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M24 24H0V0h24v24z"}},{"tag":"path","attr":{"d":"M22 4h-2c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h2V4zM2.17 11.12c-.11.25-.17.52-.17.8V13c0 1.1.9 2 2 2h5.5l-.92 4.65c-.05.22-.02.46.08.66.23.45.52.86.88 1.22L10 22l6.41-6.41c.38-.38.59-.89.59-1.42V6.34C17 5.05 15.95 4 14.66 4h-8.1c-.71 0-1.36.37-1.72.97l-2.67 6.15z"}}]})(props);
+  }function MdThumbUpAlt (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M24 24H0V0h24v24z"}},{"tag":"path","attr":{"d":"M2 20h2c.55 0 1-.45 1-1v-9c0-.55-.45-1-1-1H2v11zm19.83-7.12c.11-.25.17-.52.17-.8V11c0-1.1-.9-2-2-2h-5.5l.92-4.65c.05-.22.02-.46-.08-.66a4.8 4.8 0 00-.88-1.22L14 2 7.59 8.41C7.21 8.79 7 9.3 7 9.83v7.84A2.34 2.34 0 009.34 20h8.11c.7 0 1.36-.37 1.72-.97l2.66-6.15z"}}]})(props);
+  }function MdOutlineThumbDownOffAlt (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm0 12l-4.34 4.34L12 14H3v-2l3-7h9v10zm4-12h4v12h-4V3z"}}]})(props);
+  }function MdOutlineThumbUpOffAlt (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M9 21h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.58 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2zM9 9l4.34-4.34L12 10h9v2l-3 7H9V9zM1 9h4v12H1V9z"}}]})(props);
+  }function MdOutlineWarningAmber (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"}}]})(props);
+  }
 
   var EMessageTypes;
   (function (EMessageTypes) {
@@ -959,10 +1283,10 @@
           message: "Hi. I'm looking for a masters course in Economics.",
       },
   ];
-  var ChatContainer = function () {
-      var _a = useData(), isChatOpen = _a.isChatOpen, isSettingsPageOpen = _a.isSettingsPageOpen, setIsSettingsPageOpen = _a.setIsSettingsPageOpen;
-      var _b = reactExports.useState(""), message = _b[0], setMessage = _b[1];
-      var _c = reactExports.useState(false), isInputFocused = _c[0], setIsInputFocused = _c[1];
+  var ScreenMain = function () {
+      var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute;
+      var _b = reactExports.useState(false), isInputFocused = _b[0], setIsInputFocused = _b[1];
+      var _c = reactExports.useState(""), message = _c[0], setMessage = _c[1];
       var _d = reactExports.useState(dummyMessages), messages = _d[0], setMessages = _d[1];
       var handleUserMessage = function (e) {
           e === null || e === void 0 ? void 0 : e.preventDefault();
@@ -986,28 +1310,41 @@
           var messagesWithFeedback = __spreadArray([], messages, true);
           var newMessages = messagesWithFeedback.map(function (msgObj) {
               return msgObj.message == msg
-                  ? __assign$1(__assign$1({}, msgObj), { feedback: feedback }) : msgObj;
+                  ? __assign(__assign({}, msgObj), { feedback: feedback }) : msgObj;
           });
           setMessages(newMessages);
       };
-      return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon" }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title" }, { children: "What2Study" }))] })), jsxRuntimeExports.jsx("div", __assign$1({ className: "settings-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ onClick: function () { return setIsSettingsPageOpen(!isSettingsPageOpen); }, className: "settings-button" }, { children: jsxRuntimeExports.jsx(IoSettingsSharp, { className: "settings-icon" }) })) }))] })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chatContainer" }, { children: messages.map(function (_a, index) {
-                          var message = _a.message, type = _a.type, feedback = _a.feedback;
-                          return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(type === EMessageTypes.BOT
-                                  ? "botMessageWrapper"
-                                  : "userMessageWrapper") }, { children: [type === EMessageTypes.BOT && jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "message ".concat(type === EMessageTypes.BOT ? "botMessage" : "userMessage") }, { children: [message, type === EMessageTypes.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "feedback-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ className: "feedback-button", onClick: function () {
-                                                          if (feedback === true)
-                                                              return;
-                                                          handleMessageFeedback(message, typeof feedback !== "undefined"
-                                                              ? !feedback
-                                                              : true);
-                                                      } }, { children: feedback === true ? (jsxRuntimeExports.jsx(MdThumbUpAlt, { className: "feedback-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbUpOffAlt, { className: "feedback-icon" })) })), jsxRuntimeExports.jsx("button", __assign$1({ className: "feedback-button", onClick: function () {
-                                                          if (feedback === false)
-                                                              return;
-                                                          handleMessageFeedback(message, typeof feedback !== "undefined"
-                                                              ? !feedback
-                                                              : false);
-                                                      } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "feedback-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "feedback-icon" })) }))] })))] })), type === EMessageTypes.USER && jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" })] }), index));
-                      }) })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] })), jsxRuntimeExports.jsx(SettingsMenu, {})] })) })));
+      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info" }), jsxRuntimeExports.jsx("button", __assign({ className: "talk-to-human-btn", onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Want to talk to human?" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play" })] })), jsxRuntimeExports.jsx("div", __assign({ className: "chatContainer" }, { children: messages.map(function (_a, index) {
+                      var message = _a.message, type = _a.type, feedback = _a.feedback;
+                      return (jsxRuntimeExports.jsxs("div", __assign({ className: "messageWrapper ".concat(type === EMessageTypes.BOT ? "botMessageWrapper" : "userMessageWrapper") }, { children: [type === EMessageTypes.BOT && (jsxRuntimeExports.jsx("div", __assign({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) }))), jsxRuntimeExports.jsxs("div", __assign({ className: "message ".concat(type === EMessageTypes.BOT ? "botMessage" : "userMessage") }, { children: [message, type === EMessageTypes.BOT && (jsxRuntimeExports.jsxs("div", __assign({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign({ title: "Report", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon" }) })), jsxRuntimeExports.jsx("button", __assign({ title: "Like", className: "action-button", onClick: function () {
+                                                      if (feedback === true)
+                                                          return;
+                                                      handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
+                                                  } }, { children: feedback === true ? (jsxRuntimeExports.jsx(MdThumbUpAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbUpOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign({ title: "Dislike", className: "action-button", onClick: function () {
+                                                      if (feedback === false)
+                                                          return;
+                                                      handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
+                                                  } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign({ title: "Regenrate Response", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon" }) }))] })))] })), type === EMessageTypes.USER && (jsxRuntimeExports.jsx("div", __assign({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
+                  }) })), jsxRuntimeExports.jsxs("form", __assign({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button" }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] }))] }));
+  };
+
+  var ScreenTalkToHuman = function () {
+      return (jsxRuntimeExports.jsx("div", __assign({ className: "screen-talk-to-human" }, { children: jsxRuntimeExports.jsx("h2", { children: "Screen Talk to human" }) })));
+  };
+
+  var getScreenAsPerRoute = function (route) {
+      switch (route) {
+          case ERoute.MAIN:
+              return jsxRuntimeExports.jsx(ScreenMain, {});
+          case ERoute.TALK_TO_HUMAN:
+              return jsxRuntimeExports.jsx(ScreenTalkToHuman, {});
+          default:
+              return jsxRuntimeExports.jsx(reactExports.Fragment, {});
+      }
+  };
+  var ChatContainer = function () {
+      var _a = useData(), isChatOpen = _a.isChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute;
+      return (jsxRuntimeExports.jsxs(IFrame, __assign({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign({ className: "chatContainerWrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "header-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon" }), jsxRuntimeExports.jsx("h1", __assign({ className: "header-title" }, { children: "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters" }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings" })] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
   };
 
   // THIS FILE IS AUTO GENERATED
@@ -1016,23 +1353,24 @@
   }
 
   var OpenChatButton = function (props) {
-      var isChatOpen = props.isChatOpen, setIsChatOpen = props.setIsChatOpen, icon = props.icon;
+      var icon = props.icon;
+      var _a = useData(), isChatOpen = _a.isChatOpen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem;
       var Icon = !isChatOpen ? icon : BiChevronDown;
       var handleOpenChatButtonClick = function () {
           setIsChatOpen(!isChatOpen);
+          setPopupItem(EPopupItem.NONE);
       };
-      return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: IframeType.CHAT_OPEN_BUTTON }, { children: jsxRuntimeExports.jsx("button", __assign$1({ 
+      return (jsxRuntimeExports.jsx(IFrame, __assign({ iframeType: IframeType.CHAT_OPEN_BUTTON }, { children: jsxRuntimeExports.jsx("button", __assign({ 
               // inline styles for button as loading stylesheets takes time on browser (causes to show button without styles)
-              style: __assign$1({ width: "48px", height: "48px", margin: "3px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "#0c8de9", border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
+              style: __assign({ width: "48px", height: "48px", margin: "3px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "#0c8de9", border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
                   ? {
                       backgroundColor: "#f0f0f0",
                   }
-                  : {})), onClick: handleOpenChatButtonClick }, { children: jsxRuntimeExports.jsx(Icon, { style: __assign$1({ fontSize: "22px", color: "#ffffff" }, (isChatOpen ? { color: "#000000" } : {})) }) })) })));
+                  : {})), onClick: handleOpenChatButtonClick }, { children: jsxRuntimeExports.jsx(Icon, { style: __assign({ fontSize: "22px", color: "#ffffff" }, (isChatOpen ? { color: "#000000" } : {})) }) })) })));
   };
 
   var ChatClient = function () {
-      var _a = useData(), isChatOpen = _a.isChatOpen, setIsChatOpen = _a.setIsChatOpen;
-      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsx(ChatContainer, {}), jsxRuntimeExports.jsx(OpenChatButton, { icon: BsChatQuoteFill, isChatOpen: isChatOpen, setIsChatOpen: setIsChatOpen })] }));
+      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsx(ChatContainer, {}), jsxRuntimeExports.jsx(OpenChatButton, { icon: BsChatQuoteFill })] }));
   };
 
   var LOCALSTORAGE_SESSION_ID_KEY = "what2studyUserSessionId";

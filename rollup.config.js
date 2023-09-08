@@ -3,7 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import typescript from "@rollup/plugin-typescript";
-import progress from "rollup-plugin-progress";
+// import progress from "rollup-plugin-progress";
 import scss from "rollup-plugin-scss";
 
 const config = {
@@ -14,7 +14,7 @@ const config = {
         format: "umd",
     },
     plugins: [
-        progress(),
+        // progress(),
         resolve(),
         babel({
             exclude: "node_modules/**",

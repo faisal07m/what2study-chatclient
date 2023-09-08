@@ -5,6 +5,7 @@ import App from "./src/App";
 
 import "./src/styles/global.scss";
 import "./src/styles/_chatcontainer.scss";
+import "./src/styles/_popup.scss";
 
 const defaultRoot = "what2studyChatclientWrapper";
 
