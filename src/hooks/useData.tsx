@@ -37,7 +37,7 @@ export interface IChatSettings {
 export const DataProvider: FC<DataProviderProps> = (props) => {
     const { children } = props;
 
-    const [isChatOpen, setIsChatOpen] = useState<boolean>(true);
+    const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
     const [isSettingsPageOpen, setIsSettingsPageOpen] = useState<boolean>(false);
     const [sessionId, setSessionId] = useState<string>("");
     const [currentTheme, setCurrentTheme] = useState<EThemes>(EThemes.LIGHT_THEME_1);
