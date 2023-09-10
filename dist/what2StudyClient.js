@@ -4,7 +4,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.What2Study = factory());
 })(this, (function () { 'use strict';
 
-  function _objectWithoutPropertiesLoose$1(source, excluded) {
+  function _objectWithoutPropertiesLoose(source, excluded) {
     if (source == null) return {};
     var target = {};
     var sourceKeys = Object.keys(source);
@@ -18,7 +18,7 @@
   }
   function _objectWithoutProperties(source, excluded) {
     if (source == null) return {};
-    var target = _objectWithoutPropertiesLoose$1(source, excluded);
+    var target = _objectWithoutPropertiesLoose(source, excluded);
     var key, i;
     if (Object.getOwnPropertySymbols) {
       var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -770,20 +770,26 @@
       ERoute["MAIN"] = "MAIN";
       ERoute["TALK_TO_HUMAN"] = "TALK_TO_HUMAN";
   })(ERoute || (ERoute = {}));
+  var EChatLanguage;
+  (function (EChatLanguage) {
+      EChatLanguage["EN"] = "EN";
+      EChatLanguage["DE"] = "DE";
+  })(EChatLanguage || (EChatLanguage = {}));
   var DataProvider = function (props) {
       var children = props.children;
-      var _a = reactExports.useState(true), isChatOpen = _a[0], setIsChatOpen = _a[1];
-      var _b = reactExports.useState(false), isSettingsPageOpen = _b[0], setIsSettingsPageOpen = _b[1];
-      var _c = reactExports.useState(""), sessionId = _c[0], setSessionId = _c[1];
-      var _d = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _d[0], setCurrentTheme = _d[1];
-      var _e = reactExports.useState({
-          chatDifficultyLevel: EChatDifficultyLevel.PRECISE,
-          restoreChatOnReturn: true,
-          conversationFallbackAnalytics: false,
-      }), chatSettings = _e[0], setChatSettings = _e[1];
-      var _f = reactExports.useState(EPopupItem.NONE), popupItem = _f[0], setPopupItem = _f[1];
-      var _g = reactExports.useState(true), isBotVolumeOn = _g[0], setIsBotVolumeOn = _g[1];
-      var _h = reactExports.useState(ERoute.MAIN), currentRoute = _h[0], setCurrentRoute = _h[1];
+      var _a = reactExports.useState(false), isChatOpen = _a[0], setIsChatOpen = _a[1];
+      var _b = reactExports.useState(""), sessionId = _b[0], setSessionId = _b[1];
+      var _c = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _c[0], setCurrentTheme = _c[1];
+      var _d = reactExports.useState(EPopupItem.NONE), popupItem = _d[0], setPopupItem = _d[1];
+      var _e = reactExports.useState(true), isBotVolumeOn = _e[0], setIsBotVolumeOn = _e[1];
+      var _f = reactExports.useState(ERoute.MAIN), currentRoute = _f[0], setCurrentRoute = _f[1];
+      var _g = reactExports.useState({
+          tone: 0.5,
+          sentiment: 0.5,
+          emotiveness: 0.5,
+          length: 0.5,
+      }), chatFilters = _g[0], setChatFilters = _g[1];
+      var _h = reactExports.useState(EChatLanguage.EN), language = _h[0], setLanguage = _h[1];
       var generateNewSession = function () {
           var newSessionId = v4();
           localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
@@ -812,18 +818,18 @@
           setSessionId: setSessionId,
           isChatOpen: isChatOpen,
           setIsChatOpen: setIsChatOpen,
-          isSettingsPageOpen: isSettingsPageOpen,
-          setIsSettingsPageOpen: setIsSettingsPageOpen,
           currentTheme: currentTheme,
           setCurrentTheme: setCurrentTheme,
-          chatSettings: chatSettings,
-          setChatSettings: setChatSettings,
           popupItem: popupItem,
           setPopupItem: setPopupItem,
           isBotVolumeOn: isBotVolumeOn,
           setIsBotVolumeOn: setIsBotVolumeOn,
           currentRoute: currentRoute,
           setCurrentRoute: setCurrentRoute,
+          chatFilters: chatFilters,
+          setChatFilters: setChatFilters,
+          language: language,
+          setLanguage: setLanguage,
       };
       // On chat client init
       reactExports.useEffect(function () {
@@ -844,7 +850,9 @@
   }
 
   // THIS FILE IS AUTO GENERATED
-  function IoSend (props) {
+  function IoCloseSharp (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"}}]})(props);
+  }function IoSend (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0027.14 52 24.65 24.65 0 0016 72.59v113.29a24 24 0 0019.52 23.57l232.93 43.07a4 4 0 010 7.86L35.53 303.45A24 24 0 0016 327v113.31A23.57 23.57 0 0026.59 460a23.94 23.94 0 0013.22 4 24.55 24.55 0 009.52-1.93L476.4 285.94l.19-.09a32 32 0 000-58.8z"}}]})(props);
   }function IoSettingsSharp (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M256 176a80 80 0 1080 80 80.24 80.24 0 00-80-80zm172.72 80a165.53 165.53 0 01-1.64 22.34l48.69 38.12a11.59 11.59 0 012.63 14.78l-46.06 79.52a11.64 11.64 0 01-14.14 4.93l-57.25-23a176.56 176.56 0 01-38.82 22.67l-8.56 60.78a11.93 11.93 0 01-11.51 9.86h-92.12a12 12 0 01-11.51-9.53l-8.56-60.78A169.3 169.3 0 01151.05 393L93.8 416a11.64 11.64 0 01-14.14-4.92L33.6 331.57a11.59 11.59 0 012.63-14.78l48.69-38.12A174.58 174.58 0 0183.28 256a165.53 165.53 0 011.64-22.34l-48.69-38.12a11.59 11.59 0 01-2.63-14.78l46.06-79.52a11.64 11.64 0 0114.14-4.93l57.25 23a176.56 176.56 0 0138.82-22.67l8.56-60.78A11.93 11.93 0 01209.94 26h92.12a12 12 0 0111.51 9.53l8.56 60.78A169.3 169.3 0 01361 119l57.2-23a11.64 11.64 0 0114.14 4.92l46.06 79.52a11.59 11.59 0 01-2.63 14.78l-48.69 38.12a174.58 174.58 0 011.64 22.66z"}}]})(props);
@@ -1012,14 +1020,6 @@
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12.0009 17C15.6633 17 18.8659 18.5751 20.608 20.9247L18.766 21.796C17.3482 20.1157 14.8483 19 12.0009 19C9.15346 19 6.6535 20.1157 5.23577 21.796L3.39453 20.9238C5.13673 18.5747 8.33894 17 12.0009 17ZM12.0009 2C14.7623 2 17.0009 4.23858 17.0009 7V10C17.0009 12.7614 14.7623 15 12.0009 15C9.23945 15 7.00087 12.7614 7.00087 10V7C7.00087 4.23858 9.23945 2 12.0009 2Z"}}]})(props);
   }
 
-  var PopupItemFilters = function () {
-      return (jsxRuntimeExports.jsx(PopupContents, __assign({ title: "Filters" }, { children: jsxRuntimeExports.jsx("h6", { children: "This is one filter." }) })));
-  };
-
-  var PopupItemInfo = function () {
-      return (jsxRuntimeExports.jsx(PopupContents, __assign({ title: "Info" }, { children: jsxRuntimeExports.jsx("h6", { children: "This is bot info." }) })));
-  };
-
   var classnamesExports = {};
   var classnames = {
     get exports(){ return classnamesExports; },
@@ -1099,131 +1099,95 @@
     return prefix || prefixes[defaultPrefix] || defaultPrefix;
   }
 
-  const _excluded$1 = ["as", "disabled"];
-  function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-  function isTrivialHref(href) {
-    return !href || href.trim() === '#';
-  }
-  function useButtonProps({
-    tagName,
-    disabled,
-    href,
-    target,
-    rel,
-    role,
-    onClick,
-    tabIndex = 0,
-    type
-  }) {
-    if (!tagName) {
-      if (href != null || target != null || rel != null) {
-        tagName = 'a';
-      } else {
-        tagName = 'button';
-      }
-    }
-    const meta = {
-      tagName
-    };
-    if (tagName === 'button') {
-      return [{
-        type: type || 'button',
-        disabled
-      }, meta];
-    }
-    const handleClick = event => {
-      if (disabled || tagName === 'a' && isTrivialHref(href)) {
-        event.preventDefault();
-      }
-      if (disabled) {
-        event.stopPropagation();
-        return;
-      }
-      onClick == null ? void 0 : onClick(event);
-    };
-    const handleKeyDown = event => {
-      if (event.key === ' ') {
-        event.preventDefault();
-        handleClick(event);
-      }
-    };
-    if (tagName === 'a') {
-      // Ensure there's a href so Enter can trigger anchor button.
-      href || (href = '#');
-      if (disabled) {
-        href = undefined;
-      }
-    }
-    return [{
-      role: role != null ? role : 'button',
-      // explicitly undefined so that it overrides the props disabled in a spread
-      // e.g. <Tag {...props} {...hookProps} />
-      disabled: undefined,
-      tabIndex: disabled ? undefined : tabIndex,
-      href,
-      target: tagName === 'a' ? target : undefined,
-      'aria-disabled': !disabled ? undefined : disabled,
-      rel: tagName === 'a' ? rel : undefined,
-      onClick: handleClick,
-      onKeyDown: handleKeyDown
-    }, meta];
-  }
-  const Button$2 = /*#__PURE__*/reactExports.forwardRef((_ref, ref) => {
-    let {
-        as: asProp,
-        disabled
-      } = _ref,
-      props = _objectWithoutPropertiesLoose(_ref, _excluded$1);
-    const [buttonProps, {
-      tagName: Component
-    }] = useButtonProps(Object.assign({
-      tagName: asProp,
-      disabled
-    }, props));
-    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, Object.assign({}, props, buttonProps, {
-      ref: ref
-    }));
-  });
-  Button$2.displayName = 'Button';
+  // TODO
 
-  const Button = /*#__PURE__*/reactExports.forwardRef(({
-    as,
+  const FormContext = /*#__PURE__*/reactExports.createContext({});
+  var FormContext$1 = FormContext;
+
+  const FormRange = /*#__PURE__*/reactExports.forwardRef(({
     bsPrefix,
-    variant = 'primary',
-    size,
-    active = false,
-    disabled = false,
     className,
+    id,
     ...props
   }, ref) => {
-    const prefix = useBootstrapPrefix(bsPrefix, 'btn');
-    const [buttonProps, {
-      tagName
-    }] = useButtonProps({
-      tagName: as,
-      disabled,
-      ...props
-    });
-    const Component = tagName;
-    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
-      ...buttonProps,
+    const {
+      controlId
+    } = reactExports.useContext(FormContext$1);
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-range');
+    return /*#__PURE__*/jsxRuntimeExports.jsx("input", {
       ...props,
+      type: "range",
       ref: ref,
-      disabled: disabled,
-      className: classNames(className, prefix, active && 'active', variant && `${prefix}-${variant}`, size && `${prefix}-${size}`, props.href && disabled && 'disabled')
+      className: classNames(className, bsPrefix),
+      id: id || controlId
     });
   });
-  Button.displayName = 'Button';
-  var Button$1 = Button;
+  FormRange.displayName = 'FormRange';
+  var FormRange$1 = FormRange;
 
+  var PopupItemFilters = function () {
+      var _a = useData(), chatFilters = _a.chatFilters, setChatFilters = _a.setChatFilters;
+      var handleFilterValue = function (e) {
+          var _a;
+          setChatFilters(__assign(__assign({}, chatFilters), (_a = {}, _a[e.target.name] = e.target.value, _a)));
+      };
+      return (jsxRuntimeExports.jsxs(PopupContents, __assign({ title: "Chatbot Personality", className: "popup-contents-filters" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "chip-buttons-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign({ className: "app-chip-button", title: "Reset" }, { children: "Reset" })), jsxRuntimeExports.jsx("button", __assign({ className: "app-chip-button", title: "Discard Changes" }, { children: "Discard Changes" }))] })), jsxRuntimeExports.jsxs("div", __assign({ className: "filters-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "Friendly" })), jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "Professional" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "tone", value: chatFilters.tone, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "Opinionated" })), jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "Neutral" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "sentiment", value: chatFilters.sentiment, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "Many emojis" })), jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "No emojis" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "emotiveness", value: chatFilters.emotiveness, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "Long answers" })), jsxRuntimeExports.jsx("span", __assign({ className: "slider-option" }, { children: "Short answers" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "length", value: chatFilters.length, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] }))] }))] })));
+  };
+
+  var PopupItemInfo = function () {
+      return (jsxRuntimeExports.jsxs(PopupContents, __assign({ title: "Welcome to What2Study", className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("p", __assign({ className: "info-text" }, { children: ["What2Study is a ", jsxRuntimeExports.jsx("span", { children: "chatbot" }), " that was developed to support in all your question and endeavors concerning ", jsxRuntimeExports.jsx("span", { children: "studies" }), "."] })), jsxRuntimeExports.jsx("p", __assign({ className: "info-text-title" }, { children: "Please keep in mind:" })), jsxRuntimeExports.jsxs("p", __assign({ className: "info-text" }, { children: ["What2Study is not a ", jsxRuntimeExports.jsx("span", { children: "person" }), ". Many people were involved in its development and throughly tested weather its responses or suggestions were accurate and helpful. Still, we ", jsxRuntimeExports.jsx("span", { children: "can't guarantee" }), " that every answer given by this chatbot is correct. You need to validate crucial information for yourself."] }))] })));
+  };
+
+  const FormSelect = /*#__PURE__*/reactExports.forwardRef(({
+    bsPrefix,
+    size,
+    htmlSize,
+    className,
+    isValid = false,
+    isInvalid = false,
+    id,
+    ...props
+  }, ref) => {
+    const {
+      controlId
+    } = reactExports.useContext(FormContext$1);
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-select');
+    return /*#__PURE__*/jsxRuntimeExports.jsx("select", {
+      ...props,
+      size: htmlSize,
+      ref: ref,
+      className: classNames(className, bsPrefix, size && `${bsPrefix}-${size}`, isValid && `is-valid`, isInvalid && `is-invalid`),
+      id: id || controlId
+    });
+  });
+  FormSelect.displayName = 'FormSelect';
+  var FormSelect$1 = FormSelect;
+
+  var dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
+  var getLanguage = function (language) {
+      switch (language) {
+          case EChatLanguage.EN:
+              return "🇬🇧 EN";
+          case EChatLanguage.DE:
+              return "🇩🇪 DE";
+          default:
+              return "🇬🇧 EN";
+      }
+  };
   var PopupItemSettings = function () {
-      return (jsxRuntimeExports.jsx(PopupContents, __assign({ title: "Settings" }, { children: jsxRuntimeExports.jsx(Button$1, { children: "Restart Intro" }) })));
+      var _a = useData(), language = _a.language, setLanguage = _a.setLanguage;
+      var handleLanguage = function (e) {
+          setLanguage(e.target.value);
+      };
+      return (jsxRuntimeExports.jsxs(PopupContents, __assign({ title: "Settings", className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign({ className: "app-chip-button" }, { children: "Restart Intro" })) })), jsxRuntimeExports.jsxs("div", __assign({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign({ className: "block-title" }, { children: "Language" })), jsxRuntimeExports.jsx(FormSelect$1, __assign({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign({ className: "block-title" }, { children: "User Assumption" })), jsxRuntimeExports.jsx("div", __assign({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
+                              return (jsxRuntimeExports.jsxs("span", __assign({ className: "app-chip-with-close-btn" }, { children: [assumption, jsxRuntimeExports.jsx("button", __assign({ className: "close-btn" }, { children: jsxRuntimeExports.jsx(IoCloseSharp, { className: "close-icon" }) }))] })));
+                          }) }))] }))] })));
   };
 
   var PopupContents = function (props) {
-      var title = props.title, children = props.children;
+      var title = props.title, children = props.children, className = props.className;
       var setPopupItem = useData().setPopupItem;
-      return (jsxRuntimeExports.jsxs("div", __assign({ className: "popup-content" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "popup-content-header" }, { children: [jsxRuntimeExports.jsx("h3", __assign({ className: "popup-content-title" }, { children: title })), jsxRuntimeExports.jsx("button", __assign({ className: "popup-close-button", "aria-label": "Close", onClick: function () { return setPopupItem(EPopupItem.NONE); } }, { children: jsxRuntimeExports.jsx(RiCloseFill, { className: "popup-close-icon" }) }))] })), jsxRuntimeExports.jsx("div", __assign({ className: "popup-content-body" }, { children: children }))] })));
+      return (jsxRuntimeExports.jsxs("div", __assign({ className: "popup-content" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "popup-content-header" }, { children: [jsxRuntimeExports.jsx("h3", __assign({ className: "popup-content-title" }, { children: title })), jsxRuntimeExports.jsx("button", __assign({ className: "popup-close-button", "aria-label": "Close", onClick: function () { return setPopupItem(EPopupItem.NONE); } }, { children: jsxRuntimeExports.jsx(RiCloseFill, { className: "popup-close-icon" }) }))] })), jsxRuntimeExports.jsx("div", __assign({ className: "popup-content-body ".concat(className) }, { children: children }))] })));
   };
   var getPopupContent = function (popupType) {
       switch (popupType) {

@@ -10,7 +10,7 @@ import PopupItemInfo from "./PopupItemInfo";
 import PopupItemSettings from "./PopupItemSettings";
 
 export const PopupContents: FC<IPopupContentsProps> = (props) => {
-    const { title, children } = props;
+    const { title, children, className } = props;
     const { setPopupItem } = useData();
 
     return (
@@ -25,7 +25,7 @@ export const PopupContents: FC<IPopupContentsProps> = (props) => {
                     <RiCloseFill className="popup-close-icon" />
                 </button>
             </div>
-            <div className="popup-content-body">{children}</div>
+            <div className={`popup-content-body ${className}`}>{children}</div>
         </div>
     );
 };

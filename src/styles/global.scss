@@ -51,3 +51,51 @@
         }
     }
 }
+
+.app-chip-button {
+    background-color: #0c8de9;
+    border-radius: 100px;
+    border: none;
+    font-size: 14px;
+    padding: 6px 16px;
+    margin-right: 8px;
+    color: #ffffff;
+    transition: background-color 100ms ease;
+    &:hover {
+        background-color: #057acd;
+    }
+}
+
+.app-chip-with-close-btn {
+    background-color: #0c8de9;
+    border-radius: 100px;
+    border: none;
+    font-size: 14px;
+    padding: 2px 2px 2px 12px;
+    margin-right: 8px;
+    color: #ffffff;
+    transition: background-color 100ms ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    user-select: none;
+    .close-btn {
+        width: 28px;
+        height: 28px;
+        margin-left: 6px;
+        background-color: transparent;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 50%;
+        .close-icon {
+            color: white;
+        }
+        &:hover {
+            background-color: #eaeaea22;
+        }
+    }
+}

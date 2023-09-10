@@ -28,27 +28,34 @@ export enum ERoute {
     TALK_TO_HUMAN = "TALK_TO_HUMAN",
 }
 
-export interface IChatSettings {
-    chatDifficultyLevel: EChatDifficultyLevel;
-    restoreChatOnReturn: boolean;
-    conversationFallbackAnalytics: boolean;
+export interface IChatFilters {
+    tone: number;
+    sentiment: number;
+    length: number;
+    emotiveness: number;
+}
+
+export enum EChatLanguage {
+    EN = "EN",
+    DE = "DE",
 }
 
 export const DataProvider: FC<DataProviderProps> = (props) => {
     const { children } = props;
 
     const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
-    const [isSettingsPageOpen, setIsSettingsPageOpen] = useState<boolean>(false);
     const [sessionId, setSessionId] = useState<string>("");
     const [currentTheme, setCurrentTheme] = useState<EThemes>(EThemes.LIGHT_THEME_1);
-    const [chatSettings, setChatSettings] = useState<IChatSettings>({
-        chatDifficultyLevel: EChatDifficultyLevel.PRECISE,
-        restoreChatOnReturn: true,
-        conversationFallbackAnalytics: false,
-    });
     const [popupItem, setPopupItem] = useState<EPopupItem>(EPopupItem.NONE);
     const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(true);
     const [currentRoute, setCurrentRoute] = useState<ERoute>(ERoute.MAIN);
+    const [chatFilters, setChatFilters] = useState<IChatFilters>({
+        tone: 0.5,
+        sentiment: 0.5,
+        emotiveness: 0.5,
+        length: 0.5,
+    });
+    const [language, setLanguage] = useState<EChatLanguage>(EChatLanguage.EN);
 
     const generateNewSession = () => {
         const newSessionId = uuidv4();
@@ -76,18 +83,18 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setSessionId,
         isChatOpen,
         setIsChatOpen,
-        isSettingsPageOpen,
-        setIsSettingsPageOpen,
         currentTheme,
         setCurrentTheme,
-        chatSettings,
-        setChatSettings,
         popupItem,
         setPopupItem,
         isBotVolumeOn,
         setIsBotVolumeOn,
         currentRoute,
         setCurrentRoute,
+        chatFilters,
+        setChatFilters,
+        language,
+        setLanguage,
     };
 
     // On chat client init

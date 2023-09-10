@@ -39,6 +39,7 @@ export interface IClickAwayListenerProps extends HTMLAttributes<HTMLElement> {
 export interface IPopupContentsProps {
     title: string;
     children: ReactNode;
+    className?: string;
 }
 
 // Utilities
