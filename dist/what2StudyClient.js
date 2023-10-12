@@ -777,17 +777,17 @@
   })(EChatLanguage || (EChatLanguage = {}));
   var DataProvider = function (props) {
       var children = props.children;
-      var _a = reactExports.useState(false), isChatOpen = _a[0], setIsChatOpen = _a[1];
+      var _a = reactExports.useState(true), isChatOpen = _a[0], setIsChatOpen = _a[1];
       var _b = reactExports.useState(""), sessionId = _b[0], setSessionId = _b[1];
       var _c = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _c[0], setCurrentTheme = _c[1];
       var _d = reactExports.useState(EPopupItem.NONE), popupItem = _d[0], setPopupItem = _d[1];
       var _e = reactExports.useState(true), isBotVolumeOn = _e[0], setIsBotVolumeOn = _e[1];
-      var _f = reactExports.useState(ERoute.MAIN), currentRoute = _f[0], setCurrentRoute = _f[1];
+      var _f = reactExports.useState(ERoute.TALK_TO_HUMAN), currentRoute = _f[0], setCurrentRoute = _f[1];
       var _g = reactExports.useState({
-          tone: 0.5,
-          sentiment: 0.5,
-          emotiveness: 0.5,
-          length: 0.5,
+          tone: 0.1,
+          sentiment: 1,
+          emotiveness: 0.7,
+          length: 0.4,
       }), chatFilters = _g[0], setChatFilters = _g[1];
       var _h = reactExports.useState(EChatLanguage.EN), language = _h[0], setLanguage = _h[1];
       var generateNewSession = function () {
@@ -850,7 +850,9 @@
   }
 
   // THIS FILE IS AUTO GENERATED
-  function IoCloseSharp (props) {
+  function IoChevronBack (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"fill":"none","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"48","d":"M328 112L184 256l144 144"}}]})(props);
+  }function IoCloseSharp (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"}}]})(props);
   }function IoSend (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0027.14 52 24.65 24.65 0 0016 72.59v113.29a24 24 0 0019.52 23.57l232.93 43.07a4 4 0 010 7.86L35.53 303.45A24 24 0 0016 327v113.31A23.57 23.57 0 0026.59 460a23.94 23.94 0 0013.22 4 24.55 24.55 0 009.52-1.93L476.4 285.94l.19-.09a32 32 0 000-58.8z"}}]})(props);
@@ -1098,6 +1100,18 @@
     } = reactExports.useContext(ThemeContext);
     return prefix || prefixes[defaultPrefix] || defaultPrefix;
   }
+  function useBootstrapBreakpoints() {
+    const {
+      breakpoints
+    } = reactExports.useContext(ThemeContext);
+    return breakpoints;
+  }
+  function useBootstrapMinBreakpoint() {
+    const {
+      minBreakpoint
+    } = reactExports.useContext(ThemeContext);
+    return minBreakpoint;
+  }
 
   // TODO
 
@@ -1138,6 +1152,445 @@
       return (jsxRuntimeExports.jsxs(PopupContents, __assign({ title: "Welcome to What2Study", className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("p", __assign({ className: "info-text" }, { children: ["What2Study is a ", jsxRuntimeExports.jsx("span", { children: "chatbot" }), " that was developed to support in all your question and endeavors concerning ", jsxRuntimeExports.jsx("span", { children: "studies" }), "."] })), jsxRuntimeExports.jsx("p", __assign({ className: "info-text-title" }, { children: "Please keep in mind:" })), jsxRuntimeExports.jsxs("p", __assign({ className: "info-text" }, { children: ["What2Study is not a ", jsxRuntimeExports.jsx("span", { children: "person" }), ". Many people were involved in its development and throughly tested weather its responses or suggestions were accurate and helpful. Still, we ", jsxRuntimeExports.jsx("span", { children: "can't guarantee" }), " that every answer given by this chatbot is correct. You need to validate crucial information for yourself."] }))] })));
   };
 
+  var propTypesExports = {};
+  var propTypes$2 = {
+    get exports(){ return propTypesExports; },
+    set exports(v){ propTypesExports = v; },
+  };
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  var ReactPropTypesSecret$1 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+  var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  var ReactPropTypesSecret = ReactPropTypesSecret_1;
+
+  function emptyFunction() {}
+  function emptyFunctionWithReset() {}
+  emptyFunctionWithReset.resetWarningCache = emptyFunction;
+
+  var factoryWithThrowingShims = function() {
+    function shim(props, propName, componentName, location, propFullName, secret) {
+      if (secret === ReactPropTypesSecret) {
+        // It is still safe when called from React.
+        return;
+      }
+      var err = new Error(
+        'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+        'Use PropTypes.checkPropTypes() to call them. ' +
+        'Read more at http://fb.me/use-check-prop-types'
+      );
+      err.name = 'Invariant Violation';
+      throw err;
+    }  shim.isRequired = shim;
+    function getShim() {
+      return shim;
+    }  // Important!
+    // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+    var ReactPropTypes = {
+      array: shim,
+      bigint: shim,
+      bool: shim,
+      func: shim,
+      number: shim,
+      object: shim,
+      string: shim,
+      symbol: shim,
+
+      any: shim,
+      arrayOf: getShim,
+      element: shim,
+      elementType: shim,
+      instanceOf: getShim,
+      node: shim,
+      objectOf: getShim,
+      oneOf: getShim,
+      oneOfType: getShim,
+      shape: getShim,
+      exact: getShim,
+
+      checkPropTypes: emptyFunctionWithReset,
+      resetWarningCache: emptyFunction
+    };
+
+    ReactPropTypes.PropTypes = ReactPropTypes;
+
+    return ReactPropTypes;
+  };
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  {
+    // By explicitly using `prop-types` you are opting into new production behavior.
+    // http://fb.me/prop-types-in-prod
+    propTypes$2.exports = factoryWithThrowingShims();
+  }
+
+  var rHyphen = /-(.)/g;
+  function camelize(string) {
+    return string.replace(rHyphen, function (_, chr) {
+      return chr.toUpperCase();
+    });
+  }
+
+  const pascalCase = str => str[0].toUpperCase() + camelize(str).slice(1);
+  // TODO: emstricten & fix the typing here! `createWithBsPrefix<TElementType>...`
+  function createWithBsPrefix(prefix, {
+    displayName = pascalCase(prefix),
+    Component,
+    defaultProps
+  } = {}) {
+    const BsComponent = /*#__PURE__*/reactExports.forwardRef(({
+      className,
+      bsPrefix,
+      as: Tag = Component || 'div',
+      ...props
+    }, ref) => {
+      const componentProps = {
+        ...defaultProps,
+        ...props
+      };
+      const resolvedPrefix = useBootstrapPrefix(bsPrefix, prefix);
+      return /*#__PURE__*/jsxRuntimeExports.jsx(Tag, {
+        ref: ref,
+        className: classNames(className, resolvedPrefix),
+        ...componentProps
+      });
+    });
+    BsComponent.displayName = displayName;
+    return BsComponent;
+  }
+
+  /**
+   * Finds whether a component's `children` prop includes a React element of the
+   * specified type.
+   */
+  function hasChildOfType(children, type) {
+    return reactExports.Children.toArray(children).some(child => /*#__PURE__*/reactExports.isValidElement(child) && child.type === type);
+  }
+
+  function useCol({
+    as,
+    bsPrefix,
+    className,
+    ...props
+  }) {
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'col');
+    const breakpoints = useBootstrapBreakpoints();
+    const minBreakpoint = useBootstrapMinBreakpoint();
+    const spans = [];
+    const classes = [];
+    breakpoints.forEach(brkPoint => {
+      const propValue = props[brkPoint];
+      delete props[brkPoint];
+      let span;
+      let offset;
+      let order;
+      if (typeof propValue === 'object' && propValue != null) {
+        ({
+          span,
+          offset,
+          order
+        } = propValue);
+      } else {
+        span = propValue;
+      }
+      const infix = brkPoint !== minBreakpoint ? `-${brkPoint}` : '';
+      if (span) spans.push(span === true ? `${bsPrefix}${infix}` : `${bsPrefix}${infix}-${span}`);
+      if (order != null) classes.push(`order${infix}-${order}`);
+      if (offset != null) classes.push(`offset${infix}-${offset}`);
+    });
+    return [{
+      ...props,
+      className: classNames(className, ...spans, ...classes)
+    }, {
+      as,
+      bsPrefix,
+      spans
+    }];
+  }
+  const Col = /*#__PURE__*/reactExports.forwardRef(
+  // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+  (props, ref) => {
+    const [{
+      className,
+      ...colProps
+    }, {
+      as: Component = 'div',
+      bsPrefix,
+      spans
+    }] = useCol(props);
+    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+      ...colProps,
+      ref: ref,
+      className: classNames(className, !spans.length && bsPrefix)
+    });
+  });
+  Col.displayName = 'Col';
+  var Col$1 = Col;
+
+  const propTypes$1 = {
+    /**
+     * Specify whether the feedback is for valid or invalid fields
+     *
+     * @type {('valid'|'invalid')}
+     */
+    type: propTypesExports.string,
+    /** Display feedback as a tooltip. */
+    tooltip: propTypesExports.bool,
+    as: propTypesExports.elementType
+  };
+  const Feedback = /*#__PURE__*/reactExports.forwardRef(
+  // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+  ({
+    as: Component = 'div',
+    className,
+    type = 'valid',
+    tooltip = false,
+    ...props
+  }, ref) => /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+    ...props,
+    ref: ref,
+    className: classNames(className, `${type}-${tooltip ? 'tooltip' : 'feedback'}`)
+  }));
+  Feedback.displayName = 'Feedback';
+  Feedback.propTypes = propTypes$1;
+  var Feedback$1 = Feedback;
+
+  const FormCheckInput = /*#__PURE__*/reactExports.forwardRef(({
+    id,
+    bsPrefix,
+    className,
+    type = 'checkbox',
+    isValid = false,
+    isInvalid = false,
+    // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+    as: Component = 'input',
+    ...props
+  }, ref) => {
+    const {
+      controlId
+    } = reactExports.useContext(FormContext$1);
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-check-input');
+    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+      ...props,
+      ref: ref,
+      type: type,
+      id: id || controlId,
+      className: classNames(className, bsPrefix, isValid && 'is-valid', isInvalid && 'is-invalid')
+    });
+  });
+  FormCheckInput.displayName = 'FormCheckInput';
+  var FormCheckInput$1 = FormCheckInput;
+
+  const FormCheckLabel = /*#__PURE__*/reactExports.forwardRef(({
+    bsPrefix,
+    className,
+    htmlFor,
+    ...props
+  }, ref) => {
+    const {
+      controlId
+    } = reactExports.useContext(FormContext$1);
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-check-label');
+    return /*#__PURE__*/jsxRuntimeExports.jsx("label", {
+      ...props,
+      ref: ref,
+      htmlFor: htmlFor || controlId,
+      className: classNames(className, bsPrefix)
+    });
+  });
+  FormCheckLabel.displayName = 'FormCheckLabel';
+  var FormCheckLabel$1 = FormCheckLabel;
+
+  const FormCheck = /*#__PURE__*/reactExports.forwardRef(({
+    id,
+    bsPrefix,
+    bsSwitchPrefix,
+    inline = false,
+    reverse = false,
+    disabled = false,
+    isValid = false,
+    isInvalid = false,
+    feedbackTooltip = false,
+    feedback,
+    feedbackType,
+    className,
+    style,
+    title = '',
+    type = 'checkbox',
+    label,
+    children,
+    // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+    as = 'input',
+    ...props
+  }, ref) => {
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-check');
+    bsSwitchPrefix = useBootstrapPrefix(bsSwitchPrefix, 'form-switch');
+    const {
+      controlId
+    } = reactExports.useContext(FormContext$1);
+    const innerFormContext = reactExports.useMemo(() => ({
+      controlId: id || controlId
+    }), [controlId, id]);
+    const hasLabel = !children && label != null && label !== false || hasChildOfType(children, FormCheckLabel$1);
+    const input = /*#__PURE__*/jsxRuntimeExports.jsx(FormCheckInput$1, {
+      ...props,
+      type: type === 'switch' ? 'checkbox' : type,
+      ref: ref,
+      isValid: isValid,
+      isInvalid: isInvalid,
+      disabled: disabled,
+      as: as
+    });
+    return /*#__PURE__*/jsxRuntimeExports.jsx(FormContext$1.Provider, {
+      value: innerFormContext,
+      children: /*#__PURE__*/jsxRuntimeExports.jsx("div", {
+        style: style,
+        className: classNames(className, hasLabel && bsPrefix, inline && `${bsPrefix}-inline`, reverse && `${bsPrefix}-reverse`, type === 'switch' && bsSwitchPrefix),
+        children: children || /*#__PURE__*/jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, {
+          children: [input, hasLabel && /*#__PURE__*/jsxRuntimeExports.jsx(FormCheckLabel$1, {
+            title: title,
+            children: label
+          }), feedback && /*#__PURE__*/jsxRuntimeExports.jsx(Feedback$1, {
+            type: feedbackType,
+            tooltip: feedbackTooltip,
+            children: feedback
+          })]
+        })
+      })
+    });
+  });
+  FormCheck.displayName = 'FormCheck';
+  var FormCheck$1 = Object.assign(FormCheck, {
+    Input: FormCheckInput$1,
+    Label: FormCheckLabel$1
+  });
+
+  const FormControl = /*#__PURE__*/reactExports.forwardRef(({
+    bsPrefix,
+    type,
+    size,
+    htmlSize,
+    id,
+    className,
+    isValid = false,
+    isInvalid = false,
+    plaintext,
+    readOnly,
+    // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+    as: Component = 'input',
+    ...props
+  }, ref) => {
+    const {
+      controlId
+    } = reactExports.useContext(FormContext$1);
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-control');
+    let classes;
+    if (plaintext) {
+      classes = {
+        [`${bsPrefix}-plaintext`]: true
+      };
+    } else {
+      classes = {
+        [bsPrefix]: true,
+        [`${bsPrefix}-${size}`]: size
+      };
+    }
+    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+      ...props,
+      type: type,
+      size: htmlSize,
+      ref: ref,
+      readOnly: readOnly,
+      id: id || controlId,
+      className: classNames(className, classes, isValid && `is-valid`, isInvalid && `is-invalid`, type === 'color' && `${bsPrefix}-color`)
+    });
+  });
+  FormControl.displayName = 'FormControl';
+  var FormControl$1 = Object.assign(FormControl, {
+    Feedback: Feedback$1
+  });
+
+  var FormFloating = createWithBsPrefix('form-floating');
+
+  const FormGroup = /*#__PURE__*/reactExports.forwardRef(({
+    controlId,
+    // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+    as: Component = 'div',
+    ...props
+  }, ref) => {
+    const context = reactExports.useMemo(() => ({
+      controlId
+    }), [controlId]);
+    return /*#__PURE__*/jsxRuntimeExports.jsx(FormContext$1.Provider, {
+      value: context,
+      children: /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+        ...props,
+        ref: ref
+      })
+    });
+  });
+  FormGroup.displayName = 'FormGroup';
+  var FormGroup$1 = FormGroup;
+
+  const FormLabel = /*#__PURE__*/reactExports.forwardRef(({
+    // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+    as: Component = 'label',
+    bsPrefix,
+    column = false,
+    visuallyHidden = false,
+    className,
+    htmlFor,
+    ...props
+  }, ref) => {
+    const {
+      controlId
+    } = reactExports.useContext(FormContext$1);
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-label');
+    let columnClass = 'col-form-label';
+    if (typeof column === 'string') columnClass = `${columnClass} ${columnClass}-${column}`;
+    const classes = classNames(className, bsPrefix, visuallyHidden && 'visually-hidden', column && columnClass);
+    htmlFor = htmlFor || controlId;
+    if (column) return /*#__PURE__*/jsxRuntimeExports.jsx(Col$1, {
+      ref: ref,
+      as: "label",
+      className: classes,
+      htmlFor: htmlFor,
+      ...props
+    });
+    return (
+      /*#__PURE__*/
+      // eslint-disable-next-line jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control
+      jsxRuntimeExports.jsx(Component, {
+        ref: ref,
+        className: classes,
+        htmlFor: htmlFor,
+        ...props
+      })
+    );
+  });
+  FormLabel.displayName = 'FormLabel';
+  var FormLabel$1 = FormLabel;
+
   const FormSelect = /*#__PURE__*/reactExports.forwardRef(({
     bsPrefix,
     size,
@@ -1162,6 +1615,102 @@
   });
   FormSelect.displayName = 'FormSelect';
   var FormSelect$1 = FormSelect;
+
+  const FormText = /*#__PURE__*/reactExports.forwardRef(
+  // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+  ({
+    bsPrefix,
+    className,
+    as: Component = 'small',
+    muted,
+    ...props
+  }, ref) => {
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-text');
+    return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+      ...props,
+      ref: ref,
+      className: classNames(className, bsPrefix, muted && 'text-muted')
+    });
+  });
+  FormText.displayName = 'FormText';
+  var FormText$1 = FormText;
+
+  const Switch = /*#__PURE__*/reactExports.forwardRef((props, ref) => /*#__PURE__*/jsxRuntimeExports.jsx(FormCheck$1, {
+    ...props,
+    ref: ref,
+    type: "switch"
+  }));
+  Switch.displayName = 'Switch';
+  var Switch$1 = Object.assign(Switch, {
+    Input: FormCheck$1.Input,
+    Label: FormCheck$1.Label
+  });
+
+  const FloatingLabel = /*#__PURE__*/reactExports.forwardRef(({
+    bsPrefix,
+    className,
+    children,
+    controlId,
+    label,
+    ...props
+  }, ref) => {
+    bsPrefix = useBootstrapPrefix(bsPrefix, 'form-floating');
+    return /*#__PURE__*/jsxRuntimeExports.jsxs(FormGroup$1, {
+      ref: ref,
+      className: classNames(className, bsPrefix),
+      controlId: controlId,
+      ...props,
+      children: [children, /*#__PURE__*/jsxRuntimeExports.jsx("label", {
+        htmlFor: controlId,
+        children: label
+      })]
+    });
+  });
+  FloatingLabel.displayName = 'FloatingLabel';
+  var FloatingLabel$1 = FloatingLabel;
+
+  const propTypes = {
+    /**
+     * The Form `ref` will be forwarded to the underlying element,
+     * which means, unless it's rendered `as` a composite component,
+     * it will be a DOM node, when resolved.
+     *
+     * @type {ReactRef}
+     * @alias ref
+     */
+    _ref: propTypesExports.any,
+    /**
+     * Mark a form as having been validated. Setting it to `true` will
+     * toggle any validation styles on the forms elements.
+     */
+    validated: propTypesExports.bool,
+    as: propTypesExports.elementType
+  };
+  const Form = /*#__PURE__*/reactExports.forwardRef(({
+    className,
+    validated,
+    // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+    as: Component = 'form',
+    ...props
+  }, ref) => /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+    ...props,
+    ref: ref,
+    className: classNames(className, validated && 'was-validated')
+  }));
+  Form.displayName = 'Form';
+  Form.propTypes = propTypes;
+  var Form$1 = Object.assign(Form, {
+    Group: FormGroup$1,
+    Control: FormControl$1,
+    Floating: FormFloating,
+    Check: FormCheck$1,
+    Switch: Switch$1,
+    Label: FormLabel$1,
+    Text: FormText$1,
+    Range: FormRange$1,
+    Select: FormSelect$1,
+    FloatingLabel: FloatingLabel$1
+  });
 
   var dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
   var getLanguage = function (language) {
@@ -1209,7 +1758,9 @@
   };
 
   // THIS FILE IS AUTO GENERATED
-  function IoMdVolumeHigh (props) {
+  function IoIosCall (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M436.9 364.8c-14.7-14.7-50-36.8-67.4-45.1-20.2-9.7-27.6-9.5-41.9.8-11.9 8.6-19.6 16.6-33.3 13.6-13.7-2.9-40.7-23.4-66.9-49.5-26.2-26.2-46.6-53.2-49.5-66.9-2.9-13.8 5.1-21.4 13.6-33.3 10.3-14.3 10.6-21.7.8-41.9C184 125 162 89.8 147.2 75.1c-14.7-14.7-18-11.5-26.1-8.6 0 0-12 4.8-23.9 12.7-14.7 9.8-22.9 18-28.7 30.3-5.7 12.3-12.3 35.2 21.3 95 27.1 48.3 53.7 84.9 93.2 124.3l.1.1.1.1c39.5 39.5 76 66.1 124.3 93.2 59.8 33.6 82.7 27 95 21.3 12.3-5.7 20.5-13.9 30.3-28.7 7.9-11.9 12.7-23.9 12.7-23.9 2.9-8.1 6.2-11.4-8.6-26.1z"}}]})(props);
+  }function IoMdVolumeHigh (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M64 192v128h85.334L256 431.543V80.458L149.334 192H64zm288 64c0-38.399-21.333-72.407-53.333-88.863v176.636C330.667 328.408 352 294.4 352 256zM298.667 64v44.978C360.531 127.632 405.334 186.882 405.334 256c0 69.119-44.803 128.369-106.667 147.022V448C384 428.254 448 349.257 448 256c0-93.256-64-172.254-149.333-192z"}}]})(props);
   }function IoMdVolumeOff (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M405.5 256c0 22.717-4.883 44.362-13.603 63.855l31.88 31.88C439.283 323.33 448 290.653 448 256c0-93.256-64-172.254-149-192v44.978C361 127.632 405.5 186.882 405.5 256zM256 80.458l-51.021 52.48L256 183.957zM420.842 396.885L91.116 67.157l-24 24 90.499 90.413-8.28 10.43H64v128h85.334L256 431.543V280l94.915 94.686C335.795 387.443 318 397.213 299 403.022V448c31-7.172 58.996-22.163 82.315-42.809l39.61 39.693 24-24.043-24.002-24.039-.081.083z"}},{"tag":"path","attr":{"d":"M352.188 256c0-38.399-21.188-72.407-53.188-88.863v59.82l50.801 50.801A100.596 100.596 0 0 0 352.188 256z"}}]})(props);
@@ -1220,6 +1771,8 @@
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0V0z"}},{"tag":"path","attr":{"d":"M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"}}]})(props);
   }function MdReplay (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"}}]})(props);
+  }function MdEmail (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"}}]})(props);
   }function MdThumbDownAlt (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M24 24H0V0h24v24z"}},{"tag":"path","attr":{"d":"M22 4h-2c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h2V4zM2.17 11.12c-.11.25-.17.52-.17.8V13c0 1.1.9 2 2 2h5.5l-.92 4.65c-.05.22-.02.46.08.66.23.45.52.86.88 1.22L10 22l6.41-6.41c.38-.38.59-.89.59-1.42V6.34C17 5.05 15.95 4 14.66 4h-8.1c-.71 0-1.36.37-1.72.97l-2.67 6.15z"}}]})(props);
   }function MdThumbUpAlt (props) {
@@ -1292,8 +1845,20 @@
                   }) })), jsxRuntimeExports.jsxs("form", __assign({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button" }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] }))] }));
   };
 
+  var DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var ScreenTalkToHuman = function () {
-      return (jsxRuntimeExports.jsx("div", __assign({ className: "screen-talk-to-human" }, { children: jsxRuntimeExports.jsx("h2", { children: "Screen Talk to human" }) })));
+      var setCurrentRoute = useData().setCurrentRoute;
+      var _a = reactExports.useState(true), useSavedEmail = _a[0], setUseSavedEmail = _a[1];
+      var _b = reactExports.useState(""), phoneInput = _b[0], setPhoneInput = _b[1];
+      var _c = reactExports.useState({
+          day: "Sat",
+          time: "09:00",
+      }), preferredDayTime = _c[0], setPreferredDayTime = _c[1];
+      return (jsxRuntimeExports.jsxs("div", __assign({ className: "talkToHuman-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign({ className: "navbar" }, { children: jsxRuntimeExports.jsxs("button", __assign({ className: "navBackBtn", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [jsxRuntimeExports.jsx(IoChevronBack, { className: "navIcon" }), jsxRuntimeExports.jsx("span", __assign({ className: "navText" }, { children: "Back" }))] })) })), jsxRuntimeExports.jsxs("div", __assign({ className: "contact-details-wrapper" }, { children: [jsxRuntimeExports.jsxs("a", __assign({ className: "contact-detail", href: "tel:+49 9086 4577209" }, { children: [jsxRuntimeExports.jsx("div", __assign({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(IoIosCall, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign({ className: "contact-text" }, { children: "+49 9086 4577209" }))] })), jsxRuntimeExports.jsxs("a", __assign({ className: "contact-detail contact-email", href: "mailto:registration@uni-siegen.de" }, { children: [jsxRuntimeExports.jsx("div", __assign({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(MdEmail, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign({ className: "contact-text" }, { children: "registration@uni-siegen.de" }))] }))] })), jsxRuntimeExports.jsx("div", { className: "divider" }), jsxRuntimeExports.jsxs("div", __assign({ className: "tth-data-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign({ className: "tth-info-text" }, { children: "Write a message to Central Student Advisory Service:" })), jsxRuntimeExports.jsx(FloatingLabel$1, __assign({ controlId: "floatingTextarea", label: "Your message", className: "tth-message" }, { children: jsxRuntimeExports.jsx(Form$1.Control, { as: "textarea", placeholder: "Your message...", style: { height: "90px" } }) })), jsxRuntimeExports.jsx(Form$1.Check, { name: "send-chat-details", "aria-label": "Send chat details", label: "Send chat details", defaultChecked: true }), jsxRuntimeExports.jsxs("div", __assign({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign({ className: "tth-info-text" }, { children: "Please leave an email that the ZSB can use to contact you:" })), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: useSavedEmail, onClick: function () { return setUseSavedEmail(true); }, label: jsxRuntimeExports.jsxs(reactExports.Fragment, { children: ["Use saved email id", " ", jsxRuntimeExports.jsx("span", __assign({ className: "email-address-saved" }, { children: "somebody.nobody@example.com" }))] }) }), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: !useSavedEmail, onClick: function () { return setUseSavedEmail(false); }, label: "Use a different email address" }), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: "Enter email address", disabled: useSavedEmail })] })), jsxRuntimeExports.jsxs("div", __assign({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign({ className: "tth-info-text" }, { children: "Would you like to be called with the answer?" })), jsxRuntimeExports.jsx(Form$1.Control, { type: "tel", onChange: function (e) { return setPhoneInput(e.target.value); }, value: phoneInput, placeholder: "Enter contact number" }), phoneInput.trim() !== "" && (jsxRuntimeExports.jsxs("div", __assign({ className: "day-time-input-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign({ className: "tth-info-text" }, { children: "What is the best time to call you?" })), jsxRuntimeExports.jsx("div", __assign({ className: "day-wrapper" }, { children: DAYS.map(function (day) { return (jsxRuntimeExports.jsx("span", __assign({ className: "day-select ".concat(preferredDayTime.day === day ? "day-selected" : ""), onClick: function () {
+                                                  return setPreferredDayTime(__assign(__assign({}, preferredDayTime), { day: day }));
+                                              } }, { children: day }))); }) })), jsxRuntimeExports.jsx(Form$1.Control, { type: "time", value: preferredDayTime.time, onChange: function (e) {
+                                              return setPreferredDayTime(__assign(__assign({}, preferredDayTime), { time: e.target.value }));
+                                          } })] })))] }))] }))] })));
   };
 
   var getScreenAsPerRoute = function (route) {

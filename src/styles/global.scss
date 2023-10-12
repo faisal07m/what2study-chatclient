@@ -1,8 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 @import "_chatcontainer.scss";
-@import "_settings.scss";
 @import "_popup.scss";
+
+// SCROLL BAR STYLING
+/* Firefox's default scrollbar is decent. No changes required */
+
+/* For Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 6px;
+    cursor: default;
+}
+
+*::-webkit-scrollbar-track {
+    background: #eeeeee;
+    cursor: default;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #aaaaaa;
+    border-radius: 20px;
+    cursor: default;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    cursor: default, auto;
+}
 
 // PROVIDE A FONT SELECTOR FOR THIS SETTING
 // MUST BE SET GLOBALLY IN ```app.tsx```
@@ -12,6 +35,12 @@
 
 .development-div {
     box-sizing: content-box;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 // Global Styles

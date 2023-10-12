@@ -50,10 +50,10 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
     const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(true);
     const [currentRoute, setCurrentRoute] = useState<ERoute>(ERoute.MAIN);
     const [chatFilters, setChatFilters] = useState<IChatFilters>({
-        tone: 0.5,
-        sentiment: 0.5,
-        emotiveness: 0.5,
-        length: 0.5,
+        tone: 0.1,
+        sentiment: 1,
+        emotiveness: 0.7,
+        length: 0.4,
     });
     const [language, setLanguage] = useState<EChatLanguage>(EChatLanguage.EN);
 
