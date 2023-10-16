@@ -1,7 +1,7 @@
 import { EPopupItem, ERoute, useData } from "hooks";
 import IconButton from "utilities/IconButton";
 
-import { FC, Fragment, SyntheticEvent, useState } from "react";
+import { FC, Fragment, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { BsFillMicFill } from "react-icons/bs";
 import { IoMdVolumeHigh, IoMdVolumeOff } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
@@ -21,6 +21,12 @@ enum EMessageTypes {
     USER = "USER",
 }
 
+interface IBotMessage {
+    type: EMessageTypes;
+    message: string;
+    feedback?: boolean;
+}
+
 const dummyMessages = [
     {
         type: EMessageTypes.BOT,
@@ -32,15 +38,17 @@ const dummyMessages = [
     },
 ];
 
-const ScreenMain: FC = () => {
+const Main: FC = () => {
     const { setPopupItem, isBotVolumeOn, setIsBotVolumeOn, setCurrentRoute } = useData();
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
-    const [messages, setMessages] =
-        useState<{ type: EMessageTypes; message: string; feedback?: boolean }[]>(dummyMessages);
+    const [messages, setMessages] = useState<IBotMessage[]>(dummyMessages);
+    const [loading, setLoading] = useState<boolean>(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const handleUserMessage = (e: SyntheticEvent): void => {
         e?.preventDefault();
+        setLoading(true);
         setMessage("");
         if (message.trim() === "") return;
         setMessages([...messages, { type: EMessageTypes.USER, message }]);
@@ -54,8 +62,8 @@ const ScreenMain: FC = () => {
                     },
                 ];
             });
+            setLoading(false);
         }, 1000);
-        setMessage("");
     };
 
     const handleMessageFeedback = (msg: string, feedback: boolean) => {
@@ -70,6 +78,14 @@ const ScreenMain: FC = () => {
         );
         setMessages(newMessages);
     };
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     return (
         <Fragment>
@@ -174,6 +190,17 @@ const ScreenMain: FC = () => {
                         )}
                     </div>
                 ))}
+                {loading && (
+                    <div className="messageWrapper botMessageWrapper">
+                        <div className="bot-iconWrapper">
+                            <RiChatSmile3Fill className="botIcon" />
+                        </div>
+                        <div className="typing-anim-wrapper">
+                            <div className="typing-dot-pulse"></div>
+                        </div>
+                    </div>
+                )}
+                <div ref={messagesEndRef} />
             </div>
             <form className="inputFormWrapper" onSubmit={handleUserMessage}>
                 <IconButton
@@ -197,4 +224,4 @@ const ScreenMain: FC = () => {
     );
 };
 
-export default ScreenMain;
+export default Main;

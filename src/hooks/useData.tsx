@@ -24,6 +24,7 @@ export enum EPopupItem {
 }
 
 export enum ERoute {
+    INTRO = "INTRO",
     MAIN = "MAIN",
     TALK_TO_HUMAN = "TALK_TO_HUMAN",
 }
@@ -43,12 +44,13 @@ export enum EChatLanguage {
 export const DataProvider: FC<DataProviderProps> = (props) => {
     const { children } = props;
 
-    const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+    const [isChatOpen, setIsChatOpen] = useState<boolean>(false); // COMMITODO: false
+    const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
     const [sessionId, setSessionId] = useState<string>("");
     const [currentTheme, setCurrentTheme] = useState<EThemes>(EThemes.LIGHT_THEME_1);
     const [popupItem, setPopupItem] = useState<EPopupItem>(EPopupItem.NONE);
     const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(true);
-    const [currentRoute, setCurrentRoute] = useState<ERoute>(ERoute.MAIN);
+    const [currentRoute, setCurrentRoute] = useState<ERoute>(ERoute.MAIN); // COMMITODO .MAIN
     const [chatFilters, setChatFilters] = useState<IChatFilters>({
         tone: 0.1,
         sentiment: 1,
@@ -57,16 +59,17 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
     });
     const [language, setLanguage] = useState<EChatLanguage>(EChatLanguage.EN);
 
-    const generateNewSession = () => {
+    const generateNewSession = (showIntroScreen = true) => {
         const newSessionId = uuidv4();
         localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
         setSessionId(newSessionId);
+        setCurrentRoute(showIntroScreen ? ERoute.INTRO : ERoute.MAIN);
     };
 
     const rehydrateExistingSession = async () => {
         const existingSessionId = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim();
         if (!existingSessionId) {
-            generateNewSession();
+            generateNewSession(true);
             return;
         }
         // TODO: validate [existingSessionId] and get previous session data from backend
@@ -75,7 +78,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             setSessionId(existingSessionId);
             return;
         }
-        generateNewSession();
+        generateNewSession(false);
     };
 
     const providerValue: IUseData = {
@@ -83,6 +86,8 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setSessionId,
         isChatOpen,
         setIsChatOpen,
+        isMobileScreen,
+        setIsMobileScreen,
         currentTheme,
         setCurrentTheme,
         popupItem,

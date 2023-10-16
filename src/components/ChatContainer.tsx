@@ -4,22 +4,26 @@ import IconButton from "utilities/IconButton";
 
 import { FC, Fragment } from "react";
 import { GiGraduateCap } from "react-icons/gi";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoClose, IoSettingsSharp } from "react-icons/io5";
 import { LuSettings2 } from "react-icons/lu";
 
 import { IFrame } from "../utilities/IFrame";
 
-import PopupScreen from "./PopupScreen";
-import ScreenMain from "./ScreenMain";
-import ScreenTalkToHuman from "./ScreenTalkToHuman";
+import PopupScreen from "./popups/PopupScreen";
+import IntroPage from "./screens/IntroPage";
+import Main from "./screens/Main";
+import TalkToHuman from "./screens/TalkToHuman";
 
 const getScreenAsPerRoute = (route: ERoute) => {
     switch (route) {
+        case ERoute.INTRO:
+            return <IntroPage />;
+
         case ERoute.MAIN:
-            return <ScreenMain />;
+            return <Main />;
 
         case ERoute.TALK_TO_HUMAN:
-            return <ScreenTalkToHuman />;
+            return <TalkToHuman />;
 
         default:
             return <Fragment />;
@@ -27,7 +31,7 @@ const getScreenAsPerRoute = (route: ERoute) => {
 };
 
 const ChatContainer: FC = () => {
-    const { isChatOpen, setPopupItem, currentRoute } = useData();
+    const { isChatOpen, isMobileScreen, setIsChatOpen, setPopupItem, currentRoute } = useData();
 
     return (
         <IFrame
@@ -55,6 +59,14 @@ const ChatContainer: FC = () => {
                             aria-label="Settings"
                             title="Settings"
                         />
+                        {isMobileScreen && (
+                            <IconButton
+                                icon={IoClose}
+                                onClick={() => setIsChatOpen(false)}
+                                aria-label="Close"
+                                title="Close"
+                            />
+                        )}
                     </div>
                 </div>
                 {getScreenAsPerRoute(currentRoute)}

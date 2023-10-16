@@ -1,24 +1,29 @@
 /* eslint-disable */
 // @ts-nocheck
 import { IIframeProps, IframeType } from "constants/types";
+import { useData } from "hooks";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 const isFirefox = typeof InstallTrigger !== "undefined";
 
-const getStyles = (iframeType: IframeType) => {
+const getStyles = (
+    iframeType: IframeType,
+    isChatOpen: boolean,
+    isMobileScreen: boolean = false
+) => {
     switch (iframeType) {
         case IframeType.CHAT_CONTAINER_CLOSED:
             return {
                 border: "none",
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-                width: "400px",
-                height: "600px",
+                width: isMobileScreen ? "100%" : "400px",
+                height: isMobileScreen ? "100%" : "600px",
                 position: "fixed",
-                bottom: "100px",
-                right: "30px",
-                borderRadius: "12px",
+                bottom: isMobileScreen ? "0" : "100px",
+                right: isMobileScreen ? "0" : "30px",
+                borderRadius: isMobileScreen ? "0" : "12px",
                 backgroundColor: "#fff",
                 display: "none",
             };
@@ -27,17 +32,18 @@ const getStyles = (iframeType: IframeType) => {
             return {
                 border: "none",
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-                width: "400px",
-                height: "600px",
+                width: isMobileScreen ? "100%" : "400px",
+                height: isMobileScreen ? "100%" : "600px",
                 position: "fixed",
-                bottom: "100px",
-                right: "30px",
-                borderRadius: "12px",
+                bottom: isMobileScreen ? "0" : "100px",
+                right: isMobileScreen ? "0" : "30px",
+                borderRadius: isMobileScreen ? "0" : "12px",
                 backgroundColor: "#fff",
             };
 
         case IframeType.CHAT_OPEN_BUTTON:
             return {
+                display: isChatOpen && isMobileScreen ? "none" : "block",
                 border: "none",
                 width: "54px",
                 height: "54px",
@@ -60,11 +66,11 @@ export const IFrame: FC<IIframeProps> = (props) => {
     const { children, iframeType, ...rest } = props;
 
     const [contentRef, setContentRef] = useState(null);
+    const { isChatOpen, setIsMobileScreen } = useData();
+    const [styles, setStyles] = useState(getStyles(iframeType, isChatOpen, false));
 
     const mountNode = contentRef?.contentWindow?.document?.body;
     const mountNodeDoc = contentRef?.contentWindow?.document;
-
-    const styles = getStyles(iframeType);
 
     const addStyles = () => {
         const link = mountNodeDoc.createElement("link");
@@ -73,6 +79,23 @@ export const IFrame: FC<IIframeProps> = (props) => {
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);
     };
+
+    const handleWindowResize = (event) => {
+        const isMobileScreen = window.innerWidth < 600;
+        setStyles(getStyles(iframeType, isChatOpen, isMobileScreen));
+        setIsMobileScreen(isMobileScreen);
+    };
+
+    useEffect(() => {
+        handleWindowResize();
+    }, [iframeType, isChatOpen]);
+
+    useEffect(() => {
+        window.addEventListener("resize", handleWindowResize);
+        return () => {
+            window.removeEventListener("resize", handleWindowResize);
+        };
+    }, []);
 
     useEffect(() => {
         if (mountNode) {

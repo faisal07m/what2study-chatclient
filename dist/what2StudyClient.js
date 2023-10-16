@@ -767,6 +767,7 @@
   })(EPopupItem || (EPopupItem = {}));
   var ERoute;
   (function (ERoute) {
+      ERoute["INTRO"] = "INTRO";
       ERoute["MAIN"] = "MAIN";
       ERoute["TALK_TO_HUMAN"] = "TALK_TO_HUMAN";
   })(ERoute || (ERoute = {}));
@@ -777,23 +778,26 @@
   })(EChatLanguage || (EChatLanguage = {}));
   var DataProvider = function (props) {
       var children = props.children;
-      var _a = reactExports.useState(true), isChatOpen = _a[0], setIsChatOpen = _a[1];
-      var _b = reactExports.useState(""), sessionId = _b[0], setSessionId = _b[1];
-      var _c = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _c[0], setCurrentTheme = _c[1];
-      var _d = reactExports.useState(EPopupItem.NONE), popupItem = _d[0], setPopupItem = _d[1];
-      var _e = reactExports.useState(true), isBotVolumeOn = _e[0], setIsBotVolumeOn = _e[1];
-      var _f = reactExports.useState(ERoute.TALK_TO_HUMAN), currentRoute = _f[0], setCurrentRoute = _f[1];
-      var _g = reactExports.useState({
+      var _a = reactExports.useState(false), isChatOpen = _a[0], setIsChatOpen = _a[1]; // COMMITODO: false
+      var _b = reactExports.useState(false), isMobileScreen = _b[0], setIsMobileScreen = _b[1];
+      var _c = reactExports.useState(""), sessionId = _c[0], setSessionId = _c[1];
+      var _d = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _d[0], setCurrentTheme = _d[1];
+      var _e = reactExports.useState(EPopupItem.NONE), popupItem = _e[0], setPopupItem = _e[1];
+      var _f = reactExports.useState(true), isBotVolumeOn = _f[0], setIsBotVolumeOn = _f[1];
+      var _g = reactExports.useState(ERoute.MAIN), currentRoute = _g[0], setCurrentRoute = _g[1]; // COMMITODO .MAIN
+      var _h = reactExports.useState({
           tone: 0.1,
           sentiment: 1,
           emotiveness: 0.7,
           length: 0.4,
-      }), chatFilters = _g[0], setChatFilters = _g[1];
-      var _h = reactExports.useState(EChatLanguage.EN), language = _h[0], setLanguage = _h[1];
-      var generateNewSession = function () {
+      }), chatFilters = _h[0], setChatFilters = _h[1];
+      var _j = reactExports.useState(EChatLanguage.EN), language = _j[0], setLanguage = _j[1];
+      var generateNewSession = function (showIntroScreen) {
+          if (showIntroScreen === void 0) { showIntroScreen = true; }
           var newSessionId = v4();
           localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
           setSessionId(newSessionId);
+          setCurrentRoute(showIntroScreen ? ERoute.INTRO : ERoute.MAIN);
       };
       var rehydrateExistingSession = function () { return __awaiter(void 0, void 0, void 0, function () {
           var existingSessionId, isSessionValid;
@@ -801,7 +805,7 @@
           return __generator(this, function (_b) {
               existingSessionId = (_a = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)) === null || _a === void 0 ? void 0 : _a.trim();
               if (!existingSessionId) {
-                  generateNewSession();
+                  generateNewSession(true);
                   return [2 /*return*/];
               }
               isSessionValid = true;
@@ -809,7 +813,7 @@
                   setSessionId(existingSessionId);
                   return [2 /*return*/];
               }
-              generateNewSession();
+              generateNewSession(false);
               return [2 /*return*/];
           });
       }); };
@@ -818,6 +822,8 @@
           setSessionId: setSessionId,
           isChatOpen: isChatOpen,
           setIsChatOpen: setIsChatOpen,
+          isMobileScreen: isMobileScreen,
+          setIsMobileScreen: setIsMobileScreen,
           currentTheme: currentTheme,
           setCurrentTheme: setCurrentTheme,
           popupItem: popupItem,
@@ -854,6 +860,8 @@
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"fill":"none","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"48","d":"M328 112L184 256l144 144"}}]})(props);
   }function IoCloseSharp (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"}}]})(props);
+  }function IoClose (props) {
+    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z"}}]})(props);
   }function IoSend (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M476.59 227.05l-.16-.07L49.35 49.84A23.56 23.56 0 0027.14 52 24.65 24.65 0 0016 72.59v113.29a24 24 0 0019.52 23.57l232.93 43.07a4 4 0 010 7.86L35.53 303.45A24 24 0 0016 327v113.31A23.57 23.57 0 0026.59 460a23.94 23.94 0 0013.22 4 24.55 24.55 0 009.52-1.93L476.4 285.94l.19-.09a32 32 0 000-58.8z"}}]})(props);
   }function IoSettingsSharp (props) {
@@ -866,18 +874,19 @@
   }
 
   var isFirefox = typeof InstallTrigger !== "undefined";
-  var getStyles = function (iframeType) {
+  var getStyles = function (iframeType, isChatOpen, isMobileScreen) {
+      if (isMobileScreen === void 0) { isMobileScreen = false; }
       switch (iframeType) {
           case IframeType.CHAT_CONTAINER_CLOSED:
               return {
                   border: "none",
                   boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-                  width: "400px",
-                  height: "600px",
+                  width: isMobileScreen ? "100%" : "400px",
+                  height: isMobileScreen ? "100%" : "600px",
                   position: "fixed",
-                  bottom: "100px",
-                  right: "30px",
-                  borderRadius: "12px",
+                  bottom: isMobileScreen ? "0" : "100px",
+                  right: isMobileScreen ? "0" : "30px",
+                  borderRadius: isMobileScreen ? "0" : "12px",
                   backgroundColor: "#fff",
                   display: "none",
               };
@@ -885,16 +894,17 @@
               return {
                   border: "none",
                   boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-                  width: "400px",
-                  height: "600px",
+                  width: isMobileScreen ? "100%" : "400px",
+                  height: isMobileScreen ? "100%" : "600px",
                   position: "fixed",
-                  bottom: "100px",
-                  right: "30px",
-                  borderRadius: "12px",
+                  bottom: isMobileScreen ? "0" : "100px",
+                  right: isMobileScreen ? "0" : "30px",
+                  borderRadius: isMobileScreen ? "0" : "12px",
                   backgroundColor: "#fff",
               };
           case IframeType.CHAT_OPEN_BUTTON:
               return {
+                  display: isChatOpen && isMobileScreen ? "none" : "block",
                   border: "none",
                   width: "54px",
                   height: "54px",
@@ -913,9 +923,10 @@
       var _a, _b, _c;
       var children = props.children, iframeType = props.iframeType, rest = __rest(props, ["children", "iframeType"]);
       var _d = reactExports.useState(null), contentRef = _d[0], setContentRef = _d[1];
+      var _e = useData(), isChatOpen = _e.isChatOpen, setIsMobileScreen = _e.setIsMobileScreen;
+      var _f = reactExports.useState(getStyles(iframeType, isChatOpen, false)), styles = _f[0], setStyles = _f[1];
       var mountNode = (_b = (_a = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body;
       var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
-      var styles = getStyles(iframeType);
       var addStyles = function () {
           var link = mountNodeDoc.createElement("link");
           link.href = "http://localhost:3000/dist/what2StudyClientStyles.css";
@@ -923,6 +934,20 @@
           link.type = "text/css";
           mountNodeDoc.head.appendChild(link);
       };
+      var handleWindowResize = function (event) {
+          var isMobileScreen = window.innerWidth < 600;
+          setStyles(getStyles(iframeType, isChatOpen, isMobileScreen));
+          setIsMobileScreen(isMobileScreen);
+      };
+      reactExports.useEffect(function () {
+          handleWindowResize();
+      }, [iframeType, isChatOpen]);
+      reactExports.useEffect(function () {
+          window.addEventListener("resize", handleWindowResize);
+          return function () {
+              window.removeEventListener("resize", handleWindowResize);
+          };
+      }, []);
       reactExports.useEffect(function () {
           if (mountNode) {
               mountNode.style = "margin: 0;";
@@ -1785,6 +1810,11 @@
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"}}]})(props);
   }
 
+  var IntroPage = function () {
+      var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn;
+      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info" }), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play" })] })), jsxRuntimeExports.jsx("div", __assign({ className: "introScreen-wrapper" }, { children: jsxRuntimeExports.jsx("p", { children: "Intro Screen" }) }))] }));
+  };
+
   var EMessageTypes;
   (function (EMessageTypes) {
       EMessageTypes["BOT"] = "BOT";
@@ -1800,13 +1830,16 @@
           message: "Hi. I'm looking for a masters course in Economics.",
       },
   ];
-  var ScreenMain = function () {
+  var Main = function () {
       var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute;
       var _b = reactExports.useState(false), isInputFocused = _b[0], setIsInputFocused = _b[1];
       var _c = reactExports.useState(""), message = _c[0], setMessage = _c[1];
       var _d = reactExports.useState(dummyMessages), messages = _d[0], setMessages = _d[1];
+      var _e = reactExports.useState(false), loading = _e[0], setLoading = _e[1];
+      var messagesEndRef = reactExports.useRef(null);
       var handleUserMessage = function (e) {
           e === null || e === void 0 ? void 0 : e.preventDefault();
+          setLoading(true);
           setMessage("");
           if (message.trim() === "")
               return;
@@ -1820,8 +1853,8 @@
                       },
                   ], false);
               });
+              setLoading(false);
           }, 1000);
-          setMessage("");
       };
       var handleMessageFeedback = function (msg, feedback) {
           var messagesWithFeedback = __spreadArray([], messages, true);
@@ -1831,22 +1864,29 @@
           });
           setMessages(newMessages);
       };
-      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info" }), jsxRuntimeExports.jsx("button", __assign({ className: "talk-to-human-btn", onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Want to talk to human?" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play" })] })), jsxRuntimeExports.jsx("div", __assign({ className: "chatContainer" }, { children: messages.map(function (_a, index) {
-                      var message = _a.message, type = _a.type, feedback = _a.feedback;
-                      return (jsxRuntimeExports.jsxs("div", __assign({ className: "messageWrapper ".concat(type === EMessageTypes.BOT ? "botMessageWrapper" : "userMessageWrapper") }, { children: [type === EMessageTypes.BOT && (jsxRuntimeExports.jsx("div", __assign({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) }))), jsxRuntimeExports.jsxs("div", __assign({ className: "message ".concat(type === EMessageTypes.BOT ? "botMessage" : "userMessage") }, { children: [message, type === EMessageTypes.BOT && (jsxRuntimeExports.jsxs("div", __assign({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign({ title: "Report", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon" }) })), jsxRuntimeExports.jsx("button", __assign({ title: "Like", className: "action-button", onClick: function () {
-                                                      if (feedback === true)
-                                                          return;
-                                                      handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
-                                                  } }, { children: feedback === true ? (jsxRuntimeExports.jsx(MdThumbUpAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbUpOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign({ title: "Dislike", className: "action-button", onClick: function () {
-                                                      if (feedback === false)
-                                                          return;
-                                                      handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
-                                                  } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign({ title: "Regenrate Response", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon" }) }))] })))] })), type === EMessageTypes.USER && (jsxRuntimeExports.jsx("div", __assign({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
-                  }) })), jsxRuntimeExports.jsxs("form", __assign({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button" }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] }))] }));
+      var scrollToBottom = function () {
+          var _a;
+          (_a = messagesEndRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+      };
+      reactExports.useEffect(function () {
+          scrollToBottom();
+      }, [messages]);
+      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info" }), jsxRuntimeExports.jsx("button", __assign({ className: "talk-to-human-btn", onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Want to talk to human?" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play" })] })), jsxRuntimeExports.jsxs("div", __assign({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
+                          var message = _a.message, type = _a.type, feedback = _a.feedback;
+                          return (jsxRuntimeExports.jsxs("div", __assign({ className: "messageWrapper ".concat(type === EMessageTypes.BOT ? "botMessageWrapper" : "userMessageWrapper") }, { children: [type === EMessageTypes.BOT && (jsxRuntimeExports.jsx("div", __assign({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) }))), jsxRuntimeExports.jsxs("div", __assign({ className: "message ".concat(type === EMessageTypes.BOT ? "botMessage" : "userMessage") }, { children: [message, type === EMessageTypes.BOT && (jsxRuntimeExports.jsxs("div", __assign({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign({ title: "Report", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon" }) })), jsxRuntimeExports.jsx("button", __assign({ title: "Like", className: "action-button", onClick: function () {
+                                                          if (feedback === true)
+                                                              return;
+                                                          handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
+                                                      } }, { children: feedback === true ? (jsxRuntimeExports.jsx(MdThumbUpAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbUpOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign({ title: "Dislike", className: "action-button", onClick: function () {
+                                                          if (feedback === false)
+                                                              return;
+                                                          handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
+                                                      } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign({ title: "Regenrate Response", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon" }) }))] })))] })), type === EMessageTypes.USER && (jsxRuntimeExports.jsx("div", __assign({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
+                      }), loading && (jsxRuntimeExports.jsxs("div", __assign({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) })), jsxRuntimeExports.jsx("div", __assign({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button" }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] }))] }));
   };
 
   var DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  var ScreenTalkToHuman = function () {
+  var TalkToHuman = function () {
       var setCurrentRoute = useData().setCurrentRoute;
       var _a = reactExports.useState(true), useSavedEmail = _a[0], setUseSavedEmail = _a[1];
       var _b = reactExports.useState(""), phoneInput = _b[0], setPhoneInput = _b[1];
@@ -1863,17 +1903,19 @@
 
   var getScreenAsPerRoute = function (route) {
       switch (route) {
+          case ERoute.INTRO:
+              return jsxRuntimeExports.jsx(IntroPage, {});
           case ERoute.MAIN:
-              return jsxRuntimeExports.jsx(ScreenMain, {});
+              return jsxRuntimeExports.jsx(Main, {});
           case ERoute.TALK_TO_HUMAN:
-              return jsxRuntimeExports.jsx(ScreenTalkToHuman, {});
+              return jsxRuntimeExports.jsx(TalkToHuman, {});
           default:
               return jsxRuntimeExports.jsx(reactExports.Fragment, {});
       }
   };
   var ChatContainer = function () {
-      var _a = useData(), isChatOpen = _a.isChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute;
-      return (jsxRuntimeExports.jsxs(IFrame, __assign({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign({ className: "chatContainerWrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "header-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon" }), jsxRuntimeExports.jsx("h1", __assign({ className: "header-title" }, { children: "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters" }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings" })] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
+      var _a = useData(), isChatOpen = _a.isChatOpen, isMobileScreen = _a.isMobileScreen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute;
+      return (jsxRuntimeExports.jsxs(IFrame, __assign({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign({ className: "chatContainerWrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "header-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon" }), jsxRuntimeExports.jsx("h1", __assign({ className: "header-title" }, { children: "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters" }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings" }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close" }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
   };
 
   // THIS FILE IS AUTO GENERATED

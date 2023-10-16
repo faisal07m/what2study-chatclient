@@ -7,6 +7,8 @@ export interface IUseData {
     setSessionId: (value: string) => void;
     isChatOpen: boolean;
     setIsChatOpen: (value: boolean) => void;
+    isMobileScreen: boolean;
+    setIsMobileScreen: (value: boolean) => void;
     currentTheme: EThemes;
     setCurrentTheme: (theme: EThemes) => void;
     popupItem: EPopupItem;

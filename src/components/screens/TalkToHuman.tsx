@@ -13,7 +13,7 @@ interface IDayTime {
     time: string;
 }
 
-const ScreenTalkToHuman: FC = () => {
+const TalkToHuman: FC = () => {
     const { setCurrentRoute } = useData();
 
     const [useSavedEmail, setUseSavedEmail] = useState<boolean>(true);
@@ -145,4 +145,4 @@ const ScreenTalkToHuman: FC = () => {
     );
 };
 
-export default ScreenTalkToHuman;
+export default TalkToHuman;
