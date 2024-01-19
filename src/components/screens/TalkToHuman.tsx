@@ -40,6 +40,7 @@ const TalkToHuman: FC = () => {
                     <span className="contact-text">+49 9086 4577209</span>
                 </a>
                 <a
+                    target="_blank"
                     className="contact-detail contact-email"
                     href="mailto:registration@uni-siegen.de"
                 >

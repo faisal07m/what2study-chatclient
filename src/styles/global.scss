@@ -35,6 +35,7 @@
 
 .development-div {
     box-sizing: content-box;
+    overflow: hidden;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

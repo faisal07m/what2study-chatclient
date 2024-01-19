@@ -66,7 +66,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setCurrentRoute(showIntroScreen ? ERoute.INTRO : ERoute.MAIN);
     };
 
-    const rehydrateExistingSession = async () => {
+    const createOrRehydrateSession = async () => {
         const existingSessionId = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim();
         if (!existingSessionId) {
             generateNewSession(true);
@@ -104,7 +104,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
 
     // On chat client init
     useEffect(() => {
-        rehydrateExistingSession();
+        createOrRehydrateSession();
     }, []);
 
     return <DataContext.Provider value={providerValue}>{children}</DataContext.Provider>;
