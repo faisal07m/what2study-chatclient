@@ -16,6 +16,8 @@ import {
 } from "react-icons/md";
 import { RiChatSmile3Fill, RiUser6Fill } from "react-icons/ri";
 
+const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+
 enum EMessageTypes {
     BOT = "BOT",
     USER = "USER",
@@ -46,24 +48,45 @@ const Main: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const handleUserMessage = (e: SyntheticEvent): void => {
+    const handleUserMessage = async (e: SyntheticEvent): Promise<void> => {
         e?.preventDefault();
         setLoading(true);
         setMessage("");
         if (message.trim() === "") return;
         setMessages([...messages, { type: EMessageTypes.USER, message }]);
-        setTimeout(() => {
+        const params = {
+            question: message,
+            botId: "",
+            sessionId: "",
+        };
+        const options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(params),
+        };
+        try {
+            const resJson = await fetch(chatEndpoint, options);
+            const response = await resJson.json();
             setMessages((prev) => {
                 return [
                     ...prev,
                     {
                         type: EMessageTypes.BOT,
-                        message: "Sure! What are your questions regarding M.Sc. Economics?",
+                        message: response.answer,
                     },
                 ];
             });
-            setLoading(false);
-        }, 1000);
+        } catch (error) {
+            setMessages((prev) => {
+                return [
+                    ...prev,
+                    {
+                        type: EMessageTypes.BOT,
+                        message: "Something went wrong! Please try again.",
+                    },
+                ];
+            });
+        }
     };
 
     const handleMessageFeedback = (msg: string, feedback: boolean) => {
