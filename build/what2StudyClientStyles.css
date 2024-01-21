@@ -390,6 +390,80 @@
   position: relative;
   overflow-y: auto;
 }
+.introScreen-wrapper .is-contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  padding: 16%;
+}
+.introScreen-wrapper .is-contentWrapper .is-icon {
+  width: 24%;
+  margin-bottom: 20px;
+}
+.introScreen-wrapper .is-contentWrapper .is-infoBlock {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #d9d9d9;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+.introScreen-wrapper .is-contentWrapper .is-infoBlock .is-block-text {
+  margin: 0;
+  font-weight: 400;
+}
+.introScreen-wrapper .is-contentWrapper .is-infoBlock .is-block-text .is-block-bold {
+  font-weight: 600;
+}
+.introScreen-wrapper .is-contentWrapper .play-tutorial-button {
+  border: none;
+  background-color: #afafaf;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 16px;
+}
+.introScreen-wrapper .is-contentWrapper .play-tutorial-button .pt-iconWrapper {
+  margin-right: 6px;
+}
+.introScreen-wrapper .is-contentWrapper .play-tutorial-button .pt-iconWrapper .pt-icon {
+  font-size: 22px;
+}
+.introScreen-wrapper .is-contentWrapper .play-tutorial-button .pt-button-name {
+  font-family: "Inter";
+  font-weight: 500;
+  font-size: 14px;
+}
+.introScreen-wrapper .is-contentWrapper .is-tochat-button {
+  border: none;
+  background-color: #afafaf;
+  border-radius: 6px;
+  margin: 12px 0;
+  padding: 4px;
+  font-size: 14px;
+}
+.introScreen-wrapper .is-okayNextButton {
+  border-radius: 6px;
+  border: none;
+  background-color: #0c8de9;
+  color: #ffffff;
+  padding: 6px;
+  margin-left: 42%;
+}
+.introScreen-wrapper .video-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7294117647);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
 
 .popup-screen {
   position: absolute;

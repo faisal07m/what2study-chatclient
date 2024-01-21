@@ -129,6 +129,8 @@ function IconBase(props) {
 // THIS FILE IS AUTO GENERATED
 function BsFillMicFill (props) {
   return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"}},{"tag":"path","attr":{"d":"M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"}}]})(props);
+}function BsFillPlayCircleFill (props) {
+  return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"}}]})(props);
 }function BsChatQuoteFill (props) {
   return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"}}]})(props);
 }
@@ -330,7 +332,7 @@ var DataProvider = function (props) {
     var _d = React.useState(EThemes.LIGHT_THEME_1), currentTheme = _d[0], setCurrentTheme = _d[1];
     var _e = React.useState(EPopupItem.NONE), popupItem = _e[0], setPopupItem = _e[1];
     var _f = React.useState(true), isBotVolumeOn = _f[0], setIsBotVolumeOn = _f[1];
-    var _g = React.useState(ERoute.INTRO), currentRoute = _g[0], setCurrentRoute = _g[1]; // COMMITODO .MAIN
+    var _g = React.useState(ERoute.MAIN), currentRoute = _g[0], setCurrentRoute = _g[1]; // COMMITODO .MAIN
     var _h = React.useState({
         tone: 0.1,
         sentiment: 1,
@@ -475,7 +477,7 @@ var IFrame = function (props) {
     var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
     var addStyles = function () {
         var link = mountNodeDoc.createElement("link");
-        link.href = "http://localhost:3000/dist/what2StudyClientStyles.css";
+        link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
         link.rel = "stylesheet";
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);
@@ -1328,20 +1330,6 @@ var PopupScreen = function () {
     return (jsxRuntimeExports.jsx(ClickAwayListener, __assign({ onClickAway: function () { return setPopupItem(EPopupItem.NONE); } }, { children: jsxRuntimeExports.jsx("div", __assign({ className: "popup-screen" }, { children: getPopupContent(popupItem) })) })));
 };
 
-var IntroPage = function () {
-    var _a = useData(); _a.setPopupItem; _a.isBotVolumeOn; _a.setIsBotVolumeOn;
-    return (jsxRuntimeExports.jsx(React.Fragment, { children: jsxRuntimeExports.jsx("div", { className: "introScreen-wrapper" }) }));
-};
-
-// THIS FILE IS AUTO GENERATED
-function IoIosCall (props) {
-  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M436.9 364.8c-14.7-14.7-50-36.8-67.4-45.1-20.2-9.7-27.6-9.5-41.9.8-11.9 8.6-19.6 16.6-33.3 13.6-13.7-2.9-40.7-23.4-66.9-49.5-26.2-26.2-46.6-53.2-49.5-66.9-2.9-13.8 5.1-21.4 13.6-33.3 10.3-14.3 10.6-21.7.8-41.9C184 125 162 89.8 147.2 75.1c-14.7-14.7-18-11.5-26.1-8.6 0 0-12 4.8-23.9 12.7-14.7 9.8-22.9 18-28.7 30.3-5.7 12.3-12.3 35.2 21.3 95 27.1 48.3 53.7 84.9 93.2 124.3l.1.1.1.1c39.5 39.5 76 66.1 124.3 93.2 59.8 33.6 82.7 27 95 21.3 12.3-5.7 20.5-13.9 30.3-28.7 7.9-11.9 12.7-23.9 12.7-23.9 2.9-8.1 6.2-11.4-8.6-26.1z"}}]})(props);
-}function IoMdVolumeHigh (props) {
-  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M64 192v128h85.334L256 431.543V80.458L149.334 192H64zm288 64c0-38.399-21.333-72.407-53.333-88.863v176.636C330.667 328.408 352 294.4 352 256zM298.667 64v44.978C360.531 127.632 405.334 186.882 405.334 256c0 69.119-44.803 128.369-106.667 147.022V448C384 428.254 448 349.257 448 256c0-93.256-64-172.254-149.333-192z"}}]})(props);
-}function IoMdVolumeOff (props) {
-  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M405.5 256c0 22.717-4.883 44.362-13.603 63.855l31.88 31.88C439.283 323.33 448 290.653 448 256c0-93.256-64-172.254-149-192v44.978C361 127.632 405.5 186.882 405.5 256zM256 80.458l-51.021 52.48L256 183.957zM420.842 396.885L91.116 67.157l-24 24 90.499 90.413-8.28 10.43H64v128h85.334L256 431.543V280l94.915 94.686C335.795 387.443 318 397.213 299 403.022V448c31-7.172 58.996-22.163 82.315-42.809l39.61 39.693 24-24.043-24.002-24.039-.081.083z"}},{"tag":"path","attr":{"d":"M352.188 256c0-38.399-21.188-72.407-53.188-88.863v59.82l50.801 50.801A100.596 100.596 0 0 0 352.188 256z"}}]})(props);
-}
-
 // THIS FILE IS AUTO GENERATED
 function MdInfoOutline (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0V0z"}},{"tag":"path","attr":{"d":"M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"}}]})(props);
@@ -1349,6 +1337,8 @@ function MdInfoOutline (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"}}]})(props);
 }function MdEmail (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"}}]})(props);
+}function MdCancel (props) {
+  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M0 0h24v24H0z"}},{"tag":"path","attr":{"d":"M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"}}]})(props);
 }function MdThumbDownAlt (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"fill":"none","d":"M24 24H0V0h24v24z"}},{"tag":"path","attr":{"d":"M22 4h-2c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h2V4zM2.17 11.12c-.11.25-.17.52-.17.8V13c0 1.1.9 2 2 2h5.5l-.92 4.65c-.05.22-.02.46.08.66.23.45.52.86.88 1.22L10 22l6.41-6.41c.38-.38.59-.89.59-1.42V6.34C17 5.05 15.95 4 14.66 4h-8.1c-.71 0-1.36.37-1.72.97l-2.67 6.15z"}}]})(props);
 }function MdThumbUpAlt (props) {
@@ -1361,6 +1351,25 @@ function MdInfoOutline (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"}}]})(props);
 }
 
+var IntroPage = function () {
+    var setCurrentRoute = useData().setCurrentRoute;
+    var _a = React.useState(0), introPage = _a[0], setIntroPage = _a[1];
+    var _b = React.useState(false), isVideoOpen = _b[0], setIsVideoOpen = _b[1];
+    return (jsxRuntimeExports.jsx(React.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: "https://i.ibb.co/rcrz1c6/bot-icon.png", className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsxs("button", __assign({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign({ className: "pt-button-name" }, { children: "Play Tutorial" }))] })), jsxRuntimeExports.jsx("button", __assign({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: "https://i.ibb.co/rcrz1c6/bot-icon.png", className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("div", __assign({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("button", __assign({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), jsxRuntimeExports.jsx("button", __assign({ className: "is-okayNextButton", onClick: function () {
+                        return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
+                    } }, { children: "Okay!" }))] })) }));
+};
+
+// THIS FILE IS AUTO GENERATED
+function IoIosCall (props) {
+  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M436.9 364.8c-14.7-14.7-50-36.8-67.4-45.1-20.2-9.7-27.6-9.5-41.9.8-11.9 8.6-19.6 16.6-33.3 13.6-13.7-2.9-40.7-23.4-66.9-49.5-26.2-26.2-46.6-53.2-49.5-66.9-2.9-13.8 5.1-21.4 13.6-33.3 10.3-14.3 10.6-21.7.8-41.9C184 125 162 89.8 147.2 75.1c-14.7-14.7-18-11.5-26.1-8.6 0 0-12 4.8-23.9 12.7-14.7 9.8-22.9 18-28.7 30.3-5.7 12.3-12.3 35.2 21.3 95 27.1 48.3 53.7 84.9 93.2 124.3l.1.1.1.1c39.5 39.5 76 66.1 124.3 93.2 59.8 33.6 82.7 27 95 21.3 12.3-5.7 20.5-13.9 30.3-28.7 7.9-11.9 12.7-23.9 12.7-23.9 2.9-8.1 6.2-11.4-8.6-26.1z"}}]})(props);
+}function IoMdVolumeHigh (props) {
+  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M64 192v128h85.334L256 431.543V80.458L149.334 192H64zm288 64c0-38.399-21.333-72.407-53.333-88.863v176.636C330.667 328.408 352 294.4 352 256zM298.667 64v44.978C360.531 127.632 405.334 186.882 405.334 256c0 69.119-44.803 128.369-106.667 147.022V448C384 428.254 448 349.257 448 256c0-93.256-64-172.254-149.333-192z"}}]})(props);
+}function IoMdVolumeOff (props) {
+  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M405.5 256c0 22.717-4.883 44.362-13.603 63.855l31.88 31.88C439.283 323.33 448 290.653 448 256c0-93.256-64-172.254-149-192v44.978C361 127.632 405.5 186.882 405.5 256zM256 80.458l-51.021 52.48L256 183.957zM420.842 396.885L91.116 67.157l-24 24 90.499 90.413-8.28 10.43H64v128h85.334L256 431.543V280l94.915 94.686C335.795 387.443 318 397.213 299 403.022V448c31-7.172 58.996-22.163 82.315-42.809l39.61 39.693 24-24.043-24.002-24.039-.081.083z"}},{"tag":"path","attr":{"d":"M352.188 256c0-38.399-21.188-72.407-53.188-88.863v59.82l50.801 50.801A100.596 100.596 0 0 0 352.188 256z"}}]})(props);
+}
+
+var chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 var EMessageTypes;
 (function (EMessageTypes) {
     EMessageTypes["BOT"] = "BOT";
@@ -1383,25 +1392,60 @@ var Main = function () {
     var _d = React.useState(dummyMessages), messages = _d[0], setMessages = _d[1];
     var _e = React.useState(false), loading = _e[0], setLoading = _e[1];
     var messagesEndRef = React.useRef(null);
-    var handleUserMessage = function (e) {
-        e === null || e === void 0 ? void 0 : e.preventDefault();
-        setLoading(true);
-        setMessage("");
-        if (message.trim() === "")
-            return;
-        setMessages(__spreadArray(__spreadArray([], messages, true), [{ type: EMessageTypes.USER, message: message }], false));
-        setTimeout(function () {
-            setMessages(function (prev) {
-                return __spreadArray(__spreadArray([], prev, true), [
-                    {
-                        type: EMessageTypes.BOT,
-                        message: "Sure! What are your questions regarding M.Sc. Economics?",
-                    },
-                ], false);
-            });
-            setLoading(false);
-        }, 1000);
-    };
+    var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
+        var params, options, resJson, response_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    e === null || e === void 0 ? void 0 : e.preventDefault();
+                    setLoading(true);
+                    setMessage("");
+                    if (message.trim() === "")
+                        return [2 /*return*/];
+                    setMessages(__spreadArray(__spreadArray([], messages, true), [{ type: EMessageTypes.USER, message: message }], false));
+                    params = {
+                        question: message,
+                        botId: "",
+                        sessionId: "",
+                    };
+                    options = {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(params),
+                    };
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, fetch(chatEndpoint, options)];
+                case 2:
+                    resJson = _a.sent();
+                    return [4 /*yield*/, resJson.json()];
+                case 3:
+                    response_1 = _a.sent();
+                    setMessages(function (prev) {
+                        return __spreadArray(__spreadArray([], prev, true), [
+                            {
+                                type: EMessageTypes.BOT,
+                                message: response_1.answer,
+                            },
+                        ], false);
+                    });
+                    return [3 /*break*/, 5];
+                case 4:
+                    _a.sent();
+                    setMessages(function (prev) {
+                        return __spreadArray(__spreadArray([], prev, true), [
+                            {
+                                type: EMessageTypes.BOT,
+                                message: "Something went wrong! Please try again.",
+                            },
+                        ], false);
+                    });
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); };
     var handleMessageFeedback = function (msg, feedback) {
         var messagesWithFeedback = __spreadArray([], messages, true);
         var newMessages = messagesWithFeedback.map(function (msgObj) {
