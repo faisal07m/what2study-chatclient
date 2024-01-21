@@ -50,7 +50,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
     const [currentTheme, setCurrentTheme] = useState<EThemes>(EThemes.LIGHT_THEME_1);
     const [popupItem, setPopupItem] = useState<EPopupItem>(EPopupItem.NONE);
     const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(true);
-    const [currentRoute, setCurrentRoute] = useState<ERoute>(ERoute.MAIN); // COMMITODO .MAIN
+    const [currentRoute, setCurrentRoute] = useState<ERoute>(ERoute.INTRO); // COMMITODO .MAIN (TD INTRO)
     const [chatFilters, setChatFilters] = useState<IChatFilters>({
         tone: 0.1,
         sentiment: 1,

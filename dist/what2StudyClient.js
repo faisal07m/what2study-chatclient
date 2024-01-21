@@ -786,7 +786,7 @@
       var _d = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _d[0], setCurrentTheme = _d[1];
       var _e = reactExports.useState(EPopupItem.NONE), popupItem = _e[0], setPopupItem = _e[1];
       var _f = reactExports.useState(true), isBotVolumeOn = _f[0], setIsBotVolumeOn = _f[1];
-      var _g = reactExports.useState(ERoute.MAIN), currentRoute = _g[0], setCurrentRoute = _g[1]; // COMMITODO .MAIN
+      var _g = reactExports.useState(ERoute.INTRO), currentRoute = _g[0], setCurrentRoute = _g[1]; // COMMITODO .MAIN (TD INTRO)
       var _h = reactExports.useState({
           tone: 0.1,
           sentiment: 1,
@@ -1834,10 +1834,10 @@
           type: EMessageTypes.BOT,
           message: "Hey! This is you what2study bot. How can I help you?",
       },
-      {
-          type: EMessageTypes.USER,
-          message: "Hi. I'm looking for a masters course in Economics.",
-      },
+      // {
+      //     type: EMessageTypes.USER,
+      //     message: "Hi. I'm looking for a masters course in Economics.",
+      // },
   ];
   var Main = function () {
       var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute;

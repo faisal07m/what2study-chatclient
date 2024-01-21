@@ -34,10 +34,10 @@ const dummyMessages = [
         type: EMessageTypes.BOT,
         message: "Hey! This is you what2study bot. How can I help you?",
     },
-    {
-        type: EMessageTypes.USER,
-        message: "Hi. I'm looking for a masters course in Economics.",
-    },
+    // {
+    //     type: EMessageTypes.USER,
+    //     message: "Hi. I'm looking for a masters course in Economics.",
+    // },
 ];
 
 const Main: FC = () => {
