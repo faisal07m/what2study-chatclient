@@ -16,10 +16,10 @@
 
 const WHAT2STUDY_CONTAINER = "what2studyChatclientWrapper";
 const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
-const WHAT2STUDY_API = "http://localhost:1337"; // API URL
+const WHAT2STUDY_API = "http://localhost:1339"; // API URL
 
 (function () {
-    const what2StudyClientSrc = "http://localhost:3000/dist/what2StudyClient.js";
+    const what2StudyClientSrc = "http://localhost:7777/dist/what2StudyClient.js";
 
     const getUrlParams = (url) => {
         const variables = {};
@@ -35,13 +35,19 @@ const WHAT2STUDY_API = "http://localhost:1337"; // API URL
 
         if (!what2StudyScript) return;
 
-        const { bot_id, bot_access_token } = getUrlParams(what2StudyScript.src);
+        const { bot_id, token } = getUrlParams(what2StudyScript.src);
 
-        // fetch(`${WHAT2STUDY_API}/api/bot_id/bot_access_token`, {
+        // fetch(`${WHAT2STUDY_API}/what2study/parse/functions/getChatbotSettings`, {
+        //     method: "POST",
         //     headers: {
-        //         Accept: "application/json",
         //         "Content-Type": "application/json",
+        //         "X-Parse-Application-Id": "what2study",
+        //         "X-Parse-Master-Key": "what2studyMaster",
         //     },
+        //     body: JSON.stringify({
+        //         chatbotId: bot_id,
+        //         accessToken: token,
+        //     }),
         // })
         //     .then((response) => {
         //         return response.json();

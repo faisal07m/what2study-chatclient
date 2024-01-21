@@ -786,7 +786,7 @@
       var _d = reactExports.useState(EThemes.LIGHT_THEME_1), currentTheme = _d[0], setCurrentTheme = _d[1];
       var _e = reactExports.useState(EPopupItem.NONE), popupItem = _e[0], setPopupItem = _e[1];
       var _f = reactExports.useState(true), isBotVolumeOn = _f[0], setIsBotVolumeOn = _f[1];
-      var _g = reactExports.useState(ERoute.INTRO), currentRoute = _g[0], setCurrentRoute = _g[1]; // COMMITODO .MAIN
+      var _g = reactExports.useState(ERoute.MAIN), currentRoute = _g[0], setCurrentRoute = _g[1]; // COMMITODO .MAIN
       var _h = reactExports.useState({
           tone: 0.1,
           sentiment: 1,
@@ -931,7 +931,7 @@
       var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
       var addStyles = function () {
           var link = mountNodeDoc.createElement("link");
-          link.href = "http://localhost:3000/dist/what2StudyClientStyles.css";
+          link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
           link.rel = "stylesheet";
           link.type = "text/css";
           mountNodeDoc.head.appendChild(link);
@@ -1823,6 +1823,7 @@
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M405.5 256c0 22.717-4.883 44.362-13.603 63.855l31.88 31.88C439.283 323.33 448 290.653 448 256c0-93.256-64-172.254-149-192v44.978C361 127.632 405.5 186.882 405.5 256zM256 80.458l-51.021 52.48L256 183.957zM420.842 396.885L91.116 67.157l-24 24 90.499 90.413-8.28 10.43H64v128h85.334L256 431.543V280l94.915 94.686C335.795 387.443 318 397.213 299 403.022V448c31-7.172 58.996-22.163 82.315-42.809l39.61 39.693 24-24.043-24.002-24.039-.081.083z"}},{"tag":"path","attr":{"d":"M352.188 256c0-38.399-21.188-72.407-53.188-88.863v59.82l50.801 50.801A100.596 100.596 0 0 0 352.188 256z"}}]})(props);
   }
 
+  var chatEndpoint = "http://127.0.0.1:5009/chatbot/";
   var EMessageTypes;
   (function (EMessageTypes) {
       EMessageTypes["BOT"] = "BOT";
@@ -1845,25 +1846,62 @@
       var _d = reactExports.useState(dummyMessages), messages = _d[0], setMessages = _d[1];
       var _e = reactExports.useState(false), loading = _e[0], setLoading = _e[1];
       var messagesEndRef = reactExports.useRef(null);
-      var handleUserMessage = function (e) {
-          e === null || e === void 0 ? void 0 : e.preventDefault();
-          setLoading(true);
-          setMessage("");
-          if (message.trim() === "")
-              return;
-          setMessages(__spreadArray(__spreadArray([], messages, true), [{ type: EMessageTypes.USER, message: message }], false));
-          setTimeout(function () {
-              setMessages(function (prev) {
-                  return __spreadArray(__spreadArray([], prev, true), [
-                      {
-                          type: EMessageTypes.BOT,
-                          message: "Sure! What are your questions regarding M.Sc. Economics?",
-                      },
-                  ], false);
-              });
-              setLoading(false);
-          }, 1000);
-      };
+      var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
+          var params, options, resJson, response_1;
+          return __generator(this, function (_a) {
+              switch (_a.label) {
+                  case 0:
+                      e === null || e === void 0 ? void 0 : e.preventDefault();
+                      setLoading(true);
+                      setMessage("");
+                      if (message.trim() === "")
+                          return [2 /*return*/];
+                      setMessages(__spreadArray(__spreadArray([], messages, true), [{ type: EMessageTypes.USER, message: message }], false));
+                      params = {
+                          question: message,
+                          botId: "",
+                          sessionId: "",
+                      };
+                      options = {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify(params),
+                      };
+                      _a.label = 1;
+                  case 1:
+                      _a.trys.push([1, 4, , 5]);
+                      return [4 /*yield*/, fetch(chatEndpoint, options)];
+                  case 2:
+                      resJson = _a.sent();
+                      return [4 /*yield*/, resJson.json()];
+                  case 3:
+                      response_1 = _a.sent();
+                      setMessages(function (prev) {
+                          return __spreadArray(__spreadArray([], prev, true), [
+                              {
+                                  type: EMessageTypes.BOT,
+                                  message: response_1.answer,
+                              },
+                          ], false);
+                      });
+                      setLoading(false);
+                      return [3 /*break*/, 5];
+                  case 4:
+                      _a.sent();
+                      setMessages(function (prev) {
+                          return __spreadArray(__spreadArray([], prev, true), [
+                              {
+                                  type: EMessageTypes.BOT,
+                                  message: "Something went wrong! Please try again.",
+                              },
+                          ], false);
+                      });
+                      setLoading(false);
+                      return [3 /*break*/, 5];
+                  case 5: return [2 /*return*/];
+              }
+          });
+      }); };
       var handleMessageFeedback = function (msg, feedback) {
           var messagesWithFeedback = __spreadArray([], messages, true);
           var newMessages = messagesWithFeedback.map(function (msgObj) {

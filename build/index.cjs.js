@@ -1430,6 +1430,7 @@ var Main = function () {
                             },
                         ], false);
                     });
+                    setLoading(false);
                     return [3 /*break*/, 5];
                 case 4:
                     _a.sent();
@@ -1441,6 +1442,7 @@ var Main = function () {
                             },
                         ], false);
                     });
+                    setLoading(false);
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }

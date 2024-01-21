@@ -76,6 +76,7 @@ const Main: FC = () => {
                     },
                 ];
             });
+            setLoading(false);
         } catch (error) {
             setMessages((prev) => {
                 return [
@@ -86,6 +87,7 @@ const Main: FC = () => {
                     },
                 ];
             });
+            setLoading(false);
         }
     };
 
