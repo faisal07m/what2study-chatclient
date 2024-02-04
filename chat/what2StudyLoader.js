@@ -16,7 +16,9 @@
 
 const WHAT2STUDY_CONTAINER = "what2studyChatclientWrapper";
 const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
-const WHAT2STUDY_API = "http://localhost:1339"; // API URL
+const WHAT2STUDY_API = "http://localhost:1339/what2study/parse/functions"; // API URL
+const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
+const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
 (function () {
     const what2StudyClientSrc = "http://localhost:7777/dist/what2StudyClient.js";
@@ -37,33 +39,31 @@ const WHAT2STUDY_API = "http://localhost:1339"; // API URL
 
         const { bot_id, token } = getUrlParams(what2StudyScript.src);
 
-        // fetch(`${WHAT2STUDY_API}/what2study/parse/functions/getChatbotSettings`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "X-Parse-Application-Id": "what2study",
-        //         "X-Parse-Master-Key": "what2studyMaster",
-        //     },
-        //     body: JSON.stringify({
-        //         chatbotId: bot_id,
-        //         accessToken: token,
-        //     }),
-        // })
-        //     .then((response) => {
-        //         return response.json();
-        //     })
-        //     .then((responseObject) => {
-        //         if (responseObject.success) {
-        //             const configObject = responseObject.data;
-
-        //             if (window.ChatClient) {
-        //                 window.ChatClient(configObject);
-        //             } else if (top.ChatClient) {
-        //                 top.ChatClient(configObject);
-        //             }
-        //         }
-        //     });
-        window.What2Study();
+        fetch(`${WHAT2STUDY_API}/getChatbotSettings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
+            },
+            body: JSON.stringify({
+                chatbotId: bot_id,
+                accessToken: token,
+            }),
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((responseObject) => {
+                if (responseObject.result) {
+                    const configObject = responseObject.result;
+                    if (window.What2Study) {
+                        window.What2Study(configObject);
+                    } else if (top.What2Study) {
+                        top.What2Study(configObject);
+                    }
+                }
+            });
     };
 
     appendChildren = () => {
