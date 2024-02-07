@@ -115,6 +115,17 @@ const defaultClientConfig = {
     } as IConfigChatbotLook,
 } as IClientConfigurations;
 
+const doesImageExists = async (url: string): Promise<boolean> => {
+    const res = await fetch(url, {
+        method: "POST",
+    });
+    // no image exists if response is 1xx, 4xx, 5xx
+    if ([1, 4, 5].includes(Math.floor((res.status / 100) % 10))) {
+        return false;
+    }
+    return true;
+};
+
 export const DataProvider: FC<DataProviderProps> = (props) => {
     const { children } = props;
 
@@ -156,7 +167,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         generateNewSession(false);
     };
 
-    const saveClientConfigurations = (data: any = {}) => {
+    const saveClientConfigurations = async (data: any = {}) => {
         const {
             objectId,
             chatbotId,
@@ -202,11 +213,15 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             chatbotName: chatbotName ?? defaultClientConfig.chatbotName,
             chatbotBubbleIcons:
                 typeof chatbotBubbleIcons == "string"
-                    ? chatbotBubbleIcons
+                    ? (await doesImageExists(chatbotBubbleIcons))
+                        ? chatbotBubbleIcons
+                        : defaultClientConfig.chatbotBubbleIcons
                     : defaultClientConfig.chatbotBubbleIcons,
             chatbotProfileImage:
                 typeof chatbotProfileImage == "string"
-                    ? chatbotProfileImage
+                    ? (await doesImageExists(chatbotProfileImage))
+                        ? chatbotProfileImage
+                        : defaultClientConfig.chatbotProfileImage
                     : defaultClientConfig.chatbotProfileImage,
             defaultSettings: {
                 chatbotLanguage:

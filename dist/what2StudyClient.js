@@ -756,6 +756,23 @@
           chatbotLookName: "",
       },
   };
+  var doesImageExists = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+      var res;
+      return __generator(this, function (_a) {
+          switch (_a.label) {
+              case 0: return [4 /*yield*/, fetch(url, {
+                      method: "POST",
+                  })];
+              case 1:
+                  res = _a.sent();
+                  // no image exists if response is 1xx, 4xx, 5xx
+                  if ([1, 4, 5].includes(Math.floor((res.status / 100) % 10))) {
+                      return [2 /*return*/, false];
+                  }
+                  return [2 /*return*/, true];
+          }
+      });
+  }); };
   var DataProvider = function (props) {
       var children = props.children;
       var _a = reactExports.useState(false), isChatOpen = _a[0], setIsChatOpen = _a[1]; // COMMITODO: false
@@ -799,75 +816,104 @@
           });
       }); };
       var saveClientConfigurations = function (data) {
-          var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2;
           if (data === void 0) { data = {}; }
-          var objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, _3 = data.chatbotLook, chatbotLook = _3 === void 0 ? {} : _3;
-          var _4 = defaultClientConfig.chatbotLook, dChatbotHeader = _4.chatbotHeader, dChatbotBackground = _4.chatbotBackground, dTextBoxUser = _4.textBoxUser, dTextBoxChatbotReply = _4.textBoxChatbotReply, dUIGroupA = _4.UIGroupA, dUIGroupB = _4.UIGroupB, dChatbotLookName = _4.chatbotLookName; // destructure default values for easy assignment below
-          var chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
-          var config = {
-              objectId: objectId !== null && objectId !== void 0 ? objectId : defaultClientConfig.objectId,
-              chatbotId: chatbotId !== null && chatbotId !== void 0 ? chatbotId : defaultClientConfig.chatbotId,
-              userId: userId !== null && userId !== void 0 ? userId : defaultClientConfig.userId,
-              universityId: universityId !== null && universityId !== void 0 ? universityId : defaultClientConfig.universityId,
-              chatbotName: chatbotName !== null && chatbotName !== void 0 ? chatbotName : defaultClientConfig.chatbotName,
-              chatbotBubbleIcons: typeof chatbotBubbleIcons == "string"
-                  ? chatbotBubbleIcons
-                  : defaultClientConfig.chatbotBubbleIcons,
-              chatbotProfileImage: typeof chatbotProfileImage == "string"
-                  ? chatbotProfileImage
-                  : defaultClientConfig.chatbotProfileImage,
-              defaultSettings: {
-                  chatbotLanguage: (_a = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.chatbotLanguage) !== null && _a !== void 0 ? _a : defaultClientConfig.defaultSettings.chatbotLanguage,
-                  audioNarration: (_b = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.audioNarration) !== null && _b !== void 0 ? _b : defaultClientConfig.defaultSettings.audioNarration,
-                  narrator: (_c = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.narrator) !== null && _c !== void 0 ? _c : defaultClientConfig.defaultSettings.narrator,
-              },
-              chatboxBehaviour: {
-                  formality: (_d = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.formality) !== null && _d !== void 0 ? _d : defaultClientConfig.chatboxBehaviour.formality,
-                  opinion: (_e = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.opinion) !== null && _e !== void 0 ? _e : defaultClientConfig.chatboxBehaviour.opinion,
-                  emotion: (_f = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.emotion) !== null && _f !== void 0 ? _f : defaultClientConfig.chatboxBehaviour.emotion,
-                  length: (_g = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.length) !== null && _g !== void 0 ? _g : defaultClientConfig.chatboxBehaviour.length,
-                  topics: (_h = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.topics) !== null && _h !== void 0 ? _h : defaultClientConfig.chatboxBehaviour.topics,
-                  tone: (_j = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.tone) !== null && _j !== void 0 ? _j : defaultClientConfig.chatboxBehaviour.tone,
-                  chatbotBehaviourName: (_k = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.chatbotBehaviourName) !== null && _k !== void 0 ? _k : defaultClientConfig.chatboxBehaviour.chatbotBehaviourName,
-              },
-              chatbotReplies: {
-                  randomQuestions: (_l = chatbotReplies === null || chatbotReplies === void 0 ? void 0 : chatbotReplies.randomQuestions) !== null && _l !== void 0 ? _l : defaultClientConfig.chatbotReplies.randomQuestions,
-                  showRandomQuestionsMessage: (_m = chatbotReplies === null || chatbotReplies === void 0 ? void 0 : chatbotReplies.showRandomQuestionsMessage) !== null && _m !== void 0 ? _m : defaultClientConfig.chatbotReplies.showRandomQuestionsMessage,
-              },
-              chatbotContact: {
-                  talkToHuman: (_o = chatbotContact === null || chatbotContact === void 0 ? void 0 : chatbotContact.talkToHuman) !== null && _o !== void 0 ? _o : defaultClientConfig.chatbotContact.talkToHuman,
-                  showTalkToHumanMessage: (_p = chatbotContact === null || chatbotContact === void 0 ? void 0 : chatbotContact.showTalkToHumanMessage) !== null && _p !== void 0 ? _p : defaultClientConfig.chatbotContact.showTalkToHumanMessage,
-              },
-              chatbotLook: {
-                  chatbotHeader: {
-                      chatbotHeaderBackgroundColor: (_q = chatbotHeader === null || chatbotHeader === void 0 ? void 0 : chatbotHeader.chatbotHeaderBackgroundColor) !== null && _q !== void 0 ? _q : dChatbotHeader.chatbotHeaderBackgroundColor,
-                      chatbotHeaderIconFontColor: (_r = chatbotHeader === null || chatbotHeader === void 0 ? void 0 : chatbotHeader.chatbotHeaderIconFontColor) !== null && _r !== void 0 ? _r : dChatbotHeader.chatbotHeaderIconFontColor,
-                  },
-                  chatbotBackground: {
-                      chatbotBackgroundColor: (_s = chatbotBackground === null || chatbotBackground === void 0 ? void 0 : chatbotBackground.chatbotBackgroundColor) !== null && _s !== void 0 ? _s : dChatbotBackground === null || dChatbotBackground === void 0 ? void 0 : dChatbotBackground.chatbotBackgroundColor,
-                  },
-                  textBoxUser: {
-                      textBoxUserColor: (_t = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserColor) !== null && _t !== void 0 ? _t : dTextBoxUser.textBoxUserColor,
-                      textBoxUserFontColor: (_u = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserFontColor) !== null && _u !== void 0 ? _u : dTextBoxUser.textBoxUserFontColor,
-                      textBoxFontStyle: (_v = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxFontStyle) !== null && _v !== void 0 ? _v : dTextBoxUser.textBoxFontStyle,
-                  },
-                  textBoxChatbotReply: {
-                      textBoxChatbotReplyColor: (_w = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyColor) !== null && _w !== void 0 ? _w : dTextBoxChatbotReply.textBoxChatbotReplyColor,
-                      textBoxChatbotReplyFontColor: (_x = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyFontColor) !== null && _x !== void 0 ? _x : dTextBoxChatbotReply.textBoxChatbotReplyFontColor,
-                      textBoxChatboxReplyFontStyle: (_y = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatboxReplyFontStyle) !== null && _y !== void 0 ? _y : dTextBoxChatbotReply.textBoxChatboxReplyFontStyle,
-                  },
-                  UIGroupA: {
-                      UIGroupAUIBackground: (_z = UIGroupA === null || UIGroupA === void 0 ? void 0 : UIGroupA.UIGroupAUIBackground) !== null && _z !== void 0 ? _z : dUIGroupA.UIGroupAUIBackground,
-                      UIGroupAUIHighlight: (_0 = UIGroupA === null || UIGroupA === void 0 ? void 0 : UIGroupA.UIGroupAUIHighlight) !== null && _0 !== void 0 ? _0 : dUIGroupA.UIGroupAUIHighlight,
-                  },
-                  UIGroupB: {
-                      UIGroupBUIBackground: (_1 = UIGroupB === null || UIGroupB === void 0 ? void 0 : UIGroupB.UIGroupBUIBackground) !== null && _1 !== void 0 ? _1 : dUIGroupB.UIGroupBUIBackground,
-                      UIGroupBUIHighlight: (_2 = UIGroupB === null || UIGroupB === void 0 ? void 0 : UIGroupB.UIGroupBUIHighlight) !== null && _2 !== void 0 ? _2 : dUIGroupB.UIGroupBUIHighlight,
-                  },
-                  chatbotLookName: chatbotLookName !== null && chatbotLookName !== void 0 ? chatbotLookName : dChatbotLookName,
-              },
-          };
-          setClientConfig(config);
+          return __awaiter(void 0, void 0, void 0, function () {
+              var objectId, chatbotId, userId, universityId, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, _a, chatbotLook, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
+              var _e;
+              var _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7;
+              return __generator(this, function (_8) {
+                  switch (_8.label) {
+                      case 0:
+                          objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a;
+                          _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
+                          chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
+                          _e = {
+                              objectId: objectId !== null && objectId !== void 0 ? objectId : defaultClientConfig.objectId,
+                              chatbotId: chatbotId !== null && chatbotId !== void 0 ? chatbotId : defaultClientConfig.chatbotId,
+                              userId: userId !== null && userId !== void 0 ? userId : defaultClientConfig.userId,
+                              universityId: universityId !== null && universityId !== void 0 ? universityId : defaultClientConfig.universityId,
+                              chatbotName: chatbotName !== null && chatbotName !== void 0 ? chatbotName : defaultClientConfig.chatbotName
+                          };
+                          if (!(typeof chatbotBubbleIcons == "string")) return [3 /*break*/, 2];
+                          return [4 /*yield*/, doesImageExists(chatbotBubbleIcons)];
+                      case 1:
+                          _c = (_8.sent())
+                              ? chatbotBubbleIcons
+                              : defaultClientConfig.chatbotBubbleIcons;
+                          return [3 /*break*/, 3];
+                      case 2:
+                          _c = defaultClientConfig.chatbotBubbleIcons;
+                          _8.label = 3;
+                      case 3:
+                          _e.chatbotBubbleIcons = _c;
+                          if (!(typeof chatbotProfileImage == "string")) return [3 /*break*/, 5];
+                          return [4 /*yield*/, doesImageExists(chatbotProfileImage)];
+                      case 4:
+                          _d = (_8.sent())
+                              ? chatbotProfileImage
+                              : defaultClientConfig.chatbotProfileImage;
+                          return [3 /*break*/, 6];
+                      case 5:
+                          _d = defaultClientConfig.chatbotProfileImage;
+                          _8.label = 6;
+                      case 6:
+                          config = (_e.chatbotProfileImage = _d,
+                              _e.defaultSettings = {
+                                  chatbotLanguage: (_f = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.chatbotLanguage) !== null && _f !== void 0 ? _f : defaultClientConfig.defaultSettings.chatbotLanguage,
+                                  audioNarration: (_g = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.audioNarration) !== null && _g !== void 0 ? _g : defaultClientConfig.defaultSettings.audioNarration,
+                                  narrator: (_h = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.narrator) !== null && _h !== void 0 ? _h : defaultClientConfig.defaultSettings.narrator,
+                              },
+                              _e.chatboxBehaviour = {
+                                  formality: (_j = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.formality) !== null && _j !== void 0 ? _j : defaultClientConfig.chatboxBehaviour.formality,
+                                  opinion: (_k = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.opinion) !== null && _k !== void 0 ? _k : defaultClientConfig.chatboxBehaviour.opinion,
+                                  emotion: (_l = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.emotion) !== null && _l !== void 0 ? _l : defaultClientConfig.chatboxBehaviour.emotion,
+                                  length: (_m = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.length) !== null && _m !== void 0 ? _m : defaultClientConfig.chatboxBehaviour.length,
+                                  topics: (_o = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.topics) !== null && _o !== void 0 ? _o : defaultClientConfig.chatboxBehaviour.topics,
+                                  tone: (_p = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.tone) !== null && _p !== void 0 ? _p : defaultClientConfig.chatboxBehaviour.tone,
+                                  chatbotBehaviourName: (_q = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.chatbotBehaviourName) !== null && _q !== void 0 ? _q : defaultClientConfig.chatboxBehaviour.chatbotBehaviourName,
+                              },
+                              _e.chatbotReplies = {
+                                  randomQuestions: (_r = chatbotReplies === null || chatbotReplies === void 0 ? void 0 : chatbotReplies.randomQuestions) !== null && _r !== void 0 ? _r : defaultClientConfig.chatbotReplies.randomQuestions,
+                                  showRandomQuestionsMessage: (_s = chatbotReplies === null || chatbotReplies === void 0 ? void 0 : chatbotReplies.showRandomQuestionsMessage) !== null && _s !== void 0 ? _s : defaultClientConfig.chatbotReplies.showRandomQuestionsMessage,
+                              },
+                              _e.chatbotContact = {
+                                  talkToHuman: (_t = chatbotContact === null || chatbotContact === void 0 ? void 0 : chatbotContact.talkToHuman) !== null && _t !== void 0 ? _t : defaultClientConfig.chatbotContact.talkToHuman,
+                                  showTalkToHumanMessage: (_u = chatbotContact === null || chatbotContact === void 0 ? void 0 : chatbotContact.showTalkToHumanMessage) !== null && _u !== void 0 ? _u : defaultClientConfig.chatbotContact.showTalkToHumanMessage,
+                              },
+                              _e.chatbotLook = {
+                                  chatbotHeader: {
+                                      chatbotHeaderBackgroundColor: (_v = chatbotHeader === null || chatbotHeader === void 0 ? void 0 : chatbotHeader.chatbotHeaderBackgroundColor) !== null && _v !== void 0 ? _v : dChatbotHeader.chatbotHeaderBackgroundColor,
+                                      chatbotHeaderIconFontColor: (_w = chatbotHeader === null || chatbotHeader === void 0 ? void 0 : chatbotHeader.chatbotHeaderIconFontColor) !== null && _w !== void 0 ? _w : dChatbotHeader.chatbotHeaderIconFontColor,
+                                  },
+                                  chatbotBackground: {
+                                      chatbotBackgroundColor: (_x = chatbotBackground === null || chatbotBackground === void 0 ? void 0 : chatbotBackground.chatbotBackgroundColor) !== null && _x !== void 0 ? _x : dChatbotBackground === null || dChatbotBackground === void 0 ? void 0 : dChatbotBackground.chatbotBackgroundColor,
+                                  },
+                                  textBoxUser: {
+                                      textBoxUserColor: (_y = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserColor) !== null && _y !== void 0 ? _y : dTextBoxUser.textBoxUserColor,
+                                      textBoxUserFontColor: (_z = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserFontColor) !== null && _z !== void 0 ? _z : dTextBoxUser.textBoxUserFontColor,
+                                      textBoxFontStyle: (_0 = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxFontStyle) !== null && _0 !== void 0 ? _0 : dTextBoxUser.textBoxFontStyle,
+                                  },
+                                  textBoxChatbotReply: {
+                                      textBoxChatbotReplyColor: (_1 = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyColor) !== null && _1 !== void 0 ? _1 : dTextBoxChatbotReply.textBoxChatbotReplyColor,
+                                      textBoxChatbotReplyFontColor: (_2 = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyFontColor) !== null && _2 !== void 0 ? _2 : dTextBoxChatbotReply.textBoxChatbotReplyFontColor,
+                                      textBoxChatboxReplyFontStyle: (_3 = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatboxReplyFontStyle) !== null && _3 !== void 0 ? _3 : dTextBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                                  },
+                                  UIGroupA: {
+                                      UIGroupAUIBackground: (_4 = UIGroupA === null || UIGroupA === void 0 ? void 0 : UIGroupA.UIGroupAUIBackground) !== null && _4 !== void 0 ? _4 : dUIGroupA.UIGroupAUIBackground,
+                                      UIGroupAUIHighlight: (_5 = UIGroupA === null || UIGroupA === void 0 ? void 0 : UIGroupA.UIGroupAUIHighlight) !== null && _5 !== void 0 ? _5 : dUIGroupA.UIGroupAUIHighlight,
+                                  },
+                                  UIGroupB: {
+                                      UIGroupBUIBackground: (_6 = UIGroupB === null || UIGroupB === void 0 ? void 0 : UIGroupB.UIGroupBUIBackground) !== null && _6 !== void 0 ? _6 : dUIGroupB.UIGroupBUIBackground,
+                                      UIGroupBUIHighlight: (_7 = UIGroupB === null || UIGroupB === void 0 ? void 0 : UIGroupB.UIGroupBUIHighlight) !== null && _7 !== void 0 ? _7 : dUIGroupB.UIGroupBUIHighlight,
+                                  },
+                                  chatbotLookName: chatbotLookName !== null && chatbotLookName !== void 0 ? chatbotLookName : dChatbotLookName,
+                              },
+                              _e);
+                          setClientConfig(config);
+                          return [2 /*return*/];
+                  }
+              });
+          });
       };
       var providerValue = {
           sessionId: sessionId,
@@ -1972,7 +2018,7 @@
       // },
   ];
   var Main = function () {
-      var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute;
+      var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig, sessionId = _a.sessionId;
       var _b = reactExports.useState(false), isInputFocused = _b[0], setIsInputFocused = _b[1];
       var _c = reactExports.useState(""), message = _c[0], setMessage = _c[1];
       var _d = reactExports.useState(dummyMessages), messages = _d[0], setMessages = _d[1];
@@ -1991,13 +2037,13 @@
                       setMessages(__spreadArray(__spreadArray([], messages, true), [{ type: EMessageTypes.USER, message: message }], false));
                       params = {
                           question: message,
-                          botId: "",
-                          sessionId: "",
-                          userId: "", // from props
+                          botId: clientConfig === null || clientConfig === void 0 ? void 0 : clientConfig.chatbotId,
+                          sessionId: sessionId,
+                          userId: clientConfig === null || clientConfig === void 0 ? void 0 : clientConfig.userId,
                       };
                       options = {
                           method: "POST",
-                          // headers: { "Content-Type": "application/json" },
+                          headers: { "Content-Type": "application/json" },
                           body: JSON.stringify(params),
                       };
                       _a.label = 1;
