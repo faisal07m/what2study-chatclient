@@ -18,33 +18,48 @@ import { RiChatSmile3Fill, RiUser6Fill } from "react-icons/ri";
 
 const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 
-enum EMessageTypes {
+enum EMessageSource {
     BOT = "BOT",
     USER = "USER",
 }
 
-interface IBotMessage {
-    type: EMessageTypes;
-    message: string;
-    feedback?: boolean;
+enum EMessageType {
+    TEXT = "text",
+    IMAGE = "image",
+    VIDEO = "video",
 }
 
-const dummyMessages = [
+interface IBotMessage {
+    source: EMessageSource;
+    message: string;
+    feedback?: boolean;
+    type?: EMessageType;
+    url?: string;
+}
+
+const initialMessages: IBotMessage[] = [
     {
-        type: EMessageTypes.BOT,
+        source: EMessageSource.BOT,
         message: "Hey! This is you what2study bot. How can I help you?",
     },
     // {
-    //     type: EMessageTypes.USER,
+    //     source: EMessageSource.USER,
     //     message: "Hi. I'm looking for a masters course in Economics.",
     // },
 ];
 
 const Main: FC = () => {
-    const { setPopupItem, isBotVolumeOn, setIsBotVolumeOn, setCurrentRoute } = useData();
+    const {
+        setPopupItem,
+        isBotVolumeOn,
+        setIsBotVolumeOn,
+        setCurrentRoute,
+        clientConfig,
+        sessionId,
+    } = useData();
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
-    const [messages, setMessages] = useState<IBotMessage[]>(dummyMessages);
+    const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -53,11 +68,13 @@ const Main: FC = () => {
         setLoading(true);
         setMessage("");
         if (message.trim() === "") return;
-        setMessages([...messages, { type: EMessageTypes.USER, message }]);
+        setMessages([...messages, { source: EMessageSource.USER, message }]);
+
         const params = {
             question: message,
-            botId: "",
-            sessionId: "",
+            botId: clientConfig?.chatbotId,
+            sessionId,
+            userId: clientConfig?.userId,
         };
         const options = {
             method: "POST",
@@ -71,8 +88,15 @@ const Main: FC = () => {
                 return [
                     ...prev,
                     {
-                        type: EMessageTypes.BOT,
+                        source: EMessageSource.BOT,
                         message: response.answer,
+                        type:
+                            response.type === "image"
+                                ? EMessageType.IMAGE
+                                : response.type === "video"
+                                ? EMessageType.VIDEO
+                                : EMessageType.TEXT,
+                        url: response.url ?? "",
                     },
                 ];
             });
@@ -82,7 +106,7 @@ const Main: FC = () => {
                 return [
                     ...prev,
                     {
-                        type: EMessageTypes.BOT,
+                        source: EMessageSource.BOT,
                         message: "Something went wrong! Please try again.",
                     },
                 ];
@@ -137,25 +161,27 @@ const Main: FC = () => {
                 />
             </div>
             <div className="chatContainer">
-                {messages.map(({ message, type, feedback }, index) => (
+                {messages.map(({ message, source, feedback, type, url }, index) => (
                     <div
                         key={index}
                         className={`messageWrapper ${
-                            type === EMessageTypes.BOT ? "botMessageWrapper" : "userMessageWrapper"
+                            source === EMessageSource.BOT
+                                ? "botMessageWrapper"
+                                : "userMessageWrapper"
                         }`}
                     >
-                        {type === EMessageTypes.BOT && (
+                        {source === EMessageSource.BOT && (
                             <div className="bot-iconWrapper">
                                 <RiChatSmile3Fill className="botIcon" />
                             </div>
                         )}
                         <div
                             className={`message ${
-                                type === EMessageTypes.BOT ? "botMessage" : "userMessage"
+                                source === EMessageSource.BOT ? "botMessage" : "userMessage"
                             }`}
                         >
                             {message}
-                            {type === EMessageTypes.BOT && (
+                            {source === EMessageSource.BOT && (
                                 <div className="bot-msg-actions-wrapper">
                                     <button
                                         title="Report"
@@ -208,7 +234,7 @@ const Main: FC = () => {
                                 </div>
                             )}
                         </div>
-                        {type === EMessageTypes.USER && (
+                        {source === EMessageSource.USER && (
                             <div className="user-iconWrapper">
                                 <RiUser6Fill className="userIcon" />
                             </div>

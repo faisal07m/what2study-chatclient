@@ -760,9 +760,11 @@
       var res;
       return __generator(this, function (_a) {
           switch (_a.label) {
-              case 0: return [4 /*yield*/, fetch(url, {
-                      method: "POST",
-                  })];
+              case 0:
+                  _a.trys.push([0, 2, , 3]);
+                  return [4 /*yield*/, fetch(url, {
+                          method: "POST",
+                      })];
               case 1:
                   res = _a.sent();
                   // no image exists if response is 1xx, 4xx, 5xx
@@ -770,6 +772,10 @@
                       return [2 /*return*/, false];
                   }
                   return [2 /*return*/, true];
+              case 2:
+                  _a.sent();
+                  return [2 /*return*/, false];
+              case 3: return [2 /*return*/];
           }
       });
   }); };
@@ -2002,18 +2008,24 @@
   }
 
   var chatEndpoint = "http://127.0.0.1:5009/chatbot/";
-  var EMessageTypes;
-  (function (EMessageTypes) {
-      EMessageTypes["BOT"] = "BOT";
-      EMessageTypes["USER"] = "USER";
-  })(EMessageTypes || (EMessageTypes = {}));
-  var dummyMessages = [
+  var EMessageSource;
+  (function (EMessageSource) {
+      EMessageSource["BOT"] = "BOT";
+      EMessageSource["USER"] = "USER";
+  })(EMessageSource || (EMessageSource = {}));
+  var EMessageType;
+  (function (EMessageType) {
+      EMessageType["TEXT"] = "text";
+      EMessageType["IMAGE"] = "image";
+      EMessageType["VIDEO"] = "video";
+  })(EMessageType || (EMessageType = {}));
+  var initialMessages = [
       {
-          type: EMessageTypes.BOT,
+          source: EMessageSource.BOT,
           message: "Hey! This is you what2study bot. How can I help you?",
       },
       // {
-      //     type: EMessageTypes.USER,
+      //     source: EMessageSource.USER,
       //     message: "Hi. I'm looking for a masters course in Economics.",
       // },
   ];
@@ -2021,7 +2033,7 @@
       var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig, sessionId = _a.sessionId;
       var _b = reactExports.useState(false), isInputFocused = _b[0], setIsInputFocused = _b[1];
       var _c = reactExports.useState(""), message = _c[0], setMessage = _c[1];
-      var _d = reactExports.useState(dummyMessages), messages = _d[0], setMessages = _d[1];
+      var _d = reactExports.useState(initialMessages), messages = _d[0], setMessages = _d[1];
       var _e = reactExports.useState(false), loading = _e[0], setLoading = _e[1];
       var messagesEndRef = reactExports.useRef(null);
       var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
@@ -2034,7 +2046,7 @@
                       setMessage("");
                       if (message.trim() === "")
                           return [2 /*return*/];
-                      setMessages(__spreadArray(__spreadArray([], messages, true), [{ type: EMessageTypes.USER, message: message }], false));
+                      setMessages(__spreadArray(__spreadArray([], messages, true), [{ source: EMessageSource.USER, message: message }], false));
                       params = {
                           question: message,
                           botId: clientConfig === null || clientConfig === void 0 ? void 0 : clientConfig.chatbotId,
@@ -2055,17 +2067,18 @@
                       return [4 /*yield*/, resJson.json()];
                   case 3:
                       response_1 = _a.sent();
-                      // response types: ['text', 'image'+'url', 'video'+'url'] (answer (text) + media content)
-                      // {
-                      // type   // always
-                      // url    // if image or video
-                      // answer // always
-                      // }
                       setMessages(function (prev) {
+                          var _a;
                           return __spreadArray(__spreadArray([], prev, true), [
                               {
-                                  type: EMessageTypes.BOT,
+                                  source: EMessageSource.BOT,
                                   message: response_1.answer,
+                                  type: response_1.type === "image"
+                                      ? EMessageType.IMAGE
+                                      : response_1.type === "video"
+                                          ? EMessageType.VIDEO
+                                          : EMessageType.TEXT,
+                                  url: (_a = response_1.url) !== null && _a !== void 0 ? _a : "",
                               },
                           ], false);
                       });
@@ -2076,7 +2089,7 @@
                       setMessages(function (prev) {
                           return __spreadArray(__spreadArray([], prev, true), [
                               {
-                                  type: EMessageTypes.BOT,
+                                  source: EMessageSource.BOT,
                                   message: "Something went wrong! Please try again.",
                               },
                           ], false);
@@ -2103,8 +2116,10 @@
           scrollToBottom();
       }, [messages]);
       return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info" }), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Want to talk to human?" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
-                          var message = _a.message, type = _a.type, feedback = _a.feedback;
-                          return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(type === EMessageTypes.BOT ? "botMessageWrapper" : "userMessageWrapper") }, { children: [type === EMessageTypes.BOT && (jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) }))), jsxRuntimeExports.jsxs("div", __assign$1({ className: "message ".concat(type === EMessageTypes.BOT ? "botMessage" : "userMessage") }, { children: [message, type === EMessageTypes.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Report", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon" }) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+                          var message = _a.message, source = _a.source, feedback = _a.feedback; _a.type; _a.url;
+                          return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(source === EMessageSource.BOT
+                                  ? "botMessageWrapper"
+                                  : "userMessageWrapper") }, { children: [source === EMessageSource.BOT && (jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) }))), jsxRuntimeExports.jsxs("div", __assign$1({ className: "message ".concat(source === EMessageSource.BOT ? "botMessage" : "userMessage") }, { children: [message, source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Report", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon" }) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
                                                           if (feedback === true)
                                                               return;
                                                           handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
@@ -2112,7 +2127,7 @@
                                                           if (feedback === false)
                                                               return;
                                                           handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
-                                                      } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon" }) }))] })))] })), type === EMessageTypes.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
+                                                      } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon" }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
                       }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button" }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] }))] }));
   };
 
