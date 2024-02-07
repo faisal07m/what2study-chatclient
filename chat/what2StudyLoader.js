@@ -16,9 +16,6 @@
 
 const WHAT2STUDY_CONTAINER = "what2studyChatclientWrapper";
 const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
-const WHAT2STUDY_API = "http://localhost:1339/what2study/parse/functions"; // API URL
-const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
-const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
 (function () {
     const what2StudyClientSrc = "http://localhost:7777/dist/what2StudyClient.js";
@@ -39,31 +36,11 @@ const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
         const { bot_id, token } = getUrlParams(what2StudyScript.src);
 
-        fetch(`${WHAT2STUDY_API}/getChatbotSettings`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
-                "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
-            },
-            body: JSON.stringify({
-                chatbotId: bot_id,
-                accessToken: token,
-            }),
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((responseObject) => {
-                if (responseObject.result) {
-                    const configObject = responseObject.result;
-                    if (window.What2Study) {
-                        window.What2Study(configObject);
-                    } else if (top.What2Study) {
-                        top.What2Study(configObject);
-                    }
-                }
-            });
+        if (window.What2Study) {
+            window.What2Study({ accessToken: token, chatbotId: bot_id });
+        } else if (top.What2Study) {
+            top.What2Study({ accessToken: token, chatbotId: bot_id });
+        }
     };
 
     appendChildren = () => {

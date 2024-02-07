@@ -595,178 +595,6 @@
   	}
   } (jsxRuntime));
 
-  var propTypesExports = {};
-  var propTypes$2 = {
-    get exports(){ return propTypesExports; },
-    set exports(v){ propTypesExports = v; },
-  };
-
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
-
-  var ReactPropTypesSecret$1 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-  var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
-
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
-
-  var ReactPropTypesSecret = ReactPropTypesSecret_1;
-
-  function emptyFunction() {}
-  function emptyFunctionWithReset() {}
-  emptyFunctionWithReset.resetWarningCache = emptyFunction;
-
-  var factoryWithThrowingShims = function() {
-    function shim(props, propName, componentName, location, propFullName, secret) {
-      if (secret === ReactPropTypesSecret) {
-        // It is still safe when called from React.
-        return;
-      }
-      var err = new Error(
-        'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-        'Use PropTypes.checkPropTypes() to call them. ' +
-        'Read more at http://fb.me/use-check-prop-types'
-      );
-      err.name = 'Invariant Violation';
-      throw err;
-    }  shim.isRequired = shim;
-    function getShim() {
-      return shim;
-    }  // Important!
-    // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
-    var ReactPropTypes = {
-      array: shim,
-      bigint: shim,
-      bool: shim,
-      func: shim,
-      number: shim,
-      object: shim,
-      string: shim,
-      symbol: shim,
-
-      any: shim,
-      arrayOf: getShim,
-      element: shim,
-      elementType: shim,
-      instanceOf: getShim,
-      node: shim,
-      objectOf: getShim,
-      oneOf: getShim,
-      oneOfType: getShim,
-      shape: getShim,
-      exact: getShim,
-
-      checkPropTypes: emptyFunctionWithReset,
-      resetWarningCache: emptyFunction
-    };
-
-    ReactPropTypes.PropTypes = ReactPropTypes;
-
-    return ReactPropTypes;
-  };
-
-  /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
-
-  {
-    // By explicitly using `prop-types` you are opting into new production behavior.
-    // http://fb.me/prop-types-in-prod
-    propTypes$2.exports = factoryWithThrowingShims();
-  }
-
-  var DefaultContext = {
-    color: undefined,
-    size: undefined,
-    className: undefined,
-    style: undefined,
-    attr: undefined
-  };
-  var IconContext = React.createContext && React.createContext(DefaultContext);
-
-  var __assign = undefined && undefined.__assign || function () {
-    __assign = Object.assign || function (t) {
-      for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-      return t;
-    };
-    return __assign.apply(this, arguments);
-  };
-  var __rest = undefined && undefined.__rest || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-      if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-    }
-    return t;
-  };
-  function Tree2Element(tree) {
-    return tree && tree.map(function (node, i) {
-      return React.createElement(node.tag, __assign({
-        key: i
-      }, node.attr), Tree2Element(node.child));
-    });
-  }
-  function GenIcon(data) {
-    // eslint-disable-next-line react/display-name
-    return function (props) {
-      return React.createElement(IconBase, __assign({
-        attr: __assign({}, data.attr)
-      }, props), Tree2Element(data.child));
-    };
-  }
-  function IconBase(props) {
-    var elem = function (conf) {
-      var attr = props.attr,
-        size = props.size,
-        title = props.title,
-        svgProps = __rest(props, ["attr", "size", "title"]);
-      var computedSize = size || conf.size || "1em";
-      var className;
-      if (conf.className) className = conf.className;
-      if (props.className) className = (className ? className + " " : "") + props.className;
-      return React.createElement("svg", __assign({
-        stroke: "currentColor",
-        fill: "currentColor",
-        strokeWidth: "0"
-      }, conf.attr, attr, svgProps, {
-        className: className,
-        style: __assign(__assign({
-          color: props.color || conf.color
-        }, conf.style), props.style),
-        height: computedSize,
-        width: computedSize,
-        xmlns: "http://www.w3.org/2000/svg"
-      }), title && React.createElement("title", null, title), props.children);
-    };
-    return IconContext !== undefined ? React.createElement(IconContext.Consumer, null, function (conf) {
-      return elem(conf);
-    }) : elem(DefaultContext);
-  }
-
-  // THIS FILE IS AUTO GENERATED
-  function BsFillMicFill (props) {
-    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"}},{"tag":"path","attr":{"d":"M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"}}]})(props);
-  }function BsFillPlayCircleFill (props) {
-    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"}}]})(props);
-  }function BsChatQuoteFill (props) {
-    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"}}]})(props);
-  }
-
   var EThemes;
   (function (EThemes) {
       EThemes["LIGHT_THEME_1"] = "LIGHT_THEME_1";
@@ -870,6 +698,64 @@
       EChatLanguage["EN"] = "EN";
       EChatLanguage["DE"] = "DE";
   })(EChatLanguage || (EChatLanguage = {}));
+  var defaultClientConfig = {
+      objectId: "",
+      userId: "",
+      universityId: "",
+      chatbotName: "What 2 Study",
+      chatbotBubbleIcons: "https://static-00.iconduck.com/assets.00/chat-icon-1024x1024-o88plv3x.png",
+      chatbotProfileImage: "https://openclipart.org/image/2000px/307415",
+      defaultSettings: {
+          chatbotLanguage: "English",
+          audioNarration: true,
+          narrator: "John",
+      },
+      chatboxBehaviour: {
+          formality: 0,
+          opinion: 0,
+          emotion: 0,
+          length: 0,
+          topics: 0,
+          tone: 0,
+          chatbotBehaviourName: "",
+      },
+      chatbotReplies: {
+          randomQuestions: true,
+          showRandomQuestionsMessage: "",
+      },
+      chatbotContact: {
+          talkToHuman: true,
+          showTalkToHumanMessage: "Connecting to a human...",
+      },
+      chatbotLook: {
+          chatbotHeader: {
+              chatbotHeaderBackgroundColor: "#0c8de9",
+              chatbotHeaderIconFontColor: "#ffffff",
+          },
+          chatbotBackground: {
+              chatbotBackgroundColor: "#ffffff",
+          },
+          textBoxUser: {
+              textBoxUserColor: "#0c8de9",
+              textBoxUserFontColor: "#ffffff",
+              textBoxFontStyle: "bold",
+          },
+          textBoxChatbotReply: {
+              textBoxChatbotReplyColor: "#e0e0e0",
+              textBoxChatbotReplyFontColor: "#000000",
+              textBoxChatboxReplyFontStyle: "normal",
+          },
+          UIGroupA: {
+              UIGroupAUIBackground: "rgb(100, 100, 100)",
+              UIGroupAUIHighlight: "rgb(200, 200, 200)",
+          },
+          UIGroupB: {
+              UIGroupBUIBackground: "rgb(50, 50, 50)",
+              UIGroupBUIHighlight: "rgb(150, 150, 150)",
+          },
+          chatbotLookName: "",
+      },
+  };
   var DataProvider = function (props) {
       var children = props.children;
       var _a = reactExports.useState(false), isChatOpen = _a[0], setIsChatOpen = _a[1]; // COMMITODO: false
@@ -886,6 +772,7 @@
           length: 0.4,
       }), chatFilters = _h[0], setChatFilters = _h[1];
       var _j = reactExports.useState(EChatLanguage.EN), language = _j[0], setLanguage = _j[1];
+      var _k = reactExports.useState(), clientConfig = _k[0], setClientConfig = _k[1]; // config saved by the university in main app
       var generateNewSession = function (showIntroScreen) {
           if (showIntroScreen === void 0) { showIntroScreen = true; }
           var newSessionId = v4();
@@ -911,6 +798,77 @@
               return [2 /*return*/];
           });
       }); };
+      var saveClientConfigurations = function (data) {
+          var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2;
+          if (data === void 0) { data = {}; }
+          var objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, _3 = data.chatbotLook, chatbotLook = _3 === void 0 ? {} : _3;
+          var _4 = defaultClientConfig.chatbotLook, dChatbotHeader = _4.chatbotHeader, dChatbotBackground = _4.chatbotBackground, dTextBoxUser = _4.textBoxUser, dTextBoxChatbotReply = _4.textBoxChatbotReply, dUIGroupA = _4.UIGroupA, dUIGroupB = _4.UIGroupB, dChatbotLookName = _4.chatbotLookName; // destructure default values for easy assignment below
+          var chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
+          var config = {
+              objectId: objectId !== null && objectId !== void 0 ? objectId : defaultClientConfig.objectId,
+              chatbotId: chatbotId !== null && chatbotId !== void 0 ? chatbotId : defaultClientConfig.chatbotId,
+              userId: userId !== null && userId !== void 0 ? userId : defaultClientConfig.userId,
+              universityId: universityId !== null && universityId !== void 0 ? universityId : defaultClientConfig.universityId,
+              chatbotName: chatbotName !== null && chatbotName !== void 0 ? chatbotName : defaultClientConfig.chatbotName,
+              chatbotBubbleIcons: typeof chatbotBubbleIcons == "string"
+                  ? chatbotBubbleIcons
+                  : defaultClientConfig.chatbotBubbleIcons,
+              chatbotProfileImage: typeof chatbotProfileImage == "string"
+                  ? chatbotProfileImage
+                  : defaultClientConfig.chatbotProfileImage,
+              defaultSettings: {
+                  chatbotLanguage: (_a = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.chatbotLanguage) !== null && _a !== void 0 ? _a : defaultClientConfig.defaultSettings.chatbotLanguage,
+                  audioNarration: (_b = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.audioNarration) !== null && _b !== void 0 ? _b : defaultClientConfig.defaultSettings.audioNarration,
+                  narrator: (_c = defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.narrator) !== null && _c !== void 0 ? _c : defaultClientConfig.defaultSettings.narrator,
+              },
+              chatboxBehaviour: {
+                  formality: (_d = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.formality) !== null && _d !== void 0 ? _d : defaultClientConfig.chatboxBehaviour.formality,
+                  opinion: (_e = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.opinion) !== null && _e !== void 0 ? _e : defaultClientConfig.chatboxBehaviour.opinion,
+                  emotion: (_f = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.emotion) !== null && _f !== void 0 ? _f : defaultClientConfig.chatboxBehaviour.emotion,
+                  length: (_g = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.length) !== null && _g !== void 0 ? _g : defaultClientConfig.chatboxBehaviour.length,
+                  topics: (_h = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.topics) !== null && _h !== void 0 ? _h : defaultClientConfig.chatboxBehaviour.topics,
+                  tone: (_j = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.tone) !== null && _j !== void 0 ? _j : defaultClientConfig.chatboxBehaviour.tone,
+                  chatbotBehaviourName: (_k = chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.chatbotBehaviourName) !== null && _k !== void 0 ? _k : defaultClientConfig.chatboxBehaviour.chatbotBehaviourName,
+              },
+              chatbotReplies: {
+                  randomQuestions: (_l = chatbotReplies === null || chatbotReplies === void 0 ? void 0 : chatbotReplies.randomQuestions) !== null && _l !== void 0 ? _l : defaultClientConfig.chatbotReplies.randomQuestions,
+                  showRandomQuestionsMessage: (_m = chatbotReplies === null || chatbotReplies === void 0 ? void 0 : chatbotReplies.showRandomQuestionsMessage) !== null && _m !== void 0 ? _m : defaultClientConfig.chatbotReplies.showRandomQuestionsMessage,
+              },
+              chatbotContact: {
+                  talkToHuman: (_o = chatbotContact === null || chatbotContact === void 0 ? void 0 : chatbotContact.talkToHuman) !== null && _o !== void 0 ? _o : defaultClientConfig.chatbotContact.talkToHuman,
+                  showTalkToHumanMessage: (_p = chatbotContact === null || chatbotContact === void 0 ? void 0 : chatbotContact.showTalkToHumanMessage) !== null && _p !== void 0 ? _p : defaultClientConfig.chatbotContact.showTalkToHumanMessage,
+              },
+              chatbotLook: {
+                  chatbotHeader: {
+                      chatbotHeaderBackgroundColor: (_q = chatbotHeader === null || chatbotHeader === void 0 ? void 0 : chatbotHeader.chatbotHeaderBackgroundColor) !== null && _q !== void 0 ? _q : dChatbotHeader.chatbotHeaderBackgroundColor,
+                      chatbotHeaderIconFontColor: (_r = chatbotHeader === null || chatbotHeader === void 0 ? void 0 : chatbotHeader.chatbotHeaderIconFontColor) !== null && _r !== void 0 ? _r : dChatbotHeader.chatbotHeaderIconFontColor,
+                  },
+                  chatbotBackground: {
+                      chatbotBackgroundColor: (_s = chatbotBackground === null || chatbotBackground === void 0 ? void 0 : chatbotBackground.chatbotBackgroundColor) !== null && _s !== void 0 ? _s : dChatbotBackground === null || dChatbotBackground === void 0 ? void 0 : dChatbotBackground.chatbotBackgroundColor,
+                  },
+                  textBoxUser: {
+                      textBoxUserColor: (_t = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserColor) !== null && _t !== void 0 ? _t : dTextBoxUser.textBoxUserColor,
+                      textBoxUserFontColor: (_u = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserFontColor) !== null && _u !== void 0 ? _u : dTextBoxUser.textBoxUserFontColor,
+                      textBoxFontStyle: (_v = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxFontStyle) !== null && _v !== void 0 ? _v : dTextBoxUser.textBoxFontStyle,
+                  },
+                  textBoxChatbotReply: {
+                      textBoxChatbotReplyColor: (_w = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyColor) !== null && _w !== void 0 ? _w : dTextBoxChatbotReply.textBoxChatbotReplyColor,
+                      textBoxChatbotReplyFontColor: (_x = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyFontColor) !== null && _x !== void 0 ? _x : dTextBoxChatbotReply.textBoxChatbotReplyFontColor,
+                      textBoxChatboxReplyFontStyle: (_y = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatboxReplyFontStyle) !== null && _y !== void 0 ? _y : dTextBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                  },
+                  UIGroupA: {
+                      UIGroupAUIBackground: (_z = UIGroupA === null || UIGroupA === void 0 ? void 0 : UIGroupA.UIGroupAUIBackground) !== null && _z !== void 0 ? _z : dUIGroupA.UIGroupAUIBackground,
+                      UIGroupAUIHighlight: (_0 = UIGroupA === null || UIGroupA === void 0 ? void 0 : UIGroupA.UIGroupAUIHighlight) !== null && _0 !== void 0 ? _0 : dUIGroupA.UIGroupAUIHighlight,
+                  },
+                  UIGroupB: {
+                      UIGroupBUIBackground: (_1 = UIGroupB === null || UIGroupB === void 0 ? void 0 : UIGroupB.UIGroupBUIBackground) !== null && _1 !== void 0 ? _1 : dUIGroupB.UIGroupBUIBackground,
+                      UIGroupBUIHighlight: (_2 = UIGroupB === null || UIGroupB === void 0 ? void 0 : UIGroupB.UIGroupBUIHighlight) !== null && _2 !== void 0 ? _2 : dUIGroupB.UIGroupBUIHighlight,
+                  },
+                  chatbotLookName: chatbotLookName !== null && chatbotLookName !== void 0 ? chatbotLookName : dChatbotLookName,
+              },
+          };
+          setClientConfig(config);
+      };
       var providerValue = {
           sessionId: sessionId,
           setSessionId: setSessionId,
@@ -930,6 +888,8 @@
           setChatFilters: setChatFilters,
           language: language,
           setLanguage: setLanguage,
+          clientConfig: clientConfig,
+          saveClientConfigurations: saveClientConfigurations,
       };
       // On chat client init
       reactExports.useEffect(function () {
@@ -938,6 +898,86 @@
       return jsxRuntimeExports.jsx(DataContext.Provider, __assign$1({ value: providerValue }, { children: children }));
   };
   var useData = function () { return reactExports.useContext(DataContext); };
+
+  var DefaultContext = {
+    color: undefined,
+    size: undefined,
+    className: undefined,
+    style: undefined,
+    attr: undefined
+  };
+  var IconContext = React.createContext && React.createContext(DefaultContext);
+
+  var __assign = undefined && undefined.__assign || function () {
+    __assign = Object.assign || function (t) {
+      for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+      return t;
+    };
+    return __assign.apply(this, arguments);
+  };
+  var __rest = undefined && undefined.__rest || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+      if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+    }
+    return t;
+  };
+  function Tree2Element(tree) {
+    return tree && tree.map(function (node, i) {
+      return React.createElement(node.tag, __assign({
+        key: i
+      }, node.attr), Tree2Element(node.child));
+    });
+  }
+  function GenIcon(data) {
+    // eslint-disable-next-line react/display-name
+    return function (props) {
+      return React.createElement(IconBase, __assign({
+        attr: __assign({}, data.attr)
+      }, props), Tree2Element(data.child));
+    };
+  }
+  function IconBase(props) {
+    var elem = function (conf) {
+      var attr = props.attr,
+        size = props.size,
+        title = props.title,
+        svgProps = __rest(props, ["attr", "size", "title"]);
+      var computedSize = size || conf.size || "1em";
+      var className;
+      if (conf.className) className = conf.className;
+      if (props.className) className = (className ? className + " " : "") + props.className;
+      return React.createElement("svg", __assign({
+        stroke: "currentColor",
+        fill: "currentColor",
+        strokeWidth: "0"
+      }, conf.attr, attr, svgProps, {
+        className: className,
+        style: __assign(__assign({
+          color: props.color || conf.color
+        }, conf.style), props.style),
+        height: computedSize,
+        width: computedSize,
+        xmlns: "http://www.w3.org/2000/svg"
+      }), title && React.createElement("title", null, title), props.children);
+    };
+    return IconContext !== undefined ? React.createElement(IconContext.Consumer, null, function (conf) {
+      return elem(conf);
+    }) : elem(DefaultContext);
+  }
+
+  // THIS FILE IS AUTO GENERATED
+  function BsFillMicFill (props) {
+    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"}},{"tag":"path","attr":{"d":"M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"}}]})(props);
+  }function BsFillPlayCircleFill (props) {
+    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"}}]})(props);
+  }function BsChatQuoteFill (props) {
+    return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"}}]})(props);
+  }
 
   var IconButton = function (props) {
       var Icon = props.icon, onClick = props.onClick, title = props.title, className = props.className, rest = __rest$1(props, ["icon", "onClick", "title", "className"]);
@@ -1270,6 +1310,98 @@
   var PopupItemInfo = function () {
       return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Welcome to What2Study", className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: ["What2Study is a ", jsxRuntimeExports.jsx("span", { children: "chatbot" }), " that was developed to support in all your question and endeavors concerning ", jsxRuntimeExports.jsx("span", { children: "studies" }), "."] })), jsxRuntimeExports.jsx("p", __assign$1({ className: "info-text-title" }, { children: "Please keep in mind:" })), jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: ["What2Study is not a ", jsxRuntimeExports.jsx("span", { children: "person" }), ". Many people were involved in its development and throughly tested weather its responses or suggestions were accurate and helpful. Still, we ", jsxRuntimeExports.jsx("span", { children: "can't guarantee" }), " that every answer given by this chatbot is correct. You need to validate crucial information for yourself."] }))] })));
   };
+
+  var propTypesExports = {};
+  var propTypes$2 = {
+    get exports(){ return propTypesExports; },
+    set exports(v){ propTypesExports = v; },
+  };
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  var ReactPropTypesSecret$1 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+  var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  var ReactPropTypesSecret = ReactPropTypesSecret_1;
+
+  function emptyFunction() {}
+  function emptyFunctionWithReset() {}
+  emptyFunctionWithReset.resetWarningCache = emptyFunction;
+
+  var factoryWithThrowingShims = function() {
+    function shim(props, propName, componentName, location, propFullName, secret) {
+      if (secret === ReactPropTypesSecret) {
+        // It is still safe when called from React.
+        return;
+      }
+      var err = new Error(
+        'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+        'Use PropTypes.checkPropTypes() to call them. ' +
+        'Read more at http://fb.me/use-check-prop-types'
+      );
+      err.name = 'Invariant Violation';
+      throw err;
+    }  shim.isRequired = shim;
+    function getShim() {
+      return shim;
+    }  // Important!
+    // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+    var ReactPropTypes = {
+      array: shim,
+      bigint: shim,
+      bool: shim,
+      func: shim,
+      number: shim,
+      object: shim,
+      string: shim,
+      symbol: shim,
+
+      any: shim,
+      arrayOf: getShim,
+      element: shim,
+      elementType: shim,
+      instanceOf: getShim,
+      node: shim,
+      objectOf: getShim,
+      oneOf: getShim,
+      oneOfType: getShim,
+      shape: getShim,
+      exact: getShim,
+
+      checkPropTypes: emptyFunctionWithReset,
+      resetWarningCache: emptyFunction
+    };
+
+    ReactPropTypes.PropTypes = ReactPropTypes;
+
+    return ReactPropTypes;
+  };
+
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  {
+    // By explicitly using `prop-types` you are opting into new production behavior.
+    // http://fb.me/prop-types-in-prod
+    propTypes$2.exports = factoryWithThrowingShims();
+  }
 
   var rHyphen = /-(.)/g;
   function camelize(string) {
@@ -1993,137 +2125,17 @@
                   : {})), onClick: handleOpenChatButtonClick }, { children: jsxRuntimeExports.jsx(Icon, { style: __assign$1({ fontSize: "22px", color: "#ffffff" }, (isChatOpen ? { color: "#000000" } : {})) }) })) })));
   };
 
-  var ChatClient = function (props) {
-      console.log(props);
-      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsx(ChatContainer, __assign$1({}, props)), jsxRuntimeExports.jsx(OpenChatButton, { icon: BsChatQuoteFill })] }));
-  };
-  ChatClient.propTypes = {
-      objectId: propTypesExports.string,
-      chatbotId: propTypesExports.string.isRequired,
-      userId: propTypesExports.string,
-      chatbotName: propTypesExports.string,
-      chatbotBubbleIcons: propTypesExports.string,
-      chatbotProfileImage: propTypesExports.string,
-      defaultSettings: propTypesExports.shape({
-          chatbotLanguage: propTypesExports.string,
-          audioNarration: propTypesExports.bool,
-          narrator: propTypesExports.string,
-      }),
-      chatboxBehaviour: propTypesExports.shape({
-          formality: propTypesExports.number,
-          opinion: propTypesExports.number,
-          emotion: propTypesExports.number,
-          length: propTypesExports.number,
-          topics: propTypesExports.number,
-          tone: propTypesExports.number,
-          chatbotBehaviourName: propTypesExports.string,
-      }),
-      chatbotReplies: propTypesExports.shape({
-          randomQuestions: propTypesExports.bool,
-          showRandomQuestionsMessage: propTypesExports.string,
-      }),
-      chatbotContact: propTypesExports.shape({
-          talkToHuman: propTypesExports.bool,
-          showTalkToHumanMessage: propTypesExports.string,
-      }),
-      chatbotLook: propTypesExports.shape({
-          chatbotHeader: propTypesExports.shape({
-              chatbotHeaderBackgroundColor: propTypesExports.string,
-              chatbotHeaderIconFontColor: propTypesExports.string,
-          }),
-          chatbotBackground: propTypesExports.shape({
-              chatbotBackgroundColor: propTypesExports.string,
-          }),
-          textBoxUser: propTypesExports.shape({
-              textBoxUserColor: propTypesExports.string,
-              textBoxUserFontColor: propTypesExports.string,
-              textBoxFontStyle: propTypesExports.string,
-          }),
-          textBoxChatbotReply: propTypesExports.shape({
-              textBoxChatbotReplyColor: propTypesExports.string,
-              textBoxChatbotReplyFontColor: propTypesExports.string,
-              textBoxChatboxReplyFontStyle: propTypesExports.string,
-          }),
-          UIGroupA: propTypesExports.shape({
-              UIGroupAUIBackground: propTypesExports.string,
-              UIGroupAUIHighlight: propTypesExports.string,
-          }),
-          UIGroupB: propTypesExports.shape({
-              UIGroupBUIBackground: propTypesExports.string,
-              UIGroupBUIHighlight: propTypesExports.string,
-          }),
-          chatbotLookName: propTypesExports.string,
-      }).isRequired,
-  };
-  ChatClient.defaultProps = {
-      objectId: "",
-      chatbotName: "",
-      chatbotBubbleIcons: "https://static-00.iconduck.com/assets.00/chat-icon-1024x1024-o88plv3x.png",
-      chatbotProfileImage: "https://openclipart.org/image/2000px/307415",
-      defaultSettings: {
-          chatbotLanguage: "English",
-          audioNarration: true,
-          narrator: "John",
-      },
-      chatboxBehaviour: {
-          formality: 0,
-          opinion: 0,
-          emotion: 0,
-          length: 0,
-          topics: 0,
-          tone: 0,
-          chatbotBehaviourName: "",
-      },
-      chatbotReplies: {
-          randomQuestions: true,
-          showRandomQuestionsMessage: "",
-      },
-      chatbotContact: {
-          talkToHuman: true,
-          showTalkToHumanMessage: "Connecting to a human...",
-      },
-      chatbotLook: {
-          chatbotHeader: {
-              chatbotHeaderBackgroundColor: "#0c8de9",
-              chatbotHeaderIconFontColor: "#ffffff",
-          },
-          chatbotBackground: {
-              chatbotBackgroundColor: "#ffffff",
-          },
-          textBoxUser: {
-              textBoxUserColor: "#0c8de9",
-              textBoxUserFontColor: "#ffffff",
-              textBoxFontStyle: "bold",
-          },
-          textBoxChatbotReply: {
-              textBoxChatbotReplyColor: "#e0e0e0",
-              textBoxChatbotReplyFontColor: "#000000",
-              textBoxChatboxReplyFontStyle: "normal",
-          },
-          UIGroupA: {
-              UIGroupAUIBackground: "rgb(100, 100, 100)",
-              UIGroupAUIHighlight: "rgb(200, 200, 200)",
-          },
-          UIGroupB: {
-              UIGroupBUIBackground: "rgb(50, 50, 50)",
-              UIGroupBUIHighlight: "rgb(150, 150, 150)",
-          },
-          chatbotLookName: "",
-      },
-  };
-
-  var LOCALSTORAGE_SESSION_ID_KEY = "what2studyUserSessionId";
   var WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
   var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
   var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
-  var App = function (props) {
-      var _a = reactExports.useState(), chatClientProps = _a[0], setChatClientProps = _a[1];
+  var ChatClient = function (props) {
+      var _a = useData(), clientConfig = _a.clientConfig, saveClientConfigurations = _a.saveClientConfigurations;
       var getChatClientConfiguration = function () { return __awaiter(void 0, void 0, void 0, function () {
           var resJson, response;
           return __generator(this, function (_a) {
               switch (_a.label) {
                   case 0:
-                      if (!("chatbotId" in props && "accessToken" in props && !chatClientProps)) return [3 /*break*/, 3];
+                      if (!("chatbotId" in props && "accessToken" in props)) return [3 /*break*/, 3];
                       return [4 /*yield*/, fetch("".concat(WHAT2STUDY_BACKEND_URL, "/getChatbotSettings"), {
                               method: "POST",
                               headers: {
@@ -2140,19 +2152,28 @@
                       return [4 /*yield*/, resJson.json()];
                   case 2:
                       response = _a.sent();
-                      setChatClientProps((response === null || response === void 0 ? void 0 : response.result) ? response.result : undefined);
+                      saveClientConfigurations(response.result);
                       return [2 /*return*/];
                   case 3:
-                      setChatClientProps(props || {});
+                      saveClientConfigurations(props);
                       return [2 /*return*/];
               }
           });
       }); };
       reactExports.useEffect(function () {
           // TO USE CHAT CLIENT WITH BOT ID AND ACCESS TOKEN
-          getChatClientConfiguration();
+          if (!clientConfig) {
+              getChatClientConfiguration();
+          }
       }, []);
-      return jsxRuntimeExports.jsx(DataProvider, { children: chatClientProps && jsxRuntimeExports.jsx(ChatClient, __assign$1({}, chatClientProps)) });
+      if (clientConfig)
+          return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsx(ChatContainer, {}), jsxRuntimeExports.jsx(OpenChatButton, { icon: BsChatQuoteFill })] }));
+      return jsxRuntimeExports.jsx(reactExports.Fragment, {});
+  };
+
+  var LOCALSTORAGE_SESSION_ID_KEY = "what2studyUserSessionId";
+  var App = function (props) {
+      return (jsxRuntimeExports.jsx(DataProvider, { children: jsxRuntimeExports.jsx(ChatClient, __assign$1({}, props)) }));
   };
 
   var _excluded = ["rootId"];
