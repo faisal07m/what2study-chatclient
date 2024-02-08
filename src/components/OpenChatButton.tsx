@@ -8,9 +8,13 @@ import { IFrame } from "../utilities/IFrame";
 
 const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
     const { icon } = props;
-    const { isChatOpen, setIsChatOpen, setPopupItem } = useData();
+    const { isChatOpen, setIsChatOpen, setPopupItem, clientConfig } = useData();
 
     const Icon = !isChatOpen ? icon : BiChevronDown;
+    const {
+        chatbotBubbleIcons,
+        chatbotLook: { chatbotHeader },
+    } = clientConfig;
 
     const handleOpenChatButtonClick = () => {
         setIsChatOpen(!isChatOpen);
@@ -26,7 +30,7 @@ const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
                     height: "48px",
                     margin: "3px",
                     boxShadow: "0px 2px 3px 0px #9b9b9b",
-                    backgroundColor: "#0c8de9",
+                    backgroundColor: `${chatbotHeader.chatbotHeaderBackgroundColor}`,
                     border: "none",
                     borderRadius: "50%",
                     cursor: "pointer",
@@ -38,13 +42,16 @@ const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
                 }}
                 onClick={handleOpenChatButtonClick}
             >
-                <Icon
-                    style={{
-                        fontSize: "22px",
-                        color: "#ffffff",
-                        ...(isChatOpen ? { color: "#000000" } : {}),
-                    }}
-                />
+                {!isChatOpen ? (
+                    <img src={chatbotBubbleIcons} alt="What2Study" style={{ width: "22px" }} />
+                ) : (
+                    <Icon
+                        style={{
+                            fontSize: "22px",
+                            color: "#000000",
+                        }}
+                    />
+                )}
             </button>
         </IFrame>
     );

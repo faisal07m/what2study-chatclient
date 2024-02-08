@@ -698,13 +698,19 @@
       EChatLanguage["EN"] = "EN";
       EChatLanguage["DE"] = "DE";
   })(EChatLanguage || (EChatLanguage = {}));
+  var AVAILABLE_FONTS = ["inter", "roboto", "poppins"];
+  var getFont = function (font) {
+      if (AVAILABLE_FONTS.includes(font === null || font === void 0 ? void 0 : font.toLowerCase()))
+          return font;
+      return "inter";
+  };
   var defaultClientConfig = {
       objectId: "",
       userId: "",
       universityId: "",
       chatbotName: "What 2 Study",
-      chatbotBubbleIcons: "https://static-00.iconduck.com/assets.00/chat-icon-1024x1024-o88plv3x.png",
-      chatbotProfileImage: "https://openclipart.org/image/2000px/307415",
+      chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
+      chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
       defaultSettings: {
           chatbotLanguage: "English",
           audioNarration: true,
@@ -738,12 +744,12 @@
           textBoxUser: {
               textBoxUserColor: "#0c8de9",
               textBoxUserFontColor: "#ffffff",
-              textBoxFontStyle: "bold",
+              textBoxFontStyle: "inter",
           },
           textBoxChatbotReply: {
               textBoxChatbotReplyColor: "#e0e0e0",
               textBoxChatbotReplyFontColor: "#000000",
-              textBoxChatboxReplyFontStyle: "normal",
+              textBoxChatboxReplyFontStyle: "inter",
           },
           UIGroupA: {
               UIGroupAUIBackground: "rgb(100, 100, 100)",
@@ -796,6 +802,7 @@
       }), chatFilters = _h[0], setChatFilters = _h[1];
       var _j = reactExports.useState(EChatLanguage.EN), language = _j[0], setLanguage = _j[1];
       var _k = reactExports.useState(), clientConfig = _k[0], setClientConfig = _k[1]; // config saved by the university in main app
+      var _l = reactExports.useState(false), isClientConfigFetched = _l[0], setIsClientConfigFetched = _l[1];
       var generateNewSession = function (showIntroScreen) {
           if (showIntroScreen === void 0) { showIntroScreen = true; }
           var newSessionId = v4();
@@ -897,12 +904,12 @@
                                   textBoxUser: {
                                       textBoxUserColor: (_y = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserColor) !== null && _y !== void 0 ? _y : dTextBoxUser.textBoxUserColor,
                                       textBoxUserFontColor: (_z = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxUserFontColor) !== null && _z !== void 0 ? _z : dTextBoxUser.textBoxUserFontColor,
-                                      textBoxFontStyle: (_0 = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxFontStyle) !== null && _0 !== void 0 ? _0 : dTextBoxUser.textBoxFontStyle,
+                                      textBoxFontStyle: getFont((_0 = textBoxUser === null || textBoxUser === void 0 ? void 0 : textBoxUser.textBoxFontStyle) !== null && _0 !== void 0 ? _0 : dTextBoxUser.textBoxFontStyle),
                                   },
                                   textBoxChatbotReply: {
                                       textBoxChatbotReplyColor: (_1 = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyColor) !== null && _1 !== void 0 ? _1 : dTextBoxChatbotReply.textBoxChatbotReplyColor,
                                       textBoxChatbotReplyFontColor: (_2 = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatbotReplyFontColor) !== null && _2 !== void 0 ? _2 : dTextBoxChatbotReply.textBoxChatbotReplyFontColor,
-                                      textBoxChatboxReplyFontStyle: (_3 = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatboxReplyFontStyle) !== null && _3 !== void 0 ? _3 : dTextBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                                      textBoxChatboxReplyFontStyle: getFont((_3 = textBoxChatbotReply === null || textBoxChatbotReply === void 0 ? void 0 : textBoxChatbotReply.textBoxChatboxReplyFontStyle) !== null && _3 !== void 0 ? _3 : dTextBoxChatbotReply.textBoxChatboxReplyFontStyle),
                                   },
                                   UIGroupA: {
                                       UIGroupAUIBackground: (_4 = UIGroupA === null || UIGroupA === void 0 ? void 0 : UIGroupA.UIGroupAUIBackground) !== null && _4 !== void 0 ? _4 : dUIGroupA.UIGroupAUIBackground,
@@ -916,6 +923,7 @@
                               },
                               _e);
                           setClientConfig(config);
+                          setIsClientConfigFetched(true);
                           return [2 /*return*/];
                   }
               });
@@ -940,7 +948,8 @@
           setChatFilters: setChatFilters,
           language: language,
           setLanguage: setLanguage,
-          clientConfig: clientConfig,
+          clientConfig: clientConfig !== null && clientConfig !== void 0 ? clientConfig : defaultClientConfig,
+          isClientConfigFetched: isClientConfigFetched,
           saveClientConfigurations: saveClientConfigurations,
       };
       // On chat client init
@@ -1032,8 +1041,8 @@
   }
 
   var IconButton = function (props) {
-      var Icon = props.icon, onClick = props.onClick, title = props.title, className = props.className, rest = __rest$1(props, ["icon", "onClick", "title", "className"]);
-      return (jsxRuntimeExports.jsxs("button", __assign$1({ title: title, onClick: onClick, className: "app-icon-button ".concat(className) }, rest, { children: [jsxRuntimeExports.jsx("div", { className: "app-icon-button-anim" }), jsxRuntimeExports.jsx(Icon, { className: "app-icon-button-icon" })] })));
+      var Icon = props.icon, onClick = props.onClick, title = props.title, className = props.className, _a = props.iconColor, iconColor = _a === void 0 ? "#ffffff" : _a, rest = __rest$1(props, ["icon", "onClick", "title", "className", "iconColor"]);
+      return (jsxRuntimeExports.jsxs("button", __assign$1({ title: title, onClick: onClick, className: "app-icon-button ".concat(className) }, rest, { children: [jsxRuntimeExports.jsx("div", { className: "app-icon-button-anim" }), jsxRuntimeExports.jsx(Icon, { className: "app-icon-button-icon", color: iconColor })] })));
   };
 
   // THIS FILE IS AUTO GENERATED
@@ -1225,9 +1234,7 @@
   };
 
   // THIS FILE IS AUTO GENERATED
-  function RiChatSmile3Fill (props) {
-    return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22H2L4.92893 19.0711C3.11929 17.2614 2 14.7614 2 12C2 6.47715 6.47715 2 12 2ZM16 13H8C8 15.2091 9.79086 17 12 17C14.2091 17 16 15.2091 16 13Z"}}]})(props);
-  }function RiCloseFill (props) {
+  function RiCloseFill (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z"}}]})(props);
   }function RiUser6Fill (props) {
     return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12.0009 17C15.6633 17 18.8659 18.5751 20.608 20.9247L18.766 21.796C17.3482 20.1157 14.8483 19 12.0009 19C9.15346 19 6.6535 20.1157 5.23577 21.796L3.39453 20.9238C5.13673 18.5747 8.33894 17 12.0009 17ZM12.0009 2C14.7623 2 17.0009 4.23858 17.0009 7V10C17.0009 12.7614 14.7623 15 12.0009 15C9.23945 15 7.00087 12.7614 7.00087 10V7C7.00087 4.23858 9.23945 2 12.0009 2Z"}}]})(props);
@@ -1990,11 +1997,15 @@
   }
 
   var IntroPage = function () {
-      var setCurrentRoute = useData().setCurrentRoute;
-      var _a = reactExports.useState(0), introPage = _a[0], setIntroPage = _a[1];
-      var _b = reactExports.useState(false), isVideoOpen = _b[0], setIsVideoOpen = _b[1];
-      return (jsxRuntimeExports.jsx(reactExports.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: "https://i.ibb.co/rcrz1c6/bot-icon.png", className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: "Play Tutorial" }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: "https://i.ibb.co/rcrz1c6/bot-icon.png", className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
+      var _a = useData(), setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig;
+      var _b = reactExports.useState(0), introPage = _b[0], setIntroPage = _b[1];
+      var _c = reactExports.useState(false), isVideoOpen = _c[0], setIsVideoOpen = _c[1];
+      var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader;
+      return (jsxRuntimeExports.jsx(reactExports.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: "Play Tutorial" }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
                           return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
+                      }, style: {
+                          backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
+                          color: chatbotHeader.chatbotHeaderIconFontColor,
                       } }, { children: "Okay!" }))] })) }));
   };
 
@@ -2036,6 +2047,7 @@
       var _d = reactExports.useState(initialMessages), messages = _d[0], setMessages = _d[1];
       var _e = reactExports.useState(false), loading = _e[0], setLoading = _e[1];
       var messagesEndRef = reactExports.useRef(null);
+      var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, _f = clientConfig.chatbotLook, textBoxUser = _f.textBoxUser, textBoxChatbotReply = _f.textBoxChatbotReply, UIGroupA = _f.UIGroupA, UIGroupB = _f.UIGroupB;
       var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
           var params, options, resJson, response_1;
           return __generator(this, function (_a) {
@@ -2049,9 +2061,9 @@
                       setMessages(__spreadArray(__spreadArray([], messages, true), [{ source: EMessageSource.USER, message: message }], false));
                       params = {
                           question: message,
-                          botId: clientConfig === null || clientConfig === void 0 ? void 0 : clientConfig.chatbotId,
+                          botId: chatbotId,
                           sessionId: sessionId,
-                          userId: clientConfig === null || clientConfig === void 0 ? void 0 : clientConfig.userId,
+                          userId: userId,
                       };
                       options = {
                           method: "POST",
@@ -2115,20 +2127,35 @@
       reactExports.useEffect(function () {
           scrollToBottom();
       }, [messages]);
-      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info" }), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Want to talk to human?" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
+      return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", style: { backgroundColor: textBoxUser.textBoxUserColor }, icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info", iconColor: textBoxUser.textBoxUserFontColor }), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
+                              backgroundColor: UIGroupB.UIGroupBUIBackground,
+                              color: UIGroupB.UIGroupBUIHighlight,
+                          }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Want to talk to human?" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
                           var message = _a.message, source = _a.source, feedback = _a.feedback; _a.type; _a.url;
                           return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(source === EMessageSource.BOT
                                   ? "botMessageWrapper"
-                                  : "userMessageWrapper") }, { children: [source === EMessageSource.BOT && (jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) }))), jsxRuntimeExports.jsxs("div", __assign$1({ className: "message ".concat(source === EMessageSource.BOT ? "botMessage" : "userMessage") }, { children: [message, source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Report", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon" }) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+                                  : "userMessageWrapper") }, { children: [source === EMessageSource.BOT && (jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) }))), jsxRuntimeExports.jsxs("div", __assign$1({ className: "message ".concat(source === EMessageSource.BOT ? "botMessage" : "userMessage"), style: source === EMessageSource.BOT
+                                          ? {
+                                              backgroundColor: textBoxChatbotReply.textBoxChatbotReplyColor,
+                                              color: textBoxChatbotReply.textBoxChatbotReplyFontColor,
+                                              fontFamily: textBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                                          }
+                                          : {
+                                              backgroundColor: textBoxUser.textBoxUserColor,
+                                              color: textBoxUser.textBoxUserFontColor,
+                                              fontFamily: textBoxUser.textBoxFontStyle,
+                                          } }, { children: [message, source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Report", className: "action-button", onClick: console.log, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
                                                           if (feedback === true)
                                                               return;
                                                           handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
-                                                      } }, { children: feedback === true ? (jsxRuntimeExports.jsx(MdThumbUpAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbUpOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Dislike", className: "action-button", onClick: function () {
+                                                      }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: feedback === true ? (jsxRuntimeExports.jsx(MdThumbUpAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) : (jsxRuntimeExports.jsx(MdOutlineThumbUpOffAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Dislike", className: "action-button", onClick: function () {
                                                           if (feedback === false)
                                                               return;
                                                           handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
-                                                      } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon" })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon" })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: console.log }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon" }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
-                      }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiChatSmile3Fill, { className: "botIcon" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button" }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon" }) }))] }))] }));
+                                                      }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: console.log, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
+                      }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", style: {
+                              backgroundColor: UIGroupB.UIGroupBUIBackground,
+                          }, onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon", color: UIGroupB.UIGroupBUIHighlight }) }))] }))] }));
   };
 
   var DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -2160,8 +2187,9 @@
       }
   };
   var ChatContainer = function () {
-      var _a = useData(), isChatOpen = _a.isChatOpen, isMobileScreen = _a.isMobileScreen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute;
-      return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon" }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title" }, { children: "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters" }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings" }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close" }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
+      var _a = useData(), isChatOpen = _a.isChatOpen, isMobileScreen = _a.isMobileScreen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute, clientConfig = _a.clientConfig;
+      var _b = clientConfig.chatbotLook, chatbotHeader = _b.chatbotHeader, chatbotBackground = _b.chatbotBackground;
+      return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
   };
 
   // THIS FILE IS AUTO GENERATED
@@ -2171,32 +2199,36 @@
 
   var OpenChatButton = function (props) {
       var icon = props.icon;
-      var _a = useData(), isChatOpen = _a.isChatOpen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem;
+      var _a = useData(), isChatOpen = _a.isChatOpen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, clientConfig = _a.clientConfig;
       var Icon = !isChatOpen ? icon : BiChevronDown;
+      var chatbotBubbleIcons = clientConfig.chatbotBubbleIcons, chatbotHeader = clientConfig.chatbotLook.chatbotHeader;
       var handleOpenChatButtonClick = function () {
           setIsChatOpen(!isChatOpen);
           setPopupItem(EPopupItem.NONE);
       };
       return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: IframeType.CHAT_OPEN_BUTTON }, { children: jsxRuntimeExports.jsx("button", __assign$1({ 
               // inline styles for button as loading stylesheets takes time on browser (causes to show button without styles)
-              style: __assign$1({ width: "48px", height: "48px", margin: "3px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "#0c8de9", border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
+              style: __assign$1({ width: "48px", height: "48px", margin: "3px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "".concat(chatbotHeader.chatbotHeaderBackgroundColor), border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
                   ? {
                       backgroundColor: "#f0f0f0",
                   }
-                  : {})), onClick: handleOpenChatButtonClick }, { children: jsxRuntimeExports.jsx(Icon, { style: __assign$1({ fontSize: "22px", color: "#ffffff" }, (isChatOpen ? { color: "#000000" } : {})) }) })) })));
+                  : {})), onClick: handleOpenChatButtonClick }, { children: !isChatOpen ? (jsxRuntimeExports.jsx("img", { src: chatbotBubbleIcons, alt: "What2Study", style: { width: "22px" } })) : (jsxRuntimeExports.jsx(Icon, { style: {
+                      fontSize: "22px",
+                      color: "#000000",
+                  } })) })) })));
   };
 
   var WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
   var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
   var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
   var ChatClient = function (props) {
-      var _a = useData(), clientConfig = _a.clientConfig, saveClientConfigurations = _a.saveClientConfigurations;
+      var _a = useData(), saveClientConfigurations = _a.saveClientConfigurations, isClientConfigFetched = _a.isClientConfigFetched;
       var getChatClientConfiguration = function () { return __awaiter(void 0, void 0, void 0, function () {
           var resJson, response;
           return __generator(this, function (_a) {
               switch (_a.label) {
                   case 0:
-                      if (!("chatbotId" in props && "accessToken" in props)) return [3 /*break*/, 3];
+                      if (!("chatbotId" in props && "accessToken" in props)) return [3 /*break*/, 4];
                       return [4 /*yield*/, fetch("".concat(WHAT2STUDY_BACKEND_URL, "/getChatbotSettings"), {
                               method: "POST",
                               headers: {
@@ -2213,21 +2245,22 @@
                       return [4 /*yield*/, resJson.json()];
                   case 2:
                       response = _a.sent();
-                      saveClientConfigurations(response.result);
-                      return [2 /*return*/];
+                      return [4 /*yield*/, saveClientConfigurations(response.result)];
                   case 3:
-                      saveClientConfigurations(props);
+                      _a.sent();
+                      return [2 /*return*/];
+                  case 4: return [4 /*yield*/, saveClientConfigurations(props)];
+                  case 5:
+                      _a.sent();
                       return [2 /*return*/];
               }
           });
       }); };
       reactExports.useEffect(function () {
           // TO USE CHAT CLIENT WITH BOT ID AND ACCESS TOKEN
-          if (!clientConfig) {
-              getChatClientConfiguration();
-          }
+          getChatClientConfiguration();
       }, []);
-      if (clientConfig)
+      if (isClientConfigFetched)
           return (jsxRuntimeExports.jsxs(reactExports.Fragment, { children: [jsxRuntimeExports.jsx(ChatContainer, {}), jsxRuntimeExports.jsx(OpenChatButton, { icon: BsChatQuoteFill })] }));
       return jsxRuntimeExports.jsx(reactExports.Fragment, {});
   };

@@ -3,7 +3,7 @@ import { IIconButtonProps } from "constants/types";
 import { FC } from "react";
 
 const IconButton: FC<IIconButtonProps> = (props) => {
-    const { icon: Icon, onClick, title, className, ...rest } = props;
+    const { icon: Icon, onClick, title, className, iconColor = "#ffffff", ...rest } = props;
 
     return (
         <button
@@ -13,7 +13,7 @@ const IconButton: FC<IIconButtonProps> = (props) => {
             {...rest}
         >
             <div className="app-icon-button-anim"></div>
-            <Icon className="app-icon-button-icon" />
+            <Icon className="app-icon-button-icon" color={iconColor} />
         </button>
     );
 };

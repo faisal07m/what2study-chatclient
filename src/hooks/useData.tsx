@@ -56,13 +56,20 @@ export enum EChatLanguage {
     DE = "DE",
 }
 
+const AVAILABLE_FONTS = ["inter", "roboto", "poppins"];
+
+const getFont = (font: string): string => {
+    if (AVAILABLE_FONTS.includes(font?.toLowerCase())) return font;
+    return "inter";
+};
+
 const defaultClientConfig = {
     objectId: "",
     userId: "",
     universityId: "",
     chatbotName: "What 2 Study",
-    chatbotBubbleIcons: "https://static-00.iconduck.com/assets.00/chat-icon-1024x1024-o88plv3x.png",
-    chatbotProfileImage: "https://openclipart.org/image/2000px/307415",
+    chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
+    chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
     defaultSettings: {
         chatbotLanguage: "English",
         audioNarration: true,
@@ -96,12 +103,12 @@ const defaultClientConfig = {
         textBoxUser: {
             textBoxUserColor: "#0c8de9",
             textBoxUserFontColor: "#ffffff",
-            textBoxFontStyle: "bold",
+            textBoxFontStyle: "inter",
         } as ISubConfigLookUserTextBox,
         textBoxChatbotReply: {
             textBoxChatbotReplyColor: "#e0e0e0",
             textBoxChatbotReplyFontColor: "#000000",
-            textBoxChatboxReplyFontStyle: "normal",
+            textBoxChatboxReplyFontStyle: "inter",
         } as ISubConfigLookBotTextBox,
         UIGroupA: {
             UIGroupAUIBackground: "rgb(100, 100, 100)",
@@ -148,6 +155,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
     });
     const [language, setLanguage] = useState<EChatLanguage>(EChatLanguage.EN);
     const [clientConfig, setClientConfig] = useState<IClientConfigurations>(); // config saved by the university in main app
+    const [isClientConfigFetched, setIsClientConfigFetched] = useState<boolean>(false);
 
     const generateNewSession = (showIntroScreen = true) => {
         const newSessionId = uuidv4();
@@ -282,8 +290,9 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
                         textBoxUser?.textBoxUserColor ?? dTextBoxUser.textBoxUserColor,
                     textBoxUserFontColor:
                         textBoxUser?.textBoxUserFontColor ?? dTextBoxUser.textBoxUserFontColor,
-                    textBoxFontStyle:
-                        textBoxUser?.textBoxFontStyle ?? dTextBoxUser.textBoxFontStyle,
+                    textBoxFontStyle: getFont(
+                        textBoxUser?.textBoxFontStyle ?? dTextBoxUser.textBoxFontStyle
+                    ),
                 } as ISubConfigLookUserTextBox,
                 textBoxChatbotReply: {
                     textBoxChatbotReplyColor:
@@ -292,9 +301,10 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
                     textBoxChatbotReplyFontColor:
                         textBoxChatbotReply?.textBoxChatbotReplyFontColor ??
                         dTextBoxChatbotReply.textBoxChatbotReplyFontColor,
-                    textBoxChatboxReplyFontStyle:
+                    textBoxChatboxReplyFontStyle: getFont(
                         textBoxChatbotReply?.textBoxChatboxReplyFontStyle ??
-                        dTextBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                            dTextBoxChatbotReply.textBoxChatboxReplyFontStyle
+                    ),
                 } as ISubConfigLookBotTextBox,
                 UIGroupA: {
                     UIGroupAUIBackground:
@@ -313,6 +323,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         } as IClientConfigurations;
 
         setClientConfig(config);
+        setIsClientConfigFetched(true);
     };
 
     const providerValue: IUseData = {
@@ -334,7 +345,8 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setChatFilters,
         language,
         setLanguage,
-        clientConfig,
+        clientConfig: clientConfig ?? defaultClientConfig,
+        isClientConfigFetched,
         saveClientConfigurations,
     };
 

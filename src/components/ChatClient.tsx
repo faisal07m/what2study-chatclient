@@ -11,7 +11,7 @@ const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
 const ChatClient: FC = (props) => {
-    const { clientConfig, saveClientConfigurations } = useData();
+    const { saveClientConfigurations, isClientConfigFetched } = useData();
 
     const getChatClientConfiguration = async () => {
         if ("chatbotId" in props && "accessToken" in props) {
@@ -27,20 +27,18 @@ const ChatClient: FC = (props) => {
                 }),
             });
             const response = await resJson.json();
-            saveClientConfigurations(response.result);
+            await saveClientConfigurations(response.result);
             return;
         }
-        saveClientConfigurations(props);
+        await saveClientConfigurations(props);
     };
 
     useEffect(() => {
         // TO USE CHAT CLIENT WITH BOT ID AND ACCESS TOKEN
-        if (!clientConfig) {
-            getChatClientConfiguration();
-        }
+        getChatClientConfiguration();
     }, []);
 
-    if (clientConfig)
+    if (isClientConfigFetched)
         return (
             <Fragment>
                 <ChatContainer />

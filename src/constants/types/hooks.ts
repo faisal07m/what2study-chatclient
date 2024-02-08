@@ -21,8 +21,9 @@ export interface IUseData {
     setChatFilters: (value: IChatFilters) => void;
     language: EChatLanguage;
     setLanguage: (value: EChatLanguage) => void;
-    clientConfig: IClientConfigurations | undefined;
-    saveClientConfigurations: (value: any) => void;
+    clientConfig: IClientConfigurations;
+    isClientConfigFetched: boolean;
+    saveClientConfigurations: (value: any) => Promise<void>;
 }
 
 export interface IConfigDefaultSettings {

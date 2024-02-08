@@ -45,5 +45,6 @@ export interface IPopupContentsProps {
 // Utilities
 export interface IIconButtonProps extends HTMLAttributes<HTMLButtonElement> {
     icon: IconType;
+    iconColor?: string;
     onClick: MouseEventHandler<HTMLButtonElement>;
 }

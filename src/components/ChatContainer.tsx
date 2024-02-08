@@ -31,7 +31,12 @@ const getScreenAsPerRoute = (route: ERoute) => {
 };
 
 const ChatContainer: FC = () => {
-    const { isChatOpen, isMobileScreen, setIsChatOpen, setPopupItem, currentRoute } = useData();
+    const { isChatOpen, isMobileScreen, setIsChatOpen, setPopupItem, currentRoute, clientConfig } =
+        useData();
+
+    const {
+        chatbotLook: { chatbotHeader, chatbotBackground },
+    } = clientConfig;
 
     return (
         <IFrame
@@ -40,11 +45,25 @@ const ChatContainer: FC = () => {
             }
         >
             <PopupScreen />
-            <div className="chatContainerWrapper">
-                <div className="header-wrapper">
+            <div
+                className="chatContainerWrapper"
+                style={{ backgroundColor: chatbotBackground.chatbotBackgroundColor }}
+            >
+                <div
+                    className="header-wrapper"
+                    style={{ backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor }}
+                >
                     <div className="header">
-                        <GiGraduateCap className="header-icon" />
-                        <h1 className="header-title">What2Study</h1>
+                        <GiGraduateCap
+                            className="header-icon"
+                            style={{ color: chatbotHeader.chatbotHeaderIconFontColor }}
+                        />
+                        <h1
+                            className="header-title"
+                            style={{ color: chatbotHeader.chatbotHeaderIconFontColor }}
+                        >
+                            What2Study
+                        </h1>
                     </div>
                     <div className="settings-wrapper">
                         <IconButton
@@ -52,12 +71,14 @@ const ChatContainer: FC = () => {
                             onClick={() => setPopupItem(EPopupItem.FILTERS)}
                             aria-label="Filters"
                             title="Filters"
+                            iconColor={chatbotHeader.chatbotHeaderIconFontColor}
                         />
                         <IconButton
                             icon={IoSettingsSharp}
                             onClick={() => setPopupItem(EPopupItem.SETTINGS)}
                             aria-label="Settings"
                             title="Settings"
+                            iconColor={chatbotHeader.chatbotHeaderIconFontColor}
                         />
                         {isMobileScreen && (
                             <IconButton
@@ -65,6 +86,7 @@ const ChatContainer: FC = () => {
                                 onClick={() => setIsChatOpen(false)}
                                 aria-label="Close"
                                 title="Close"
+                                iconColor={chatbotHeader.chatbotHeaderIconFontColor}
                             />
                         )}
                     </div>

@@ -1,15 +1,19 @@
-import { EPopupItem, ERoute, useData } from "hooks";
+import { ERoute, useData } from "hooks";
 import IconButton from "utilities/IconButton";
 
 import { FC, Fragment, useState } from "react";
 import { BsFillPlayCircleFill } from "react-icons/bs";
-import { IoMdVolumeHigh, IoMdVolumeOff } from "react-icons/io";
-import { MdCancel, MdInfoOutline } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 
 const IntroPage: FC = () => {
-    const { setCurrentRoute } = useData();
+    const { setCurrentRoute, clientConfig } = useData();
     const [introPage, setIntroPage] = useState(0);
     const [isVideoOpen, setIsVideoOpen] = useState(false);
+
+    const {
+        chatbotProfileImage,
+        chatbotLook: { chatbotHeader },
+    } = clientConfig;
 
     return (
         <Fragment>
@@ -29,11 +33,7 @@ const IntroPage: FC = () => {
                 )}
                 {introPage == 0 && (
                     <div className="is-contentWrapper">
-                        <img
-                            src="https://i.ibb.co/rcrz1c6/bot-icon.png"
-                            className="is-icon"
-                            alt="Bot Icon"
-                        />
+                        <img src={chatbotProfileImage} className="is-icon" alt="Bot Icon" />
                         <div className="is-infoBlock">
                             <p className="is-block-text">
                                 Hello. It's nice to meet you!{" "}
@@ -56,11 +56,7 @@ const IntroPage: FC = () => {
                 )}
                 {introPage == 1 && (
                     <div className="is-contentWrapper">
-                        <img
-                            src="https://i.ibb.co/rcrz1c6/bot-icon.png"
-                            className="is-icon"
-                            alt="Bot Icon"
-                        />
+                        <img src={chatbotProfileImage} className="is-icon" alt="Bot Icon" />
                         <div className="is-infoBlock">
                             <p className="is-block-text">
                                 Hello. It's nice to meet you!{" "}
@@ -85,6 +81,10 @@ const IntroPage: FC = () => {
                     onClick={() =>
                         introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN)
                     }
+                    style={{
+                        backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
+                        color: chatbotHeader.chatbotHeaderIconFontColor,
+                    }}
                 >
                     Okay!
                 </button>

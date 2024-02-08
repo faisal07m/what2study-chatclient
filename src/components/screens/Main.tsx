@@ -63,6 +63,13 @@ const Main: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    const {
+        chatbotProfileImage,
+        chatbotId,
+        userId,
+        chatbotLook: { textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB },
+    } = clientConfig;
+
     const handleUserMessage = async (e: SyntheticEvent): Promise<void> => {
         e?.preventDefault();
         setLoading(true);
@@ -72,9 +79,9 @@ const Main: FC = () => {
 
         const params = {
             question: message,
-            botId: clientConfig?.chatbotId,
+            botId: chatbotId,
             sessionId,
-            userId: clientConfig?.userId,
+            userId: userId,
         };
         const options = {
             method: "POST",
@@ -141,13 +148,19 @@ const Main: FC = () => {
             <div className="info-talktohuman">
                 <IconButton
                     className="info-button"
+                    style={{ backgroundColor: textBoxUser.textBoxUserColor }}
                     icon={MdInfoOutline}
                     onClick={() => setPopupItem(EPopupItem.BOT_INFO)}
                     aria-label="Info"
                     title="Info"
+                    iconColor={textBoxUser.textBoxUserFontColor}
                 />
                 <button
                     className="talk-to-human-btn"
+                    style={{
+                        backgroundColor: UIGroupB.UIGroupBUIBackground,
+                        color: UIGroupB.UIGroupBUIHighlight,
+                    }}
                     onClick={() => setCurrentRoute(ERoute.TALK_TO_HUMAN)}
                 >
                     Want to talk to human?
@@ -158,6 +171,8 @@ const Main: FC = () => {
                     onClick={() => setIsBotVolumeOn(!isBotVolumeOn)}
                     aria-label="Volume"
                     title={isBotVolumeOn ? "Mute" : "Play"}
+                    style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
+                    iconColor={UIGroupA.UIGroupAUIHighlight}
                 />
             </div>
             <div className="chatContainer">
@@ -171,14 +186,32 @@ const Main: FC = () => {
                         }`}
                     >
                         {source === EMessageSource.BOT && (
-                            <div className="bot-iconWrapper">
-                                <RiChatSmile3Fill className="botIcon" />
+                            <div
+                                className="bot-iconWrapper"
+                                style={{ borderColor: UIGroupA.UIGroupAUIBackground }}
+                            >
+                                <img src={chatbotProfileImage} alt="bot" className="bot-iconImg" />
                             </div>
                         )}
                         <div
                             className={`message ${
                                 source === EMessageSource.BOT ? "botMessage" : "userMessage"
                             }`}
+                            style={
+                                source === EMessageSource.BOT
+                                    ? {
+                                          backgroundColor:
+                                              textBoxChatbotReply.textBoxChatbotReplyColor,
+                                          color: textBoxChatbotReply.textBoxChatbotReplyFontColor,
+                                          fontFamily:
+                                              textBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                                      }
+                                    : {
+                                          backgroundColor: textBoxUser.textBoxUserColor,
+                                          color: textBoxUser.textBoxUserFontColor,
+                                          fontFamily: textBoxUser.textBoxFontStyle,
+                                      }
+                            }
                         >
                             {message}
                             {source === EMessageSource.BOT && (
@@ -187,8 +220,12 @@ const Main: FC = () => {
                                         title="Report"
                                         className="action-button"
                                         onClick={console.log}
+                                        style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
                                     >
-                                        <MdOutlineWarningAmber className="action-icon" />
+                                        <MdOutlineWarningAmber
+                                            className="action-icon"
+                                            color={UIGroupA.UIGroupAUIHighlight}
+                                        />
                                     </button>
                                     <button
                                         title="Like"
@@ -200,11 +237,18 @@ const Main: FC = () => {
                                                 typeof feedback !== "undefined" ? !feedback : true
                                             );
                                         }}
+                                        style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
                                     >
                                         {feedback === true ? (
-                                            <MdThumbUpAlt className="action-icon" />
+                                            <MdThumbUpAlt
+                                                className="action-icon"
+                                                color={UIGroupA.UIGroupAUIHighlight}
+                                            />
                                         ) : (
-                                            <MdOutlineThumbUpOffAlt className="action-icon" />
+                                            <MdOutlineThumbUpOffAlt
+                                                className="action-icon"
+                                                color={UIGroupA.UIGroupAUIHighlight}
+                                            />
                                         )}
                                     </button>
                                     <button
@@ -217,19 +261,30 @@ const Main: FC = () => {
                                                 typeof feedback !== "undefined" ? !feedback : false
                                             );
                                         }}
+                                        style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
                                     >
                                         {feedback === false ? (
-                                            <MdThumbDownAlt className="action-icon" />
+                                            <MdThumbDownAlt
+                                                className="action-icon"
+                                                color={UIGroupA.UIGroupAUIHighlight}
+                                            />
                                         ) : (
-                                            <MdOutlineThumbDownOffAlt className="action-icon" />
+                                            <MdOutlineThumbDownOffAlt
+                                                className="action-icon"
+                                                color={UIGroupA.UIGroupAUIHighlight}
+                                            />
                                         )}
                                     </button>
                                     <button
                                         title="Regenrate Response"
                                         className="action-button"
                                         onClick={console.log}
+                                        style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
                                     >
-                                        <MdReplay className="action-icon" />
+                                        <MdReplay
+                                            className="action-icon"
+                                            color={UIGroupA.UIGroupAUIHighlight}
+                                        />
                                     </button>
                                 </div>
                             )}
@@ -243,8 +298,11 @@ const Main: FC = () => {
                 ))}
                 {loading && (
                     <div className="messageWrapper botMessageWrapper">
-                        <div className="bot-iconWrapper">
-                            <RiChatSmile3Fill className="botIcon" />
+                        <div
+                            className="bot-iconWrapper"
+                            style={{ borderColor: UIGroupA.UIGroupAUIBackground }}
+                        >
+                            <img src={chatbotProfileImage} alt="bot" className="bot-iconImg" />
                         </div>
                         <div className="typing-anim-wrapper">
                             <div className="typing-dot-pulse"></div>
@@ -258,6 +316,8 @@ const Main: FC = () => {
                     icon={BsFillMicFill}
                     onClick={console.log}
                     className="voice-input-button"
+                    style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
+                    iconColor={UIGroupA.UIGroupAUIHighlight}
                 />
                 <input
                     className={`inputField ${isInputFocused ? "inputFieldFocused" : ""}`}
@@ -267,8 +327,15 @@ const Main: FC = () => {
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
                 />
-                <button type="submit" className="sendButton" onClick={handleUserMessage}>
-                    <IoSend className="buttonIcon" />
+                <button
+                    type="submit"
+                    className="sendButton"
+                    style={{
+                        backgroundColor: UIGroupB.UIGroupBUIBackground,
+                    }}
+                    onClick={handleUserMessage}
+                >
+                    <IoSend className="buttonIcon" color={UIGroupB.UIGroupBUIHighlight} />
                 </button>
             </form>
         </Fragment>
