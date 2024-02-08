@@ -218,11 +218,11 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         } = chatbotLook;
 
         const config = {
-            objectId: objectId ?? defaultClientConfig.objectId,
-            chatbotId: chatbotId ?? defaultClientConfig.chatbotId,
-            userId: userId ?? defaultClientConfig.userId,
-            universityId: universityId ?? defaultClientConfig.universityId,
-            chatbotName: chatbotName ?? defaultClientConfig.chatbotName,
+            objectId: objectId || defaultClientConfig.objectId,
+            chatbotId: chatbotId || defaultClientConfig.chatbotId,
+            userId: userId || defaultClientConfig.userId,
+            universityId: universityId || defaultClientConfig.universityId,
+            chatbotName: chatbotName || defaultClientConfig.chatbotName,
             chatbotBubbleIcons:
                 typeof chatbotBubbleIcons == "string"
                     ? (await doesImageExists(chatbotBubbleIcons))
@@ -237,88 +237,88 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
                     : defaultClientConfig.chatbotProfileImage,
             defaultSettings: {
                 chatbotLanguage:
-                    defaultSettings?.chatbotLanguage ??
+                    defaultSettings?.chatbotLanguage ||
                     defaultClientConfig.defaultSettings.chatbotLanguage,
                 audioNarration:
-                    defaultSettings?.audioNarration ??
+                    defaultSettings?.audioNarration ||
                     defaultClientConfig.defaultSettings.audioNarration,
-                narrator: defaultSettings?.narrator ?? defaultClientConfig.defaultSettings.narrator,
+                narrator: defaultSettings?.narrator || defaultClientConfig.defaultSettings.narrator,
             } as IConfigDefaultSettings,
             chatboxBehaviour: {
                 formality:
-                    chatboxBehaviour?.formality ?? defaultClientConfig.chatboxBehaviour.formality,
-                opinion: chatboxBehaviour?.opinion ?? defaultClientConfig.chatboxBehaviour.opinion,
-                emotion: chatboxBehaviour?.emotion ?? defaultClientConfig.chatboxBehaviour.emotion,
-                length: chatboxBehaviour?.length ?? defaultClientConfig.chatboxBehaviour.length,
-                topics: chatboxBehaviour?.topics ?? defaultClientConfig.chatboxBehaviour.topics,
-                tone: chatboxBehaviour?.tone ?? defaultClientConfig.chatboxBehaviour.tone,
+                    chatboxBehaviour?.formality || defaultClientConfig.chatboxBehaviour.formality,
+                opinion: chatboxBehaviour?.opinion || defaultClientConfig.chatboxBehaviour.opinion,
+                emotion: chatboxBehaviour?.emotion || defaultClientConfig.chatboxBehaviour.emotion,
+                length: chatboxBehaviour?.length || defaultClientConfig.chatboxBehaviour.length,
+                topics: chatboxBehaviour?.topics || defaultClientConfig.chatboxBehaviour.topics,
+                tone: chatboxBehaviour?.tone || defaultClientConfig.chatboxBehaviour.tone,
                 chatbotBehaviourName:
-                    chatboxBehaviour?.chatbotBehaviourName ??
+                    chatboxBehaviour?.chatbotBehaviourName ||
                     defaultClientConfig.chatboxBehaviour.chatbotBehaviourName,
             } as IConfigChatbotBehaviour,
             chatbotReplies: {
                 randomQuestions:
-                    chatbotReplies?.randomQuestions ??
+                    chatbotReplies?.randomQuestions ||
                     defaultClientConfig.chatbotReplies.randomQuestions,
                 showRandomQuestionsMessage:
-                    chatbotReplies?.showRandomQuestionsMessage ??
+                    chatbotReplies?.showRandomQuestionsMessage ||
                     defaultClientConfig.chatbotReplies.showRandomQuestionsMessage,
             } as IConfigChatbotReplies,
             chatbotContact: {
                 talkToHuman:
-                    chatbotContact?.talkToHuman ?? defaultClientConfig.chatbotContact.talkToHuman,
+                    chatbotContact?.talkToHuman || defaultClientConfig.chatbotContact.talkToHuman,
                 showTalkToHumanMessage:
-                    chatbotContact?.showTalkToHumanMessage ??
+                    chatbotContact?.showTalkToHumanMessage ||
                     defaultClientConfig.chatbotContact.showTalkToHumanMessage,
             } as IConfigChatbotContact,
             chatbotLook: {
                 chatbotHeader: {
                     chatbotHeaderBackgroundColor:
-                        chatbotHeader?.chatbotHeaderBackgroundColor ??
+                        chatbotHeader?.chatbotHeaderBackgroundColor ||
                         dChatbotHeader.chatbotHeaderBackgroundColor,
                     chatbotHeaderIconFontColor:
-                        chatbotHeader?.chatbotHeaderIconFontColor ??
+                        chatbotHeader?.chatbotHeaderIconFontColor ||
                         dChatbotHeader.chatbotHeaderIconFontColor,
                 } as ISubConfigLookHeader,
                 chatbotBackground: {
                     chatbotBackgroundColor:
-                        chatbotBackground?.chatbotBackgroundColor ??
+                        chatbotBackground?.chatbotBackgroundColor ||
                         dChatbotBackground?.chatbotBackgroundColor,
                 } as ISubConfigLookBackground,
                 textBoxUser: {
                     textBoxUserColor:
-                        textBoxUser?.textBoxUserColor ?? dTextBoxUser.textBoxUserColor,
+                        textBoxUser?.textBoxUserColor || dTextBoxUser.textBoxUserColor,
                     textBoxUserFontColor:
-                        textBoxUser?.textBoxUserFontColor ?? dTextBoxUser.textBoxUserFontColor,
+                        textBoxUser?.textBoxUserFontColor || dTextBoxUser.textBoxUserFontColor,
                     textBoxFontStyle: getFont(
-                        textBoxUser?.textBoxFontStyle ?? dTextBoxUser.textBoxFontStyle
+                        textBoxUser?.textBoxFontStyle || dTextBoxUser.textBoxFontStyle
                     ),
                 } as ISubConfigLookUserTextBox,
                 textBoxChatbotReply: {
                     textBoxChatbotReplyColor:
-                        textBoxChatbotReply?.textBoxChatbotReplyColor ??
+                        textBoxChatbotReply?.textBoxChatbotReplyColor ||
                         dTextBoxChatbotReply.textBoxChatbotReplyColor,
                     textBoxChatbotReplyFontColor:
-                        textBoxChatbotReply?.textBoxChatbotReplyFontColor ??
+                        textBoxChatbotReply?.textBoxChatbotReplyFontColor ||
                         dTextBoxChatbotReply.textBoxChatbotReplyFontColor,
                     textBoxChatboxReplyFontStyle: getFont(
-                        textBoxChatbotReply?.textBoxChatboxReplyFontStyle ??
+                        textBoxChatbotReply?.textBoxChatboxReplyFontStyle ||
                             dTextBoxChatbotReply.textBoxChatboxReplyFontStyle
                     ),
                 } as ISubConfigLookBotTextBox,
                 UIGroupA: {
                     UIGroupAUIBackground:
-                        UIGroupA?.UIGroupAUIBackground ?? dUIGroupA.UIGroupAUIBackground,
+                        UIGroupA?.UIGroupAUIBackground || dUIGroupA.UIGroupAUIBackground,
                     UIGroupAUIHighlight:
-                        UIGroupA?.UIGroupAUIHighlight ?? dUIGroupA.UIGroupAUIHighlight,
+                        UIGroupA?.UIGroupAUIHighlight || dUIGroupA.UIGroupAUIHighlight,
                 } as ISubConfigLookUIGroupA,
                 UIGroupB: {
                     UIGroupBUIBackground:
-                        UIGroupB?.UIGroupBUIBackground ?? dUIGroupB.UIGroupBUIBackground,
+                        UIGroupB?.UIGroupBUIBackground || dUIGroupB.UIGroupBUIBackground,
                     UIGroupBUIHighlight:
-                        UIGroupB?.UIGroupBUIHighlight ?? dUIGroupB.UIGroupBUIHighlight,
+                        UIGroupB?.UIGroupBUIHighlight || dUIGroupB.UIGroupBUIHighlight,
                 } as ISubConfigLookUIGroupB,
-                chatbotLookName: chatbotLookName ?? dChatbotLookName,
+                chatbotLookName: chatbotLookName || dChatbotLookName,
             } as IConfigChatbotLook,
         } as IClientConfigurations;
 

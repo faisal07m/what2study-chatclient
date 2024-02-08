@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 .chatContainerWrapper {
   display: flex;
   flex-direction: column;
@@ -11,7 +11,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0c8de9;
   width: 100%;
   height: 72px;
   padding: 10px 24px;
@@ -22,12 +21,10 @@
   align-items: center;
 }
 .chatContainerWrapper .header-wrapper .header .header-icon {
-  color: #ffffff;
   font-size: 24px;
   margin-right: 10px;
 }
 .chatContainerWrapper .header-wrapper .header .header-title {
-  color: #ffffff;
   margin: 0;
   font-size: 16px;
   font-weight: 600;
@@ -44,23 +41,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(30, 87, 161, 0.0666666667);
 }
 .info-talktohuman .info-button {
   width: 28px;
   height: 28px;
-  background-color: #bde4ff;
-}
-.info-talktohuman .info-button .app-icon-button-icon {
-  color: #035d9d;
 }
 .info-talktohuman .talk-to-human-btn {
   padding: 8px 20px;
-  background-color: #1e57a1;
   border: none;
   border-radius: 16px;
   font-weight: 500;
-  color: #ffffff;
   cursor: pointer;
   line-height: normal;
   font-size: 14px;
@@ -68,10 +58,6 @@
 .info-talktohuman .volume-button {
   width: 28px;
   height: 28px;
-  background-color: #c8c8c8;
-}
-.info-talktohuman .volume-button .app-icon-button-icon {
-  color: #000;
 }
 
 .chatContainer {
@@ -98,20 +84,37 @@
   height: 28px;
   margin-right: 8px;
   border-radius: 50%;
-  background-color: #eaeaea;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px solid;
 }
-.chatContainer .botMessageWrapper .bot-iconWrapper .botIcon {
-  font-size: 16px;
-  color: #000;
+.chatContainer .botMessageWrapper .bot-iconWrapper .bot-iconImg {
+  padding: 2px;
+  object-fit: cover;
+  width: 24px;
+  height: 24px;
 }
 .chatContainer .botMessageWrapper .botMessage {
   position: relative;
-  background-color: #e0e0e0;
-  color: #000000;
   border-bottom-left-radius: 0;
+  font-weight: 500;
+}
+.chatContainer .botMessageWrapper .botMessage .bot-msg-ytvideo {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+.chatContainer .botMessageWrapper .botMessage .bot-msg-video {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+.chatContainer .botMessageWrapper .botMessage .bot-msg-img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  object-fit: cover;
 }
 .chatContainer .botMessageWrapper .botMessage .bot-msg-actions-wrapper {
   position: absolute;
@@ -122,7 +125,6 @@
   align-items: center;
 }
 .chatContainer .botMessageWrapper .botMessage .bot-msg-actions-wrapper .action-button {
-  background-color: #3073a4;
   border-radius: 50%;
   margin: 0 2px 0 2px;
   outline: none;
@@ -137,7 +139,6 @@
 }
 .chatContainer .botMessageWrapper .botMessage .bot-msg-actions-wrapper .action-button .action-icon {
   font-size: 16px;
-  color: #ffffff;
 }
 .chatContainer .userMessageWrapper {
   justify-content: flex-end;
@@ -154,11 +155,8 @@
 }
 .chatContainer .userMessageWrapper .user-iconWrapper .userIcon {
   font-size: 16px;
-  color: #000;
 }
 .chatContainer .userMessageWrapper .userMessage {
-  background-color: #0c8de9;
-  color: #ffffff;
   font-weight: 500;
   border-bottom-right-radius: 0;
 }
@@ -174,11 +172,7 @@
   justify-content: space-between;
 }
 .inputFormWrapper .voice-input-button {
-  background-color: #035d9d;
   margin-right: 6px;
-}
-.inputFormWrapper .voice-input-button .app-icon-button-icon {
-  color: white;
 }
 .inputFormWrapper .inputField {
   width: calc(100% - 48px - 36px);
@@ -202,11 +196,9 @@
   align-items: center;
   justify-content: center;
   margin-left: 6px;
-  background-color: #0c8de9;
   cursor: pointer;
 }
 .inputFormWrapper .sendButton .buttonIcon {
-  color: #ffffff;
   font-size: 18px;
 }
 
@@ -652,7 +644,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .app-icon-button .app-icon-button-icon {
   font-size: 20px;
-  color: #ffffff;
 }
 .app-icon-button:hover .app-icon-button-anim {
   background-color: rgba(234, 234, 234, 0.2);
