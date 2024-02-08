@@ -14,7 +14,7 @@ import {
     MdThumbDownAlt,
     MdThumbUpAlt,
 } from "react-icons/md";
-import { RiChatSmile3Fill, RiUser6Fill } from "react-icons/ri";
+import { RiUser6Fill } from "react-icons/ri";
 
 const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 
@@ -42,11 +42,12 @@ const initialMessages: IBotMessage[] = [
         source: EMessageSource.BOT,
         message: "Hey! This is you what2study bot. How can I help you?",
     },
-    // {
-    //     source: EMessageSource.USER,
-    //     message: "Hi. I'm looking for a masters course in Economics.",
-    // },
 ];
+
+const isYoutubeURL = (url = ""): boolean => {
+    const ytRegEx = new RegExp("^(https?://)?(www.youtube.com|youtu.be)/.+$");
+    return ytRegEx.test(url);
+};
 
 const Main: FC = () => {
     const {
@@ -213,6 +214,28 @@ const Main: FC = () => {
                                       }
                             }
                         >
+                            {type === EMessageType.VIDEO ? (
+                                isYoutubeURL(url) ? (
+                                    <iframe
+                                        src={url}
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                        className="bot-msg-ytvideo"
+                                    />
+                                ) : (
+                                    <video
+                                        src={url}
+                                        className="bot-msg-video"
+                                        controls
+                                        disablePictureInPicture={false}
+                                    />
+                                )
+                            ) : type === EMessageType.IMAGE ? (
+                                <img src={url} className="bot-msg-img" alt="img" />
+                            ) : (
+                                <Fragment />
+                            )}
                             {message}
                             {source === EMessageSource.BOT && (
                                 <div className="bot-msg-actions-wrapper">

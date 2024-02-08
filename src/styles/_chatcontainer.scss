@@ -101,6 +101,22 @@
             position: relative;
             border-bottom-left-radius: 0;
             font-weight: 500;
+            .bot-msg-ytvideo {
+                width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+            }
+            .bot-msg-video {
+                width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+            }
+            .bot-msg-img {
+                width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+                object-fit: cover;
+            }
             .bot-msg-actions-wrapper {
                 position: absolute;
                 bottom: -14px;

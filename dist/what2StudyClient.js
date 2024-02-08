@@ -2035,11 +2035,12 @@
           source: EMessageSource.BOT,
           message: "Hey! This is you what2study bot. How can I help you?",
       },
-      // {
-      //     source: EMessageSource.USER,
-      //     message: "Hi. I'm looking for a masters course in Economics.",
-      // },
   ];
+  var isYoutubeURL = function (url) {
+      if (url === void 0) { url = ""; }
+      var ytRegEx = new RegExp("^(https?://)?(www.youtube.com|youtu.be)/.+$");
+      return ytRegEx.test(url);
+  };
   var Main = function () {
       var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig, sessionId = _a.sessionId;
       var _b = reactExports.useState(false), isInputFocused = _b[0], setIsInputFocused = _b[1];
@@ -2131,7 +2132,7 @@
                               backgroundColor: UIGroupB.UIGroupBUIBackground,
                               color: UIGroupB.UIGroupBUIHighlight,
                           }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Want to talk to human?" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
-                          var message = _a.message, source = _a.source, feedback = _a.feedback; _a.type; _a.url;
+                          var message = _a.message, source = _a.source, feedback = _a.feedback, type = _a.type, url = _a.url;
                           return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(source === EMessageSource.BOT
                                   ? "botMessageWrapper"
                                   : "userMessageWrapper") }, { children: [source === EMessageSource.BOT && (jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) }))), jsxRuntimeExports.jsxs("div", __assign$1({ className: "message ".concat(source === EMessageSource.BOT ? "botMessage" : "userMessage"), style: source === EMessageSource.BOT
@@ -2144,7 +2145,7 @@
                                               backgroundColor: textBoxUser.textBoxUserColor,
                                               color: textBoxUser.textBoxUserFontColor,
                                               fontFamily: textBoxUser.textBoxFontStyle,
-                                          } }, { children: [message, source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Report", className: "action-button", onClick: console.log, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+                                          } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" })) : (jsxRuntimeExports.jsx(reactExports.Fragment, {})), message, source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Report", className: "action-button", onClick: console.log, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdOutlineWarningAmber, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
                                                           if (feedback === true)
                                                               return;
                                                           handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
