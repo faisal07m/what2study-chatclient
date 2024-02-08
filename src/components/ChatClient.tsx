@@ -1,5 +1,6 @@
 import { useData } from "hooks";
 
+import _ from "lodash";
 import { FC, Fragment, useEffect } from "react";
 import { BsChatQuoteFill } from "react-icons/bs";
 
@@ -33,10 +34,12 @@ const ChatClient: FC = (props) => {
         await saveClientConfigurations(props);
     };
 
+    const getClientConfigWithThrottle = _.throttle(getChatClientConfiguration, 1000);
+
     useEffect(() => {
         // TO USE CHAT CLIENT WITH BOT ID AND ACCESS TOKEN
-        getChatClientConfiguration();
-    }, []);
+        getClientConfigWithThrottle();
+    }, [props]);
 
     if (isClientConfigFetched)
         return (
