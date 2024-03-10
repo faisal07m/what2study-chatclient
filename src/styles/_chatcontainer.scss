@@ -401,7 +401,7 @@
         align-items: center;
         justify-content: center;
         height: 80%;
-        padding: 16%;
+        padding: 10%;
         .is-icon {
             width: 24%;
             margin-bottom: 20px;
@@ -409,6 +409,20 @@
         .is-infoBlock {
             padding: 10px;
             font-size: 16px;
+            background-color: #d9d9d9;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            .is-block-text {
+                margin: 0;
+                font-weight: 400;
+                .is-block-bold {
+                    font-weight: 600;
+                }
+            }
+        }
+        .is-infoBlock2 {
+            padding: 10px;
+            font-size: 13px;
             background-color: #d9d9d9;
             border-radius: 12px;
             margin-bottom: 12px;
@@ -456,7 +470,8 @@
         background-color: #0c8de9;
         color: #ffffff;
         padding: 6px;
-        margin-left: 42%;
+        margin-left: 43%;
+        margin-top: 20px;
     }
 
     .video-wrapper {
