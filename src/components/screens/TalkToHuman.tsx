@@ -2,7 +2,6 @@ import { ERoute, useData } from "hooks";
 
 import { FC, Fragment, useState } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 import { IoIosCall } from "react-icons/io";
 import { IoChevronBack } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
@@ -23,13 +22,13 @@ const TalkToHuman: FC = () => {
         day: "Sat",
         time: "09:00",
     });
-    const [t, i18n] = useTranslation("global");
+
     return (
         <div className="talkToHuman-wrapper">
             <div className="navbar">
                 <button className="navBackBtn" onClick={() => setCurrentRoute(ERoute.MAIN)}>
                     <IoChevronBack className="navIcon" />
-                    <span className="navText">{t("talk2human.back")}</span>
+                    <span className="navText">Back</span>
                 </button>
             </div>
             {/* <div className="divider"></div> */}
@@ -54,28 +53,28 @@ const TalkToHuman: FC = () => {
             <div className="divider"></div>
             <div className="tth-data-wrapper">
                 <p className="tth-info-text">
-                {t("talk2human.write")}
+                    Write a message to Central Student Advisory Service:
                 </p>
                 <FloatingLabel
                     controlId="floatingTextarea"
-                    label={t("talk2human.message")}
+                    label="Your message"
                     className="tth-message"
                 >
                     <Form.Control
                         as="textarea"
-                        placeholder={t("talk2human.message")}
+                        placeholder="Your message..."
                         style={{ height: "90px" }}
                     />
                 </FloatingLabel>
                 <Form.Check
                     name="send-chat-details"
                     aria-label="Send chat details"
-                    label={t("talk2human.send")}
+                    label="Send chat details"
                     defaultChecked
                 />
                 <div className="contact-email">
                     <p className="tth-info-text">
-                    {t("talk2human.please")}
+                        Please leave an email that the ZSB can use to contact you:
                     </p>
                     <Form.Check
                         type="radio"
@@ -84,7 +83,7 @@ const TalkToHuman: FC = () => {
                         onClick={() => setUseSavedEmail(true)}
                         label={
                             <Fragment>
-                                {t("talk2human.use")}{" "}
+                                Use saved email id{" "}
                                 <span className="email-address-saved">
                                     somebody.nobody@example.com
                                 </span>
@@ -96,25 +95,25 @@ const TalkToHuman: FC = () => {
                         name="email-address"
                         checked={!useSavedEmail}
                         onClick={() => setUseSavedEmail(false)}
-                        label={t("talk2human.different")}
+                        label="Use a different email address"
                     />
                     <Form.Control
                         type="text"
-                        placeholder={t("talk2human.email")}
+                        placeholder="Enter email address"
                         disabled={useSavedEmail}
                     />
                 </div>
                 <div className="contact-email">
-                    <p className="tth-info-text">{t("talk2human.would")}</p>
+                    <p className="tth-info-text">Would you like to be called with the answer?</p>
                     <Form.Control
                         type="tel"
                         onChange={(e) => setPhoneInput(e.target.value)}
                         value={phoneInput}
-                        placeholder={t("talk2human.number")}
+                        placeholder="Enter contact number"
                     />
                     {phoneInput.trim() !== "" && (
                         <div className="day-time-input-wrapper">
-                            <p className="tth-info-text">{t("talk2human.best")}</p>
+                            <p className="tth-info-text">What is the best time to call you?</p>
                             <div className="day-wrapper">
                                 {DAYS.map((day) => (
                                     <span
