@@ -52,8 +52,8 @@ export interface IChatFilters {
 }
 
 export enum EChatLanguage {
-    EN = "EN",
-    DE = "DE",
+    EN = "en",
+    DE = "de",
 }
 
 const AVAILABLE_FONTS = ["inter", "roboto", "poppins"];
@@ -64,17 +64,25 @@ const getFont = (font: string): string => {
 };
 
 const defaultClientConfig = {
-    objectId: "9eika1dfYl",
-    userId: "ugg86oBVOk",
-    universityId: "ugg86oBVOk",
+    objectId: "",
+    userId: "",
+    universityId: "",
     chatbotName: "What 2 Study",
-    accessToken:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiI5ZWlrYTFkZllsIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcwNzMxODA2N30.bsLDJfi9gk1abG7DHeBnt-MucUv4srJYJj2GfQx_9SE",
+
+    language:"de",
+    randomQuestionEnabled: true,
+    randomQuestion:"Unsicher, welche Fragen man mir stellen kann? Ich stehe bei verschiedensten Themen zur Verfügung und versuche zu helfen. Unter anderem kann ich konkrete Informationen zu Studiengängen, Zulassungsvoraussetzungen, Campusleben oder Unterstützungsangeboten geben. Aber auch allgemeine Fragen rundum das Hochschulsystem beantworten. Hier sind einige Beispielfragen, die interessant sein könnten: \n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nKannst du mir mehr über das Campusleben berichten?\nWelche Unterstützungsangebote gibt es für Studierende?\nWie bewerbe ich mich für ein Studium an dieser Universität?",
+    talkToaHumanEnabled: true,
+    talkToaHuman:"Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
+    Narrator:"male",
+   
+    accessToken:"",
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
     defaultSettings: {
         chatbotLanguage: "English",
         audioNarration: true,
-        narrator: "John",
+        narrator: "male",
     } as IConfigDefaultSettings,
     chatboxBehaviour: {
         formality: 0,
@@ -199,6 +207,12 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             chatboxBehaviour,
             chatbotReplies,
             chatbotContact,
+            language,
+            randomQuestionEnabled,
+            randomQuestion,
+            talkToaHumanEnabled,
+            talkToaHuman,
+            Narrator,
             chatbotLook = {},
         } = data;
 
@@ -231,6 +245,12 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             accessToken: accessToken || defaultClientConfig.accessToken,
             universityId: universityId || defaultClientConfig.universityId,
             chatbotName: chatbotName || defaultClientConfig.chatbotName,
+            language:language || defaultClientConfig.language,
+            randomQuestionEnabled: randomQuestionEnabled|| defaultClientConfig.randomQuestionEnabled,
+            randomQuestion:randomQuestion|| defaultClientConfig.randomQuestion,
+            talkToaHumanEnabled: talkToaHumanEnabled|| defaultClientConfig.talkToaHumanEnabled,
+            talkToaHuman:talkToaHuman|| defaultClientConfig.talkToaHuman,
+            Narrator:Narrator|| defaultClientConfig.Narrator, 
             chatbotBubbleIcons:
                 typeof chatbotBubbleIcons == "string"
                     ? (await doesImageExists(chatbotBubbleIcons))

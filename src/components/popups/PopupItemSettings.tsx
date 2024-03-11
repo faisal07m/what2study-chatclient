@@ -26,6 +26,7 @@ const PopupItemSettings: FC = () => {
 
     const handleLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
         setLanguage(e.target.value as EChatLanguage);
+        i18n.changeLanguage(e.target.value.toLowerCase());
     };
 
     return (
@@ -34,7 +35,9 @@ const PopupItemSettings: FC = () => {
                 <button className="app-chip-button">Restart Intro</button>
             </div>
             <div className="setting-block language-select-wrapper">
-                <span className="block-title">Language</span>
+                <span className="block-title">{t("settings.language")}</span>
+                {/* <button className="app-chip-button" style={{ marginLeft: '10px'}} onClick={() => handleChangeLanguage("en")}> 🇬🇧 EN</button>
+                <button className="app-chip-button" onClick={() => handleChangeLanguage("de")}>🇩🇪 DE</button> */}
                 <FormSelect
                     value={language}
                     size="sm"

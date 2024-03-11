@@ -1,3 +1,4 @@
+import { LOCALSTORAGE_SESSION_ID_KEY } from "App";
 import { EPopupItem, ERoute, useData } from "hooks";
 import IconButton from "utilities/IconButton";
 
@@ -15,7 +16,6 @@ import {
     MdThumbUpAlt,
 } from "react-icons/md";
 import { RiUser6Fill } from "react-icons/ri";
-import { LOCALSTORAGE_SESSION_ID_KEY } from "App";
 
 const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 
@@ -75,6 +75,27 @@ const Main: FC = (props) => {
         chatbotLook: { textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB },
     } = clientConfig;
 
+    const [value, setValue] = useState('')
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (clientConfig.randomQuestionEnabled) {
+                setMessages((prev) => {
+                    return [
+                        ...prev,
+                        {
+                            source: EMessageSource.BOT,
+                            message: clientConfig.randomQuestion,
+                            type: EMessageType.TEXT,
+                            url: "",
+                        },
+                    ];
+                });
+            }
+        }, 20000)
+        // if this effect run again, because `value` changed, we remove the previous timeout
+        return () => clearTimeout(timeout)
+    }, [value])
+
     const handleUserMessage = async (e: SyntheticEvent): Promise<void> => {
         e?.preventDefault();
         setLoading(true);
@@ -112,7 +133,34 @@ const Main: FC = (props) => {
                     },
                 ];
             });
+            setValue(response.answer)
             setLoading(false);
+
+            let chatbotID
+            if ("chatbotId" in props) {
+                chatbotID = props.chatbotId
+            }
+            const currentdate = new Date();
+            const datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1) + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            const responseSaveMSG = await fetch(`${WHAT2STUDY_BACKEND_URL}/saveUserMessage`, {
+                method: "POST",
+                headers: {
+                    "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                    "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
+                },
+                body: JSON.stringify({
+                    chatbotId: chatbotID,
+                    user: message,
+                    bot: response.answer,
+                    sessionID: localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim(),
+                    timestamp: datetime,
+                }),
+            });
         } catch (error) {
             setMessages((prev) => {
                 return [
@@ -128,7 +176,7 @@ const Main: FC = (props) => {
     };
 
     const handleMessageFeedback = async (msg: string, feedback: boolean) => {
-       
+
         const messagesWithFeedback = [...messages];
         const newMessages = messagesWithFeedback.map((msgObj) =>
             msgObj.message == msg
@@ -138,22 +186,16 @@ const Main: FC = (props) => {
                 }
                 : msgObj
         );
-        console.log(msg)
-        console.log(feedback)
-        console.log(newMessages)
-        console.log(localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim())
-        var currentdate = new Date();
-        var datetime = currentdate.getDate() + "/"
+        const currentdate = new Date();
+        const datetime = currentdate.getDate() + "/"
             + (currentdate.getMonth() + 1) + "/"
             + currentdate.getFullYear() + " @ "
             + currentdate.getHours() + ":"
             + currentdate.getMinutes() + ":"
             + currentdate.getSeconds();
         setMessages(newMessages);
-        var chatbotID
+        let chatbotID
         if ("chatbotId" in props) {
-            console.log(props)
-            console.log(props.chatbotId)
             chatbotID = props.chatbotId
         }
         const resJson = await fetch(`${WHAT2STUDY_BACKEND_URL}/saveFeedback`, {
@@ -219,8 +261,8 @@ const Main: FC = (props) => {
                     <div
                         key={index}
                         className={`messageWrapper ${source === EMessageSource.BOT
-                                ? "botMessageWrapper"
-                                : "userMessageWrapper"
+                            ? "botMessageWrapper"
+                            : "userMessageWrapper"
                             }`}
                     >
                         {source === EMessageSource.BOT && (
