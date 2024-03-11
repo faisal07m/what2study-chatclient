@@ -64,10 +64,11 @@ const getFont = (font: string): string => {
 };
 
 const defaultClientConfig = {
-    objectId: "",
-    userId: "",
-    universityId: "",
+    objectId: "9eika1dfYl",
+    userId: "ugg86oBVOk",
+    universityId: "ugg86oBVOk",
     chatbotName: "What 2 Study",
+    accessToken:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiI5ZWlrYTFkZllsIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcwNzMxODA2N30.bsLDJfi9gk1abG7DHeBnt-MucUv4srJYJj2GfQx_9SE",
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
     defaultSettings: {
@@ -123,18 +124,23 @@ const defaultClientConfig = {
 } as IClientConfigurations;
 
 const doesImageExists = async (url: string): Promise<boolean> => {
-    try {
-        const res = await fetch(url, {
-            method: "POST",
-        });
-        // no image exists if response is 1xx, 4xx, 5xx
-        if ([1, 4, 5].includes(Math.floor((res.status / 100) % 10))) {
-            return false;
-        }
-        return true;
-    } catch (error) {
-        return false;
+    if(url.length>1){
+        return true
     }
+    else{
+        return  false}
+    // try {
+    //     const res = await fetch(url, {
+    //         method: "POST",
+    //     });
+    //     // no image exists if response is 1xx, 4xx, 5xx
+    //     if ([1, 4, 5].includes(Math.floor((res.status / 100) % 10))) {
+    //         return false;
+    //     }
+    //     return true;
+    // } catch (error) {
+    //     return false;
+    // }
 };
 
 export const DataProvider: FC<DataProviderProps> = (props) => {
@@ -185,6 +191,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             chatbotId,
             userId,
             universityId,
+            accessToken,
             chatbotName,
             chatbotBubbleIcons,
             chatbotProfileImage,
@@ -221,6 +228,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             objectId: objectId || defaultClientConfig.objectId,
             chatbotId: chatbotId || defaultClientConfig.chatbotId,
             userId: userId || defaultClientConfig.userId,
+            accessToken: accessToken || defaultClientConfig.accessToken,
             universityId: universityId || defaultClientConfig.universityId,
             chatbotName: chatbotName || defaultClientConfig.chatbotName,
             chatbotBubbleIcons:

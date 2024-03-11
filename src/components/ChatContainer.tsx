@@ -14,23 +14,24 @@ import IntroPage from "./screens/IntroPage";
 import Main from "./screens/Main";
 import TalkToHuman from "./screens/TalkToHuman";
 
-const getScreenAsPerRoute = (route: ERoute) => {
-    switch (route) {
-        case ERoute.INTRO:
-            return <IntroPage />;
 
-        case ERoute.MAIN:
-            return <Main />;
 
-        case ERoute.TALK_TO_HUMAN:
-            return <TalkToHuman />;
-
-        default:
-            return <Fragment />;
-    }
-};
-
-const ChatContainer: FC = () => {
+const ChatContainer: FC = (props) => {
+    const getScreenAsPerRoute = (route: ERoute) => {
+        switch (route) {
+            case ERoute.INTRO:
+                return <IntroPage />;
+    
+            case ERoute.MAIN:
+                return <Main {...props}/>;
+    
+            case ERoute.TALK_TO_HUMAN:
+                return <TalkToHuman />;
+    
+            default:
+                return <Fragment />;
+        }
+    };
     const { isChatOpen, isMobileScreen, setIsChatOpen, setPopupItem, currentRoute, clientConfig } =
         useData();
 

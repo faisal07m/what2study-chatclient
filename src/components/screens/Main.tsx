@@ -15,6 +15,7 @@ import {
     MdThumbUpAlt,
 } from "react-icons/md";
 import { RiUser6Fill } from "react-icons/ri";
+import { LOCALSTORAGE_SESSION_ID_KEY } from "App";
 
 const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 
@@ -40,7 +41,7 @@ interface IBotMessage {
 const initialMessages: IBotMessage[] = [
     {
         source: EMessageSource.BOT,
-        message: "Hey! This is you what2study bot. How can I help you?",
+        message: "Herzlich willkommen bei unserer Studienberatung! Wie kann ich Ihnen heute behilflich sein?",
     },
 ];
 
@@ -49,7 +50,7 @@ const isYoutubeURL = (url = ""): boolean => {
     return ytRegEx.test(url);
 };
 
-const Main: FC = () => {
+const Main: FC = (props) => {
     const {
         setPopupItem,
         isBotVolumeOn,
@@ -63,6 +64,9 @@ const Main: FC = () => {
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
+    const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
+    const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
     const {
         chatbotProfileImage,
@@ -102,8 +106,8 @@ const Main: FC = () => {
                             response.type === "image"
                                 ? EMessageType.IMAGE
                                 : response.type === "video"
-                                ? EMessageType.VIDEO
-                                : EMessageType.TEXT,
+                                    ? EMessageType.VIDEO
+                                    : EMessageType.TEXT,
                         url: response.url ?? "",
                     },
                 ];
@@ -123,17 +127,51 @@ const Main: FC = () => {
         }
     };
 
-    const handleMessageFeedback = (msg: string, feedback: boolean) => {
+    const handleMessageFeedback = async (msg: string, feedback: boolean) => {
+       
         const messagesWithFeedback = [...messages];
         const newMessages = messagesWithFeedback.map((msgObj) =>
             msgObj.message == msg
                 ? {
-                      ...msgObj,
-                      feedback,
-                  }
+                    ...msgObj,
+                    feedback,
+                }
                 : msgObj
         );
+        console.log(msg)
+        console.log(feedback)
+        console.log(newMessages)
+        console.log(localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim())
+        var currentdate = new Date();
+        var datetime = currentdate.getDate() + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + " @ "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
         setMessages(newMessages);
+        var chatbotID
+        if ("chatbotId" in props) {
+            console.log(props)
+            console.log(props.chatbotId)
+            chatbotID = props.chatbotId
+        }
+        const resJson = await fetch(`${WHAT2STUDY_BACKEND_URL}/saveFeedback`, {
+            method: "POST",
+            headers: {
+                "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
+            },
+            body: JSON.stringify({
+                chatbotId: chatbotID,
+                messages: newMessages,
+                sessionID: localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim(),
+                timestamp: datetime,
+                type: feedback
+
+            }),
+        });
+
     };
 
     const scrollToBottom = () => {
@@ -164,7 +202,7 @@ const Main: FC = () => {
                     }}
                     onClick={() => setCurrentRoute(ERoute.TALK_TO_HUMAN)}
                 >
-                    Want to talk to human?
+                    Sprich mit uns
                 </button>
                 <IconButton
                     className="volume-button"
@@ -180,11 +218,10 @@ const Main: FC = () => {
                 {messages.map(({ message, source, feedback, type, url }, index) => (
                     <div
                         key={index}
-                        className={`messageWrapper ${
-                            source === EMessageSource.BOT
+                        className={`messageWrapper ${source === EMessageSource.BOT
                                 ? "botMessageWrapper"
                                 : "userMessageWrapper"
-                        }`}
+                            }`}
                     >
                         {source === EMessageSource.BOT && (
                             <div
@@ -195,23 +232,22 @@ const Main: FC = () => {
                             </div>
                         )}
                         <div
-                            className={`message ${
-                                source === EMessageSource.BOT ? "botMessage" : "userMessage"
-                            }`}
+                            className={`message ${source === EMessageSource.BOT ? "botMessage" : "userMessage"
+                                }`}
                             style={
                                 source === EMessageSource.BOT
                                     ? {
-                                          backgroundColor:
-                                              textBoxChatbotReply.textBoxChatbotReplyColor,
-                                          color: textBoxChatbotReply.textBoxChatbotReplyFontColor,
-                                          fontFamily:
-                                              textBoxChatbotReply.textBoxChatboxReplyFontStyle,
-                                      }
+                                        backgroundColor:
+                                            textBoxChatbotReply.textBoxChatbotReplyColor,
+                                        color: textBoxChatbotReply.textBoxChatbotReplyFontColor,
+                                        fontFamily:
+                                            textBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                                    }
                                     : {
-                                          backgroundColor: textBoxUser.textBoxUserColor,
-                                          color: textBoxUser.textBoxUserFontColor,
-                                          fontFamily: textBoxUser.textBoxFontStyle,
-                                      }
+                                        backgroundColor: textBoxUser.textBoxUserColor,
+                                        color: textBoxUser.textBoxUserFontColor,
+                                        fontFamily: textBoxUser.textBoxFontStyle,
+                                    }
                             }
                         >
                             {type === EMessageType.VIDEO ? (
@@ -239,7 +275,7 @@ const Main: FC = () => {
                             {message}
                             {source === EMessageSource.BOT && (
                                 <div className="bot-msg-actions-wrapper">
-                                    <button
+                                    {/* <button
                                         title="Report"
                                         className="action-button"
                                         onClick={console.log}
@@ -249,7 +285,7 @@ const Main: FC = () => {
                                             className="action-icon"
                                             color={UIGroupA.UIGroupAUIHighlight}
                                         />
-                                    </button>
+                                    </button> */}
                                     <button
                                         title="Like"
                                         className="action-button"
