@@ -421,6 +421,20 @@
                 }
             }
         }
+        .is-infoBlock2 {
+            padding: 10px;
+            font-size: 13px;
+            background-color: #d9d9d9;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            .is-block-text {
+                margin: 0;
+                font-weight: 400;
+                .is-block-bold {
+                    font-weight: 600;
+                }
+            }
+        }
         .play-tutorial-button {
             border: none;
             background-color: #afafaf;
@@ -458,6 +472,7 @@
         color: #ffffff;
         padding: 6px;
         margin-left: 43%;
+        margin-top: 20px;
     }
 
     .video-wrapper {
