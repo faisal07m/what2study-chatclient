@@ -2,7 +2,6 @@ import { ERoute, useData } from "hooks";
 import IconButton from "utilities/IconButton";
 
 import { FC, Fragment, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
 
@@ -15,8 +14,6 @@ const IntroPage: FC = () => {
         chatbotProfileImage,
         chatbotLook: { chatbotHeader },
     } = clientConfig;
-
-    const [t, i18n] = useTranslation("global");
 
     return (
         <Fragment>
@@ -39,8 +36,10 @@ const IntroPage: FC = () => {
                         <img src={chatbotProfileImage} className="is-icon" alt="Bot Icon" />
                         <div className="is-infoBlock">
                             <p className="is-block-text">
-                                {t("introPage1.hello")}{" "}
-                                <span className="is-block-bold">{t("introPage1.iam")}</span>{t("introPage1.built")}
+                                Hello. It's nice to meet you!{" "}
+                                <span className="is-block-bold">I am a chatbot</span> built to help
+                                you with your studies! Before we get started, here are a few
+                                important facts.
                             </p>
                         </div>
                         <button
@@ -50,23 +49,28 @@ const IntroPage: FC = () => {
                             <div className="pt-iconWrapper">
                                 <BsFillPlayCircleFill className="pt-icon" />
                             </div>
-                            <span className="pt-button-name">{t("introPage1.play")}</span>
+                            <span className="pt-button-name">Play Tutorial</span>
                         </button>
-                        <button className="is-tochat-button">{t("introPage1.chat")}</button>
+                        <button className="is-tochat-button">To Chat</button>
                     </div>
                 )}
                 {introPage == 1 && (
                     <div className="is-contentWrapper">
                         <img src={chatbotProfileImage} className="is-icon" alt="Bot Icon" />
-                        <div className="is-infoBlock2">
-                        <p className="is-block-text">
-                            {t("introPage2.Lets")}{" "}
-                                <span className="is-block-bold">{t("introPage2.easy")}</span>{t("introPage2.thats")}<span className="is-block-bold">{t("introPage2.functions")}</span>
+                        <div className="is-infoBlock">
+                            <p className="is-block-text">
+                                Hello. It's nice to meet you!{" "}
+                                <span className="is-block-bold">I am a chatbot</span> built to help
+                                you with your studies! Before we get started, here are a few
+                                important facts.
                             </p>
                         </div>
-                        <div className="is-infoBlock2">
+                        <div className="is-infoBlock">
                             <p className="is-block-text">
-                            {t("introPage2.everything")}
+                                Hello. It's nice to meet you!{" "}
+                                <span className="is-block-bold">I am a chatbot</span> built to help
+                                you with your studies! Before we get started, here are a few
+                                important facts.
                             </p>
                         </div>
                         <button className="is-tochat-button">To Chat</button>
@@ -82,7 +86,7 @@ const IntroPage: FC = () => {
                         color: chatbotHeader.chatbotHeaderIconFontColor,
                     }}
                 >
-                    {t("introPage1.okay")}
+                    Okay!
                 </button>
             </div>
         </Fragment>
