@@ -93,6 +93,12 @@ export interface IClientConfigurations {
     chatbotId: string;
     userId: string;
     universityId: string;
+    language:string;
+    randomQuestionEnabled: boolean;
+    randomQuestion:string;
+    talkToaHumanEnabled: boolean;
+    talkToaHuman:string;
+    Narrator:string;
     accessToken: string;
     chatbotName: string;
     chatbotBubbleIcons: string;

@@ -27,6 +27,7 @@ const PopupItemSettings: FC = () => {
 
     const handleLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
         setLanguage(e.target.value as EChatLanguage);
+        i18n.changeLanguage(e.target.value.toLowerCase());
     };
 
     const [t, i18n] = useTranslation("global");
@@ -49,9 +50,9 @@ const PopupItemSettings: FC = () => {
             </div>
             <div className="setting-block language-select-wrapper">
                 <span className="block-title">{t("settings.language")}</span>
-                <button className="app-chip-button" style={{ marginLeft: '10px'}} onClick={() => handleChangeLanguage("en")}><img src="/images/uk.png" alt="EN"  style={{ width: '22px', height: '22px', marginRight: '4px' }} /> EN</button>
-                <button className="app-chip-button" onClick={() => handleChangeLanguage("de")}><img src="/images/germany.png" alt="DE"  style={{ width: '22px', height: '22px', marginRight: '4px' }} /> DE</button>
-                {/* <FormSelect
+                {/* <button className="app-chip-button" style={{ marginLeft: '10px'}} onClick={() => handleChangeLanguage("en")}> 🇬🇧 EN</button>
+                <button className="app-chip-button" onClick={() => handleChangeLanguage("de")}>🇩🇪 DE</button> */}
+                <FormSelect
                     value={language}
                     size="sm"
                     className="language-select"
@@ -60,7 +61,7 @@ const PopupItemSettings: FC = () => {
                     {Object.values(EChatLanguage).map((lang) => (
                         <option value={lang}>{getLanguage(lang)}</option>
                     ))}
-                </FormSelect> */}
+                </FormSelect>
             </div>
             <div className="setting-block user-assumptions">
                 <span className="block-title">{t("settings.user")}</span>

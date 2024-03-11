@@ -3,7 +3,6 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
-var uuid = require('uuid');
 var ReactDOM = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -115,13 +114,18 @@ function __spreadArray(to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 }
 
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
+
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-var jsxRuntimeExports = {};
-var jsxRuntime = {
-  get exports(){ return jsxRuntimeExports; },
-  set exports(v){ jsxRuntimeExports = v; },
-};
+function getDefaultExportFromCjs (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+var jsxRuntime = {exports: {}};
 
 var reactJsxRuntime_production_min = {};
 
@@ -137,12 +141,11 @@ var reactJsxRuntime_production_min = {};
 var f=React__default["default"],k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
 function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(h=a.ref);for(b in a)m.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return {$$typeof:k,type:c,key:e,ref:h,props:d,_owner:n.current}}reactJsxRuntime_production_min.Fragment=l;reactJsxRuntime_production_min.jsx=q;reactJsxRuntime_production_min.jsxs=q;
 
-(function (module) {
+{
+  jsxRuntime.exports = reactJsxRuntime_production_min;
+}
 
-	{
-	  module.exports = reactJsxRuntime_production_min;
-	}
-} (jsxRuntime));
+var jsxRuntimeExports = jsxRuntime.exports;
 
 var EThemes;
 (function (EThemes) {
@@ -156,6 +159,71 @@ var IframeType;
     IframeType[IframeType["CHAT_CONTAINER_OPEN"] = 1] = "CHAT_CONTAINER_OPEN";
     IframeType[IframeType["CHAT_CONTAINER_CLOSED"] = 2] = "CHAT_CONTAINER_CLOSED";
 })(IframeType || (IframeType = {}));
+
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+function rng() {
+  // lazy load so that environments that need to polyfill have a chance to do so
+  if (!getRandomValues) {
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+
+    if (!getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+  }
+
+  return getRandomValues(rnds8);
+}
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).slice(1));
+}
+
+function unsafeStringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  return byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]];
+}
+
+const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native = {
+  randomUUID
+};
+
+function v4(options, buf, offset) {
+  if (native.randomUUID && !buf && !options) {
+    return native.randomUUID();
+  }
+
+  options = options || {};
+  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return unsafeStringify(rnds);
+}
 
 var DataContext = React.createContext({});
 var EChatDifficultyLevel;
@@ -193,7 +261,13 @@ var defaultClientConfig = {
     userId: "ugg86oBVOk",
     universityId: "ugg86oBVOk",
     chatbotName: "What 2 Study",
-    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiI5ZWlrYTFkZllsIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcwNzMxODA2N30.bsLDJfi9gk1abG7DHeBnt-MucUv4srJYJj2GfQx_9SE",
+    language: "DE",
+    randomQuestionEnabled: true,
+    randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Ich stehe bei verschiedensten Themen zur Verfügung und versuche zu helfen. Unter anderem kann ich konkrete Informationen zu Studiengängen, Zulassungsvoraussetzungen, Campusleben oder Unterstützungsangeboten geben. Aber auch allgemeine Fragen rundum das Hochschulsystem beantworten. Hier sind einige Beispielfragen, die interessant sein könnten: \n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nKannst du mir mehr über das Campusleben berichten?\nWelche Unterstützungsangebote gibt es für Studierende?\nWie bewerbe ich mich für ein Studium an dieser Universität?",
+    talkToaHumanEnabled: true,
+    talkToaHuman: "Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
+    Narrator: "male",
+    accessToken: "",
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
     defaultSettings: {
@@ -277,7 +351,7 @@ var DataProvider = function (props) {
     var _l = React.useState(false), isClientConfigFetched = _l[0], setIsClientConfigFetched = _l[1];
     var generateNewSession = function (showIntroScreen) {
         if (showIntroScreen === void 0) { showIntroScreen = true; }
-        var newSessionId = uuid.v4();
+        var newSessionId = v4();
         localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
         setSessionId(newSessionId);
         setCurrentRoute(showIntroScreen ? ERoute.INTRO : ERoute.MAIN);
@@ -303,12 +377,12 @@ var DataProvider = function (props) {
     var saveClientConfigurations = function (data) {
         if (data === void 0) { data = {}; }
         return __awaiter(void 0, void 0, void 0, function () {
-            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, _a, chatbotLook, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
+            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, talkToaHumanEnabled, talkToaHuman, Narrator, _a, chatbotLook, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
             var _e;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
-                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a;
+                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, Narrator = data.Narrator, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a;
                         _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
                         chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
                         _e = {
@@ -317,7 +391,13 @@ var DataProvider = function (props) {
                             userId: userId || defaultClientConfig.userId,
                             accessToken: accessToken || defaultClientConfig.accessToken,
                             universityId: universityId || defaultClientConfig.universityId,
-                            chatbotName: chatbotName || defaultClientConfig.chatbotName
+                            chatbotName: chatbotName || defaultClientConfig.chatbotName,
+                            language: language || defaultClientConfig.language,
+                            randomQuestionEnabled: randomQuestionEnabled || defaultClientConfig.randomQuestionEnabled,
+                            randomQuestion: randomQuestion || defaultClientConfig.randomQuestion,
+                            talkToaHumanEnabled: talkToaHumanEnabled || defaultClientConfig.talkToaHumanEnabled,
+                            talkToaHuman: talkToaHuman || defaultClientConfig.talkToaHuman,
+                            Narrator: Narrator || defaultClientConfig.Narrator
                         };
                         if (!(typeof chatbotBubbleIcons == "string")) return [3 /*break*/, 2];
                         return [4 /*yield*/, doesImageExists(chatbotBubbleIcons)];
@@ -444,11 +524,7 @@ var DataProvider = function (props) {
 };
 var useData = function () { return React.useContext(DataContext); };
 
-var lodashExports = {};
-var lodash = {
-  get exports(){ return lodashExports; },
-  set exports(v){ lodashExports = v; },
-};
+var lodash = {exports: {}};
 
 /**
  * @license
@@ -458,6 +534,7 @@ var lodash = {
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
+lodash.exports;
 
 (function (module, exports) {
 (function() {
@@ -17646,10 +17723,11 @@ var lodash = {
 	    // Export to the global object.
 	    root._ = _;
 	  }
-	}.call(commonjsGlobal));
-} (lodash, lodashExports));
+	}.call(commonjsGlobal)); 
+} (lodash, lodash.exports));
 
-var _ = lodashExports;
+var lodashExports = lodash.exports;
+var _ = /*@__PURE__*/getDefaultExportFromCjs(lodashExports);
 
 var DefaultContext = {
   color: undefined,
@@ -17934,17 +18012,14 @@ function RiCloseFill (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 24 24"},"child":[{"tag":"path","attr":{"d":"M12.0009 17C15.6633 17 18.8659 18.5751 20.608 20.9247L18.766 21.796C17.3482 20.1157 14.8483 19 12.0009 19C9.15346 19 6.6535 20.1157 5.23577 21.796L3.39453 20.9238C5.13673 18.5747 8.33894 17 12.0009 17ZM12.0009 2C14.7623 2 17.0009 4.23858 17.0009 7V10C17.0009 12.7614 14.7623 15 12.0009 15C9.23945 15 7.00087 12.7614 7.00087 10V7C7.00087 4.23858 9.23945 2 12.0009 2Z"}}]})(props);
 }
 
-var classnamesExports = {};
-var classnames = {
-  get exports(){ return classnamesExports; },
-  set exports(v){ classnamesExports = v; },
-};
+var classnames = {exports: {}};
 
 /*!
 	Copyright (c) 2018 Jed Watson.
 	Licensed under the MIT License (MIT), see
 	http://jedwatson.github.io/classnames
 */
+classnames.exports;
 
 (function (module) {
 	/* global define */
@@ -17953,39 +18028,57 @@ var classnames = {
 
 		var hasOwn = {}.hasOwnProperty;
 
-		function classNames() {
-			var classes = [];
+		function classNames () {
+			var classes = '';
 
 			for (var i = 0; i < arguments.length; i++) {
 				var arg = arguments[i];
-				if (!arg) continue;
-
-				var argType = typeof arg;
-
-				if (argType === 'string' || argType === 'number') {
-					classes.push(arg);
-				} else if (Array.isArray(arg)) {
-					if (arg.length) {
-						var inner = classNames.apply(null, arg);
-						if (inner) {
-							classes.push(inner);
-						}
-					}
-				} else if (argType === 'object') {
-					if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
-						classes.push(arg.toString());
-						continue;
-					}
-
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
+				if (arg) {
+					classes = appendClass(classes, parseValue(arg));
 				}
 			}
 
-			return classes.join(' ');
+			return classes;
+		}
+
+		function parseValue (arg) {
+			if (typeof arg === 'string' || typeof arg === 'number') {
+				return arg;
+			}
+
+			if (typeof arg !== 'object') {
+				return '';
+			}
+
+			if (Array.isArray(arg)) {
+				return classNames.apply(null, arg);
+			}
+
+			if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+				return arg.toString();
+			}
+
+			var classes = '';
+
+			for (var key in arg) {
+				if (hasOwn.call(arg, key) && arg[key]) {
+					classes = appendClass(classes, key);
+				}
+			}
+
+			return classes;
+		}
+
+		function appendClass (value, newClass) {
+			if (!newClass) {
+				return value;
+			}
+		
+			if (value) {
+				return value + ' ' + newClass;
+			}
+		
+			return value + newClass;
 		}
 
 		if (module.exports) {
@@ -17994,10 +18087,11 @@ var classnames = {
 		} else {
 			window.classNames = classNames;
 		}
-	}());
+	}()); 
 } (classnames));
 
-var classNames = classnamesExports;
+var classnamesExports = classnames.exports;
+var classNames = /*@__PURE__*/getDefaultExportFromCjs(classnamesExports);
 
 const DEFAULT_BREAKPOINTS = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs'];
 const DEFAULT_MIN_BREAKPOINT = 'xs';
@@ -18051,24 +18145,282 @@ const FormRange = /*#__PURE__*/React__namespace.forwardRef(({
 FormRange.displayName = 'FormRange';
 var FormRange$1 = FormRange;
 
+function warn() {
+  if (console && console.warn) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    if (typeof args[0] === 'string') args[0] = `react-i18next:: ${args[0]}`;
+    console.warn(...args);
+  }
+}
+const alreadyWarned = {};
+function warnOnce() {
+  for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    args[_key2] = arguments[_key2];
+  }
+  if (typeof args[0] === 'string' && alreadyWarned[args[0]]) return;
+  if (typeof args[0] === 'string') alreadyWarned[args[0]] = new Date();
+  warn(...args);
+}
+const loadedClb = (i18n, cb) => () => {
+  if (i18n.isInitialized) {
+    cb();
+  } else {
+    const initialized = () => {
+      setTimeout(() => {
+        i18n.off('initialized', initialized);
+      }, 0);
+      cb();
+    };
+    i18n.on('initialized', initialized);
+  }
+};
+function loadNamespaces(i18n, ns, cb) {
+  i18n.loadNamespaces(ns, loadedClb(i18n, cb));
+}
+function loadLanguages(i18n, lng, ns, cb) {
+  if (typeof ns === 'string') ns = [ns];
+  ns.forEach(n => {
+    if (i18n.options.ns.indexOf(n) < 0) i18n.options.ns.push(n);
+  });
+  i18n.loadLanguages(lng, loadedClb(i18n, cb));
+}
+function oldI18nextHasLoadedNamespace(ns, i18n) {
+  let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  const lng = i18n.languages[0];
+  const fallbackLng = i18n.options ? i18n.options.fallbackLng : false;
+  const lastLng = i18n.languages[i18n.languages.length - 1];
+  if (lng.toLowerCase() === 'cimode') return true;
+  const loadNotPending = (l, n) => {
+    const loadState = i18n.services.backendConnector.state[`${l}|${n}`];
+    return loadState === -1 || loadState === 2;
+  };
+  if (options.bindI18n && options.bindI18n.indexOf('languageChanging') > -1 && i18n.services.backendConnector.backend && i18n.isLanguageChangingTo && !loadNotPending(i18n.isLanguageChangingTo, ns)) return false;
+  if (i18n.hasResourceBundle(lng, ns)) return true;
+  if (!i18n.services.backendConnector.backend || i18n.options.resources && !i18n.options.partialBundledLanguages) return true;
+  if (loadNotPending(lng, ns) && (!fallbackLng || loadNotPending(lastLng, ns))) return true;
+  return false;
+}
+function hasLoadedNamespace(ns, i18n) {
+  let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  if (!i18n.languages || !i18n.languages.length) {
+    warnOnce('i18n.languages were undefined or empty', i18n.languages);
+    return true;
+  }
+  const isNewerI18next = i18n.options.ignoreJSONStructure !== undefined;
+  if (!isNewerI18next) {
+    return oldI18nextHasLoadedNamespace(ns, i18n, options);
+  }
+  return i18n.hasLoadedNamespace(ns, {
+    lng: options.lng,
+    precheck: (i18nInstance, loadNotPending) => {
+      if (options.bindI18n && options.bindI18n.indexOf('languageChanging') > -1 && i18nInstance.services.backendConnector.backend && i18nInstance.isLanguageChangingTo && !loadNotPending(i18nInstance.isLanguageChangingTo, ns)) return false;
+    }
+  });
+}
+
+const matchHtmlEntity = /&(?:amp|#38|lt|#60|gt|#62|apos|#39|quot|#34|nbsp|#160|copy|#169|reg|#174|hellip|#8230|#x2F|#47);/g;
+const htmlEntities = {
+  '&amp;': '&',
+  '&#38;': '&',
+  '&lt;': '<',
+  '&#60;': '<',
+  '&gt;': '>',
+  '&#62;': '>',
+  '&apos;': "'",
+  '&#39;': "'",
+  '&quot;': '"',
+  '&#34;': '"',
+  '&nbsp;': ' ',
+  '&#160;': ' ',
+  '&copy;': '©',
+  '&#169;': '©',
+  '&reg;': '®',
+  '&#174;': '®',
+  '&hellip;': '…',
+  '&#8230;': '…',
+  '&#x2F;': '/',
+  '&#47;': '/'
+};
+const unescapeHtmlEntity = m => htmlEntities[m];
+const unescape = text => text.replace(matchHtmlEntity, unescapeHtmlEntity);
+
+let defaultOptions = {
+  bindI18n: 'languageChanged',
+  bindI18nStore: '',
+  transEmptyNodeValue: '',
+  transSupportBasicHtmlNodes: true,
+  transWrapTextNodes: '',
+  transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p'],
+  useSuspense: true,
+  unescape
+};
+function getDefaults() {
+  return defaultOptions;
+}
+
+let i18nInstance;
+function getI18n() {
+  return i18nInstance;
+}
+
+const I18nContext = React.createContext();
+class ReportNamespaces {
+  constructor() {
+    this.usedNamespaces = {};
+  }
+  addUsedNamespaces(namespaces) {
+    namespaces.forEach(ns => {
+      if (!this.usedNamespaces[ns]) this.usedNamespaces[ns] = true;
+    });
+  }
+  getUsedNamespaces() {
+    return Object.keys(this.usedNamespaces);
+  }
+}
+
+const usePrevious = (value, ignore) => {
+  const ref = React.useRef();
+  React.useEffect(() => {
+    ref.current = ignore ? ref.current : value;
+  }, [value, ignore]);
+  return ref.current;
+};
+function alwaysNewT(i18n, language, namespace, keyPrefix) {
+  return i18n.getFixedT(language, namespace, keyPrefix);
+}
+function useMemoizedT(i18n, language, namespace, keyPrefix) {
+  return React.useCallback(alwaysNewT(i18n, language, namespace, keyPrefix), [i18n, language, namespace, keyPrefix]);
+}
+function useTranslation(ns) {
+  let props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  const {
+    i18n: i18nFromProps
+  } = props;
+  const {
+    i18n: i18nFromContext,
+    defaultNS: defaultNSFromContext
+  } = React.useContext(I18nContext) || {};
+  const i18n = i18nFromProps || i18nFromContext || getI18n();
+  if (i18n && !i18n.reportNamespaces) i18n.reportNamespaces = new ReportNamespaces();
+  if (!i18n) {
+    warnOnce('You will need to pass in an i18next instance by using initReactI18next');
+    const notReadyT = (k, optsOrDefaultValue) => {
+      if (typeof optsOrDefaultValue === 'string') return optsOrDefaultValue;
+      if (optsOrDefaultValue && typeof optsOrDefaultValue === 'object' && typeof optsOrDefaultValue.defaultValue === 'string') return optsOrDefaultValue.defaultValue;
+      return Array.isArray(k) ? k[k.length - 1] : k;
+    };
+    const retNotReady = [notReadyT, {}, false];
+    retNotReady.t = notReadyT;
+    retNotReady.i18n = {};
+    retNotReady.ready = false;
+    return retNotReady;
+  }
+  if (i18n.options.react && i18n.options.react.wait !== undefined) warnOnce('It seems you are still using the old wait option, you may migrate to the new useSuspense behaviour.');
+  const i18nOptions = {
+    ...getDefaults(),
+    ...i18n.options.react,
+    ...props
+  };
+  const {
+    useSuspense,
+    keyPrefix
+  } = i18nOptions;
+  let namespaces = ns || defaultNSFromContext || i18n.options && i18n.options.defaultNS;
+  namespaces = typeof namespaces === 'string' ? [namespaces] : namespaces || ['translation'];
+  if (i18n.reportNamespaces.addUsedNamespaces) i18n.reportNamespaces.addUsedNamespaces(namespaces);
+  const ready = (i18n.isInitialized || i18n.initializedStoreOnce) && namespaces.every(n => hasLoadedNamespace(n, i18n, i18nOptions));
+  const memoGetT = useMemoizedT(i18n, props.lng || null, i18nOptions.nsMode === 'fallback' ? namespaces : namespaces[0], keyPrefix);
+  const getT = () => memoGetT;
+  const getNewT = () => alwaysNewT(i18n, props.lng || null, i18nOptions.nsMode === 'fallback' ? namespaces : namespaces[0], keyPrefix);
+  const [t, setT] = React.useState(getT);
+  let joinedNS = namespaces.join();
+  if (props.lng) joinedNS = `${props.lng}${joinedNS}`;
+  const previousJoinedNS = usePrevious(joinedNS);
+  const isMounted = React.useRef(true);
+  React.useEffect(() => {
+    const {
+      bindI18n,
+      bindI18nStore
+    } = i18nOptions;
+    isMounted.current = true;
+    if (!ready && !useSuspense) {
+      if (props.lng) {
+        loadLanguages(i18n, props.lng, namespaces, () => {
+          if (isMounted.current) setT(getNewT);
+        });
+      } else {
+        loadNamespaces(i18n, namespaces, () => {
+          if (isMounted.current) setT(getNewT);
+        });
+      }
+    }
+    if (ready && previousJoinedNS && previousJoinedNS !== joinedNS && isMounted.current) {
+      setT(getNewT);
+    }
+    function boundReset() {
+      if (isMounted.current) setT(getNewT);
+    }
+    if (bindI18n && i18n) i18n.on(bindI18n, boundReset);
+    if (bindI18nStore && i18n) i18n.store.on(bindI18nStore, boundReset);
+    return () => {
+      isMounted.current = false;
+      if (bindI18n && i18n) bindI18n.split(' ').forEach(e => i18n.off(e, boundReset));
+      if (bindI18nStore && i18n) bindI18nStore.split(' ').forEach(e => i18n.store.off(e, boundReset));
+    };
+  }, [i18n, joinedNS]);
+  React.useEffect(() => {
+    if (isMounted.current && ready) {
+      setT(getT);
+    }
+  }, [i18n, keyPrefix, ready]);
+  const ret = [t, i18n, ready];
+  ret.t = t;
+  ret.i18n = i18n;
+  ret.ready = ready;
+  if (ready) return ret;
+  if (!ready && !useSuspense) return ret;
+  throw new Promise(resolve => {
+    if (props.lng) {
+      loadLanguages(i18n, props.lng, namespaces, () => resolve());
+    } else {
+      loadNamespaces(i18n, namespaces, () => resolve());
+    }
+  });
+}
+
+function I18nextProvider(_ref) {
+  let {
+    i18n,
+    defaultNS,
+    children
+  } = _ref;
+  const value = React.useMemo(() => ({
+    i18n,
+    defaultNS
+  }), [i18n, defaultNS]);
+  return React.createElement(I18nContext.Provider, {
+    value
+  }, children);
+}
+
 var PopupItemFilters = function () {
     var _a = useData(), chatFilters = _a.chatFilters, setChatFilters = _a.setChatFilters;
     var handleFilterValue = function (e) {
         var _a;
         setChatFilters(__assign$1(__assign$1({}, chatFilters), (_a = {}, _a[e.target.name] = e.target.value, _a)));
     };
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Chatbot Personality", className: "popup-contents-filters" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "chip-buttons-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", title: "Reset" }, { children: "Reset" })), jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", title: "Discard Changes" }, { children: "Discard Changes" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filters-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "Friendly" })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "Professional" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "tone", value: chatFilters.tone, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "Opinionated" })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "Neutral" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "sentiment", value: chatFilters.sentiment, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "Many emojis" })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "No emojis" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "emotiveness", value: chatFilters.emotiveness, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "Long answers" })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: "Short answers" }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "length", value: chatFilters.length, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] }))] }))] })));
+    var _b = useTranslation("global"), t = _b[0]; _b[1];
+    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("filters.personality"), className: "popup-contents-filters" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "chip-buttons-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", title: "Reset" }, { children: t("filters.reset") })), jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", title: "Discard Changes" }, { children: t("filters.discard") }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filters-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.friendly") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.professional") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "tone", value: chatFilters.tone, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.opinionated") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.neutral") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "sentiment", value: chatFilters.sentiment, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.many") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.no") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "emotiveness", value: chatFilters.emotiveness, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.long") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.short") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "length", value: chatFilters.length, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] }))] }))] })));
 };
 
 var PopupItemInfo = function () {
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Welcome to What2Study", className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: ["What2Study is a ", jsxRuntimeExports.jsx("span", { children: "chatbot" }), " that was developed to support in all your question and endeavors concerning ", jsxRuntimeExports.jsx("span", { children: "studies" }), "."] })), jsxRuntimeExports.jsx("p", __assign$1({ className: "info-text-title" }, { children: "Please keep in mind:" })), jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: ["What2Study is not a ", jsxRuntimeExports.jsx("span", { children: "person" }), ". Many people were involved in its development and throughly tested weather its responses or suggestions were accurate and helpful. Still, we ", jsxRuntimeExports.jsx("span", { children: "can't guarantee" }), " that every answer given by this chatbot is correct. You need to validate crucial information for yourself."] }))] })));
+    var _a = useTranslation("global"), t = _a[0]; _a[1];
+    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("infoPopup.welcome"), className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: [t("infoPopup.what2study"), " ", jsxRuntimeExports.jsxs("span", { children: [" ", t("infoPopup.chatbot")] }), " ", t("infoPopup.that"), jsxRuntimeExports.jsx("span", { children: t("infoPopup.studies") }), "."] })), jsxRuntimeExports.jsx("p", __assign$1({ className: "info-text-title" }, { children: t("infoPopup.please") })), jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: [t("infoPopup.isnot"), jsxRuntimeExports.jsx("span", { children: t("infoPopup.person") }), t("infoPopup.many"), jsxRuntimeExports.jsx("span", { children: t("infoPopup.cant") }), " ", t("infoPopup.every")] }))] })));
 };
 
-var propTypesExports = {};
-var propTypes$2 = {
-  get exports(){ return propTypesExports; },
-  set exports(v){ propTypesExports = v; },
-};
+var propTypes$2 = {exports: {}};
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -18156,40 +18508,8 @@ var factoryWithThrowingShims = function() {
   propTypes$2.exports = factoryWithThrowingShims();
 }
 
-var rHyphen = /-(.)/g;
-function camelize(string) {
-  return string.replace(rHyphen, function (_, chr) {
-    return chr.toUpperCase();
-  });
-}
-
-const pascalCase = str => str[0].toUpperCase() + camelize(str).slice(1);
-// TODO: emstricten & fix the typing here! `createWithBsPrefix<TElementType>...`
-function createWithBsPrefix(prefix, {
-  displayName = pascalCase(prefix),
-  Component,
-  defaultProps
-} = {}) {
-  const BsComponent = /*#__PURE__*/React__namespace.forwardRef(({
-    className,
-    bsPrefix,
-    as: Tag = Component || 'div',
-    ...props
-  }, ref) => {
-    const componentProps = {
-      ...defaultProps,
-      ...props
-    };
-    const resolvedPrefix = useBootstrapPrefix(bsPrefix, prefix);
-    return /*#__PURE__*/jsxRuntimeExports.jsx(Tag, {
-      ref: ref,
-      className: classNames(className, resolvedPrefix),
-      ...componentProps
-    });
-  });
-  BsComponent.displayName = displayName;
-  return BsComponent;
-}
+var propTypesExports = propTypes$2.exports;
+var PropTypes = /*@__PURE__*/getDefaultExportFromCjs(propTypesExports);
 
 /**
  * Finds whether a component's `children` prop includes a React element of the
@@ -18265,10 +18585,10 @@ const propTypes$1 = {
    *
    * @type {('valid'|'invalid')}
    */
-  type: propTypesExports.string,
+  type: PropTypes.string,
   /** Display feedback as a tooltip. */
-  tooltip: propTypesExports.bool,
-  as: propTypesExports.elementType
+  tooltip: PropTypes.bool,
+  as: PropTypes.elementType
 };
 const Feedback = /*#__PURE__*/React__namespace.forwardRef(
 // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
@@ -18416,17 +18736,6 @@ const FormControl = /*#__PURE__*/React__namespace.forwardRef(({
     controlId
   } = React.useContext(FormContext$1);
   bsPrefix = useBootstrapPrefix(bsPrefix, 'form-control');
-  let classes;
-  if (plaintext) {
-    classes = {
-      [`${bsPrefix}-plaintext`]: true
-    };
-  } else {
-    classes = {
-      [bsPrefix]: true,
-      [`${bsPrefix}-${size}`]: size
-    };
-  }
   return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
     ...props,
     type: type,
@@ -18434,7 +18743,7 @@ const FormControl = /*#__PURE__*/React__namespace.forwardRef(({
     ref: ref,
     readOnly: readOnly,
     id: id || controlId,
-    className: classNames(className, classes, isValid && `is-valid`, isInvalid && `is-invalid`, type === 'color' && `${bsPrefix}-color`)
+    className: classNames(className, plaintext ? `${bsPrefix}-plaintext` : bsPrefix, size && `${bsPrefix}-${size}`, type === 'color' && `${bsPrefix}-color`, isValid && 'is-valid', isInvalid && 'is-invalid')
   });
 });
 FormControl.displayName = 'FormControl';
@@ -18442,7 +18751,21 @@ var FormControl$1 = Object.assign(FormControl, {
   Feedback: Feedback$1
 });
 
-var FormFloating = createWithBsPrefix('form-floating');
+const FormFloating = /*#__PURE__*/React__namespace.forwardRef(({
+  className,
+  bsPrefix,
+  as: Component = 'div',
+  ...props
+}, ref) => {
+  bsPrefix = useBootstrapPrefix(bsPrefix, 'form-floating');
+  return /*#__PURE__*/jsxRuntimeExports.jsx(Component, {
+    ref: ref,
+    className: classNames(className, bsPrefix),
+    ...props
+  });
+});
+FormFloating.displayName = 'FormFloating';
+var FormFloating$1 = FormFloating;
 
 const FormGroup = /*#__PURE__*/React__namespace.forwardRef(({
   controlId,
@@ -18590,13 +18913,13 @@ const propTypes = {
    * @type {ReactRef}
    * @alias ref
    */
-  _ref: propTypesExports.any,
+  _ref: PropTypes.any,
   /**
    * Mark a form as having been validated. Setting it to `true` will
    * toggle any validation styles on the forms elements.
    */
-  validated: propTypesExports.bool,
-  as: propTypesExports.elementType
+  validated: PropTypes.bool,
+  as: PropTypes.elementType
 };
 const Form = /*#__PURE__*/React__namespace.forwardRef(({
   className,
@@ -18614,7 +18937,7 @@ Form.propTypes = propTypes;
 var Form$1 = Object.assign(Form, {
   Group: FormGroup$1,
   Control: FormControl$1,
-  Floating: FormFloating,
+  Floating: FormFloating$1,
   Check: FormCheck$1,
   Switch: Switch$1,
   Label: FormLabel$1,
@@ -18624,7 +18947,6 @@ var Form$1 = Object.assign(Form, {
   FloatingLabel: FloatingLabel$1
 });
 
-var dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
 var getLanguage = function (language) {
     switch (language) {
         case EChatLanguage.EN:
@@ -18639,8 +18961,15 @@ var PopupItemSettings = function () {
     var _a = useData(), language = _a.language, setLanguage = _a.setLanguage;
     var handleLanguage = function (e) {
         setLanguage(e.target.value);
+        i18n.changeLanguage(e.target.value.toLowerCase());
     };
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Settings", className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button" }, { children: "Restart Intro" })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: "Language" })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: "User Assumption" })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
+    var _b = useTranslation("global"), t = _b[0], i18n = _b[1];
+    var dummyUserAssumptions = [
+        t("settings.userAssumption1"),
+        t("settings.userAssumption2"),
+        t("settings.userAssumption3")
+    ];
+    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("settings.settings"), className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button" }, { children: t("settings.restart") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
                             return (jsxRuntimeExports.jsxs("span", __assign$1({ className: "app-chip-with-close-btn" }, { children: [assumption, jsxRuntimeExports.jsx("button", __assign$1({ className: "close-btn" }, { children: jsxRuntimeExports.jsx(IoCloseSharp, { className: "close-icon" }) }))] })));
                         }) }))] }))] })));
 };
@@ -18693,12 +19022,13 @@ var IntroPage = function () {
     var _b = React.useState(0), introPage = _b[0], setIntroPage = _b[1];
     var _c = React.useState(false), isVideoOpen = _c[0], setIsVideoOpen = _c[1];
     var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader;
-    return (jsxRuntimeExports.jsx(React.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: "Play Tutorial" }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: ["Hello. It's nice to meet you!", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: "I am a chatbot" })), " built to help you with your studies! Before we get started, here are a few important facts."] })) })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
+    var _d = useTranslation("global"), t = _d[0]; _d[1];
+    return (jsxRuntimeExports.jsx(React.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage1.hello"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage1.iam") })), t("introPage1.built")] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: t("introPage1.chat") }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage2.Lets"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.easy") })), t("introPage2.thats"), jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.functions") }))] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text" }, { children: t("introPage2.everything") })) })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
                         return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
                     }, style: {
                         backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
                         color: chatbotHeader.chatbotHeaderIconFontColor,
-                    } }, { children: "Okay!" }))] })) }));
+                    } }, { children: t("introPage1.okay") }))] })) }));
 };
 
 // THIS FILE IS AUTO GENERATED
@@ -18744,10 +19074,30 @@ var Main = function (props) {
     var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
     var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, _f = clientConfig.chatbotLook, textBoxUser = _f.textBoxUser, textBoxChatbotReply = _f.textBoxChatbotReply, UIGroupA = _f.UIGroupA, UIGroupB = _f.UIGroupB;
+    var _g = React.useState(''), value = _g[0], setValue = _g[1];
+    React.useEffect(function () {
+        var timeout = setTimeout(function () {
+            if (clientConfig.randomQuestionEnabled) {
+                setMessages(function (prev) {
+                    return __spreadArray(__spreadArray([], prev, true), [
+                        {
+                            source: EMessageSource.BOT,
+                            message: clientConfig.randomQuestion,
+                            type: EMessageType.TEXT,
+                            url: "",
+                        },
+                    ], false);
+                });
+            }
+        }, 20000);
+        // if this effect run again, because `value` changed, we remove the previous timeout
+        return function () { return clearTimeout(timeout); };
+    }, [value]);
     var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
-        var params, options, resJson, response_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var params, options, resJson, response_1, chatbotID, currentdate, datetime;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     e === null || e === void 0 ? void 0 : e.preventDefault();
                     setLoading(true);
@@ -18766,15 +19116,15 @@ var Main = function (props) {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(params),
                     };
-                    _a.label = 1;
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 4, , 5]);
+                    _b.trys.push([1, 5, , 6]);
                     return [4 /*yield*/, fetch(chatEndpoint, options)];
                 case 2:
-                    resJson = _a.sent();
+                    resJson = _b.sent();
                     return [4 /*yield*/, resJson.json()];
                 case 3:
-                    response_1 = _a.sent();
+                    response_1 = _b.sent();
                     setMessages(function (prev) {
                         var _a;
                         return __spreadArray(__spreadArray([], prev, true), [
@@ -18790,10 +19140,38 @@ var Main = function (props) {
                             },
                         ], false);
                     });
+                    setValue(response_1.answer);
                     setLoading(false);
-                    return [3 /*break*/, 5];
+                    chatbotID = void 0;
+                    if ("chatbotId" in props) {
+                        chatbotID = props.chatbotId;
+                    }
+                    currentdate = new Date();
+                    datetime = currentdate.getDate() + "/"
+                        + (currentdate.getMonth() + 1) + "/"
+                        + currentdate.getFullYear() + " @ "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
+                    return [4 /*yield*/, fetch("".concat(WHAT2STUDY_BACKEND_URL, "/saveUserMessage"), {
+                            method: "POST",
+                            headers: {
+                                "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                                "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
+                            },
+                            body: JSON.stringify({
+                                chatbotId: chatbotID,
+                                user: message,
+                                bot: response_1.answer,
+                                sessionID: (_a = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)) === null || _a === void 0 ? void 0 : _a.trim(),
+                                timestamp: datetime,
+                            }),
+                        })];
                 case 4:
-                    _a.sent();
+                    _b.sent();
+                    return [3 /*break*/, 6];
+                case 5:
+                    _b.sent();
                     setMessages(function (prev) {
                         return __spreadArray(__spreadArray([], prev, true), [
                             {
@@ -18803,26 +19181,22 @@ var Main = function (props) {
                         ], false);
                     });
                     setLoading(false);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     }); };
     var handleMessageFeedback = function (msg, feedback) { return __awaiter(void 0, void 0, void 0, function () {
         var messagesWithFeedback, newMessages, currentdate, datetime, chatbotID;
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     messagesWithFeedback = __spreadArray([], messages, true);
                     newMessages = messagesWithFeedback.map(function (msgObj) {
                         return msgObj.message == msg
                             ? __assign$1(__assign$1({}, msgObj), { feedback: feedback }) : msgObj;
                     });
-                    console.log(msg);
-                    console.log(feedback);
-                    console.log(newMessages);
-                    console.log((_a = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)) === null || _a === void 0 ? void 0 : _a.trim());
                     currentdate = new Date();
                     datetime = currentdate.getDate() + "/"
                         + (currentdate.getMonth() + 1) + "/"
@@ -18832,8 +19206,6 @@ var Main = function (props) {
                         + currentdate.getSeconds();
                     setMessages(newMessages);
                     if ("chatbotId" in props) {
-                        console.log(props);
-                        console.log(props.chatbotId);
                         chatbotID = props.chatbotId;
                     }
                     return [4 /*yield*/, fetch("".concat(WHAT2STUDY_BACKEND_URL, "/saveFeedback"), {
@@ -18845,13 +19217,13 @@ var Main = function (props) {
                             body: JSON.stringify({
                                 chatbotId: chatbotID,
                                 messages: newMessages,
-                                sessionID: (_b = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)) === null || _b === void 0 ? void 0 : _b.trim(),
+                                sessionID: (_a = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)) === null || _a === void 0 ? void 0 : _a.trim(),
                                 timestamp: datetime,
                                 type: feedback
                             }),
                         })];
                 case 1:
-                    _c.sent();
+                    _b.sent();
                     return [2 /*return*/];
             }
         });
@@ -18903,7 +19275,8 @@ var TalkToHuman = function () {
         day: "Sat",
         time: "09:00",
     }), preferredDayTime = _c[0], setPreferredDayTime = _c[1];
-    return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "talkToHuman-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "navbar" }, { children: jsxRuntimeExports.jsxs("button", __assign$1({ className: "navBackBtn", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [jsxRuntimeExports.jsx(IoChevronBack, { className: "navIcon" }), jsxRuntimeExports.jsx("span", __assign$1({ className: "navText" }, { children: "Back" }))] })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-details-wrapper" }, { children: [jsxRuntimeExports.jsxs("a", __assign$1({ className: "contact-detail", href: "tel:+49 9086 4577209" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(IoIosCall, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: "+49 9086 4577209" }))] })), jsxRuntimeExports.jsxs("a", __assign$1({ target: "_blank", className: "contact-detail contact-email", href: "mailto:registration@uni-siegen.de" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(MdEmail, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: "registration@uni-siegen.de" }))] }))] })), jsxRuntimeExports.jsx("div", { className: "divider" }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "tth-data-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: "Write a message to Central Student Advisory Service:" })), jsxRuntimeExports.jsx(FloatingLabel$1, __assign$1({ controlId: "floatingTextarea", label: "Your message", className: "tth-message" }, { children: jsxRuntimeExports.jsx(Form$1.Control, { as: "textarea", placeholder: "Your message...", style: { height: "90px" } }) })), jsxRuntimeExports.jsx(Form$1.Check, { name: "send-chat-details", "aria-label": "Send chat details", label: "Send chat details", defaultChecked: true }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: "Please leave an email that the ZSB can use to contact you:" })), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: useSavedEmail, onClick: function () { return setUseSavedEmail(true); }, label: jsxRuntimeExports.jsxs(React.Fragment, { children: ["Use saved email id", " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "email-address-saved" }, { children: "somebody.nobody@example.com" }))] }) }), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: !useSavedEmail, onClick: function () { return setUseSavedEmail(false); }, label: "Use a different email address" }), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: "Enter email address", disabled: useSavedEmail })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: "Would you like to be called with the answer?" })), jsxRuntimeExports.jsx(Form$1.Control, { type: "tel", onChange: function (e) { return setPhoneInput(e.target.value); }, value: phoneInput, placeholder: "Enter contact number" }), phoneInput.trim() !== "" && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "day-time-input-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: "What is the best time to call you?" })), jsxRuntimeExports.jsx("div", __assign$1({ className: "day-wrapper" }, { children: DAYS.map(function (day) { return (jsxRuntimeExports.jsx("span", __assign$1({ className: "day-select ".concat(preferredDayTime.day === day ? "day-selected" : ""), onClick: function () {
+    var _d = useTranslation("global"), t = _d[0]; _d[1];
+    return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "talkToHuman-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "navbar" }, { children: jsxRuntimeExports.jsxs("button", __assign$1({ className: "navBackBtn", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [jsxRuntimeExports.jsx(IoChevronBack, { className: "navIcon" }), jsxRuntimeExports.jsx("span", __assign$1({ className: "navText" }, { children: t("talk2human.back") }))] })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-details-wrapper" }, { children: [jsxRuntimeExports.jsxs("a", __assign$1({ className: "contact-detail", href: "tel:+49 9086 4577209" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(IoIosCall, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: "+49 9086 4577209" }))] })), jsxRuntimeExports.jsxs("a", __assign$1({ target: "_blank", className: "contact-detail contact-email", href: "mailto:registration@uni-siegen.de" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(MdEmail, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: "registration@uni-siegen.de" }))] }))] })), jsxRuntimeExports.jsx("div", { className: "divider" }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "tth-data-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.write") })), jsxRuntimeExports.jsx(FloatingLabel$1, __assign$1({ controlId: "floatingTextarea", label: t("talk2human.message"), className: "tth-message" }, { children: jsxRuntimeExports.jsx(Form$1.Control, { as: "textarea", placeholder: t("talk2human.message"), style: { height: "90px" } }) })), jsxRuntimeExports.jsx(Form$1.Check, { name: "send-chat-details", "aria-label": "Send chat details", label: t("talk2human.send"), defaultChecked: true }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.please") })), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: useSavedEmail, onClick: function () { return setUseSavedEmail(true); }, label: jsxRuntimeExports.jsxs(React.Fragment, { children: [t("talk2human.use"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "email-address-saved" }, { children: "somebody.nobody@example.com" }))] }) }), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: !useSavedEmail, onClick: function () { return setUseSavedEmail(false); }, label: t("talk2human.different") }), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: t("talk2human.email"), disabled: useSavedEmail })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.would") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "tel", onChange: function (e) { return setPhoneInput(e.target.value); }, value: phoneInput, placeholder: t("talk2human.number") }), phoneInput.trim() !== "" && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "day-time-input-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.best") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "day-wrapper" }, { children: DAYS.map(function (day) { return (jsxRuntimeExports.jsx("span", __assign$1({ className: "day-select ".concat(preferredDayTime.day === day ? "day-selected" : ""), onClick: function () {
                                                 return setPreferredDayTime(__assign$1(__assign$1({}, preferredDayTime), { day: day }));
                                             } }, { children: day }))); }) })), jsxRuntimeExports.jsx(Form$1.Control, { type: "time", value: preferredDayTime.time, onChange: function (e) {
                                             return setPreferredDayTime(__assign$1(__assign$1({}, preferredDayTime), { time: e.target.value }));
@@ -19002,9 +19375,2530 @@ var ChatClient = function (props) {
     return jsxRuntimeExports.jsx(React.Fragment, {});
 };
 
+const consoleLogger = {
+  type: 'logger',
+  log(args) {
+    this.output('log', args);
+  },
+  warn(args) {
+    this.output('warn', args);
+  },
+  error(args) {
+    this.output('error', args);
+  },
+  output(type, args) {
+    if (console && console[type]) console[type].apply(console, args);
+  }
+};
+class Logger {
+  constructor(concreteLogger) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    this.init(concreteLogger, options);
+  }
+  init(concreteLogger) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    this.prefix = options.prefix || 'i18next:';
+    this.logger = concreteLogger || consoleLogger;
+    this.options = options;
+    this.debug = options.debug;
+  }
+  log() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    return this.forward(args, 'log', '', true);
+  }
+  warn() {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    return this.forward(args, 'warn', '', true);
+  }
+  error() {
+    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+    return this.forward(args, 'error', '');
+  }
+  deprecate() {
+    for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      args[_key4] = arguments[_key4];
+    }
+    return this.forward(args, 'warn', 'WARNING DEPRECATED: ', true);
+  }
+  forward(args, lvl, prefix, debugOnly) {
+    if (debugOnly && !this.debug) return null;
+    if (typeof args[0] === 'string') args[0] = `${prefix}${this.prefix} ${args[0]}`;
+    return this.logger[lvl](args);
+  }
+  create(moduleName) {
+    return new Logger(this.logger, {
+      ...{
+        prefix: `${this.prefix}:${moduleName}:`
+      },
+      ...this.options
+    });
+  }
+  clone(options) {
+    options = options || this.options;
+    options.prefix = options.prefix || this.prefix;
+    return new Logger(this.logger, options);
+  }
+}
+var baseLogger = new Logger();
+
+class EventEmitter {
+  constructor() {
+    this.observers = {};
+  }
+  on(events, listener) {
+    events.split(' ').forEach(event => {
+      if (!this.observers[event]) this.observers[event] = new Map();
+      const numListeners = this.observers[event].get(listener) || 0;
+      this.observers[event].set(listener, numListeners + 1);
+    });
+    return this;
+  }
+  off(event, listener) {
+    if (!this.observers[event]) return;
+    if (!listener) {
+      delete this.observers[event];
+      return;
+    }
+    this.observers[event].delete(listener);
+  }
+  emit(event) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+    if (this.observers[event]) {
+      const cloned = Array.from(this.observers[event].entries());
+      cloned.forEach(_ref => {
+        let [observer, numTimesAdded] = _ref;
+        for (let i = 0; i < numTimesAdded; i++) {
+          observer(...args);
+        }
+      });
+    }
+    if (this.observers['*']) {
+      const cloned = Array.from(this.observers['*'].entries());
+      cloned.forEach(_ref2 => {
+        let [observer, numTimesAdded] = _ref2;
+        for (let i = 0; i < numTimesAdded; i++) {
+          observer.apply(observer, [event, ...args]);
+        }
+      });
+    }
+  }
+}
+
+function defer() {
+  let res;
+  let rej;
+  const promise = new Promise((resolve, reject) => {
+    res = resolve;
+    rej = reject;
+  });
+  promise.resolve = res;
+  promise.reject = rej;
+  return promise;
+}
+function makeString(object) {
+  if (object == null) return '';
+  return '' + object;
+}
+function copy(a, s, t) {
+  a.forEach(m => {
+    if (s[m]) t[m] = s[m];
+  });
+}
+const lastOfPathSeparatorRegExp = /###/g;
+function getLastOfPath(object, path, Empty) {
+  function cleanKey(key) {
+    return key && key.indexOf('###') > -1 ? key.replace(lastOfPathSeparatorRegExp, '.') : key;
+  }
+  function canNotTraverseDeeper() {
+    return !object || typeof object === 'string';
+  }
+  const stack = typeof path !== 'string' ? path : path.split('.');
+  let stackIndex = 0;
+  while (stackIndex < stack.length - 1) {
+    if (canNotTraverseDeeper()) return {};
+    const key = cleanKey(stack[stackIndex]);
+    if (!object[key] && Empty) object[key] = new Empty();
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      object = object[key];
+    } else {
+      object = {};
+    }
+    ++stackIndex;
+  }
+  if (canNotTraverseDeeper()) return {};
+  return {
+    obj: object,
+    k: cleanKey(stack[stackIndex])
+  };
+}
+function setPath(object, path, newValue) {
+  const {
+    obj,
+    k
+  } = getLastOfPath(object, path, Object);
+  if (obj !== undefined || path.length === 1) {
+    obj[k] = newValue;
+    return;
+  }
+  let e = path[path.length - 1];
+  let p = path.slice(0, path.length - 1);
+  let last = getLastOfPath(object, p, Object);
+  while (last.obj === undefined && p.length) {
+    e = `${p[p.length - 1]}.${e}`;
+    p = p.slice(0, p.length - 1);
+    last = getLastOfPath(object, p, Object);
+    if (last && last.obj && typeof last.obj[`${last.k}.${e}`] !== 'undefined') {
+      last.obj = undefined;
+    }
+  }
+  last.obj[`${last.k}.${e}`] = newValue;
+}
+function pushPath(object, path, newValue, concat) {
+  const {
+    obj,
+    k
+  } = getLastOfPath(object, path, Object);
+  obj[k] = obj[k] || [];
+  if (concat) obj[k] = obj[k].concat(newValue);
+  if (!concat) obj[k].push(newValue);
+}
+function getPath(object, path) {
+  const {
+    obj,
+    k
+  } = getLastOfPath(object, path);
+  if (!obj) return undefined;
+  return obj[k];
+}
+function getPathWithDefaults(data, defaultData, key) {
+  const value = getPath(data, key);
+  if (value !== undefined) {
+    return value;
+  }
+  return getPath(defaultData, key);
+}
+function deepExtend(target, source, overwrite) {
+  for (const prop in source) {
+    if (prop !== '__proto__' && prop !== 'constructor') {
+      if (prop in target) {
+        if (typeof target[prop] === 'string' || target[prop] instanceof String || typeof source[prop] === 'string' || source[prop] instanceof String) {
+          if (overwrite) target[prop] = source[prop];
+        } else {
+          deepExtend(target[prop], source[prop], overwrite);
+        }
+      } else {
+        target[prop] = source[prop];
+      }
+    }
+  }
+  return target;
+}
+function regexEscape(str) {
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+}
+var _entityMap = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;'
+};
+function escape(data) {
+  if (typeof data === 'string') {
+    return data.replace(/[&<>"'\/]/g, s => _entityMap[s]);
+  }
+  return data;
+}
+class RegExpCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.regExpMap = new Map();
+    this.regExpQueue = [];
+  }
+  getRegExp(pattern) {
+    const regExpFromCache = this.regExpMap.get(pattern);
+    if (regExpFromCache !== undefined) {
+      return regExpFromCache;
+    }
+    const regExpNew = new RegExp(pattern);
+    if (this.regExpQueue.length === this.capacity) {
+      this.regExpMap.delete(this.regExpQueue.shift());
+    }
+    this.regExpMap.set(pattern, regExpNew);
+    this.regExpQueue.push(pattern);
+    return regExpNew;
+  }
+}
+const chars = [' ', ',', '?', '!', ';'];
+const looksLikeObjectPathRegExpCache = new RegExpCache(20);
+function looksLikeObjectPath(key, nsSeparator, keySeparator) {
+  nsSeparator = nsSeparator || '';
+  keySeparator = keySeparator || '';
+  const possibleChars = chars.filter(c => nsSeparator.indexOf(c) < 0 && keySeparator.indexOf(c) < 0);
+  if (possibleChars.length === 0) return true;
+  const r = looksLikeObjectPathRegExpCache.getRegExp(`(${possibleChars.map(c => c === '?' ? '\\?' : c).join('|')})`);
+  let matched = !r.test(key);
+  if (!matched) {
+    const ki = key.indexOf(keySeparator);
+    if (ki > 0 && !r.test(key.substring(0, ki))) {
+      matched = true;
+    }
+  }
+  return matched;
+}
+function deepFind(obj, path) {
+  let keySeparator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '.';
+  if (!obj) return undefined;
+  if (obj[path]) return obj[path];
+  const tokens = path.split(keySeparator);
+  let current = obj;
+  for (let i = 0; i < tokens.length;) {
+    if (!current || typeof current !== 'object') {
+      return undefined;
+    }
+    let next;
+    let nextPath = '';
+    for (let j = i; j < tokens.length; ++j) {
+      if (j !== i) {
+        nextPath += keySeparator;
+      }
+      nextPath += tokens[j];
+      next = current[nextPath];
+      if (next !== undefined) {
+        if (['string', 'number', 'boolean'].indexOf(typeof next) > -1 && j < tokens.length - 1) {
+          continue;
+        }
+        i += j - i + 1;
+        break;
+      }
+    }
+    current = next;
+  }
+  return current;
+}
+function getCleanedCode(code) {
+  if (code && code.indexOf('_') > 0) return code.replace('_', '-');
+  return code;
+}
+
+class ResourceStore extends EventEmitter {
+  constructor(data) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+      ns: ['translation'],
+      defaultNS: 'translation'
+    };
+    super();
+    this.data = data || {};
+    this.options = options;
+    if (this.options.keySeparator === undefined) {
+      this.options.keySeparator = '.';
+    }
+    if (this.options.ignoreJSONStructure === undefined) {
+      this.options.ignoreJSONStructure = true;
+    }
+  }
+  addNamespaces(ns) {
+    if (this.options.ns.indexOf(ns) < 0) {
+      this.options.ns.push(ns);
+    }
+  }
+  removeNamespaces(ns) {
+    const index = this.options.ns.indexOf(ns);
+    if (index > -1) {
+      this.options.ns.splice(index, 1);
+    }
+  }
+  getResource(lng, ns, key) {
+    let options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
+    const ignoreJSONStructure = options.ignoreJSONStructure !== undefined ? options.ignoreJSONStructure : this.options.ignoreJSONStructure;
+    let path;
+    if (lng.indexOf('.') > -1) {
+      path = lng.split('.');
+    } else {
+      path = [lng, ns];
+      if (key) {
+        if (Array.isArray(key)) {
+          path.push(...key);
+        } else if (typeof key === 'string' && keySeparator) {
+          path.push(...key.split(keySeparator));
+        } else {
+          path.push(key);
+        }
+      }
+    }
+    const result = getPath(this.data, path);
+    if (!result && !ns && !key && lng.indexOf('.') > -1) {
+      lng = path[0];
+      ns = path[1];
+      key = path.slice(2).join('.');
+    }
+    if (result || !ignoreJSONStructure || typeof key !== 'string') return result;
+    return deepFind(this.data && this.data[lng] && this.data[lng][ns], key, keySeparator);
+  }
+  addResource(lng, ns, key, value) {
+    let options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {
+      silent: false
+    };
+    const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
+    let path = [lng, ns];
+    if (key) path = path.concat(keySeparator ? key.split(keySeparator) : key);
+    if (lng.indexOf('.') > -1) {
+      path = lng.split('.');
+      value = ns;
+      ns = path[1];
+    }
+    this.addNamespaces(ns);
+    setPath(this.data, path, value);
+    if (!options.silent) this.emit('added', lng, ns, key, value);
+  }
+  addResources(lng, ns, resources) {
+    let options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {
+      silent: false
+    };
+    for (const m in resources) {
+      if (typeof resources[m] === 'string' || Object.prototype.toString.apply(resources[m]) === '[object Array]') this.addResource(lng, ns, m, resources[m], {
+        silent: true
+      });
+    }
+    if (!options.silent) this.emit('added', lng, ns, resources);
+  }
+  addResourceBundle(lng, ns, resources, deep, overwrite) {
+    let options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {
+      silent: false,
+      skipCopy: false
+    };
+    let path = [lng, ns];
+    if (lng.indexOf('.') > -1) {
+      path = lng.split('.');
+      deep = resources;
+      resources = ns;
+      ns = path[1];
+    }
+    this.addNamespaces(ns);
+    let pack = getPath(this.data, path) || {};
+    if (!options.skipCopy) resources = JSON.parse(JSON.stringify(resources));
+    if (deep) {
+      deepExtend(pack, resources, overwrite);
+    } else {
+      pack = {
+        ...pack,
+        ...resources
+      };
+    }
+    setPath(this.data, path, pack);
+    if (!options.silent) this.emit('added', lng, ns, resources);
+  }
+  removeResourceBundle(lng, ns) {
+    if (this.hasResourceBundle(lng, ns)) {
+      delete this.data[lng][ns];
+    }
+    this.removeNamespaces(ns);
+    this.emit('removed', lng, ns);
+  }
+  hasResourceBundle(lng, ns) {
+    return this.getResource(lng, ns) !== undefined;
+  }
+  getResourceBundle(lng, ns) {
+    if (!ns) ns = this.options.defaultNS;
+    if (this.options.compatibilityAPI === 'v1') return {
+      ...{},
+      ...this.getResource(lng, ns)
+    };
+    return this.getResource(lng, ns);
+  }
+  getDataByLanguage(lng) {
+    return this.data[lng];
+  }
+  hasLanguageSomeTranslations(lng) {
+    const data = this.getDataByLanguage(lng);
+    const n = data && Object.keys(data) || [];
+    return !!n.find(v => data[v] && Object.keys(data[v]).length > 0);
+  }
+  toJSON() {
+    return this.data;
+  }
+}
+
+var postProcessor = {
+  processors: {},
+  addPostProcessor(module) {
+    this.processors[module.name] = module;
+  },
+  handle(processors, value, key, options, translator) {
+    processors.forEach(processor => {
+      if (this.processors[processor]) value = this.processors[processor].process(value, key, options, translator);
+    });
+    return value;
+  }
+};
+
+const checkedLoadedFor = {};
+class Translator extends EventEmitter {
+  constructor(services) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    super();
+    copy(['resourceStore', 'languageUtils', 'pluralResolver', 'interpolator', 'backendConnector', 'i18nFormat', 'utils'], services, this);
+    this.options = options;
+    if (this.options.keySeparator === undefined) {
+      this.options.keySeparator = '.';
+    }
+    this.logger = baseLogger.create('translator');
+  }
+  changeLanguage(lng) {
+    if (lng) this.language = lng;
+  }
+  exists(key) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+      interpolation: {}
+    };
+    if (key === undefined || key === null) {
+      return false;
+    }
+    const resolved = this.resolve(key, options);
+    return resolved && resolved.res !== undefined;
+  }
+  extractFromKey(key, options) {
+    let nsSeparator = options.nsSeparator !== undefined ? options.nsSeparator : this.options.nsSeparator;
+    if (nsSeparator === undefined) nsSeparator = ':';
+    const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
+    let namespaces = options.ns || this.options.defaultNS || [];
+    const wouldCheckForNsInKey = nsSeparator && key.indexOf(nsSeparator) > -1;
+    const seemsNaturalLanguage = !this.options.userDefinedKeySeparator && !options.keySeparator && !this.options.userDefinedNsSeparator && !options.nsSeparator && !looksLikeObjectPath(key, nsSeparator, keySeparator);
+    if (wouldCheckForNsInKey && !seemsNaturalLanguage) {
+      const m = key.match(this.interpolator.nestingRegexp);
+      if (m && m.length > 0) {
+        return {
+          key,
+          namespaces
+        };
+      }
+      const parts = key.split(nsSeparator);
+      if (nsSeparator !== keySeparator || nsSeparator === keySeparator && this.options.ns.indexOf(parts[0]) > -1) namespaces = parts.shift();
+      key = parts.join(keySeparator);
+    }
+    if (typeof namespaces === 'string') namespaces = [namespaces];
+    return {
+      key,
+      namespaces
+    };
+  }
+  translate(keys, options, lastKey) {
+    if (typeof options !== 'object' && this.options.overloadTranslationOptionHandler) {
+      options = this.options.overloadTranslationOptionHandler(arguments);
+    }
+    if (typeof options === 'object') options = {
+      ...options
+    };
+    if (!options) options = {};
+    if (keys === undefined || keys === null) return '';
+    if (!Array.isArray(keys)) keys = [String(keys)];
+    const returnDetails = options.returnDetails !== undefined ? options.returnDetails : this.options.returnDetails;
+    const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
+    const {
+      key,
+      namespaces
+    } = this.extractFromKey(keys[keys.length - 1], options);
+    const namespace = namespaces[namespaces.length - 1];
+    const lng = options.lng || this.language;
+    const appendNamespaceToCIMode = options.appendNamespaceToCIMode || this.options.appendNamespaceToCIMode;
+    if (lng && lng.toLowerCase() === 'cimode') {
+      if (appendNamespaceToCIMode) {
+        const nsSeparator = options.nsSeparator || this.options.nsSeparator;
+        if (returnDetails) {
+          return {
+            res: `${namespace}${nsSeparator}${key}`,
+            usedKey: key,
+            exactUsedKey: key,
+            usedLng: lng,
+            usedNS: namespace,
+            usedParams: this.getUsedParamsDetails(options)
+          };
+        }
+        return `${namespace}${nsSeparator}${key}`;
+      }
+      if (returnDetails) {
+        return {
+          res: key,
+          usedKey: key,
+          exactUsedKey: key,
+          usedLng: lng,
+          usedNS: namespace,
+          usedParams: this.getUsedParamsDetails(options)
+        };
+      }
+      return key;
+    }
+    const resolved = this.resolve(keys, options);
+    let res = resolved && resolved.res;
+    const resUsedKey = resolved && resolved.usedKey || key;
+    const resExactUsedKey = resolved && resolved.exactUsedKey || key;
+    const resType = Object.prototype.toString.apply(res);
+    const noObject = ['[object Number]', '[object Function]', '[object RegExp]'];
+    const joinArrays = options.joinArrays !== undefined ? options.joinArrays : this.options.joinArrays;
+    const handleAsObjectInI18nFormat = !this.i18nFormat || this.i18nFormat.handleAsObject;
+    const handleAsObject = typeof res !== 'string' && typeof res !== 'boolean' && typeof res !== 'number';
+    if (handleAsObjectInI18nFormat && res && handleAsObject && noObject.indexOf(resType) < 0 && !(typeof joinArrays === 'string' && resType === '[object Array]')) {
+      if (!options.returnObjects && !this.options.returnObjects) {
+        if (!this.options.returnedObjectHandler) {
+          this.logger.warn('accessing an object - but returnObjects options is not enabled!');
+        }
+        const r = this.options.returnedObjectHandler ? this.options.returnedObjectHandler(resUsedKey, res, {
+          ...options,
+          ns: namespaces
+        }) : `key '${key} (${this.language})' returned an object instead of string.`;
+        if (returnDetails) {
+          resolved.res = r;
+          resolved.usedParams = this.getUsedParamsDetails(options);
+          return resolved;
+        }
+        return r;
+      }
+      if (keySeparator) {
+        const resTypeIsArray = resType === '[object Array]';
+        const copy = resTypeIsArray ? [] : {};
+        const newKeyToUse = resTypeIsArray ? resExactUsedKey : resUsedKey;
+        for (const m in res) {
+          if (Object.prototype.hasOwnProperty.call(res, m)) {
+            const deepKey = `${newKeyToUse}${keySeparator}${m}`;
+            copy[m] = this.translate(deepKey, {
+              ...options,
+              ...{
+                joinArrays: false,
+                ns: namespaces
+              }
+            });
+            if (copy[m] === deepKey) copy[m] = res[m];
+          }
+        }
+        res = copy;
+      }
+    } else if (handleAsObjectInI18nFormat && typeof joinArrays === 'string' && resType === '[object Array]') {
+      res = res.join(joinArrays);
+      if (res) res = this.extendTranslation(res, keys, options, lastKey);
+    } else {
+      let usedDefault = false;
+      let usedKey = false;
+      const needsPluralHandling = options.count !== undefined && typeof options.count !== 'string';
+      const hasDefaultValue = Translator.hasDefaultValue(options);
+      const defaultValueSuffix = needsPluralHandling ? this.pluralResolver.getSuffix(lng, options.count, options) : '';
+      const defaultValueSuffixOrdinalFallback = options.ordinal && needsPluralHandling ? this.pluralResolver.getSuffix(lng, options.count, {
+        ordinal: false
+      }) : '';
+      const needsZeroSuffixLookup = needsPluralHandling && !options.ordinal && options.count === 0 && this.pluralResolver.shouldUseIntlApi();
+      const defaultValue = needsZeroSuffixLookup && options[`defaultValue${this.options.pluralSeparator}zero`] || options[`defaultValue${defaultValueSuffix}`] || options[`defaultValue${defaultValueSuffixOrdinalFallback}`] || options.defaultValue;
+      if (!this.isValidLookup(res) && hasDefaultValue) {
+        usedDefault = true;
+        res = defaultValue;
+      }
+      if (!this.isValidLookup(res)) {
+        usedKey = true;
+        res = key;
+      }
+      const missingKeyNoValueFallbackToKey = options.missingKeyNoValueFallbackToKey || this.options.missingKeyNoValueFallbackToKey;
+      const resForMissing = missingKeyNoValueFallbackToKey && usedKey ? undefined : res;
+      const updateMissing = hasDefaultValue && defaultValue !== res && this.options.updateMissing;
+      if (usedKey || usedDefault || updateMissing) {
+        this.logger.log(updateMissing ? 'updateKey' : 'missingKey', lng, namespace, key, updateMissing ? defaultValue : res);
+        if (keySeparator) {
+          const fk = this.resolve(key, {
+            ...options,
+            keySeparator: false
+          });
+          if (fk && fk.res) this.logger.warn('Seems the loaded translations were in flat JSON format instead of nested. Either set keySeparator: false on init or make sure your translations are published in nested format.');
+        }
+        let lngs = [];
+        const fallbackLngs = this.languageUtils.getFallbackCodes(this.options.fallbackLng, options.lng || this.language);
+        if (this.options.saveMissingTo === 'fallback' && fallbackLngs && fallbackLngs[0]) {
+          for (let i = 0; i < fallbackLngs.length; i++) {
+            lngs.push(fallbackLngs[i]);
+          }
+        } else if (this.options.saveMissingTo === 'all') {
+          lngs = this.languageUtils.toResolveHierarchy(options.lng || this.language);
+        } else {
+          lngs.push(options.lng || this.language);
+        }
+        const send = (l, k, specificDefaultValue) => {
+          const defaultForMissing = hasDefaultValue && specificDefaultValue !== res ? specificDefaultValue : resForMissing;
+          if (this.options.missingKeyHandler) {
+            this.options.missingKeyHandler(l, namespace, k, defaultForMissing, updateMissing, options);
+          } else if (this.backendConnector && this.backendConnector.saveMissing) {
+            this.backendConnector.saveMissing(l, namespace, k, defaultForMissing, updateMissing, options);
+          }
+          this.emit('missingKey', l, namespace, k, res);
+        };
+        if (this.options.saveMissing) {
+          if (this.options.saveMissingPlurals && needsPluralHandling) {
+            lngs.forEach(language => {
+              const suffixes = this.pluralResolver.getSuffixes(language, options);
+              if (needsZeroSuffixLookup && options[`defaultValue${this.options.pluralSeparator}zero`] && suffixes.indexOf(`${this.options.pluralSeparator}zero`) < 0) {
+                suffixes.push(`${this.options.pluralSeparator}zero`);
+              }
+              suffixes.forEach(suffix => {
+                send([language], key + suffix, options[`defaultValue${suffix}`] || defaultValue);
+              });
+            });
+          } else {
+            send(lngs, key, defaultValue);
+          }
+        }
+      }
+      res = this.extendTranslation(res, keys, options, resolved, lastKey);
+      if (usedKey && res === key && this.options.appendNamespaceToMissingKey) res = `${namespace}:${key}`;
+      if ((usedKey || usedDefault) && this.options.parseMissingKeyHandler) {
+        if (this.options.compatibilityAPI !== 'v1') {
+          res = this.options.parseMissingKeyHandler(this.options.appendNamespaceToMissingKey ? `${namespace}:${key}` : key, usedDefault ? res : undefined);
+        } else {
+          res = this.options.parseMissingKeyHandler(res);
+        }
+      }
+    }
+    if (returnDetails) {
+      resolved.res = res;
+      resolved.usedParams = this.getUsedParamsDetails(options);
+      return resolved;
+    }
+    return res;
+  }
+  extendTranslation(res, key, options, resolved, lastKey) {
+    var _this = this;
+    if (this.i18nFormat && this.i18nFormat.parse) {
+      res = this.i18nFormat.parse(res, {
+        ...this.options.interpolation.defaultVariables,
+        ...options
+      }, options.lng || this.language || resolved.usedLng, resolved.usedNS, resolved.usedKey, {
+        resolved
+      });
+    } else if (!options.skipInterpolation) {
+      if (options.interpolation) this.interpolator.init({
+        ...options,
+        ...{
+          interpolation: {
+            ...this.options.interpolation,
+            ...options.interpolation
+          }
+        }
+      });
+      const skipOnVariables = typeof res === 'string' && (options && options.interpolation && options.interpolation.skipOnVariables !== undefined ? options.interpolation.skipOnVariables : this.options.interpolation.skipOnVariables);
+      let nestBef;
+      if (skipOnVariables) {
+        const nb = res.match(this.interpolator.nestingRegexp);
+        nestBef = nb && nb.length;
+      }
+      let data = options.replace && typeof options.replace !== 'string' ? options.replace : options;
+      if (this.options.interpolation.defaultVariables) data = {
+        ...this.options.interpolation.defaultVariables,
+        ...data
+      };
+      res = this.interpolator.interpolate(res, data, options.lng || this.language, options);
+      if (skipOnVariables) {
+        const na = res.match(this.interpolator.nestingRegexp);
+        const nestAft = na && na.length;
+        if (nestBef < nestAft) options.nest = false;
+      }
+      if (!options.lng && this.options.compatibilityAPI !== 'v1' && resolved && resolved.res) options.lng = resolved.usedLng;
+      if (options.nest !== false) res = this.interpolator.nest(res, function () {
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+        if (lastKey && lastKey[0] === args[0] && !options.context) {
+          _this.logger.warn(`It seems you are nesting recursively key: ${args[0]} in key: ${key[0]}`);
+          return null;
+        }
+        return _this.translate(...args, key);
+      }, options);
+      if (options.interpolation) this.interpolator.reset();
+    }
+    const postProcess = options.postProcess || this.options.postProcess;
+    const postProcessorNames = typeof postProcess === 'string' ? [postProcess] : postProcess;
+    if (res !== undefined && res !== null && postProcessorNames && postProcessorNames.length && options.applyPostProcessor !== false) {
+      res = postProcessor.handle(postProcessorNames, res, key, this.options && this.options.postProcessPassResolved ? {
+        i18nResolved: {
+          ...resolved,
+          usedParams: this.getUsedParamsDetails(options)
+        },
+        ...options
+      } : options, this);
+    }
+    return res;
+  }
+  resolve(keys) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    let found;
+    let usedKey;
+    let exactUsedKey;
+    let usedLng;
+    let usedNS;
+    if (typeof keys === 'string') keys = [keys];
+    keys.forEach(k => {
+      if (this.isValidLookup(found)) return;
+      const extracted = this.extractFromKey(k, options);
+      const key = extracted.key;
+      usedKey = key;
+      let namespaces = extracted.namespaces;
+      if (this.options.fallbackNS) namespaces = namespaces.concat(this.options.fallbackNS);
+      const needsPluralHandling = options.count !== undefined && typeof options.count !== 'string';
+      const needsZeroSuffixLookup = needsPluralHandling && !options.ordinal && options.count === 0 && this.pluralResolver.shouldUseIntlApi();
+      const needsContextHandling = options.context !== undefined && (typeof options.context === 'string' || typeof options.context === 'number') && options.context !== '';
+      const codes = options.lngs ? options.lngs : this.languageUtils.toResolveHierarchy(options.lng || this.language, options.fallbackLng);
+      namespaces.forEach(ns => {
+        if (this.isValidLookup(found)) return;
+        usedNS = ns;
+        if (!checkedLoadedFor[`${codes[0]}-${ns}`] && this.utils && this.utils.hasLoadedNamespace && !this.utils.hasLoadedNamespace(usedNS)) {
+          checkedLoadedFor[`${codes[0]}-${ns}`] = true;
+          this.logger.warn(`key "${usedKey}" for languages "${codes.join(', ')}" won't get resolved as namespace "${usedNS}" was not yet loaded`, 'This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!');
+        }
+        codes.forEach(code => {
+          if (this.isValidLookup(found)) return;
+          usedLng = code;
+          const finalKeys = [key];
+          if (this.i18nFormat && this.i18nFormat.addLookupKeys) {
+            this.i18nFormat.addLookupKeys(finalKeys, key, code, ns, options);
+          } else {
+            let pluralSuffix;
+            if (needsPluralHandling) pluralSuffix = this.pluralResolver.getSuffix(code, options.count, options);
+            const zeroSuffix = `${this.options.pluralSeparator}zero`;
+            const ordinalPrefix = `${this.options.pluralSeparator}ordinal${this.options.pluralSeparator}`;
+            if (needsPluralHandling) {
+              finalKeys.push(key + pluralSuffix);
+              if (options.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
+                finalKeys.push(key + pluralSuffix.replace(ordinalPrefix, this.options.pluralSeparator));
+              }
+              if (needsZeroSuffixLookup) {
+                finalKeys.push(key + zeroSuffix);
+              }
+            }
+            if (needsContextHandling) {
+              const contextKey = `${key}${this.options.contextSeparator}${options.context}`;
+              finalKeys.push(contextKey);
+              if (needsPluralHandling) {
+                finalKeys.push(contextKey + pluralSuffix);
+                if (options.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
+                  finalKeys.push(contextKey + pluralSuffix.replace(ordinalPrefix, this.options.pluralSeparator));
+                }
+                if (needsZeroSuffixLookup) {
+                  finalKeys.push(contextKey + zeroSuffix);
+                }
+              }
+            }
+          }
+          let possibleKey;
+          while (possibleKey = finalKeys.pop()) {
+            if (!this.isValidLookup(found)) {
+              exactUsedKey = possibleKey;
+              found = this.getResource(code, ns, possibleKey, options);
+            }
+          }
+        });
+      });
+    });
+    return {
+      res: found,
+      usedKey,
+      exactUsedKey,
+      usedLng,
+      usedNS
+    };
+  }
+  isValidLookup(res) {
+    return res !== undefined && !(!this.options.returnNull && res === null) && !(!this.options.returnEmptyString && res === '');
+  }
+  getResource(code, ns, key) {
+    let options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    if (this.i18nFormat && this.i18nFormat.getResource) return this.i18nFormat.getResource(code, ns, key, options);
+    return this.resourceStore.getResource(code, ns, key, options);
+  }
+  getUsedParamsDetails() {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    const optionsKeys = ['defaultValue', 'ordinal', 'context', 'replace', 'lng', 'lngs', 'fallbackLng', 'ns', 'keySeparator', 'nsSeparator', 'returnObjects', 'returnDetails', 'joinArrays', 'postProcess', 'interpolation'];
+    const useOptionsReplaceForData = options.replace && typeof options.replace !== 'string';
+    let data = useOptionsReplaceForData ? options.replace : options;
+    if (useOptionsReplaceForData && typeof options.count !== 'undefined') {
+      data.count = options.count;
+    }
+    if (this.options.interpolation.defaultVariables) {
+      data = {
+        ...this.options.interpolation.defaultVariables,
+        ...data
+      };
+    }
+    if (!useOptionsReplaceForData) {
+      data = {
+        ...data
+      };
+      for (const key of optionsKeys) {
+        delete data[key];
+      }
+    }
+    return data;
+  }
+  static hasDefaultValue(options) {
+    const prefix = 'defaultValue';
+    for (const option in options) {
+      if (Object.prototype.hasOwnProperty.call(options, option) && prefix === option.substring(0, prefix.length) && undefined !== options[option]) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+class LanguageUtil {
+  constructor(options) {
+    this.options = options;
+    this.supportedLngs = this.options.supportedLngs || false;
+    this.logger = baseLogger.create('languageUtils');
+  }
+  getScriptPartFromCode(code) {
+    code = getCleanedCode(code);
+    if (!code || code.indexOf('-') < 0) return null;
+    const p = code.split('-');
+    if (p.length === 2) return null;
+    p.pop();
+    if (p[p.length - 1].toLowerCase() === 'x') return null;
+    return this.formatLanguageCode(p.join('-'));
+  }
+  getLanguagePartFromCode(code) {
+    code = getCleanedCode(code);
+    if (!code || code.indexOf('-') < 0) return code;
+    const p = code.split('-');
+    return this.formatLanguageCode(p[0]);
+  }
+  formatLanguageCode(code) {
+    if (typeof code === 'string' && code.indexOf('-') > -1) {
+      const specialCases = ['hans', 'hant', 'latn', 'cyrl', 'cans', 'mong', 'arab'];
+      let p = code.split('-');
+      if (this.options.lowerCaseLng) {
+        p = p.map(part => part.toLowerCase());
+      } else if (p.length === 2) {
+        p[0] = p[0].toLowerCase();
+        p[1] = p[1].toUpperCase();
+        if (specialCases.indexOf(p[1].toLowerCase()) > -1) p[1] = capitalize(p[1].toLowerCase());
+      } else if (p.length === 3) {
+        p[0] = p[0].toLowerCase();
+        if (p[1].length === 2) p[1] = p[1].toUpperCase();
+        if (p[0] !== 'sgn' && p[2].length === 2) p[2] = p[2].toUpperCase();
+        if (specialCases.indexOf(p[1].toLowerCase()) > -1) p[1] = capitalize(p[1].toLowerCase());
+        if (specialCases.indexOf(p[2].toLowerCase()) > -1) p[2] = capitalize(p[2].toLowerCase());
+      }
+      return p.join('-');
+    }
+    return this.options.cleanCode || this.options.lowerCaseLng ? code.toLowerCase() : code;
+  }
+  isSupportedCode(code) {
+    if (this.options.load === 'languageOnly' || this.options.nonExplicitSupportedLngs) {
+      code = this.getLanguagePartFromCode(code);
+    }
+    return !this.supportedLngs || !this.supportedLngs.length || this.supportedLngs.indexOf(code) > -1;
+  }
+  getBestMatchFromCodes(codes) {
+    if (!codes) return null;
+    let found;
+    codes.forEach(code => {
+      if (found) return;
+      const cleanedLng = this.formatLanguageCode(code);
+      if (!this.options.supportedLngs || this.isSupportedCode(cleanedLng)) found = cleanedLng;
+    });
+    if (!found && this.options.supportedLngs) {
+      codes.forEach(code => {
+        if (found) return;
+        const lngOnly = this.getLanguagePartFromCode(code);
+        if (this.isSupportedCode(lngOnly)) return found = lngOnly;
+        found = this.options.supportedLngs.find(supportedLng => {
+          if (supportedLng === lngOnly) return supportedLng;
+          if (supportedLng.indexOf('-') < 0 && lngOnly.indexOf('-') < 0) return;
+          if (supportedLng.indexOf('-') > 0 && lngOnly.indexOf('-') < 0 && supportedLng.substring(0, supportedLng.indexOf('-')) === lngOnly) return supportedLng;
+          if (supportedLng.indexOf(lngOnly) === 0 && lngOnly.length > 1) return supportedLng;
+        });
+      });
+    }
+    if (!found) found = this.getFallbackCodes(this.options.fallbackLng)[0];
+    return found;
+  }
+  getFallbackCodes(fallbacks, code) {
+    if (!fallbacks) return [];
+    if (typeof fallbacks === 'function') fallbacks = fallbacks(code);
+    if (typeof fallbacks === 'string') fallbacks = [fallbacks];
+    if (Object.prototype.toString.apply(fallbacks) === '[object Array]') return fallbacks;
+    if (!code) return fallbacks.default || [];
+    let found = fallbacks[code];
+    if (!found) found = fallbacks[this.getScriptPartFromCode(code)];
+    if (!found) found = fallbacks[this.formatLanguageCode(code)];
+    if (!found) found = fallbacks[this.getLanguagePartFromCode(code)];
+    if (!found) found = fallbacks.default;
+    return found || [];
+  }
+  toResolveHierarchy(code, fallbackCode) {
+    const fallbackCodes = this.getFallbackCodes(fallbackCode || this.options.fallbackLng || [], code);
+    const codes = [];
+    const addCode = c => {
+      if (!c) return;
+      if (this.isSupportedCode(c)) {
+        codes.push(c);
+      } else {
+        this.logger.warn(`rejecting language code not found in supportedLngs: ${c}`);
+      }
+    };
+    if (typeof code === 'string' && (code.indexOf('-') > -1 || code.indexOf('_') > -1)) {
+      if (this.options.load !== 'languageOnly') addCode(this.formatLanguageCode(code));
+      if (this.options.load !== 'languageOnly' && this.options.load !== 'currentOnly') addCode(this.getScriptPartFromCode(code));
+      if (this.options.load !== 'currentOnly') addCode(this.getLanguagePartFromCode(code));
+    } else if (typeof code === 'string') {
+      addCode(this.formatLanguageCode(code));
+    }
+    fallbackCodes.forEach(fc => {
+      if (codes.indexOf(fc) < 0) addCode(this.formatLanguageCode(fc));
+    });
+    return codes;
+  }
+}
+
+let sets = [{
+  lngs: ['ach', 'ak', 'am', 'arn', 'br', 'fil', 'gun', 'ln', 'mfe', 'mg', 'mi', 'oc', 'pt', 'pt-BR', 'tg', 'tl', 'ti', 'tr', 'uz', 'wa'],
+  nr: [1, 2],
+  fc: 1
+}, {
+  lngs: ['af', 'an', 'ast', 'az', 'bg', 'bn', 'ca', 'da', 'de', 'dev', 'el', 'en', 'eo', 'es', 'et', 'eu', 'fi', 'fo', 'fur', 'fy', 'gl', 'gu', 'ha', 'hi', 'hu', 'hy', 'ia', 'it', 'kk', 'kn', 'ku', 'lb', 'mai', 'ml', 'mn', 'mr', 'nah', 'nap', 'nb', 'ne', 'nl', 'nn', 'no', 'nso', 'pa', 'pap', 'pms', 'ps', 'pt-PT', 'rm', 'sco', 'se', 'si', 'so', 'son', 'sq', 'sv', 'sw', 'ta', 'te', 'tk', 'ur', 'yo'],
+  nr: [1, 2],
+  fc: 2
+}, {
+  lngs: ['ay', 'bo', 'cgg', 'fa', 'ht', 'id', 'ja', 'jbo', 'ka', 'km', 'ko', 'ky', 'lo', 'ms', 'sah', 'su', 'th', 'tt', 'ug', 'vi', 'wo', 'zh'],
+  nr: [1],
+  fc: 3
+}, {
+  lngs: ['be', 'bs', 'cnr', 'dz', 'hr', 'ru', 'sr', 'uk'],
+  nr: [1, 2, 5],
+  fc: 4
+}, {
+  lngs: ['ar'],
+  nr: [0, 1, 2, 3, 11, 100],
+  fc: 5
+}, {
+  lngs: ['cs', 'sk'],
+  nr: [1, 2, 5],
+  fc: 6
+}, {
+  lngs: ['csb', 'pl'],
+  nr: [1, 2, 5],
+  fc: 7
+}, {
+  lngs: ['cy'],
+  nr: [1, 2, 3, 8],
+  fc: 8
+}, {
+  lngs: ['fr'],
+  nr: [1, 2],
+  fc: 9
+}, {
+  lngs: ['ga'],
+  nr: [1, 2, 3, 7, 11],
+  fc: 10
+}, {
+  lngs: ['gd'],
+  nr: [1, 2, 3, 20],
+  fc: 11
+}, {
+  lngs: ['is'],
+  nr: [1, 2],
+  fc: 12
+}, {
+  lngs: ['jv'],
+  nr: [0, 1],
+  fc: 13
+}, {
+  lngs: ['kw'],
+  nr: [1, 2, 3, 4],
+  fc: 14
+}, {
+  lngs: ['lt'],
+  nr: [1, 2, 10],
+  fc: 15
+}, {
+  lngs: ['lv'],
+  nr: [1, 2, 0],
+  fc: 16
+}, {
+  lngs: ['mk'],
+  nr: [1, 2],
+  fc: 17
+}, {
+  lngs: ['mnk'],
+  nr: [0, 1, 2],
+  fc: 18
+}, {
+  lngs: ['mt'],
+  nr: [1, 2, 11, 20],
+  fc: 19
+}, {
+  lngs: ['or'],
+  nr: [2, 1],
+  fc: 2
+}, {
+  lngs: ['ro'],
+  nr: [1, 2, 20],
+  fc: 20
+}, {
+  lngs: ['sl'],
+  nr: [5, 1, 2, 3],
+  fc: 21
+}, {
+  lngs: ['he', 'iw'],
+  nr: [1, 2, 20, 21],
+  fc: 22
+}];
+let _rulesPluralsTypes = {
+  1: function (n) {
+    return Number(n > 1);
+  },
+  2: function (n) {
+    return Number(n != 1);
+  },
+  3: function (n) {
+    return 0;
+  },
+  4: function (n) {
+    return Number(n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2);
+  },
+  5: function (n) {
+    return Number(n == 0 ? 0 : n == 1 ? 1 : n == 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5);
+  },
+  6: function (n) {
+    return Number(n == 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2);
+  },
+  7: function (n) {
+    return Number(n == 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2);
+  },
+  8: function (n) {
+    return Number(n == 1 ? 0 : n == 2 ? 1 : n != 8 && n != 11 ? 2 : 3);
+  },
+  9: function (n) {
+    return Number(n >= 2);
+  },
+  10: function (n) {
+    return Number(n == 1 ? 0 : n == 2 ? 1 : n < 7 ? 2 : n < 11 ? 3 : 4);
+  },
+  11: function (n) {
+    return Number(n == 1 || n == 11 ? 0 : n == 2 || n == 12 ? 1 : n > 2 && n < 20 ? 2 : 3);
+  },
+  12: function (n) {
+    return Number(n % 10 != 1 || n % 100 == 11);
+  },
+  13: function (n) {
+    return Number(n !== 0);
+  },
+  14: function (n) {
+    return Number(n == 1 ? 0 : n == 2 ? 1 : n == 3 ? 2 : 3);
+  },
+  15: function (n) {
+    return Number(n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2);
+  },
+  16: function (n) {
+    return Number(n % 10 == 1 && n % 100 != 11 ? 0 : n !== 0 ? 1 : 2);
+  },
+  17: function (n) {
+    return Number(n == 1 || n % 10 == 1 && n % 100 != 11 ? 0 : 1);
+  },
+  18: function (n) {
+    return Number(n == 0 ? 0 : n == 1 ? 1 : 2);
+  },
+  19: function (n) {
+    return Number(n == 1 ? 0 : n == 0 || n % 100 > 1 && n % 100 < 11 ? 1 : n % 100 > 10 && n % 100 < 20 ? 2 : 3);
+  },
+  20: function (n) {
+    return Number(n == 1 ? 0 : n == 0 || n % 100 > 0 && n % 100 < 20 ? 1 : 2);
+  },
+  21: function (n) {
+    return Number(n % 100 == 1 ? 1 : n % 100 == 2 ? 2 : n % 100 == 3 || n % 100 == 4 ? 3 : 0);
+  },
+  22: function (n) {
+    return Number(n == 1 ? 0 : n == 2 ? 1 : (n < 0 || n > 10) && n % 10 == 0 ? 2 : 3);
+  }
+};
+const nonIntlVersions = ['v1', 'v2', 'v3'];
+const intlVersions = ['v4'];
+const suffixesOrder = {
+  zero: 0,
+  one: 1,
+  two: 2,
+  few: 3,
+  many: 4,
+  other: 5
+};
+function createRules() {
+  const rules = {};
+  sets.forEach(set => {
+    set.lngs.forEach(l => {
+      rules[l] = {
+        numbers: set.nr,
+        plurals: _rulesPluralsTypes[set.fc]
+      };
+    });
+  });
+  return rules;
+}
+class PluralResolver {
+  constructor(languageUtils) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    this.languageUtils = languageUtils;
+    this.options = options;
+    this.logger = baseLogger.create('pluralResolver');
+    if ((!this.options.compatibilityJSON || intlVersions.includes(this.options.compatibilityJSON)) && (typeof Intl === 'undefined' || !Intl.PluralRules)) {
+      this.options.compatibilityJSON = 'v3';
+      this.logger.error('Your environment seems not to be Intl API compatible, use an Intl.PluralRules polyfill. Will fallback to the compatibilityJSON v3 format handling.');
+    }
+    this.rules = createRules();
+  }
+  addRule(lng, obj) {
+    this.rules[lng] = obj;
+  }
+  getRule(code) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    if (this.shouldUseIntlApi()) {
+      try {
+        return new Intl.PluralRules(getCleanedCode(code === 'dev' ? 'en' : code), {
+          type: options.ordinal ? 'ordinal' : 'cardinal'
+        });
+      } catch (err) {
+        return;
+      }
+    }
+    return this.rules[code] || this.rules[this.languageUtils.getLanguagePartFromCode(code)];
+  }
+  needsPlural(code) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    const rule = this.getRule(code, options);
+    if (this.shouldUseIntlApi()) {
+      return rule && rule.resolvedOptions().pluralCategories.length > 1;
+    }
+    return rule && rule.numbers.length > 1;
+  }
+  getPluralFormsOfKey(code, key) {
+    let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    return this.getSuffixes(code, options).map(suffix => `${key}${suffix}`);
+  }
+  getSuffixes(code) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    const rule = this.getRule(code, options);
+    if (!rule) {
+      return [];
+    }
+    if (this.shouldUseIntlApi()) {
+      return rule.resolvedOptions().pluralCategories.sort((pluralCategory1, pluralCategory2) => suffixesOrder[pluralCategory1] - suffixesOrder[pluralCategory2]).map(pluralCategory => `${this.options.prepend}${options.ordinal ? `ordinal${this.options.prepend}` : ''}${pluralCategory}`);
+    }
+    return rule.numbers.map(number => this.getSuffix(code, number, options));
+  }
+  getSuffix(code, count) {
+    let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    const rule = this.getRule(code, options);
+    if (rule) {
+      if (this.shouldUseIntlApi()) {
+        return `${this.options.prepend}${options.ordinal ? `ordinal${this.options.prepend}` : ''}${rule.select(count)}`;
+      }
+      return this.getSuffixRetroCompatible(rule, count);
+    }
+    this.logger.warn(`no plural rule found for: ${code}`);
+    return '';
+  }
+  getSuffixRetroCompatible(rule, count) {
+    const idx = rule.noAbs ? rule.plurals(count) : rule.plurals(Math.abs(count));
+    let suffix = rule.numbers[idx];
+    if (this.options.simplifyPluralSuffix && rule.numbers.length === 2 && rule.numbers[0] === 1) {
+      if (suffix === 2) {
+        suffix = 'plural';
+      } else if (suffix === 1) {
+        suffix = '';
+      }
+    }
+    const returnSuffix = () => this.options.prepend && suffix.toString() ? this.options.prepend + suffix.toString() : suffix.toString();
+    if (this.options.compatibilityJSON === 'v1') {
+      if (suffix === 1) return '';
+      if (typeof suffix === 'number') return `_plural_${suffix.toString()}`;
+      return returnSuffix();
+    } else if (this.options.compatibilityJSON === 'v2') {
+      return returnSuffix();
+    } else if (this.options.simplifyPluralSuffix && rule.numbers.length === 2 && rule.numbers[0] === 1) {
+      return returnSuffix();
+    }
+    return this.options.prepend && idx.toString() ? this.options.prepend + idx.toString() : idx.toString();
+  }
+  shouldUseIntlApi() {
+    return !nonIntlVersions.includes(this.options.compatibilityJSON);
+  }
+}
+
+function deepFindWithDefaults(data, defaultData, key) {
+  let keySeparator = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '.';
+  let ignoreJSONStructure = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
+  let path = getPathWithDefaults(data, defaultData, key);
+  if (!path && ignoreJSONStructure && typeof key === 'string') {
+    path = deepFind(data, key, keySeparator);
+    if (path === undefined) path = deepFind(defaultData, key, keySeparator);
+  }
+  return path;
+}
+class Interpolator {
+  constructor() {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    this.logger = baseLogger.create('interpolator');
+    this.options = options;
+    this.format = options.interpolation && options.interpolation.format || (value => value);
+    this.init(options);
+  }
+  init() {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    if (!options.interpolation) options.interpolation = {
+      escapeValue: true
+    };
+    const iOpts = options.interpolation;
+    this.escape = iOpts.escape !== undefined ? iOpts.escape : escape;
+    this.escapeValue = iOpts.escapeValue !== undefined ? iOpts.escapeValue : true;
+    this.useRawValueToEscape = iOpts.useRawValueToEscape !== undefined ? iOpts.useRawValueToEscape : false;
+    this.prefix = iOpts.prefix ? regexEscape(iOpts.prefix) : iOpts.prefixEscaped || '{{';
+    this.suffix = iOpts.suffix ? regexEscape(iOpts.suffix) : iOpts.suffixEscaped || '}}';
+    this.formatSeparator = iOpts.formatSeparator ? iOpts.formatSeparator : iOpts.formatSeparator || ',';
+    this.unescapePrefix = iOpts.unescapeSuffix ? '' : iOpts.unescapePrefix || '-';
+    this.unescapeSuffix = this.unescapePrefix ? '' : iOpts.unescapeSuffix || '';
+    this.nestingPrefix = iOpts.nestingPrefix ? regexEscape(iOpts.nestingPrefix) : iOpts.nestingPrefixEscaped || regexEscape('$t(');
+    this.nestingSuffix = iOpts.nestingSuffix ? regexEscape(iOpts.nestingSuffix) : iOpts.nestingSuffixEscaped || regexEscape(')');
+    this.nestingOptionsSeparator = iOpts.nestingOptionsSeparator ? iOpts.nestingOptionsSeparator : iOpts.nestingOptionsSeparator || ',';
+    this.maxReplaces = iOpts.maxReplaces ? iOpts.maxReplaces : 1000;
+    this.alwaysFormat = iOpts.alwaysFormat !== undefined ? iOpts.alwaysFormat : false;
+    this.resetRegExp();
+  }
+  reset() {
+    if (this.options) this.init(this.options);
+  }
+  resetRegExp() {
+    const getOrResetRegExp = (existingRegExp, pattern) => {
+      if (existingRegExp && existingRegExp.source === pattern) {
+        existingRegExp.lastIndex = 0;
+        return existingRegExp;
+      }
+      return new RegExp(pattern, 'g');
+    };
+    this.regexp = getOrResetRegExp(this.regexp, `${this.prefix}(.+?)${this.suffix}`);
+    this.regexpUnescape = getOrResetRegExp(this.regexpUnescape, `${this.prefix}${this.unescapePrefix}(.+?)${this.unescapeSuffix}${this.suffix}`);
+    this.nestingRegexp = getOrResetRegExp(this.nestingRegexp, `${this.nestingPrefix}(.+?)${this.nestingSuffix}`);
+  }
+  interpolate(str, data, lng, options) {
+    let match;
+    let value;
+    let replaces;
+    const defaultData = this.options && this.options.interpolation && this.options.interpolation.defaultVariables || {};
+    function regexSafe(val) {
+      return val.replace(/\$/g, '$$$$');
+    }
+    const handleFormat = key => {
+      if (key.indexOf(this.formatSeparator) < 0) {
+        const path = deepFindWithDefaults(data, defaultData, key, this.options.keySeparator, this.options.ignoreJSONStructure);
+        return this.alwaysFormat ? this.format(path, undefined, lng, {
+          ...options,
+          ...data,
+          interpolationkey: key
+        }) : path;
+      }
+      const p = key.split(this.formatSeparator);
+      const k = p.shift().trim();
+      const f = p.join(this.formatSeparator).trim();
+      return this.format(deepFindWithDefaults(data, defaultData, k, this.options.keySeparator, this.options.ignoreJSONStructure), f, lng, {
+        ...options,
+        ...data,
+        interpolationkey: k
+      });
+    };
+    this.resetRegExp();
+    const missingInterpolationHandler = options && options.missingInterpolationHandler || this.options.missingInterpolationHandler;
+    const skipOnVariables = options && options.interpolation && options.interpolation.skipOnVariables !== undefined ? options.interpolation.skipOnVariables : this.options.interpolation.skipOnVariables;
+    const todos = [{
+      regex: this.regexpUnescape,
+      safeValue: val => regexSafe(val)
+    }, {
+      regex: this.regexp,
+      safeValue: val => this.escapeValue ? regexSafe(this.escape(val)) : regexSafe(val)
+    }];
+    todos.forEach(todo => {
+      replaces = 0;
+      while (match = todo.regex.exec(str)) {
+        const matchedVar = match[1].trim();
+        value = handleFormat(matchedVar);
+        if (value === undefined) {
+          if (typeof missingInterpolationHandler === 'function') {
+            const temp = missingInterpolationHandler(str, match, options);
+            value = typeof temp === 'string' ? temp : '';
+          } else if (options && Object.prototype.hasOwnProperty.call(options, matchedVar)) {
+            value = '';
+          } else if (skipOnVariables) {
+            value = match[0];
+            continue;
+          } else {
+            this.logger.warn(`missed to pass in variable ${matchedVar} for interpolating ${str}`);
+            value = '';
+          }
+        } else if (typeof value !== 'string' && !this.useRawValueToEscape) {
+          value = makeString(value);
+        }
+        const safeValue = todo.safeValue(value);
+        str = str.replace(match[0], safeValue);
+        if (skipOnVariables) {
+          todo.regex.lastIndex += value.length;
+          todo.regex.lastIndex -= match[0].length;
+        } else {
+          todo.regex.lastIndex = 0;
+        }
+        replaces++;
+        if (replaces >= this.maxReplaces) {
+          break;
+        }
+      }
+    });
+    return str;
+  }
+  nest(str, fc) {
+    let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    let match;
+    let value;
+    let clonedOptions;
+    function handleHasOptions(key, inheritedOptions) {
+      const sep = this.nestingOptionsSeparator;
+      if (key.indexOf(sep) < 0) return key;
+      const c = key.split(new RegExp(`${sep}[ ]*{`));
+      let optionsString = `{${c[1]}`;
+      key = c[0];
+      optionsString = this.interpolate(optionsString, clonedOptions);
+      const matchedSingleQuotes = optionsString.match(/'/g);
+      const matchedDoubleQuotes = optionsString.match(/"/g);
+      if (matchedSingleQuotes && matchedSingleQuotes.length % 2 === 0 && !matchedDoubleQuotes || matchedDoubleQuotes.length % 2 !== 0) {
+        optionsString = optionsString.replace(/'/g, '"');
+      }
+      try {
+        clonedOptions = JSON.parse(optionsString);
+        if (inheritedOptions) clonedOptions = {
+          ...inheritedOptions,
+          ...clonedOptions
+        };
+      } catch (e) {
+        this.logger.warn(`failed parsing options string in nesting for key ${key}`, e);
+        return `${key}${sep}${optionsString}`;
+      }
+      delete clonedOptions.defaultValue;
+      return key;
+    }
+    while (match = this.nestingRegexp.exec(str)) {
+      let formatters = [];
+      clonedOptions = {
+        ...options
+      };
+      clonedOptions = clonedOptions.replace && typeof clonedOptions.replace !== 'string' ? clonedOptions.replace : clonedOptions;
+      clonedOptions.applyPostProcessor = false;
+      delete clonedOptions.defaultValue;
+      let doReduce = false;
+      if (match[0].indexOf(this.formatSeparator) !== -1 && !/{.*}/.test(match[1])) {
+        const r = match[1].split(this.formatSeparator).map(elem => elem.trim());
+        match[1] = r.shift();
+        formatters = r;
+        doReduce = true;
+      }
+      value = fc(handleHasOptions.call(this, match[1].trim(), clonedOptions), clonedOptions);
+      if (value && match[0] === str && typeof value !== 'string') return value;
+      if (typeof value !== 'string') value = makeString(value);
+      if (!value) {
+        this.logger.warn(`missed to resolve ${match[1]} for nesting ${str}`);
+        value = '';
+      }
+      if (doReduce) {
+        value = formatters.reduce((v, f) => this.format(v, f, options.lng, {
+          ...options,
+          interpolationkey: match[1].trim()
+        }), value.trim());
+      }
+      str = str.replace(match[0], value);
+      this.regexp.lastIndex = 0;
+    }
+    return str;
+  }
+}
+
+function parseFormatStr(formatStr) {
+  let formatName = formatStr.toLowerCase().trim();
+  const formatOptions = {};
+  if (formatStr.indexOf('(') > -1) {
+    const p = formatStr.split('(');
+    formatName = p[0].toLowerCase().trim();
+    const optStr = p[1].substring(0, p[1].length - 1);
+    if (formatName === 'currency' && optStr.indexOf(':') < 0) {
+      if (!formatOptions.currency) formatOptions.currency = optStr.trim();
+    } else if (formatName === 'relativetime' && optStr.indexOf(':') < 0) {
+      if (!formatOptions.range) formatOptions.range = optStr.trim();
+    } else {
+      const opts = optStr.split(';');
+      opts.forEach(opt => {
+        if (!opt) return;
+        const [key, ...rest] = opt.split(':');
+        const val = rest.join(':').trim().replace(/^'+|'+$/g, '');
+        if (!formatOptions[key.trim()]) formatOptions[key.trim()] = val;
+        if (val === 'false') formatOptions[key.trim()] = false;
+        if (val === 'true') formatOptions[key.trim()] = true;
+        if (!isNaN(val)) formatOptions[key.trim()] = parseInt(val, 10);
+      });
+    }
+  }
+  return {
+    formatName,
+    formatOptions
+  };
+}
+function createCachedFormatter(fn) {
+  const cache = {};
+  return function invokeFormatter(val, lng, options) {
+    const key = lng + JSON.stringify(options);
+    let formatter = cache[key];
+    if (!formatter) {
+      formatter = fn(getCleanedCode(lng), options);
+      cache[key] = formatter;
+    }
+    return formatter(val);
+  };
+}
+class Formatter {
+  constructor() {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    this.logger = baseLogger.create('formatter');
+    this.options = options;
+    this.formats = {
+      number: createCachedFormatter((lng, opt) => {
+        const formatter = new Intl.NumberFormat(lng, {
+          ...opt
+        });
+        return val => formatter.format(val);
+      }),
+      currency: createCachedFormatter((lng, opt) => {
+        const formatter = new Intl.NumberFormat(lng, {
+          ...opt,
+          style: 'currency'
+        });
+        return val => formatter.format(val);
+      }),
+      datetime: createCachedFormatter((lng, opt) => {
+        const formatter = new Intl.DateTimeFormat(lng, {
+          ...opt
+        });
+        return val => formatter.format(val);
+      }),
+      relativetime: createCachedFormatter((lng, opt) => {
+        const formatter = new Intl.RelativeTimeFormat(lng, {
+          ...opt
+        });
+        return val => formatter.format(val, opt.range || 'day');
+      }),
+      list: createCachedFormatter((lng, opt) => {
+        const formatter = new Intl.ListFormat(lng, {
+          ...opt
+        });
+        return val => formatter.format(val);
+      })
+    };
+    this.init(options);
+  }
+  init(services) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+      interpolation: {}
+    };
+    const iOpts = options.interpolation;
+    this.formatSeparator = iOpts.formatSeparator ? iOpts.formatSeparator : iOpts.formatSeparator || ',';
+  }
+  add(name, fc) {
+    this.formats[name.toLowerCase().trim()] = fc;
+  }
+  addCached(name, fc) {
+    this.formats[name.toLowerCase().trim()] = createCachedFormatter(fc);
+  }
+  format(value, format, lng) {
+    let options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    const formats = format.split(this.formatSeparator);
+    const result = formats.reduce((mem, f) => {
+      const {
+        formatName,
+        formatOptions
+      } = parseFormatStr(f);
+      if (this.formats[formatName]) {
+        let formatted = mem;
+        try {
+          const valOptions = options && options.formatParams && options.formatParams[options.interpolationkey] || {};
+          const l = valOptions.locale || valOptions.lng || options.locale || options.lng || lng;
+          formatted = this.formats[formatName](mem, l, {
+            ...formatOptions,
+            ...options,
+            ...valOptions
+          });
+        } catch (error) {
+          this.logger.warn(error);
+        }
+        return formatted;
+      } else {
+        this.logger.warn(`there was no format function for ${formatName}`);
+      }
+      return mem;
+    }, value);
+    return result;
+  }
+}
+
+function removePending(q, name) {
+  if (q.pending[name] !== undefined) {
+    delete q.pending[name];
+    q.pendingCount--;
+  }
+}
+class Connector extends EventEmitter {
+  constructor(backend, store, services) {
+    let options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    super();
+    this.backend = backend;
+    this.store = store;
+    this.services = services;
+    this.languageUtils = services.languageUtils;
+    this.options = options;
+    this.logger = baseLogger.create('backendConnector');
+    this.waitingReads = [];
+    this.maxParallelReads = options.maxParallelReads || 10;
+    this.readingCalls = 0;
+    this.maxRetries = options.maxRetries >= 0 ? options.maxRetries : 5;
+    this.retryTimeout = options.retryTimeout >= 1 ? options.retryTimeout : 350;
+    this.state = {};
+    this.queue = [];
+    if (this.backend && this.backend.init) {
+      this.backend.init(services, options.backend, options);
+    }
+  }
+  queueLoad(languages, namespaces, options, callback) {
+    const toLoad = {};
+    const pending = {};
+    const toLoadLanguages = {};
+    const toLoadNamespaces = {};
+    languages.forEach(lng => {
+      let hasAllNamespaces = true;
+      namespaces.forEach(ns => {
+        const name = `${lng}|${ns}`;
+        if (!options.reload && this.store.hasResourceBundle(lng, ns)) {
+          this.state[name] = 2;
+        } else if (this.state[name] < 0) ; else if (this.state[name] === 1) {
+          if (pending[name] === undefined) pending[name] = true;
+        } else {
+          this.state[name] = 1;
+          hasAllNamespaces = false;
+          if (pending[name] === undefined) pending[name] = true;
+          if (toLoad[name] === undefined) toLoad[name] = true;
+          if (toLoadNamespaces[ns] === undefined) toLoadNamespaces[ns] = true;
+        }
+      });
+      if (!hasAllNamespaces) toLoadLanguages[lng] = true;
+    });
+    if (Object.keys(toLoad).length || Object.keys(pending).length) {
+      this.queue.push({
+        pending,
+        pendingCount: Object.keys(pending).length,
+        loaded: {},
+        errors: [],
+        callback
+      });
+    }
+    return {
+      toLoad: Object.keys(toLoad),
+      pending: Object.keys(pending),
+      toLoadLanguages: Object.keys(toLoadLanguages),
+      toLoadNamespaces: Object.keys(toLoadNamespaces)
+    };
+  }
+  loaded(name, err, data) {
+    const s = name.split('|');
+    const lng = s[0];
+    const ns = s[1];
+    if (err) this.emit('failedLoading', lng, ns, err);
+    if (data) {
+      this.store.addResourceBundle(lng, ns, data, undefined, undefined, {
+        skipCopy: true
+      });
+    }
+    this.state[name] = err ? -1 : 2;
+    const loaded = {};
+    this.queue.forEach(q => {
+      pushPath(q.loaded, [lng], ns);
+      removePending(q, name);
+      if (err) q.errors.push(err);
+      if (q.pendingCount === 0 && !q.done) {
+        Object.keys(q.loaded).forEach(l => {
+          if (!loaded[l]) loaded[l] = {};
+          const loadedKeys = q.loaded[l];
+          if (loadedKeys.length) {
+            loadedKeys.forEach(n => {
+              if (loaded[l][n] === undefined) loaded[l][n] = true;
+            });
+          }
+        });
+        q.done = true;
+        if (q.errors.length) {
+          q.callback(q.errors);
+        } else {
+          q.callback();
+        }
+      }
+    });
+    this.emit('loaded', loaded);
+    this.queue = this.queue.filter(q => !q.done);
+  }
+  read(lng, ns, fcName) {
+    let tried = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+    let wait = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : this.retryTimeout;
+    let callback = arguments.length > 5 ? arguments[5] : undefined;
+    if (!lng.length) return callback(null, {});
+    if (this.readingCalls >= this.maxParallelReads) {
+      this.waitingReads.push({
+        lng,
+        ns,
+        fcName,
+        tried,
+        wait,
+        callback
+      });
+      return;
+    }
+    this.readingCalls++;
+    const resolver = (err, data) => {
+      this.readingCalls--;
+      if (this.waitingReads.length > 0) {
+        const next = this.waitingReads.shift();
+        this.read(next.lng, next.ns, next.fcName, next.tried, next.wait, next.callback);
+      }
+      if (err && data && tried < this.maxRetries) {
+        setTimeout(() => {
+          this.read.call(this, lng, ns, fcName, tried + 1, wait * 2, callback);
+        }, wait);
+        return;
+      }
+      callback(err, data);
+    };
+    const fc = this.backend[fcName].bind(this.backend);
+    if (fc.length === 2) {
+      try {
+        const r = fc(lng, ns);
+        if (r && typeof r.then === 'function') {
+          r.then(data => resolver(null, data)).catch(resolver);
+        } else {
+          resolver(null, r);
+        }
+      } catch (err) {
+        resolver(err);
+      }
+      return;
+    }
+    return fc(lng, ns, resolver);
+  }
+  prepareLoading(languages, namespaces) {
+    let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    let callback = arguments.length > 3 ? arguments[3] : undefined;
+    if (!this.backend) {
+      this.logger.warn('No backend was added via i18next.use. Will not load resources.');
+      return callback && callback();
+    }
+    if (typeof languages === 'string') languages = this.languageUtils.toResolveHierarchy(languages);
+    if (typeof namespaces === 'string') namespaces = [namespaces];
+    const toLoad = this.queueLoad(languages, namespaces, options, callback);
+    if (!toLoad.toLoad.length) {
+      if (!toLoad.pending.length) callback();
+      return null;
+    }
+    toLoad.toLoad.forEach(name => {
+      this.loadOne(name);
+    });
+  }
+  load(languages, namespaces, callback) {
+    this.prepareLoading(languages, namespaces, {}, callback);
+  }
+  reload(languages, namespaces, callback) {
+    this.prepareLoading(languages, namespaces, {
+      reload: true
+    }, callback);
+  }
+  loadOne(name) {
+    let prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+    const s = name.split('|');
+    const lng = s[0];
+    const ns = s[1];
+    this.read(lng, ns, 'read', undefined, undefined, (err, data) => {
+      if (err) this.logger.warn(`${prefix}loading namespace ${ns} for language ${lng} failed`, err);
+      if (!err && data) this.logger.log(`${prefix}loaded namespace ${ns} for language ${lng}`, data);
+      this.loaded(name, err, data);
+    });
+  }
+  saveMissing(languages, namespace, key, fallbackValue, isUpdate) {
+    let options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
+    let clb = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : () => {};
+    if (this.services.utils && this.services.utils.hasLoadedNamespace && !this.services.utils.hasLoadedNamespace(namespace)) {
+      this.logger.warn(`did not save key "${key}" as the namespace "${namespace}" was not yet loaded`, 'This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!');
+      return;
+    }
+    if (key === undefined || key === null || key === '') return;
+    if (this.backend && this.backend.create) {
+      const opts = {
+        ...options,
+        isUpdate
+      };
+      const fc = this.backend.create.bind(this.backend);
+      if (fc.length < 6) {
+        try {
+          let r;
+          if (fc.length === 5) {
+            r = fc(languages, namespace, key, fallbackValue, opts);
+          } else {
+            r = fc(languages, namespace, key, fallbackValue);
+          }
+          if (r && typeof r.then === 'function') {
+            r.then(data => clb(null, data)).catch(clb);
+          } else {
+            clb(null, r);
+          }
+        } catch (err) {
+          clb(err);
+        }
+      } else {
+        fc(languages, namespace, key, fallbackValue, clb, opts);
+      }
+    }
+    if (!languages || !languages[0]) return;
+    this.store.addResource(languages[0], namespace, key, fallbackValue);
+  }
+}
+
+function get() {
+  return {
+    debug: false,
+    initImmediate: true,
+    ns: ['translation'],
+    defaultNS: ['translation'],
+    fallbackLng: ['dev'],
+    fallbackNS: false,
+    supportedLngs: false,
+    nonExplicitSupportedLngs: false,
+    load: 'all',
+    preload: false,
+    simplifyPluralSuffix: true,
+    keySeparator: '.',
+    nsSeparator: ':',
+    pluralSeparator: '_',
+    contextSeparator: '_',
+    partialBundledLanguages: false,
+    saveMissing: false,
+    updateMissing: false,
+    saveMissingTo: 'fallback',
+    saveMissingPlurals: true,
+    missingKeyHandler: false,
+    missingInterpolationHandler: false,
+    postProcess: false,
+    postProcessPassResolved: false,
+    returnNull: false,
+    returnEmptyString: true,
+    returnObjects: false,
+    joinArrays: false,
+    returnedObjectHandler: false,
+    parseMissingKeyHandler: false,
+    appendNamespaceToMissingKey: false,
+    appendNamespaceToCIMode: false,
+    overloadTranslationOptionHandler: function handle(args) {
+      let ret = {};
+      if (typeof args[1] === 'object') ret = args[1];
+      if (typeof args[1] === 'string') ret.defaultValue = args[1];
+      if (typeof args[2] === 'string') ret.tDescription = args[2];
+      if (typeof args[2] === 'object' || typeof args[3] === 'object') {
+        const options = args[3] || args[2];
+        Object.keys(options).forEach(key => {
+          ret[key] = options[key];
+        });
+      }
+      return ret;
+    },
+    interpolation: {
+      escapeValue: true,
+      format: value => value,
+      prefix: '{{',
+      suffix: '}}',
+      formatSeparator: ',',
+      unescapePrefix: '-',
+      nestingPrefix: '$t(',
+      nestingSuffix: ')',
+      nestingOptionsSeparator: ',',
+      maxReplaces: 1000,
+      skipOnVariables: true
+    }
+  };
+}
+function transformOptions(options) {
+  if (typeof options.ns === 'string') options.ns = [options.ns];
+  if (typeof options.fallbackLng === 'string') options.fallbackLng = [options.fallbackLng];
+  if (typeof options.fallbackNS === 'string') options.fallbackNS = [options.fallbackNS];
+  if (options.supportedLngs && options.supportedLngs.indexOf('cimode') < 0) {
+    options.supportedLngs = options.supportedLngs.concat(['cimode']);
+  }
+  return options;
+}
+
+function noop() {}
+function bindMemberFunctions(inst) {
+  const mems = Object.getOwnPropertyNames(Object.getPrototypeOf(inst));
+  mems.forEach(mem => {
+    if (typeof inst[mem] === 'function') {
+      inst[mem] = inst[mem].bind(inst);
+    }
+  });
+}
+class I18n extends EventEmitter {
+  constructor() {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    let callback = arguments.length > 1 ? arguments[1] : undefined;
+    super();
+    this.options = transformOptions(options);
+    this.services = {};
+    this.logger = baseLogger;
+    this.modules = {
+      external: []
+    };
+    bindMemberFunctions(this);
+    if (callback && !this.isInitialized && !options.isClone) {
+      if (!this.options.initImmediate) {
+        this.init(options, callback);
+        return this;
+      }
+      setTimeout(() => {
+        this.init(options, callback);
+      }, 0);
+    }
+  }
+  init() {
+    var _this = this;
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    let callback = arguments.length > 1 ? arguments[1] : undefined;
+    this.isInitializing = true;
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+    if (!options.defaultNS && options.defaultNS !== false && options.ns) {
+      if (typeof options.ns === 'string') {
+        options.defaultNS = options.ns;
+      } else if (options.ns.indexOf('translation') < 0) {
+        options.defaultNS = options.ns[0];
+      }
+    }
+    const defOpts = get();
+    this.options = {
+      ...defOpts,
+      ...this.options,
+      ...transformOptions(options)
+    };
+    if (this.options.compatibilityAPI !== 'v1') {
+      this.options.interpolation = {
+        ...defOpts.interpolation,
+        ...this.options.interpolation
+      };
+    }
+    if (options.keySeparator !== undefined) {
+      this.options.userDefinedKeySeparator = options.keySeparator;
+    }
+    if (options.nsSeparator !== undefined) {
+      this.options.userDefinedNsSeparator = options.nsSeparator;
+    }
+    function createClassOnDemand(ClassOrObject) {
+      if (!ClassOrObject) return null;
+      if (typeof ClassOrObject === 'function') return new ClassOrObject();
+      return ClassOrObject;
+    }
+    if (!this.options.isClone) {
+      if (this.modules.logger) {
+        baseLogger.init(createClassOnDemand(this.modules.logger), this.options);
+      } else {
+        baseLogger.init(null, this.options);
+      }
+      let formatter;
+      if (this.modules.formatter) {
+        formatter = this.modules.formatter;
+      } else if (typeof Intl !== 'undefined') {
+        formatter = Formatter;
+      }
+      const lu = new LanguageUtil(this.options);
+      this.store = new ResourceStore(this.options.resources, this.options);
+      const s = this.services;
+      s.logger = baseLogger;
+      s.resourceStore = this.store;
+      s.languageUtils = lu;
+      s.pluralResolver = new PluralResolver(lu, {
+        prepend: this.options.pluralSeparator,
+        compatibilityJSON: this.options.compatibilityJSON,
+        simplifyPluralSuffix: this.options.simplifyPluralSuffix
+      });
+      if (formatter && (!this.options.interpolation.format || this.options.interpolation.format === defOpts.interpolation.format)) {
+        s.formatter = createClassOnDemand(formatter);
+        s.formatter.init(s, this.options);
+        this.options.interpolation.format = s.formatter.format.bind(s.formatter);
+      }
+      s.interpolator = new Interpolator(this.options);
+      s.utils = {
+        hasLoadedNamespace: this.hasLoadedNamespace.bind(this)
+      };
+      s.backendConnector = new Connector(createClassOnDemand(this.modules.backend), s.resourceStore, s, this.options);
+      s.backendConnector.on('*', function (event) {
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+        _this.emit(event, ...args);
+      });
+      if (this.modules.languageDetector) {
+        s.languageDetector = createClassOnDemand(this.modules.languageDetector);
+        if (s.languageDetector.init) s.languageDetector.init(s, this.options.detection, this.options);
+      }
+      if (this.modules.i18nFormat) {
+        s.i18nFormat = createClassOnDemand(this.modules.i18nFormat);
+        if (s.i18nFormat.init) s.i18nFormat.init(this);
+      }
+      this.translator = new Translator(this.services, this.options);
+      this.translator.on('*', function (event) {
+        for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          args[_key2 - 1] = arguments[_key2];
+        }
+        _this.emit(event, ...args);
+      });
+      this.modules.external.forEach(m => {
+        if (m.init) m.init(this);
+      });
+    }
+    this.format = this.options.interpolation.format;
+    if (!callback) callback = noop;
+    if (this.options.fallbackLng && !this.services.languageDetector && !this.options.lng) {
+      const codes = this.services.languageUtils.getFallbackCodes(this.options.fallbackLng);
+      if (codes.length > 0 && codes[0] !== 'dev') this.options.lng = codes[0];
+    }
+    if (!this.services.languageDetector && !this.options.lng) {
+      this.logger.warn('init: no languageDetector is used and no lng is defined');
+    }
+    const storeApi = ['getResource', 'hasResourceBundle', 'getResourceBundle', 'getDataByLanguage'];
+    storeApi.forEach(fcName => {
+      this[fcName] = function () {
+        return _this.store[fcName](...arguments);
+      };
+    });
+    const storeApiChained = ['addResource', 'addResources', 'addResourceBundle', 'removeResourceBundle'];
+    storeApiChained.forEach(fcName => {
+      this[fcName] = function () {
+        _this.store[fcName](...arguments);
+        return _this;
+      };
+    });
+    const deferred = defer();
+    const load = () => {
+      const finish = (err, t) => {
+        this.isInitializing = false;
+        if (this.isInitialized && !this.initializedStoreOnce) this.logger.warn('init: i18next is already initialized. You should call init just once!');
+        this.isInitialized = true;
+        if (!this.options.isClone) this.logger.log('initialized', this.options);
+        this.emit('initialized', this.options);
+        deferred.resolve(t);
+        callback(err, t);
+      };
+      if (this.languages && this.options.compatibilityAPI !== 'v1' && !this.isInitialized) return finish(null, this.t.bind(this));
+      this.changeLanguage(this.options.lng, finish);
+    };
+    if (this.options.resources || !this.options.initImmediate) {
+      load();
+    } else {
+      setTimeout(load, 0);
+    }
+    return deferred;
+  }
+  loadResources(language) {
+    let callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : noop;
+    let usedCallback = callback;
+    const usedLng = typeof language === 'string' ? language : this.language;
+    if (typeof language === 'function') usedCallback = language;
+    if (!this.options.resources || this.options.partialBundledLanguages) {
+      if (usedLng && usedLng.toLowerCase() === 'cimode' && (!this.options.preload || this.options.preload.length === 0)) return usedCallback();
+      const toLoad = [];
+      const append = lng => {
+        if (!lng) return;
+        if (lng === 'cimode') return;
+        const lngs = this.services.languageUtils.toResolveHierarchy(lng);
+        lngs.forEach(l => {
+          if (l === 'cimode') return;
+          if (toLoad.indexOf(l) < 0) toLoad.push(l);
+        });
+      };
+      if (!usedLng) {
+        const fallbacks = this.services.languageUtils.getFallbackCodes(this.options.fallbackLng);
+        fallbacks.forEach(l => append(l));
+      } else {
+        append(usedLng);
+      }
+      if (this.options.preload) {
+        this.options.preload.forEach(l => append(l));
+      }
+      this.services.backendConnector.load(toLoad, this.options.ns, e => {
+        if (!e && !this.resolvedLanguage && this.language) this.setResolvedLanguage(this.language);
+        usedCallback(e);
+      });
+    } else {
+      usedCallback(null);
+    }
+  }
+  reloadResources(lngs, ns, callback) {
+    const deferred = defer();
+    if (!lngs) lngs = this.languages;
+    if (!ns) ns = this.options.ns;
+    if (!callback) callback = noop;
+    this.services.backendConnector.reload(lngs, ns, err => {
+      deferred.resolve();
+      callback(err);
+    });
+    return deferred;
+  }
+  use(module) {
+    if (!module) throw new Error('You are passing an undefined module! Please check the object you are passing to i18next.use()');
+    if (!module.type) throw new Error('You are passing a wrong module! Please check the object you are passing to i18next.use()');
+    if (module.type === 'backend') {
+      this.modules.backend = module;
+    }
+    if (module.type === 'logger' || module.log && module.warn && module.error) {
+      this.modules.logger = module;
+    }
+    if (module.type === 'languageDetector') {
+      this.modules.languageDetector = module;
+    }
+    if (module.type === 'i18nFormat') {
+      this.modules.i18nFormat = module;
+    }
+    if (module.type === 'postProcessor') {
+      postProcessor.addPostProcessor(module);
+    }
+    if (module.type === 'formatter') {
+      this.modules.formatter = module;
+    }
+    if (module.type === '3rdParty') {
+      this.modules.external.push(module);
+    }
+    return this;
+  }
+  setResolvedLanguage(l) {
+    if (!l || !this.languages) return;
+    if (['cimode', 'dev'].indexOf(l) > -1) return;
+    for (let li = 0; li < this.languages.length; li++) {
+      const lngInLngs = this.languages[li];
+      if (['cimode', 'dev'].indexOf(lngInLngs) > -1) continue;
+      if (this.store.hasLanguageSomeTranslations(lngInLngs)) {
+        this.resolvedLanguage = lngInLngs;
+        break;
+      }
+    }
+  }
+  changeLanguage(lng, callback) {
+    var _this2 = this;
+    this.isLanguageChangingTo = lng;
+    const deferred = defer();
+    this.emit('languageChanging', lng);
+    const setLngProps = l => {
+      this.language = l;
+      this.languages = this.services.languageUtils.toResolveHierarchy(l);
+      this.resolvedLanguage = undefined;
+      this.setResolvedLanguage(l);
+    };
+    const done = (err, l) => {
+      if (l) {
+        setLngProps(l);
+        this.translator.changeLanguage(l);
+        this.isLanguageChangingTo = undefined;
+        this.emit('languageChanged', l);
+        this.logger.log('languageChanged', l);
+      } else {
+        this.isLanguageChangingTo = undefined;
+      }
+      deferred.resolve(function () {
+        return _this2.t(...arguments);
+      });
+      if (callback) callback(err, function () {
+        return _this2.t(...arguments);
+      });
+    };
+    const setLng = lngs => {
+      if (!lng && !lngs && this.services.languageDetector) lngs = [];
+      const l = typeof lngs === 'string' ? lngs : this.services.languageUtils.getBestMatchFromCodes(lngs);
+      if (l) {
+        if (!this.language) {
+          setLngProps(l);
+        }
+        if (!this.translator.language) this.translator.changeLanguage(l);
+        if (this.services.languageDetector && this.services.languageDetector.cacheUserLanguage) this.services.languageDetector.cacheUserLanguage(l);
+      }
+      this.loadResources(l, err => {
+        done(err, l);
+      });
+    };
+    if (!lng && this.services.languageDetector && !this.services.languageDetector.async) {
+      setLng(this.services.languageDetector.detect());
+    } else if (!lng && this.services.languageDetector && this.services.languageDetector.async) {
+      if (this.services.languageDetector.detect.length === 0) {
+        this.services.languageDetector.detect().then(setLng);
+      } else {
+        this.services.languageDetector.detect(setLng);
+      }
+    } else {
+      setLng(lng);
+    }
+    return deferred;
+  }
+  getFixedT(lng, ns, keyPrefix) {
+    var _this3 = this;
+    const fixedT = function (key, opts) {
+      let options;
+      if (typeof opts !== 'object') {
+        for (var _len3 = arguments.length, rest = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+          rest[_key3 - 2] = arguments[_key3];
+        }
+        options = _this3.options.overloadTranslationOptionHandler([key, opts].concat(rest));
+      } else {
+        options = {
+          ...opts
+        };
+      }
+      options.lng = options.lng || fixedT.lng;
+      options.lngs = options.lngs || fixedT.lngs;
+      options.ns = options.ns || fixedT.ns;
+      options.keyPrefix = options.keyPrefix || keyPrefix || fixedT.keyPrefix;
+      const keySeparator = _this3.options.keySeparator || '.';
+      let resultKey;
+      if (options.keyPrefix && Array.isArray(key)) {
+        resultKey = key.map(k => `${options.keyPrefix}${keySeparator}${k}`);
+      } else {
+        resultKey = options.keyPrefix ? `${options.keyPrefix}${keySeparator}${key}` : key;
+      }
+      return _this3.t(resultKey, options);
+    };
+    if (typeof lng === 'string') {
+      fixedT.lng = lng;
+    } else {
+      fixedT.lngs = lng;
+    }
+    fixedT.ns = ns;
+    fixedT.keyPrefix = keyPrefix;
+    return fixedT;
+  }
+  t() {
+    return this.translator && this.translator.translate(...arguments);
+  }
+  exists() {
+    return this.translator && this.translator.exists(...arguments);
+  }
+  setDefaultNamespace(ns) {
+    this.options.defaultNS = ns;
+  }
+  hasLoadedNamespace(ns) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    if (!this.isInitialized) {
+      this.logger.warn('hasLoadedNamespace: i18next was not initialized', this.languages);
+      return false;
+    }
+    if (!this.languages || !this.languages.length) {
+      this.logger.warn('hasLoadedNamespace: i18n.languages were undefined or empty', this.languages);
+      return false;
+    }
+    const lng = options.lng || this.resolvedLanguage || this.languages[0];
+    const fallbackLng = this.options ? this.options.fallbackLng : false;
+    const lastLng = this.languages[this.languages.length - 1];
+    if (lng.toLowerCase() === 'cimode') return true;
+    const loadNotPending = (l, n) => {
+      const loadState = this.services.backendConnector.state[`${l}|${n}`];
+      return loadState === -1 || loadState === 2;
+    };
+    if (options.precheck) {
+      const preResult = options.precheck(this, loadNotPending);
+      if (preResult !== undefined) return preResult;
+    }
+    if (this.hasResourceBundle(lng, ns)) return true;
+    if (!this.services.backendConnector.backend || this.options.resources && !this.options.partialBundledLanguages) return true;
+    if (loadNotPending(lng, ns) && (!fallbackLng || loadNotPending(lastLng, ns))) return true;
+    return false;
+  }
+  loadNamespaces(ns, callback) {
+    const deferred = defer();
+    if (!this.options.ns) {
+      if (callback) callback();
+      return Promise.resolve();
+    }
+    if (typeof ns === 'string') ns = [ns];
+    ns.forEach(n => {
+      if (this.options.ns.indexOf(n) < 0) this.options.ns.push(n);
+    });
+    this.loadResources(err => {
+      deferred.resolve();
+      if (callback) callback(err);
+    });
+    return deferred;
+  }
+  loadLanguages(lngs, callback) {
+    const deferred = defer();
+    if (typeof lngs === 'string') lngs = [lngs];
+    const preloaded = this.options.preload || [];
+    const newLngs = lngs.filter(lng => preloaded.indexOf(lng) < 0);
+    if (!newLngs.length) {
+      if (callback) callback();
+      return Promise.resolve();
+    }
+    this.options.preload = preloaded.concat(newLngs);
+    this.loadResources(err => {
+      deferred.resolve();
+      if (callback) callback(err);
+    });
+    return deferred;
+  }
+  dir(lng) {
+    if (!lng) lng = this.resolvedLanguage || (this.languages && this.languages.length > 0 ? this.languages[0] : this.language);
+    if (!lng) return 'rtl';
+    const rtlLngs = ['ar', 'shu', 'sqr', 'ssh', 'xaa', 'yhd', 'yud', 'aao', 'abh', 'abv', 'acm', 'acq', 'acw', 'acx', 'acy', 'adf', 'ads', 'aeb', 'aec', 'afb', 'ajp', 'apc', 'apd', 'arb', 'arq', 'ars', 'ary', 'arz', 'auz', 'avl', 'ayh', 'ayl', 'ayn', 'ayp', 'bbz', 'pga', 'he', 'iw', 'ps', 'pbt', 'pbu', 'pst', 'prp', 'prd', 'ug', 'ur', 'ydd', 'yds', 'yih', 'ji', 'yi', 'hbo', 'men', 'xmn', 'fa', 'jpr', 'peo', 'pes', 'prs', 'dv', 'sam', 'ckb'];
+    const languageUtils = this.services && this.services.languageUtils || new LanguageUtil(get());
+    return rtlLngs.indexOf(languageUtils.getLanguagePartFromCode(lng)) > -1 || lng.toLowerCase().indexOf('-arab') > 1 ? 'rtl' : 'ltr';
+  }
+  static createInstance() {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    let callback = arguments.length > 1 ? arguments[1] : undefined;
+    return new I18n(options, callback);
+  }
+  cloneInstance() {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    let callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : noop;
+    const forkResourceStore = options.forkResourceStore;
+    if (forkResourceStore) delete options.forkResourceStore;
+    const mergedOptions = {
+      ...this.options,
+      ...options,
+      ...{
+        isClone: true
+      }
+    };
+    const clone = new I18n(mergedOptions);
+    if (options.debug !== undefined || options.prefix !== undefined) {
+      clone.logger = clone.logger.clone(options);
+    }
+    const membersToCopy = ['store', 'services', 'language'];
+    membersToCopy.forEach(m => {
+      clone[m] = this[m];
+    });
+    clone.services = {
+      ...this.services
+    };
+    clone.services.utils = {
+      hasLoadedNamespace: clone.hasLoadedNamespace.bind(clone)
+    };
+    if (forkResourceStore) {
+      clone.store = new ResourceStore(this.store.data, mergedOptions);
+      clone.services.resourceStore = clone.store;
+    }
+    clone.translator = new Translator(clone.services, mergedOptions);
+    clone.translator.on('*', function (event) {
+      for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+        args[_key4 - 1] = arguments[_key4];
+      }
+      clone.emit(event, ...args);
+    });
+    clone.init(mergedOptions, callback);
+    clone.translator.options = mergedOptions;
+    clone.translator.backendConnector.services.utils = {
+      hasLoadedNamespace: clone.hasLoadedNamespace.bind(clone)
+    };
+    return clone;
+  }
+  toJSON() {
+    return {
+      options: this.options,
+      store: this.store,
+      language: this.language,
+      languages: this.languages,
+      resolvedLanguage: this.resolvedLanguage
+    };
+  }
+}
+const instance = I18n.createInstance();
+instance.createInstance = I18n.createInstance;
+
+instance.createInstance;
+instance.dir;
+instance.init;
+instance.loadResources;
+instance.reloadResources;
+instance.use;
+instance.changeLanguage;
+instance.getFixedT;
+instance.t;
+instance.exists;
+instance.setDefaultNamespace;
+instance.hasLoadedNamespace;
+instance.loadNamespaces;
+instance.loadLanguages;
+
 var LOCALSTORAGE_SESSION_ID_KEY = "what2studyUserSessionId";
+instance
+    .init({
+    interpolation: { escapeValue: false },
+    lng: "de",
+    react: {
+        useSuspense: false
+    },
+    resources: {
+        en: {
+            global: {
+                "introPage1": {
+                    "hello": "Hello. It's nice to meet you!",
+                    "iam": "I am a chatbot",
+                    "built": " built to help you with your studies! Before we get started, here are a few important facts.",
+                    "play": "Play Tutorial",
+                    "chat": "To Chat",
+                    "okay": "Okay"
+                },
+                "introPage2": {
+                    "Lets": "Let's start with the basics! It's important to me that working with me is ",
+                    "easy": "easy and safe",
+                    "thats": " That's why I want to give you as much information as possible about my",
+                    "functions": " functions and procedures.",
+                    "everything": "Everything we discuss here is confidential; no one will be informed of the subject of this discussion unless you have given your explicit consent (e.g. when submitting a request via the \"Talk to us\" function). In order to improve the quality of the answers, anonymized answers will be evaluated in an initial test phase.",
+                    "okay": "Okay"
+                },
+                "infoPopup": {
+                    "welcome": "Welcome to What2Study!",
+                    "what2study": "What2Study is a ",
+                    "chatbot": "Chatbot",
+                    "that": " that was developed to support in all your question and endeavors concerning",
+                    "studies": " studies",
+                    "please": "Please note:",
+                    "isnot": "What2Study is not a real",
+                    "person": " person. ",
+                    "many": "Many people have been involved in its development and have extensively tested whether the answers and content are correct and helpful. However, we ",
+                    "cant": "cannot guarantee",
+                    "every": "that every answer given by this chatbot is correct. We recommend that you verify important information yourself."
+                },
+                "talk2human": {
+                    "back": "Back",
+                    "write": "Contact [Name of the organisation]:",
+                    "message": "Briefly describe the question/concern here (if it is not obvious from the chat history or if it is not sent at the same time)",
+                    "send": "Send chat history",
+                    "please": "Enter your email address for contact purposes:",
+                    "use": "Use the saved email address: ",
+                    "different": "Use a different email address",
+                    "email": "Enter email address",
+                    "would": "Is a phone response preferred?",
+                    "number": "Enter contact number",
+                    "best": "What is the best time to call you?"
+                },
+                "filters": {
+                    "personality": "Chatbot Personality",
+                    "reset": "Default",
+                    "discard": "Undo Changes",
+                    "friendly": "Casual",
+                    "professional": "Formal",
+                    "opinionated": "Recommending",
+                    "neutral": "Neutral",
+                    "many": "Many emojis 🤩",
+                    "no": "No emojis",
+                    "long": "Long answers",
+                    "short": "Short answers"
+                },
+                "settings": {
+                    "settings": "Settings",
+                    "restart": "Restart Intro",
+                    "language": "Language",
+                    "user": "Assumptions",
+                    "userAssumption1": "Studies Design",
+                    "userAssumption2": "22 year old",
+                    "userAssumption3": "University of Bielefeld"
+                }
+            }
+        },
+        de: {
+            global: {
+                "introPage1": {
+                    "hello": "Hello,",
+                    "iam": "ich bin ein Chatbot",
+                    "built": " der dir bei deinem Studium helfen soll! Bevor wir loslegen, ein paar wichtige Fakten.",
+                    "play": "Erklärvideo",
+                    "chat": "Direkt zum Chat",
+                    "okay": "Weiter"
+                },
+                "introPage2": {
+                    "Lets": "Fangen wir mit den Grundlagen an! Es ist mir wichtig, dass der Umgang mit mir ",
+                    "easy": "einfach und sicher ist.",
+                    "thats": " Deshalb möchte ich so gut wie möglich über meine",
+                    "functions": " Funktionen und Vorgehensweisen informieren.",
+                    "everything": "Alles, was wir hier besprechen, ist vertraulich, niemand wird über den Inhalt hier in Kenntnis gesetzt, es sei denn, es liegt eine ausdrückliche Zustimmung zur Weitergabe vor (z.B.: bei Weiterleitung einer Anfrage über die Funktion \"Sprich mit uns\"). Um die Qualität der Antworten zu verbessern, werden in einer ersten Testphase anonymisierte Antworten ausgewertet.",
+                    "okay": "Okay"
+                },
+                "infoPopup": {
+                    "welcome": "Willkommen bei What2Study!",
+                    "what2study": "What2Study ist ein ",
+                    "chatbot": "Chatbot, ",
+                    "that": "der entwickelt wurde, um Studierende und Studieninteressierte bei allen Fragen rund um das ",
+                    "studies": "Studium zu unterstützen",
+                    "please": "Bitte beachten:",
+                    "isnot": "What2Study ist keine ",
+                    "person": "reale Person",
+                    "many": "Viele Menschen waren an der Entwicklung beteiligt und haben ausgiebig getestet, ob die Antworten und Signaturen korrekt und hilfreich sind. Dennoch können wir ",
+                    "cant": "nicht garantieren, ",
+                    "every": "dass jede Antwort des Chatbots korrekt ist. Wir empfehlen daher, insbesondere wichtige Informationen noch einmal selbst zu überprüfen."
+                },
+                "talk2human": {
+                    "back": "Zurück",
+                    "write": "[Name of the organisation] kontaktieren:",
+                    "message": "Deine Nachricht",
+                    "send": "Chatverlauf senden",
+                    "please": "Angabe der E-Mail-Adresse für Kontaktzwecke:",
+                    "use": "Gespeichtere E-Mail-Adresse verwenden: ",
+                    "different": "Andere E-Mail-Adresse verwenden: ",
+                    "email": "E-Mail-Adresse eingeben",
+                    "would": "Ist eine telefonische Rückmeldung bevorzugt?",
+                    "number": "Telefonnummer eingeben",
+                    "best": "Wann kann ich Sie am besten anrufen?"
+                },
+                "filters": {
+                    "personality": "Chatbot-Charakter",
+                    "reset": "Standard",
+                    "discard": "Änderungen zurücksetzen",
+                    "friendly": "Locker",
+                    "professional": "Formell",
+                    "opinionated": "Vorschlagend",
+                    "neutral": "Objektiv",
+                    "many": "Viele Emojis 🤩",
+                    "no": "Keine emojis",
+                    "long": "Lange Antworten",
+                    "short": "Kurze Antworten"
+                },
+                "settings": {
+                    "settings": "Einstellungen",
+                    "restart": "Intro starten",
+                    "language": "Sprache",
+                    "user": "Annahmen",
+                    "userAssumption1": "Studiert Design",
+                    "userAssumption2": "22 Jahre alt",
+                    "userAssumption3": "Universität Bielefeld"
+                }
+            }
+        }
+    }
+});
 var App = function (props) {
-    return (jsxRuntimeExports.jsx(DataProvider, { children: jsxRuntimeExports.jsx(ChatClient, __assign$1({}, props)) }));
+    return (jsxRuntimeExports.jsx(DataProvider, { children: jsxRuntimeExports.jsx(I18nextProvider, __assign$1({ i18n: instance }, { children: jsxRuntimeExports.jsx(ChatClient, __assign$1({}, props)) })) }));
 };
 
 exports.LOCALSTORAGE_SESSION_ID_KEY = LOCALSTORAGE_SESSION_ID_KEY;
