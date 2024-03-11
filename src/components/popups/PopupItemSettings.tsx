@@ -2,12 +2,11 @@ import { EChatLanguage, useData } from "hooks";
 
 import { ChangeEvent, FC } from "react";
 import { FormSelect } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 import { IoCloseSharp } from "react-icons/io5";
 
 import { PopupContents } from "./PopupScreen";
 
-
+const dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
 
 const getLanguage = (language: EChatLanguage) => {
     switch (language) {
@@ -30,23 +29,10 @@ const PopupItemSettings: FC = () => {
         i18n.changeLanguage(e.target.value.toLowerCase());
     };
 
-    const [t, i18n] = useTranslation("global");
-
-    const handleChangeLanguage = (lang: string) => {
-        i18n.changeLanguage(lang);
-    }
-
-    const dummyUserAssumptions = [
-        t("settings.userAssumption1"),
-        t("settings.userAssumption2"),
-        t("settings.userAssumption3")
-      ];
-
-
     return (
-        <PopupContents title={t("settings.settings")} className="popup-settings-wrapper">
+        <PopupContents title="Settings" className="popup-settings-wrapper">
             <div className="chip-button-wrapper">
-                <button className="app-chip-button">{t("settings.restart")}</button>
+                <button className="app-chip-button">Restart Intro</button>
             </div>
             <div className="setting-block language-select-wrapper">
                 <span className="block-title">{t("settings.language")}</span>
@@ -64,7 +50,7 @@ const PopupItemSettings: FC = () => {
                 </FormSelect>
             </div>
             <div className="setting-block user-assumptions">
-                <span className="block-title">{t("settings.user")}</span>
+                <span className="block-title">User Assumption</span>
                 <div className="chips-wrapper">
                     {dummyUserAssumptions.map((assumption) => {
                         return (

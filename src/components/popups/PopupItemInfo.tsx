@@ -1,20 +1,20 @@
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
-
 
 import { PopupContents } from "./PopupScreen";
 
-
 const PopupItemInfo: FC = () => {
-    const [t, i18n] = useTranslation("global");
     return (
-        <PopupContents title={t("infoPopup.welcome")}className="popup-infobox">
+        <PopupContents title="Welcome to What2Study" className="popup-infobox">
             <p className="info-text">
-            {t("infoPopup.what2study")} <span> {t("infoPopup.chatbot")}</span> {t("infoPopup.that")}<span>{t("infoPopup.studies")}</span>.
+                What2Study is a <span>chatbot</span> that was developed to support in all your
+                question and endeavors concerning <span>studies</span>.
             </p>
-            <p className="info-text-title">{t("infoPopup.please")}</p>
+            <p className="info-text-title">Please keep in mind:</p>
             <p className="info-text">
-            {t("infoPopup.isnot")}<span>{t("infoPopup.person")}</span>{t("infoPopup.many")}<span>{t("infoPopup.cant")}</span> {t("infoPopup.every")}
+                What2Study is not a <span>person</span>. Many people were involved in its
+                development and throughly tested weather its responses or suggestions were accurate
+                and helpful. Still, we <span>can't guarantee</span> that every answer given by this
+                chatbot is correct. You need to validate crucial information for yourself.
             </p>
         </PopupContents>
     );
