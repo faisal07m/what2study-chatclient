@@ -71,7 +71,7 @@
 }
 .chatContainer .messageWrapper .message {
   font-size: 14px;
-  max-width: 72%;
+  max-width: 82%;
   padding: 15px;
   border-radius: 12px;
 }
@@ -80,8 +80,8 @@
   margin-bottom: 30px;
 }
 .chatContainer .botMessageWrapper .bot-iconWrapper {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   margin-right: 8px;
   border-radius: 50%;
   display: flex;
@@ -92,13 +92,14 @@
 .chatContainer .botMessageWrapper .bot-iconWrapper .bot-iconImg {
   padding: 2px;
   object-fit: cover;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
 }
 .chatContainer .botMessageWrapper .botMessage {
   position: relative;
   border-bottom-left-radius: 0;
   font-weight: 500;
+  overflow-wrap: break-word;
 }
 .chatContainer .botMessageWrapper .botMessage .bot-msg-ytvideo {
   width: 100%;
@@ -144,8 +145,8 @@
   justify-content: flex-end;
 }
 .chatContainer .userMessageWrapper .user-iconWrapper {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   margin-left: 8px;
   border-radius: 50%;
   background-color: #eaeaea;
@@ -154,7 +155,7 @@
   align-items: center;
 }
 .chatContainer .userMessageWrapper .user-iconWrapper .userIcon {
-  font-size: 16px;
+  font-size: 20px;
 }
 .chatContainer .userMessageWrapper .userMessage {
   font-weight: 500;
@@ -388,7 +389,7 @@
   align-items: center;
   justify-content: center;
   height: 80%;
-  padding: 16%;
+  padding: 14%;
 }
 .introScreen-wrapper .is-contentWrapper .is-icon {
   width: 24%;
@@ -442,7 +443,7 @@
   background-color: #0c8de9;
   color: #ffffff;
   padding: 6px;
-  margin-left: 42%;
+  margin-left: 43%;
 }
 .introScreen-wrapper .video-wrapper {
   position: fixed;
@@ -634,7 +635,7 @@ input[type=number]::-webkit-outer-spin-button {
 .app-icon-button .app-icon-button-anim {
   position: absolute;
   border-radius: 50%;
-  top: 50%;
+  top: 100%;
   left: 50%;
   width: 0;
   height: 0;

@@ -18,27 +18,29 @@ const getStyles = (
             return {
                 border: "none",
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-                width: isMobileScreen ? "100%" : "400px",
-                height: isMobileScreen ? "100%" : "600px",
+                width: isMobileScreen ? "100%" : "420px",
+                height: isMobileScreen ? "100%" : "620px",
                 position: "fixed",
                 bottom: isMobileScreen ? "0" : "100px",
                 right: isMobileScreen ? "0" : "30px",
                 borderRadius: isMobileScreen ? "0" : "12px",
                 backgroundColor: "#fff",
                 display: "none",
+                zIndex:"999999999999999999999999"
             };
 
         case IframeType.CHAT_CONTAINER_OPEN:
             return {
                 border: "none",
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-                width: isMobileScreen ? "100%" : "400px",
-                height: isMobileScreen ? "100%" : "600px",
+                width: isMobileScreen ? "100%" : "420px",
+                height: isMobileScreen ? "100%" : "620px",
                 position: "fixed",
                 bottom: isMobileScreen ? "0" : "100px",
                 right: isMobileScreen ? "0" : "30px",
                 borderRadius: isMobileScreen ? "0" : "12px",
                 backgroundColor: "#fff",
+                zIndex:"999999999999999999999999"
             };
 
         case IframeType.CHAT_OPEN_BUTTON:
@@ -48,9 +50,10 @@ const getStyles = (
                 width: "54px",
                 height: "54px",
                 position: "fixed",
-                bottom: "24px",
+                bottom: "28px",
                 right: "24px",
                 borderRadius: "50%",
+                zIndex:"999999999999999999999999"
             };
 
         default:
@@ -99,7 +102,7 @@ export const IFrame: FC<IIframeProps> = (props) => {
 
     useEffect(() => {
         if (mountNode) {
-            mountNode.style = "margin: 0;";
+            mountNode.style = "margin: 0";
             addStyles();
         }
     }, [mountNode]);

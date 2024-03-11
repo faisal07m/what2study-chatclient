@@ -73,7 +73,7 @@
         align-items: flex-end;
         .message {
             font-size: 14px;
-            max-width: 72%;
+            max-width: 82%;
             padding: 15px;
             border-radius: 12px;
         }
@@ -82,8 +82,8 @@
         justify-content: flex-start;
         margin-bottom: 30px;
         .bot-iconWrapper {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             margin-right: 8px;
             border-radius: 50%;
             display: flex;
@@ -93,14 +93,15 @@
             .bot-iconImg {
                 padding: 2px;
                 object-fit: cover;
-                width: 24px;
-                height: 24px;
+                width: 28px;
+                height: 28px;
             }
         }
         .botMessage {
             position: relative;
             border-bottom-left-radius: 0;
             font-weight: 500;
+            overflow-wrap: break-word;
             .bot-msg-ytvideo {
                 width: 100%;
                 height: auto;
@@ -146,8 +147,8 @@
     .userMessageWrapper {
         justify-content: flex-end;
         .user-iconWrapper {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             margin-left: 8px;
             border-radius: 50%;
             background-color: #eaeaea;
@@ -155,7 +156,7 @@
             justify-content: center;
             align-items: center;
             .userIcon {
-                font-size: 16px;
+                font-size: 20px;
             }
         }
         .userMessage {
@@ -401,7 +402,7 @@
         align-items: center;
         justify-content: center;
         height: 80%;
-        padding: 10%;
+        padding: 14%;
         .is-icon {
             width: 24%;
             margin-bottom: 20px;

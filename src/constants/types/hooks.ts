@@ -93,6 +93,7 @@ export interface IClientConfigurations {
     chatbotId: string;
     userId: string;
     universityId: string;
+    accessToken: string;
     chatbotName: string;
     chatbotBubbleIcons: string;
     chatbotProfileImage: string;

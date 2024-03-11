@@ -6,7 +6,6 @@ import { BsChatQuoteFill } from "react-icons/bs";
 
 import ChatContainer from "./ChatContainer";
 import OpenChatButton from "./OpenChatButton";
-
 const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
 const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
@@ -44,7 +43,7 @@ const ChatClient: FC = (props) => {
     if (isClientConfigFetched)
         return (
             <Fragment>
-                <ChatContainer />
+                <ChatContainer {...props} />
                 <OpenChatButton icon={BsChatQuoteFill} />
             </Fragment>
         );
