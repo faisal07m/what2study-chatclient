@@ -17,7 +17,9 @@ import {
 } from "react-icons/md";
 import { RiUser6Fill } from "react-icons/ri";
 
-const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+//const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+
+const chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
 
 enum EMessageSource {
     BOT = "BOT",
@@ -64,7 +66,8 @@ const Main: FC = (props) => {
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
+    // const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
+    const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
     const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
