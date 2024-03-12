@@ -409,7 +409,21 @@
         }
         .is-infoBlock {
             padding: 10px;
-            font-size: 16px;
+            font-size: 15px;
+            background-color: #d9d9d9;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            .is-block-text {
+                margin: 0;
+                font-weight: 400;
+                .is-block-bold {
+                    font-weight: 600;
+                }
+            }
+        }
+        .is-infoBlock2 {
+            padding: 7px;
+            font-size: 12px;
             background-color: #d9d9d9;
             border-radius: 12px;
             margin-bottom: 12px;

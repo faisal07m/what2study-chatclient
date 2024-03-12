@@ -6,24 +6,25 @@ import { IoCloseSharp } from "react-icons/io5";
 
 import { PopupContents } from "./PopupScreen";
 
+import { useTranslation } from 'react-i18next';
 const dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
 
 const getLanguage = (language: EChatLanguage) => {
     switch (language) {
         case EChatLanguage.EN:
-            return "🇬🇧 EN";
+            return "🇬🇧 en";
 
         case EChatLanguage.DE:
-            return "🇩🇪 DE";
+            return "🇩🇪 de";
 
         default:
-            return "🇬🇧 EN";
+            return "🇬🇧 en";
     }
 };
 
 const PopupItemSettings: FC = () => {
     const { language, setLanguage } = useData();
-
+    const [t, i18n] = useTranslation("global");
     const handleLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
         setLanguage(e.target.value as EChatLanguage);
         i18n.changeLanguage(e.target.value.toLowerCase());
@@ -50,7 +51,7 @@ const PopupItemSettings: FC = () => {
                 </FormSelect>
             </div>
             <div className="setting-block user-assumptions">
-                <span className="block-title">User Assumption</span>
+                <span className="block-title">{t("settings.user")}</span>
                 <div className="chips-wrapper">
                     {dummyUserAssumptions.map((assumption) => {
                         return (

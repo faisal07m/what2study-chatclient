@@ -221,8 +221,8 @@ var ERoute;
 })(ERoute || (ERoute = {}));
 var EChatLanguage;
 (function (EChatLanguage) {
-    EChatLanguage["EN"] = "EN";
-    EChatLanguage["DE"] = "DE";
+    EChatLanguage["EN"] = "en";
+    EChatLanguage["DE"] = "de";
 })(EChatLanguage || (EChatLanguage = {}));
 var AVAILABLE_FONTS = ["inter", "roboto", "poppins"];
 var getFont = function (font) {
@@ -231,11 +231,11 @@ var getFont = function (font) {
     return "inter";
 };
 var defaultClientConfig = {
-    objectId: "9eika1dfYl",
-    userId: "ugg86oBVOk",
-    universityId: "ugg86oBVOk",
+    objectId: "",
+    userId: "",
+    universityId: "",
     chatbotName: "What 2 Study",
-    language: "DE",
+    language: "de",
     randomQuestionEnabled: true,
     randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Ich stehe bei verschiedensten Themen zur Verfügung und versuche zu helfen. Unter anderem kann ich konkrete Informationen zu Studiengängen, Zulassungsvoraussetzungen, Campusleben oder Unterstützungsangeboten geben. Aber auch allgemeine Fragen rundum das Hochschulsystem beantworten. Hier sind einige Beispielfragen, die interessant sein könnten: \n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nKannst du mir mehr über das Campusleben berichten?\nWelche Unterstützungsangebote gibt es für Studierende?\nWie bewerbe ich mich für ein Studium an dieser Universität?",
     talkToaHumanEnabled: true,
@@ -247,7 +247,7 @@ var defaultClientConfig = {
     defaultSettings: {
         chatbotLanguage: "English",
         audioNarration: true,
-        narrator: "John",
+        narrator: "male",
     },
     chatboxBehaviour: {
         formality: 0,
@@ -18921,29 +18921,25 @@ var Form$1 = Object.assign(Form, {
   FloatingLabel: FloatingLabel$1
 });
 
+var dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
 var getLanguage = function (language) {
     switch (language) {
         case EChatLanguage.EN:
-            return "🇬🇧 EN";
+            return "🇬🇧 en";
         case EChatLanguage.DE:
-            return "🇩🇪 DE";
+            return "🇩🇪 de";
         default:
-            return "🇬🇧 EN";
+            return "🇬🇧 en";
     }
 };
 var PopupItemSettings = function () {
     var _a = useData(), language = _a.language, setLanguage = _a.setLanguage;
+    var _b = useTranslation("global"), t = _b[0], i18n = _b[1];
     var handleLanguage = function (e) {
         setLanguage(e.target.value);
         i18n.changeLanguage(e.target.value.toLowerCase());
     };
-    var _b = useTranslation("global"), t = _b[0], i18n = _b[1];
-    var dummyUserAssumptions = [
-        t("settings.userAssumption1"),
-        t("settings.userAssumption2"),
-        t("settings.userAssumption3")
-    ];
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("settings.settings"), className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button" }, { children: t("settings.restart") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
+    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Settings", className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button" }, { children: "Restart Intro" })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
                             return (jsxRuntimeExports.jsxs("span", __assign$1({ className: "app-chip-with-close-btn" }, { children: [assumption, jsxRuntimeExports.jsx("button", __assign$1({ className: "close-btn" }, { children: jsxRuntimeExports.jsx(IoCloseSharp, { className: "close-icon" }) }))] })));
                         }) }))] }))] })));
 };
@@ -21871,6 +21867,7 @@ instance
         }
     }
 });
+// i18next.changeLanguage("de");
 var App = function (props) {
     return (jsxRuntimeExports.jsx(DataProvider, { children: jsxRuntimeExports.jsx(I18nextProvider, __assign$1({ i18n: instance }, { children: jsxRuntimeExports.jsx(ChatClient, __assign$1({}, props)) })) }));
 };

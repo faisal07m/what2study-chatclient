@@ -397,7 +397,7 @@
 }
 .introScreen-wrapper .is-contentWrapper .is-infoBlock {
   padding: 10px;
-  font-size: 16px;
+  font-size: 15px;
   background-color: #d9d9d9;
   border-radius: 12px;
   margin-bottom: 12px;
@@ -410,8 +410,8 @@
   font-weight: 600;
 }
 .introScreen-wrapper .is-contentWrapper .is-infoBlock2 {
-  padding: 10px;
-  font-size: 13px;
+  padding: 7px;
+  font-size: 11px;
   background-color: #d9d9d9;
   border-radius: 12px;
   margin-bottom: 12px;
@@ -458,7 +458,6 @@
   color: #ffffff;
   padding: 6px;
   margin-left: 43%;
-  margin-top: 20px;
 }
 .introScreen-wrapper .video-wrapper {
   position: fixed;
@@ -678,10 +677,6 @@ input[type=number]::-webkit-outer-spin-button {
   transition: background-color 100ms ease;
 }
 .app-chip-button:hover {
-  background-color: #057acd;
-}
-
-.app-chip-button.selected {
   background-color: #057acd;
 }
 
