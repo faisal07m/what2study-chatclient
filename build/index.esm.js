@@ -17870,7 +17870,8 @@ var IFrame = function (props) {
     var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
     var addStyles = function () {
         var link = mountNodeDoc.createElement("link");
-        link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+        //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+        link.href = "https://www.cpstech.de/what2studycss/";
         link.rel = "stylesheet";
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);
@@ -18993,7 +18994,7 @@ var IntroPage = function () {
     var _c = useState(false), isVideoOpen = _c[0], setIsVideoOpen = _c[1];
     var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader;
     var _d = useTranslation("global"), t = _d[0]; _d[1];
-    return (jsxRuntimeExports.jsx(Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage1.hello"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage1.iam") })), t("introPage1.built")] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: t("introPage1.chat") }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage2.Lets"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.easy") })), t("introPage2.thats"), jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.functions") }))] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text" }, { children: t("introPage2.everything") })) })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: "To Chat" }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
+    return (jsxRuntimeExports.jsx(Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage1.hello"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage1.iam") })), t("introPage1.built")] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: t("introPage1.chat") }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage2.Lets"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.easy") })), t("introPage2.thats"), jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.functions") }))] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text" }, { children: t("introPage2.everything") })) }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
                         return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
                     }, style: {
                         backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
@@ -19010,7 +19011,8 @@ function IoIosCall (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M405.5 256c0 22.717-4.883 44.362-13.603 63.855l31.88 31.88C439.283 323.33 448 290.653 448 256c0-93.256-64-172.254-149-192v44.978C361 127.632 405.5 186.882 405.5 256zM256 80.458l-51.021 52.48L256 183.957zM420.842 396.885L91.116 67.157l-24 24 90.499 90.413-8.28 10.43H64v128h85.334L256 431.543V280l94.915 94.686C335.795 387.443 318 397.213 299 403.022V448c31-7.172 58.996-22.163 82.315-42.809l39.61 39.693 24-24.043-24.002-24.039-.081.083z"}},{"tag":"path","attr":{"d":"M352.188 256c0-38.399-21.188-72.407-53.188-88.863v59.82l50.801 50.801A100.596 100.596 0 0 0 352.188 256z"}}]})(props);
 }
 
-var chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+//const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+var chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
 var EMessageSource;
 (function (EMessageSource) {
     EMessageSource["BOT"] = "BOT";
@@ -19040,7 +19042,8 @@ var Main = function (props) {
     var _d = useState(initialMessages), messages = _d[0], setMessages = _d[1];
     var _e = useState(false), loading = _e[0], setLoading = _e[1];
     var messagesEndRef = useRef(null);
-    var WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
+    // const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
+    var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
     var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
     var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, _f = clientConfig.chatbotLook, textBoxUser = _f.textBoxUser, textBoxChatbotReply = _f.textBoxChatbotReply, UIGroupA = _f.UIGroupA, UIGroupB = _f.UIGroupB;
@@ -19059,7 +19062,7 @@ var Main = function (props) {
                     ], false);
                 });
             }
-        }, 20000);
+        }, 50000);
         // if this effect run again, because `value` changed, we remove the previous timeout
         return function () { return clearTimeout(timeout); };
     }, [value]);
@@ -19222,7 +19225,7 @@ var Main = function (props) {
                                             backgroundColor: textBoxUser.textBoxUserColor,
                                             color: textBoxUser.textBoxUserFontColor,
                                             fontFamily: textBoxUser.textBoxFontStyle,
-                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" })) : (jsxRuntimeExports.jsx(Fragment, {})), message, source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" })) : (jsxRuntimeExports.jsx(Fragment, {})), jsxRuntimeExports.jsx("p", { children: "12313123123123\\n \\n \\n" }), source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
                                                         if (feedback === true)
                                                             return;
                                                         handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
@@ -19297,7 +19300,7 @@ var OpenChatButton = function (props) {
                 } })) })) })));
 };
 
-var WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
+var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
 var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 var ChatClient = function (props) {

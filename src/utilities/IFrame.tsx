@@ -77,8 +77,8 @@ export const IFrame: FC<IIframeProps> = (props) => {
 
     const addStyles = () => {
         const link = mountNodeDoc.createElement("link");
-        // link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
-        link.href = "https://www.cpstech/what2studycss/";
+        //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+        link.href = "https://www.cpstech.de/what2studycss/";
         link.rel = "stylesheet";
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);

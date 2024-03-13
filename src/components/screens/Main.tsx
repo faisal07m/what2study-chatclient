@@ -94,7 +94,7 @@ const Main: FC = (props) => {
                     ];
                 });
             }
-        }, 20000)
+        }, 50000)
         // if this effect run again, because `value` changed, we remove the previous timeout
         return () => clearTimeout(timeout)
     }, [value])
