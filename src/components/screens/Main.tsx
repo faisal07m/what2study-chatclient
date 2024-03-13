@@ -2,7 +2,7 @@ import { LOCALSTORAGE_SESSION_ID_KEY } from "App";
 import { EPopupItem, ERoute, useData } from "hooks";
 import IconButton from "utilities/IconButton";
 
-import { FC, Fragment, SyntheticEvent, useEffect, useRef, useState } from "react";
+import { FC, Fragment, Key, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { BsFillMicFill } from "react-icons/bs";
 import { IoMdVolumeHigh, IoMdVolumeOff } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
@@ -17,6 +17,7 @@ import {
 } from "react-icons/md";
 import { RiUser6Fill } from "react-icons/ri";
 
+import { useTranslation } from 'react-i18next';
 //const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 
 const chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
@@ -40,12 +41,7 @@ interface IBotMessage {
     url?: string;
 }
 
-const initialMessages: IBotMessage[] = [
-    {
-        source: EMessageSource.BOT,
-        message: "Herzlich willkommen bei unserer Studienberatung! Wie kann ich Ihnen heute behilflich sein?",
-    },
-];
+
 
 const isYoutubeURL = (url = ""): boolean => {
     const ytRegEx = new RegExp("^(https?://)?(www.youtube.com|youtu.be)/.+$");
@@ -53,6 +49,8 @@ const isYoutubeURL = (url = ""): boolean => {
 };
 
 const Main: FC = (props) => {
+
+    const [t, i18n] = useTranslation("global");
     const {
         setPopupItem,
         isBotVolumeOn,
@@ -61,8 +59,49 @@ const Main: FC = (props) => {
         clientConfig,
         sessionId,
     } = useData();
+    const {
+        chatbotProfileImage,
+        chatbotId,
+        userId,
+        language,
+        chatbotLook: { textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB },
+    } = clientConfig;
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
+    const initialMessages= ()=>{
+        var res=[]
+        console.log(localStorage.getItem("history"))
+        if(localStorage.getItem("history")!= null)
+        {res = JSON.parse(localStorage.getItem("history")|| '')}
+           
+        if(language=="de")
+        {
+            if(res!=''){
+                return res
+            }
+            else{
+                return [
+                    {
+                        source: EMessageSource.BOT,
+                        message: "Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
+                    },
+                ];
+            }
+        }
+    else{
+        if(res!=''){
+        return res;
+    
+    }
+    else{
+        return [
+            {
+                source: EMessageSource.BOT,
+                message: "Welcome to our Student Advisory Service!\nHow can I help you today?",
+            },
+        ]}
+    }
+}
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -71,15 +110,12 @@ const Main: FC = (props) => {
     const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
-    const {
-        chatbotProfileImage,
-        chatbotId,
-        userId,
-        chatbotLook: { textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB },
-    } = clientConfig;
+    
 
     const [value, setValue] = useState('')
     useEffect(() => {
+        // if(value !="terminate")
+    // {
         const timeout = setTimeout(() => {
             if (clientConfig.randomQuestionEnabled) {
                 setMessages((prev) => {
@@ -95,9 +131,12 @@ const Main: FC = (props) => {
                 });
             }
         }, 50000)
+    
         // if this effect run again, because `value` changed, we remove the previous timeout
         return () => clearTimeout(timeout)
-    }, [value])
+    // }
+    
+    }, [message])
 
     const handleUserMessage = async (e: SyntheticEvent): Promise<void> => {
         e?.preventDefault();
@@ -111,6 +150,7 @@ const Main: FC = (props) => {
             botId: chatbotId,
             sessionId,
             userId: userId,
+            language:language
         };
         const options = {
             method: "POST",
@@ -225,7 +265,15 @@ const Main: FC = (props) => {
 
     useEffect(() => {
         scrollToBottom();
+        localStorage.removeItem("history")
+        localStorage.setItem("history",JSON.stringify(messages))
     }, [messages]);
+
+    const breakMsg = (message:  string) => {
+        var msg = message.split('\n').map(str => <p style={{margin : 0, paddingTop:0}}>{str}</p>);
+        return msg
+        
+    }
 
     return (
         <Fragment>
@@ -247,8 +295,8 @@ const Main: FC = (props) => {
                     }}
                     onClick={() => setCurrentRoute(ERoute.TALK_TO_HUMAN)}
                 >
-                    Sprich mit uns
-                </button>
+                    {t("lang.lang")}
+                   </button>
                 <IconButton
                     className="volume-button"
                     icon={isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff}
@@ -260,7 +308,7 @@ const Main: FC = (props) => {
                 />
             </div>
             <div className="chatContainer">
-                {messages.map(({ message, source, feedback, type, url }, index) => (
+                {messages.map(({ message, source, feedback, type, url }: any, index: Key | null | undefined) => (
                     <div
                         key={index}
                         className={`messageWrapper ${source === EMessageSource.BOT
@@ -317,7 +365,7 @@ const Main: FC = (props) => {
                             ) : (
                                 <Fragment />
                             )}
-                            {message}
+                            <div>{breakMsg(message)}</div>
                             {source === EMessageSource.BOT && (
                                 <div className="bot-msg-actions-wrapper">
                                     {/* <button
@@ -427,7 +475,10 @@ const Main: FC = (props) => {
                     className={`inputField ${isInputFocused ? "inputFieldFocused" : ""}`}
                     type="text"
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={(e) => {
+                        setMessage(e.target.value)
+                        setValue("terminate")
+                    }}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
                 />

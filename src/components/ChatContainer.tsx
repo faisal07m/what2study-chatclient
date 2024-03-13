@@ -37,6 +37,7 @@ const ChatContainer: FC = (props) => {
 
     const {
         chatbotLook: { chatbotHeader, chatbotBackground },
+        chatbotName
     } = clientConfig;
 
     return (
@@ -63,7 +64,7 @@ const ChatContainer: FC = (props) => {
                             className="header-title"
                             style={{ color: chatbotHeader.chatbotHeaderIconFontColor }}
                         >
-                            What2Study
+                            {chatbotName !="" ? chatbotName: "What2Study"}
                         </h1>
                     </div>
                     <div className="settings-wrapper">

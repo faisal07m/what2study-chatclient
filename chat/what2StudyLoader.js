@@ -37,9 +37,9 @@ const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
         const { bot_id, token } = getUrlParams(what2StudyScript.src);
 
         if (window.What2Study) {
-            window.What2Study({ accessToken: token, chatbotId: bot_id });
+            window.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJIeW0xbTFVbGV2IiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxMDMxMDUyOX0.Ah838fawODna8Cq6AgaIjhd6ckD8GUOu2CplXwOTP-o", chatbotId: "Hym1m1Ulev" });
         } else if (top.What2Study) {
-            top.What2Study({ accessToken: token, chatbotId: bot_id });
+            top.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJIeW0xbTFVbGV2IiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxMDMxMDUyOX0.Ah838fawODna8Cq6AgaIjhd6ckD8GUOu2CplXwOTP-o", chatbotId: "Hym1m1Ulev" });
         }
     };
 

@@ -64,14 +64,14 @@ const getFont = (font: string): string => {
 };
 
 const defaultClientConfig = {
-    objectId: "",
+    objectId: "U5xHMAMerU",
     userId: "",
-    universityId: "",
+    universityId: "U5xHMAMerU",
     chatbotName: "What 2 Study",
-
     language:"de",
+    chatbotId:"",
     randomQuestionEnabled: true,
-    randomQuestion:"Unsicher, welche Fragen man mir stellen kann? Ich stehe bei verschiedensten Themen zur Verfügung und versuche zu helfen. Unter anderem kann ich konkrete Informationen zu Studiengängen, Zulassungsvoraussetzungen, Campusleben oder Unterstützungsangeboten geben. Aber auch allgemeine Fragen rundum das Hochschulsystem beantworten. Hier sind einige Beispielfragen, die interessant sein könnten: \n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nKannst du mir mehr über das Campusleben berichten?\nWelche Unterstützungsangebote gibt es für Studierende?\nWie bewerbe ich mich für ein Studium an dieser Universität?",
+    randomQuestion:"Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
     talkToaHumanEnabled: true,
     talkToaHuman:"Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
     Narrator:"male",
@@ -194,6 +194,8 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
     };
 
     const saveClientConfigurations = async (data: any = {}) => {
+        console.log(data)
+        setLanguage(data.language)
         const {
             objectId,
             chatbotId,

@@ -7,7 +7,6 @@ import { IoCloseSharp } from "react-icons/io5";
 import { PopupContents } from "./PopupScreen";
 
 import { useTranslation } from 'react-i18next';
-const dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
 
 const getLanguage = (language: EChatLanguage) => {
     switch (language) {
@@ -22,16 +21,20 @@ const getLanguage = (language: EChatLanguage) => {
     }
 };
 
+
 const PopupItemSettings: FC = () => {
     const { language, setLanguage } = useData();
     const [t, i18n] = useTranslation("global");
+    const dummyUserAssumptions = [
+        t("settings.userAssumption3")
+      ];
     const handleLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
         setLanguage(e.target.value as EChatLanguage);
         i18n.changeLanguage(e.target.value.toLowerCase());
     };
 
     return (
-        <PopupContents title="Settings" className="popup-settings-wrapper">
+        <PopupContents title={t("settings.settings")} className="popup-settings-wrapper">
             <div className="chip-button-wrapper">
                 <button className="app-chip-button">Restart Intro</button>
             </div>

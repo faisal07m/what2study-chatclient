@@ -231,13 +231,14 @@ var getFont = function (font) {
     return "inter";
 };
 var defaultClientConfig = {
-    objectId: "",
+    objectId: "U5xHMAMerU",
     userId: "",
-    universityId: "",
+    universityId: "U5xHMAMerU",
     chatbotName: "What 2 Study",
     language: "de",
+    chatbotId: "",
     randomQuestionEnabled: true,
-    randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Ich stehe bei verschiedensten Themen zur Verfügung und versuche zu helfen. Unter anderem kann ich konkrete Informationen zu Studiengängen, Zulassungsvoraussetzungen, Campusleben oder Unterstützungsangeboten geben. Aber auch allgemeine Fragen rundum das Hochschulsystem beantworten. Hier sind einige Beispielfragen, die interessant sein könnten: \n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nKannst du mir mehr über das Campusleben berichten?\nWelche Unterstützungsangebote gibt es für Studierende?\nWie bewerbe ich mich für ein Studium an dieser Universität?",
+    randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
     talkToaHumanEnabled: true,
     talkToaHuman: "Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
     Narrator: "male",
@@ -356,6 +357,8 @@ var DataProvider = function (props) {
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
+                        console.log(data);
+                        setLanguage(data.language);
                         objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, Narrator = data.Narrator, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a;
                         _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
                         chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
@@ -18922,7 +18925,6 @@ var Form$1 = Object.assign(Form, {
   FloatingLabel: FloatingLabel$1
 });
 
-var dummyUserAssumptions = ["Studies design", "22 year old", "University of Bielefeld"];
 var getLanguage = function (language) {
     switch (language) {
         case EChatLanguage.EN:
@@ -18936,11 +18938,14 @@ var getLanguage = function (language) {
 var PopupItemSettings = function () {
     var _a = useData(), language = _a.language, setLanguage = _a.setLanguage;
     var _b = useTranslation("global"), t = _b[0], i18n = _b[1];
+    var dummyUserAssumptions = [
+        t("settings.userAssumption3")
+    ];
     var handleLanguage = function (e) {
         setLanguage(e.target.value);
         i18n.changeLanguage(e.target.value.toLowerCase());
     };
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Settings", className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button" }, { children: "Restart Intro" })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
+    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("settings.settings"), className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button" }, { children: "Restart Intro" })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
                             return (jsxRuntimeExports.jsxs("span", __assign$1({ className: "app-chip-with-close-btn" }, { children: [assumption, jsxRuntimeExports.jsx("button", __assign$1({ className: "close-btn" }, { children: jsxRuntimeExports.jsx(IoCloseSharp, { className: "close-icon" }) }))] })));
                         }) }))] }))] })));
 };
@@ -19024,31 +19029,61 @@ var EMessageType;
     EMessageType["IMAGE"] = "image";
     EMessageType["VIDEO"] = "video";
 })(EMessageType || (EMessageType = {}));
-var initialMessages = [
-    {
-        source: EMessageSource.BOT,
-        message: "Herzlich willkommen bei unserer Studienberatung! Wie kann ich Ihnen heute behilflich sein?",
-    },
-];
 var isYoutubeURL = function (url) {
     if (url === void 0) { url = ""; }
     var ytRegEx = new RegExp("^(https?://)?(www.youtube.com|youtu.be)/.+$");
     return ytRegEx.test(url);
 };
 var Main = function (props) {
-    var _a = useData(), setPopupItem = _a.setPopupItem, isBotVolumeOn = _a.isBotVolumeOn, setIsBotVolumeOn = _a.setIsBotVolumeOn, setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig, sessionId = _a.sessionId;
-    var _b = useState(false), isInputFocused = _b[0], setIsInputFocused = _b[1];
-    var _c = useState(""), message = _c[0], setMessage = _c[1];
-    var _d = useState(initialMessages), messages = _d[0], setMessages = _d[1];
-    var _e = useState(false), loading = _e[0], setLoading = _e[1];
+    var _a = useTranslation("global"), t = _a[0]; _a[1];
+    var _b = useData(), setPopupItem = _b.setPopupItem, isBotVolumeOn = _b.isBotVolumeOn, setIsBotVolumeOn = _b.setIsBotVolumeOn, setCurrentRoute = _b.setCurrentRoute, clientConfig = _b.clientConfig, sessionId = _b.sessionId;
+    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, language = clientConfig.language, _c = clientConfig.chatbotLook, textBoxUser = _c.textBoxUser, textBoxChatbotReply = _c.textBoxChatbotReply, UIGroupA = _c.UIGroupA, UIGroupB = _c.UIGroupB;
+    var _d = useState(false), isInputFocused = _d[0], setIsInputFocused = _d[1];
+    var _e = useState(""), message = _e[0], setMessage = _e[1];
+    var initialMessages = function () {
+        var res = [];
+        console.log(localStorage.getItem("history"));
+        if (localStorage.getItem("history") != null) {
+            res = JSON.parse(localStorage.getItem("history") || '');
+        }
+        if (language == "de") {
+            if (res != '') {
+                return res;
+            }
+            else {
+                return [
+                    {
+                        source: EMessageSource.BOT,
+                        message: "Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
+                    },
+                ];
+            }
+        }
+        else {
+            if (res != '') {
+                return res;
+            }
+            else {
+                return [
+                    {
+                        source: EMessageSource.BOT,
+                        message: "Welcome to our Student Advisory Service!\nHow can I help you today?",
+                    },
+                ];
+            }
+        }
+    };
+    var _f = useState(initialMessages), messages = _f[0], setMessages = _f[1];
+    var _g = useState(false), loading = _g[0], setLoading = _g[1];
     var messagesEndRef = useRef(null);
     // const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
     var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
     var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
-    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, _f = clientConfig.chatbotLook, textBoxUser = _f.textBoxUser, textBoxChatbotReply = _f.textBoxChatbotReply, UIGroupA = _f.UIGroupA, UIGroupB = _f.UIGroupB;
-    var _g = useState(''), value = _g[0], setValue = _g[1];
+    var _h = useState(''); _h[0]; var setValue = _h[1];
     useEffect(function () {
+        // if(value !="terminate")
+        // {
         var timeout = setTimeout(function () {
             if (clientConfig.randomQuestionEnabled) {
                 setMessages(function (prev) {
@@ -19065,7 +19100,8 @@ var Main = function (props) {
         }, 50000);
         // if this effect run again, because `value` changed, we remove the previous timeout
         return function () { return clearTimeout(timeout); };
-    }, [value]);
+        // }
+    }, [message]);
     var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
         var params, options, resJson, response_1, chatbotID, currentdate, datetime;
         var _a;
@@ -19083,6 +19119,7 @@ var Main = function (props) {
                         botId: chatbotId,
                         sessionId: sessionId,
                         userId: userId,
+                        language: language
                     };
                     options = {
                         method: "POST",
@@ -19207,11 +19244,17 @@ var Main = function (props) {
     };
     useEffect(function () {
         scrollToBottom();
+        localStorage.removeItem("history");
+        localStorage.setItem("history", JSON.stringify(messages));
     }, [messages]);
+    var breakMsg = function (message) {
+        var msg = message.split('\n').map(function (str) { return jsxRuntimeExports.jsx("p", __assign$1({ style: { margin: 0, paddingTop: 0 } }, { children: str })); });
+        return msg;
+    };
     return (jsxRuntimeExports.jsxs(Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", style: { backgroundColor: textBoxUser.textBoxUserColor }, icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info", iconColor: textBoxUser.textBoxUserFontColor }), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
                             backgroundColor: UIGroupB.UIGroupBUIBackground,
                             color: UIGroupB.UIGroupBUIHighlight,
-                        }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: "Sprich mit uns" })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
+                        }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: t("lang.lang") })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
                         var message = _a.message, source = _a.source, feedback = _a.feedback, type = _a.type, url = _a.url;
                         return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(source === EMessageSource.BOT
                                 ? "botMessageWrapper"
@@ -19225,7 +19268,7 @@ var Main = function (props) {
                                             backgroundColor: textBoxUser.textBoxUserColor,
                                             color: textBoxUser.textBoxUserFontColor,
                                             fontFamily: textBoxUser.textBoxFontStyle,
-                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" })) : (jsxRuntimeExports.jsx(Fragment, {})), jsxRuntimeExports.jsx("p", { children: "12313123123123\\n \\n \\n" }), source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" })) : (jsxRuntimeExports.jsx(Fragment, {})), jsxRuntimeExports.jsx("div", { children: breakMsg(message) }), source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
                                                         if (feedback === true)
                                                             return;
                                                         handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
@@ -19234,7 +19277,10 @@ var Main = function (props) {
                                                             return;
                                                         handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
                                                     }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: console.log, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
-                    }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) { return setMessage(e.target.value); }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", style: {
+                    }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) {
+                            setMessage(e.target.value);
+                            setValue("terminate");
+                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", style: {
                             backgroundColor: UIGroupB.UIGroupBUIBackground,
                         }, onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon", color: UIGroupB.UIGroupBUIHighlight }) }))] }))] }));
 };
@@ -19270,8 +19316,8 @@ var ChatContainer = function (props) {
         }
     };
     var _a = useData(), isChatOpen = _a.isChatOpen, isMobileScreen = _a.isMobileScreen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute, clientConfig = _a.clientConfig;
-    var _b = clientConfig.chatbotLook, chatbotHeader = _b.chatbotHeader, chatbotBackground = _b.chatbotBackground;
-    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
+    var _b = clientConfig.chatbotLook, chatbotHeader = _b.chatbotHeader, chatbotBackground = _b.chatbotBackground, chatbotName = clientConfig.chatbotName;
+    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: chatbotName != "" ? chatbotName : "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
 };
 
 // THIS FILE IS AUTO GENERATED
@@ -19305,6 +19351,7 @@ var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 var ChatClient = function (props) {
     var _a = useData(), saveClientConfigurations = _a.saveClientConfigurations, isClientConfigFetched = _a.isClientConfigFetched;
+    var _b = useTranslation("global"); _b[0]; var i18n = _b[1];
     var getChatClientConfiguration = function () { return __awaiter(void 0, void 0, void 0, function () {
         var resJson, response;
         return __generator(this, function (_a) {
@@ -19327,6 +19374,7 @@ var ChatClient = function (props) {
                     return [4 /*yield*/, resJson.json()];
                 case 2:
                     response = _a.sent();
+                    i18n.changeLanguage(response.result.language);
                     return [4 /*yield*/, saveClientConfigurations(response.result)];
                 case 3:
                     _a.sent();
@@ -21789,6 +21837,10 @@ instance
                     "long": "Long answers",
                     "short": "Short answers"
                 },
+                "lang": {
+                    "lang": "Talk To Human"
+                },
+                "initialChat": "Welcome to our Student Advisory Service!\nHow can I help you today?",
                 "settings": {
                     "settings": "Settings",
                     "restart": "Restart Intro",
@@ -21796,7 +21848,7 @@ instance
                     "user": "Assumptions",
                     "userAssumption1": "Studies Design",
                     "userAssumption2": "22 year old",
-                    "userAssumption3": "University of Bielefeld"
+                    "userAssumption3": "Studying at University of Bielefeld"
                 }
             }
         },
@@ -21857,6 +21909,10 @@ instance
                     "long": "Lange Antworten",
                     "short": "Kurze Antworten"
                 },
+                "lang": {
+                    "lang": "Sprich mit uns"
+                },
+                "initialChat": "Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
                 "settings": {
                     "settings": "Einstellungen",
                     "restart": "Intro starten",
@@ -21864,13 +21920,12 @@ instance
                     "user": "Annahmen",
                     "userAssumption1": "Studiert Design",
                     "userAssumption2": "22 Jahre alt",
-                    "userAssumption3": "Universität Bielefeld"
+                    "userAssumption3": "Studium an der Universität Bielefeld"
                 }
             }
         }
     }
 });
-// i18next.changeLanguage("de");
 var App = function (props) {
     return (jsxRuntimeExports.jsx(DataProvider, { children: jsxRuntimeExports.jsx(I18nextProvider, __assign$1({ i18n: instance }, { children: jsxRuntimeExports.jsx(ChatClient, __assign$1({}, props)) })) }));
 };

@@ -6,13 +6,17 @@ import { BsChatQuoteFill } from "react-icons/bs";
 
 import ChatContainer from "./ChatContainer";
 import OpenChatButton from "./OpenChatButton";
+
+import { useTranslation } from 'react-i18next';
 const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
 const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
 const ChatClient: FC = (props) => {
     const { saveClientConfigurations, isClientConfigFetched } = useData();
 
+    const [t, i18n] = useTranslation("global");
     const getChatClientConfiguration = async () => {
         if ("chatbotId" in props && "accessToken" in props) {
             const resJson = await fetch(`${WHAT2STUDY_BACKEND_URL}/getChatbotSettings`, {
@@ -27,6 +31,7 @@ const ChatClient: FC = (props) => {
                 }),
             });
             const response = await resJson.json();
+            i18n.changeLanguage(response.result.language)
             await saveClientConfigurations(response.result);
             return;
         }
@@ -38,6 +43,7 @@ const ChatClient: FC = (props) => {
     useEffect(() => {
         // TO USE CHAT CLIENT WITH BOT ID AND ACCESS TOKEN
         getClientConfigWithThrottle();
+        
     }, [props]);
 
     if (isClientConfigFetched)
@@ -52,3 +58,5 @@ const ChatClient: FC = (props) => {
 };
 
 export default ChatClient;
+
+

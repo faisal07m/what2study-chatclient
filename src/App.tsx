@@ -78,6 +78,10 @@ i18next
                         "long": "Long answers",
                         "short": "Short answers"
                     },
+                    "lang":{
+                        "lang":"Talk To Human"
+                    },
+                    "initialChat":"Welcome to our Student Advisory Service!\nHow can I help you today?",
                     "settings": {
                         "settings": "Settings",
                         "restart": "Restart Intro",
@@ -85,7 +89,7 @@ i18next
                         "user": "Assumptions",
                         "userAssumption1": "Studies Design",
                         "userAssumption2": "22 year old",
-                        "userAssumption3": "University of Bielefeld"
+                        "userAssumption3": "Studying at University of Bielefeld"
                     }
                 }
             },
@@ -146,6 +150,10 @@ i18next
                         "long": "Lange Antworten",
                         "short": "Kurze Antworten"
                     },
+                    "lang":{
+                        "lang":"Sprich mit uns"
+                    },
+                    "initialChat":"Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
                     "settings": {
                         "settings": "Einstellungen",
                         "restart": "Intro starten",
@@ -153,16 +161,16 @@ i18next
                         "user": "Annahmen",
                         "userAssumption1": "Studiert Design",
                         "userAssumption2": "22 Jahre alt",
-                        "userAssumption3": "Universität Bielefeld"
+                        "userAssumption3": "Studium an der Universität Bielefeld"
                     }
                 }
             }
         }
     });
 
-// i18next.changeLanguage("de");
 
 const App: FC = (props) => {
+
     return (
         <DataProvider>
 
