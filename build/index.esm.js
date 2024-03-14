@@ -242,6 +242,7 @@ var defaultClientConfig = {
     talkToaHumanEnabled: true,
     talkToaHuman: "Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
     Narrator: "male",
+    dummyRequest: false,
     accessToken: "",
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
@@ -352,14 +353,13 @@ var DataProvider = function (props) {
     var saveClientConfigurations = function (data) {
         if (data === void 0) { data = {}; }
         return __awaiter(void 0, void 0, void 0, function () {
-            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, talkToaHumanEnabled, talkToaHuman, Narrator, _a, chatbotLook, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
+            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, talkToaHumanEnabled, talkToaHuman, dummyRequest, Narrator, _a, chatbotLook, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
             var _e;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
-                        console.log(data);
                         setLanguage(data.language);
-                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, Narrator = data.Narrator, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a;
+                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a;
                         _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
                         chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
                         _e = {
@@ -369,6 +369,7 @@ var DataProvider = function (props) {
                             accessToken: accessToken || defaultClientConfig.accessToken,
                             universityId: universityId || defaultClientConfig.universityId,
                             chatbotName: chatbotName || defaultClientConfig.chatbotName,
+                            dummyRequest: dummyRequest || defaultClientConfig.dummyRequest,
                             language: language || defaultClientConfig.language,
                             randomQuestionEnabled: randomQuestionEnabled || defaultClientConfig.randomQuestionEnabled,
                             randomQuestion: randomQuestion || defaultClientConfig.randomQuestion,
@@ -18925,14 +18926,86 @@ var Form$1 = Object.assign(Form, {
   FloatingLabel: FloatingLabel$1
 });
 
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends.apply(this, arguments);
+}
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+  return target;
+}
+
+var _excluded = ["cdnSuffix", "cdnUrl", "countryCode", "style", "svg"];
+var DEFAULT_CDN_URL = 'https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/';
+var DEFAULT_CDN_SUFFIX = 'svg';
+// offset between uppercase ascii and regional indicator symbols
+var OFFSET = 127397;
+var ReactCountryFlag = function ReactCountryFlag(_ref) {
+  var _ref$cdnSuffix = _ref.cdnSuffix,
+    cdnSuffix = _ref$cdnSuffix === void 0 ? DEFAULT_CDN_SUFFIX : _ref$cdnSuffix,
+    _ref$cdnUrl = _ref.cdnUrl,
+    cdnUrl = _ref$cdnUrl === void 0 ? DEFAULT_CDN_URL : _ref$cdnUrl,
+    countryCode = _ref.countryCode,
+    style = _ref.style,
+    _ref$svg = _ref.svg,
+    svg = _ref$svg === void 0 ? false : _ref$svg,
+    props = _objectWithoutPropertiesLoose(_ref, _excluded);
+  if (typeof countryCode !== 'string') {
+    return null;
+  }
+  if (svg) {
+    var flagUrl = "" + cdnUrl + countryCode.toLowerCase() + "." + cdnSuffix;
+    return createElement("img", Object.assign({}, props, {
+      src: flagUrl,
+      style: _extends({
+        display: 'inline-block',
+        width: '1em',
+        height: '1em',
+        verticalAlign: 'middle'
+      }, style)
+    }));
+  }
+  var emoji = countryCode.toUpperCase().replace(/./g, function (_char) {
+    return String.fromCodePoint(_char.charCodeAt(0) + OFFSET);
+  });
+  return createElement("span", Object.assign({
+    role: "img"
+  }, props, {
+    style: _extends({
+      display: 'inline-block',
+      fontSize: '1em',
+      lineHeight: '1em',
+      verticalAlign: 'middle'
+    }, style)
+  }), emoji);
+};
+
 var getLanguage = function (language) {
     switch (language) {
         case EChatLanguage.EN:
-            return "🇬🇧 en";
+            return "🇬🇧";
         case EChatLanguage.DE:
-            return "🇩🇪 de";
+            return jsxRuntimeExports.jsx(ReactCountryFlag, { countryCode: "DE" });
         default:
-            return "🇬🇧 en";
+            return jsxRuntimeExports.jsx(ReactCountryFlag, { countryCode: "DE" });
     }
 };
 var PopupItemSettings = function () {
@@ -18997,8 +19070,15 @@ var IntroPage = function () {
     var _a = useData(), setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig;
     var _b = useState(0), introPage = _b[0], setIntroPage = _b[1];
     var _c = useState(false), isVideoOpen = _c[0], setIsVideoOpen = _c[1];
-    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader;
+    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader, dummyRequest = clientConfig.dummyRequest;
     var _d = useTranslation("global"), t = _d[0]; _d[1];
+    useEffect(function () {
+        if (dummyRequest) {
+            console.log("hum");
+            setIntroPage(introPage + 1);
+            setCurrentRoute(ERoute.MAIN);
+        }
+    }, []);
     return (jsxRuntimeExports.jsx(Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage1.hello"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage1.iam") })), t("introPage1.built")] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: t("introPage1.chat") }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage2.Lets"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.easy") })), t("introPage2.thats"), jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.functions") }))] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text" }, { children: t("introPage2.everything") })) }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
                         return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
                     }, style: {
@@ -19037,12 +19117,11 @@ var isYoutubeURL = function (url) {
 var Main = function (props) {
     var _a = useTranslation("global"), t = _a[0]; _a[1];
     var _b = useData(), setPopupItem = _b.setPopupItem, isBotVolumeOn = _b.isBotVolumeOn, setIsBotVolumeOn = _b.setIsBotVolumeOn, setCurrentRoute = _b.setCurrentRoute, clientConfig = _b.clientConfig, sessionId = _b.sessionId;
-    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, language = clientConfig.language, _c = clientConfig.chatbotLook, textBoxUser = _c.textBoxUser, textBoxChatbotReply = _c.textBoxChatbotReply, UIGroupA = _c.UIGroupA, UIGroupB = _c.UIGroupB;
+    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, language = clientConfig.language, dummyRequest = clientConfig.dummyRequest, _c = clientConfig.chatbotLook, textBoxUser = _c.textBoxUser, textBoxChatbotReply = _c.textBoxChatbotReply, UIGroupA = _c.UIGroupA, UIGroupB = _c.UIGroupB;
     var _d = useState(false), isInputFocused = _d[0], setIsInputFocused = _d[1];
     var _e = useState(""), message = _e[0], setMessage = _e[1];
     var initialMessages = function () {
         var res = [];
-        console.log(localStorage.getItem("history"));
         if (localStorage.getItem("history") != null) {
             res = JSON.parse(localStorage.getItem("history") || '');
         }
@@ -19081,26 +19160,25 @@ var Main = function (props) {
     var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
     var _h = useState(''); _h[0]; var setValue = _h[1];
+    var _j = useState(false), dummyValuesSet = _j[0], setDummyValueCounter = _j[1];
     useEffect(function () {
-        // if(value !="terminate")
-        // {
-        var timeout = setTimeout(function () {
-            if (clientConfig.randomQuestionEnabled) {
-                setMessages(function (prev) {
-                    return __spreadArray(__spreadArray([], prev, true), [
-                        {
-                            source: EMessageSource.BOT,
-                            message: clientConfig.randomQuestion,
-                            type: EMessageType.TEXT,
-                            url: "",
-                        },
-                    ], false);
-                });
-            }
-        }, 50000);
-        // if this effect run again, because `value` changed, we remove the previous timeout
-        return function () { return clearTimeout(timeout); };
-        // }
+        if (messages[messages.length - 1].message.trim() != clientConfig.randomQuestion.trim()) {
+            var timeout_1 = setTimeout(function () {
+                if (clientConfig.randomQuestionEnabled) {
+                    setMessages(function (prev) {
+                        return __spreadArray(__spreadArray([], prev, true), [
+                            {
+                                source: EMessageSource.BOT,
+                                message: clientConfig.randomQuestion,
+                                type: EMessageType.TEXT,
+                                url: "",
+                            },
+                        ], false);
+                    });
+                }
+            }, 120000);
+            return function () { return clearTimeout(timeout_1); };
+        }
     }, [message]);
     var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
         var params, options, resJson, response_1, chatbotID, currentdate, datetime;
@@ -19245,13 +19323,50 @@ var Main = function (props) {
     useEffect(function () {
         scrollToBottom();
         localStorage.removeItem("history");
-        localStorage.setItem("history", JSON.stringify(messages));
+        if (dummyRequest == false) {
+            localStorage.setItem("history", JSON.stringify(messages));
+        }
+        if (dummyRequest && dummyValuesSet == false) {
+            var msgs = [
+                {
+                    source: EMessageSource.BOT,
+                    message: t("botmsg.1"),
+                },
+                {
+                    source: EMessageSource.USER,
+                    message: t("usermsg.1"),
+                },
+                {
+                    source: EMessageSource.BOT,
+                    message: t("botmsg.2"),
+                },
+                {
+                    source: EMessageSource.USER,
+                    message: t("usermsg.2"),
+                },
+            ];
+            setMessages([]);
+            setMessages(msgs);
+            localStorage.removeItem("history");
+            setDummyValueCounter(true);
+        }
     }, [messages]);
     var breakMsg = function (message) {
-        var msg = message.split('\n').map(function (str) { return jsxRuntimeExports.jsx("p", __assign$1({ style: { margin: 0, paddingTop: 0 } }, { children: str })); });
+        var msg = message.split('\n').map(function (str) {
+            var result = str.match(/\bhttps?:\/\/\S+/gi);
+            var theObj;
+            // str = "<br></br>"+str+""
+            if (result != null) {
+                result.forEach(function (el) {
+                    str = str.replace(el, "<a href='" + el + "'>" + el + "</a>");
+                });
+            }
+            theObj = { __html: str };
+            return jsxRuntimeExports.jsx("div", { dangerouslySetInnerHTML: theObj });
+        });
         return msg;
     };
-    return (jsxRuntimeExports.jsxs(Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", style: { backgroundColor: textBoxUser.textBoxUserColor }, icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info", iconColor: textBoxUser.textBoxUserFontColor }), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
+    return (jsxRuntimeExports.jsxs(Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info", iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
                             backgroundColor: UIGroupB.UIGroupBUIBackground,
                             color: UIGroupB.UIGroupBUIHighlight,
                         }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: t("lang.lang") })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
@@ -19277,10 +19392,10 @@ var Main = function (props) {
                                                             return;
                                                         handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
                                                     }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: console.log, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
-                    }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, onChange: function (e) {
+                    }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, disabled: dummyRequest != true ? false : true, onChange: function (e) {
                             setMessage(e.target.value);
                             setValue("terminate");
-                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", style: {
+                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", disabled: dummyRequest != true ? false : true, style: {
                             backgroundColor: UIGroupB.UIGroupBUIBackground,
                         }, onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon", color: UIGroupB.UIGroupBUIHighlight }) }))] }))] }));
 };
@@ -21848,7 +21963,15 @@ instance
                     "user": "Assumptions",
                     "userAssumption1": "Studies Design",
                     "userAssumption2": "22 year old",
-                    "userAssumption3": "Studying at University of Bielefeld"
+                    "userAssumption3": "Studying at this University"
+                },
+                "botmsg": {
+                    "1": "Welcome to the Student Advisory Service! How can I help you today?",
+                    "2": "This is just a sample conversation to illustrate the impact of design decisions. If you want to test the interaction with the chatbot, go to 'Database'"
+                },
+                "usermsg": {
+                    "1": "Why can't I interact with the chatbot here?",
+                    "2": "Ah, ok, thanks!",
                 }
             }
         },
@@ -21920,7 +22043,15 @@ instance
                     "user": "Annahmen",
                     "userAssumption1": "Studiert Design",
                     "userAssumption2": "22 Jahre alt",
-                    "userAssumption3": "Studium an der Universität Bielefeld"
+                    "userAssumption3": "Studium an dieser Universität"
+                },
+                "botmsg": {
+                    "1": "Herzlich willkommen bei der Studienberatung! Wie kann ich heute behilflich sein?",
+                    "2": "Dies ist nur eine Beispielkonversation, um die Auswirkungen von Designentscheidungen zu veranschaulichen. Die Interaktion mit dem Chatbot kann unter 'Datenbanken' getestet werden."
+                },
+                "usermsg": {
+                    "1": "Warum kann ich hier nicht mit dem Chatbot interagieren?",
+                    "2": "Ah, ok, danke! ",
                 }
             }
         }

@@ -75,7 +75,7 @@ const defaultClientConfig = {
     talkToaHumanEnabled: true,
     talkToaHuman:"Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
     Narrator:"male",
-   
+    dummyRequest:false,
     accessToken:"",
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
@@ -194,7 +194,6 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
     };
 
     const saveClientConfigurations = async (data: any = {}) => {
-        console.log(data)
         setLanguage(data.language)
         const {
             objectId,
@@ -214,8 +213,9 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             randomQuestion,
             talkToaHumanEnabled,
             talkToaHuman,
+            dummyRequest,
             Narrator,
-            chatbotLook = {},
+            chatbotLook = {}, 
         } = data;
 
         const {
@@ -247,6 +247,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             accessToken: accessToken || defaultClientConfig.accessToken,
             universityId: universityId || defaultClientConfig.universityId,
             chatbotName: chatbotName || defaultClientConfig.chatbotName,
+            dummyRequest: dummyRequest || defaultClientConfig.dummyRequest,
             language:language || defaultClientConfig.language,
             randomQuestionEnabled: randomQuestionEnabled|| defaultClientConfig.randomQuestionEnabled,
             randomQuestion:randomQuestion|| defaultClientConfig.randomQuestion,

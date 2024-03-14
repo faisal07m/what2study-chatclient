@@ -7,17 +7,18 @@ import { IoCloseSharp } from "react-icons/io5";
 import { PopupContents } from "./PopupScreen";
 
 import { useTranslation } from 'react-i18next';
+import ReactCountryFlag from "react-country-flag"
 
 const getLanguage = (language: EChatLanguage) => {
     switch (language) {
         case EChatLanguage.EN:
-            return "🇬🇧 en";
+            return "🇬🇧";
 
         case EChatLanguage.DE:
-            return "🇩🇪 de";
+            return <ReactCountryFlag countryCode="DE" />;
 
         default:
-            return "🇬🇧 en";
+            return <ReactCountryFlag countryCode="DE" />;
     }
 };
 

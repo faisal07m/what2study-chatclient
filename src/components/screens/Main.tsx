@@ -5,6 +5,7 @@ import IconButton from "utilities/IconButton";
 import { FC, Fragment, Key, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { BsFillMicFill } from "react-icons/bs";
 import { IoMdVolumeHigh, IoMdVolumeOff } from "react-icons/io";
+
 import { IoSend } from "react-icons/io5";
 import {
     MdInfoOutline,
@@ -64,22 +65,20 @@ const Main: FC = (props) => {
         chatbotId,
         userId,
         language,
+        dummyRequest,
         chatbotLook: { textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB },
     } = clientConfig;
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
-    const initialMessages= ()=>{
-        var res=[]
-        console.log(localStorage.getItem("history"))
-        if(localStorage.getItem("history")!= null)
-        {res = JSON.parse(localStorage.getItem("history")|| '')}
-           
-        if(language=="de")
-        {
-            if(res!=''){
+    const initialMessages = () => {
+        var res = []
+        if (localStorage.getItem("history") != null) { res = JSON.parse(localStorage.getItem("history") || '') }
+
+        if (language == "de") {
+            if (res != '') {
                 return res
             }
-            else{
+            else {
                 return [
                     {
                         source: EMessageSource.BOT,
@@ -88,20 +87,21 @@ const Main: FC = (props) => {
                 ];
             }
         }
-    else{
-        if(res!=''){
-        return res;
-    
+        else {
+            if (res != '') {
+                return res;
+
+            }
+            else {
+                return [
+                    {
+                        source: EMessageSource.BOT,
+                        message: "Welcome to our Student Advisory Service!\nHow can I help you today?",
+                    },
+                ]
+            }
+        }
     }
-    else{
-        return [
-            {
-                source: EMessageSource.BOT,
-                message: "Welcome to our Student Advisory Service!\nHow can I help you today?",
-            },
-        ]}
-    }
-}
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -109,33 +109,30 @@ const Main: FC = (props) => {
     const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
     const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
-
-    
-
     const [value, setValue] = useState('')
+
+    const [dummyValuesSet, setDummyValueCounter] = useState<boolean>(false)
     useEffect(() => {
-        // if(value !="terminate")
-    // {
-        const timeout = setTimeout(() => {
-            if (clientConfig.randomQuestionEnabled) {
-                setMessages((prev) => {
-                    return [
-                        ...prev,
-                        {
-                            source: EMessageSource.BOT,
-                            message: clientConfig.randomQuestion,
-                            type: EMessageType.TEXT,
-                            url: "",
-                        },
-                    ];
-                });
-            }
-        }, 50000)
+        if (messages[messages.length - 1].message.trim()!= clientConfig.randomQuestion.trim()){
+            const timeout = setTimeout(() => {
+                if (clientConfig.randomQuestionEnabled) {
+                    setMessages((prev) => {
+                        return [
+                            ...prev,
+                            {
+                                source: EMessageSource.BOT,
+                                message: clientConfig.randomQuestion,
+                                type: EMessageType.TEXT,
+                                url: "",
+                            },
+                        ];
+                    });
+                }
+            }, 120000)
     
-        // if this effect run again, because `value` changed, we remove the previous timeout
-        return () => clearTimeout(timeout)
-    // }
-    
+            return () => clearTimeout(timeout)
+        }  
+
     }, [message])
 
     const handleUserMessage = async (e: SyntheticEvent): Promise<void> => {
@@ -150,7 +147,7 @@ const Main: FC = (props) => {
             botId: chatbotId,
             sessionId,
             userId: userId,
-            language:language
+            language: language
         };
         const options = {
             method: "POST",
@@ -266,13 +263,55 @@ const Main: FC = (props) => {
     useEffect(() => {
         scrollToBottom();
         localStorage.removeItem("history")
-        localStorage.setItem("history",JSON.stringify(messages))
+        if(dummyRequest== false)
+        {localStorage.setItem("history", JSON.stringify(messages))}
+        if (dummyRequest && dummyValuesSet==false) { 
+            var msgs = [
+                {
+                    source: EMessageSource.BOT,
+                    message: t("botmsg.1"),
+                },
+                {
+                    source: EMessageSource.USER,
+                    message: t("usermsg.1"),
+                },
+                {
+                    source: EMessageSource.BOT,
+                    message: t("botmsg.2"),
+                },
+                {
+                    source: EMessageSource.USER,
+                    message: t("usermsg.2"),
+                },
+            ]
+            setMessages([]) 
+            setMessages(msgs)
+            localStorage.removeItem("history")
+            setDummyValueCounter(true)
+    }
+
     }, [messages]);
 
-    const breakMsg = (message:  string) => {
-        var msg = message.split('\n').map(str => <p style={{margin : 0, paddingTop:0}}>{str}</p>);
+    const breakMsg = (message: string) => {
+
+        var msg = message.split('\n').map((str: any) => {
+            var result = str.match(/\bhttps?:\/\/\S+/gi)
+            let theObj
+            // str = "<br></br>"+str+""
+            if (result != null) {
+                result.forEach((el: any) => {
+                    str = str.replace(el, "<a href='" + el + "'>" + el + "</a>")
+
+                });
+            }
+            theObj = { __html: str };
+            return <div dangerouslySetInnerHTML={theObj} />
+
+        }
+
+        );
         return msg
-        
+
     }
 
     return (
@@ -280,12 +319,12 @@ const Main: FC = (props) => {
             <div className="info-talktohuman">
                 <IconButton
                     className="info-button"
-                    style={{ backgroundColor: textBoxUser.textBoxUserColor }}
+                    style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
                     icon={MdInfoOutline}
                     onClick={() => setPopupItem(EPopupItem.BOT_INFO)}
                     aria-label="Info"
                     title="Info"
-                    iconColor={textBoxUser.textBoxUserFontColor}
+                    iconColor={UIGroupA.UIGroupAUIHighlight}
                 />
                 <button
                     className="talk-to-human-btn"
@@ -296,7 +335,7 @@ const Main: FC = (props) => {
                     onClick={() => setCurrentRoute(ERoute.TALK_TO_HUMAN)}
                 >
                     {t("lang.lang")}
-                   </button>
+                </button>
                 <IconButton
                     className="volume-button"
                     icon={isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff}
@@ -475,6 +514,7 @@ const Main: FC = (props) => {
                     className={`inputField ${isInputFocused ? "inputFieldFocused" : ""}`}
                     type="text"
                     value={message}
+                    disabled={dummyRequest != true ? false : true}
                     onChange={(e) => {
                         setMessage(e.target.value)
                         setValue("terminate")
@@ -485,6 +525,7 @@ const Main: FC = (props) => {
                 <button
                     type="submit"
                     className="sendButton"
+                    disabled={dummyRequest != true ? false : true}
                     style={{
                         backgroundColor: UIGroupB.UIGroupBUIBackground,
                     }}

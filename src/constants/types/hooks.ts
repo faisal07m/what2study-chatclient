@@ -99,6 +99,7 @@ export interface IClientConfigurations {
     talkToaHumanEnabled: boolean;
     talkToaHuman:string;
     Narrator:string;
+    dummyRequest:boolean;
     accessToken: string;
     chatbotName: string;
     chatbotBubbleIcons: string;

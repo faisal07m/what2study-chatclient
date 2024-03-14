@@ -1,7 +1,7 @@
 import { ERoute, useData } from "hooks";
 import IconButton from "utilities/IconButton";
 
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
@@ -14,9 +14,20 @@ const IntroPage: FC = () => {
     const {
         chatbotProfileImage,
         chatbotLook: { chatbotHeader },
+        dummyRequest
     } = clientConfig;
 
     const [t, i18n] = useTranslation("global");
+
+    useEffect(()=>{
+        if(dummyRequest)
+        {
+            console.log("hum")
+            setIntroPage(introPage + 1)
+            setCurrentRoute(ERoute.MAIN)
+        
+        }
+    },[])
 
     return (
         <Fragment>

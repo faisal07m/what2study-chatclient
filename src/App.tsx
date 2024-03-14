@@ -89,8 +89,15 @@ i18next
                         "user": "Assumptions",
                         "userAssumption1": "Studies Design",
                         "userAssumption2": "22 year old",
-                        "userAssumption3": "Studying at University of Bielefeld"
-                    }
+                        "userAssumption3": "Studying at this University"
+                    },
+                    "botmsg":{
+                        "1":"Welcome to the Student Advisory Service! How can I help you today?",
+                        "2":"This is just a sample conversation to illustrate the impact of design decisions. If you want to test the interaction with the chatbot, go to 'Database'"},
+                        "usermsg":{
+                        "1":"Why can't I interact with the chatbot here?",
+                        "2":"Ah, ok, thanks!",
+                        }
                 }
             },
             de: {
@@ -161,7 +168,15 @@ i18next
                         "user": "Annahmen",
                         "userAssumption1": "Studiert Design",
                         "userAssumption2": "22 Jahre alt",
-                        "userAssumption3": "Studium an der Universität Bielefeld"
+                        "userAssumption3": "Studium an dieser Universität"
+                    },
+                    "botmsg":{
+                    "1":"Herzlich willkommen bei der Studienberatung! Wie kann ich heute behilflich sein?",
+                    "2":"Dies ist nur eine Beispielkonversation, um die Auswirkungen von Designentscheidungen zu veranschaulichen. Die Interaktion mit dem Chatbot kann unter 'Datenbanken' getestet werden."
+                    },
+                    "usermsg":{
+                    "1":"Warum kann ich hier nicht mit dem Chatbot interagieren?",
+                    "2":"Ah, ok, danke! ",
                     }
                 }
             }
