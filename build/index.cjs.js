@@ -250,7 +250,7 @@ var EChatLanguage;
     EChatLanguage["EN"] = "en";
     EChatLanguage["DE"] = "de";
 })(EChatLanguage || (EChatLanguage = {}));
-var AVAILABLE_FONTS = ["inter", "roboto", "poppins"];
+var AVAILABLE_FONTS = ["inter", "roboto", "poppins", "tinos", "fira sans condensed", "arimo", "ibm plex sans", "open sans"];
 var getFont = function (font) {
     if (AVAILABLE_FONTS.includes(font === null || font === void 0 ? void 0 : font.toLowerCase()))
         return font;
@@ -263,13 +263,20 @@ var defaultClientConfig = {
     chatbotName: "What 2 Study",
     language: "de",
     chatbotId: "",
+    orgImage: "",
     randomQuestionEnabled: true,
     randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
     talkToaHumanEnabled: true,
-    talkToaHuman: "Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
+    customPrompt: "",
+    talkToaHuman: "",
     Narrator: "male",
     dummyRequest: false,
+    testRequest: false,
+    phone: "",
+    email: "",
+    nameOfOrg: "",
     accessToken: "",
+    matriculationNumber: true,
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
     defaultSettings: {
@@ -348,7 +355,7 @@ var DataProvider = function (props) {
         emotiveness: 0.7,
         length: 0.4,
     }), chatFilters = _h[0], setChatFilters = _h[1];
-    var _j = React.useState(EChatLanguage.EN), language = _j[0], setLanguage = _j[1];
+    var _j = React.useState(EChatLanguage.DE), language = _j[0], setLanguage = _j[1];
     var _k = React.useState(), clientConfig = _k[0], setClientConfig = _k[1]; // config saved by the university in main app
     var _l = React.useState(false), isClientConfigFetched = _l[0], setIsClientConfigFetched = _l[1];
     var generateNewSession = function (showIntroScreen) {
@@ -379,13 +386,13 @@ var DataProvider = function (props) {
     var saveClientConfigurations = function (data) {
         if (data === void 0) { data = {}; }
         return __awaiter(void 0, void 0, void 0, function () {
-            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, talkToaHumanEnabled, talkToaHuman, dummyRequest, Narrator, _a, chatbotLook, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
+            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, customPrompt, talkToaHumanEnabled, talkToaHuman, dummyRequest, Narrator, testRequest, _a, chatbotLook, email, phone, nameOfOrg, matriculationNumber, orgImage, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
             var _e;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
                         setLanguage(data.language);
-                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a;
+                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, customPrompt = data.customPrompt, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, testRequest = data.testRequest, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a, email = data.email, phone = data.phone, nameOfOrg = data.nameOfOrg, matriculationNumber = data.matriculationNumber, orgImage = data.orgImage;
                         _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
                         chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
                         _e = {
@@ -396,11 +403,18 @@ var DataProvider = function (props) {
                             universityId: universityId || defaultClientConfig.universityId,
                             chatbotName: chatbotName || defaultClientConfig.chatbotName,
                             dummyRequest: dummyRequest || defaultClientConfig.dummyRequest,
+                            testRequest: testRequest || defaultClientConfig.testRequest,
                             language: language || defaultClientConfig.language,
-                            randomQuestionEnabled: randomQuestionEnabled || defaultClientConfig.randomQuestionEnabled,
+                            randomQuestionEnabled: randomQuestionEnabled,
+                            customPrompt: customPrompt,
+                            matriculationNumber: matriculationNumber,
                             randomQuestion: randomQuestion || defaultClientConfig.randomQuestion,
-                            talkToaHumanEnabled: talkToaHumanEnabled || defaultClientConfig.talkToaHumanEnabled,
+                            talkToaHumanEnabled: talkToaHumanEnabled,
                             talkToaHuman: talkToaHuman || defaultClientConfig.talkToaHuman,
+                            email: email || defaultClientConfig.email,
+                            orgImage: orgImage,
+                            phone: phone || defaultClientConfig.phone,
+                            nameOfOrg: nameOfOrg || defaultClientConfig.nameOfOrg,
                             Narrator: Narrator || defaultClientConfig.Narrator
                         };
                         if (!(typeof chatbotBubbleIcons == "string")) return [3 /*break*/, 2];
@@ -435,12 +449,12 @@ var DataProvider = function (props) {
                                 narrator: (defaultSettings === null || defaultSettings === void 0 ? void 0 : defaultSettings.narrator) || defaultClientConfig.defaultSettings.narrator,
                             },
                             _e.chatboxBehaviour = {
-                                formality: (chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.formality) || defaultClientConfig.chatboxBehaviour.formality,
-                                opinion: (chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.opinion) || defaultClientConfig.chatboxBehaviour.opinion,
-                                emotion: (chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.emotion) || defaultClientConfig.chatboxBehaviour.emotion,
-                                length: (chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.length) || defaultClientConfig.chatboxBehaviour.length,
-                                topics: (chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.topics) || defaultClientConfig.chatboxBehaviour.topics,
-                                tone: (chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.tone) || defaultClientConfig.chatboxBehaviour.tone,
+                                formality: chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.formality,
+                                opinion: chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.opinion,
+                                emotion: chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.emotion,
+                                length: chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.length,
+                                topics: chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.topics,
+                                tone: chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.tone,
                                 chatbotBehaviourName: (chatboxBehaviour === null || chatboxBehaviour === void 0 ? void 0 : chatboxBehaviour.chatbotBehaviourName) ||
                                     defaultClientConfig.chatboxBehaviour.chatbotBehaviourName,
                             },
@@ -17807,6 +17821,8 @@ function IconBase(props) {
 // THIS FILE IS AUTO GENERATED
 function BsFillMicFill (props) {
   return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"}},{"tag":"path","attr":{"d":"M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"}}]})(props);
+}function BsFillMicMuteFill (props) {
+  return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M13 8c0 .564-.094 1.107-.266 1.613l-.814-.814A4.02 4.02 0 0 0 12 8V7a.5.5 0 0 1 1 0v1zm-5 4c.818 0 1.578-.245 2.212-.667l.718.719a4.973 4.973 0 0 1-2.43.923V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 1 0v1a4 4 0 0 0 4 4zm3-9v4.879L5.158 2.037A3.001 3.001 0 0 1 11 3z"}},{"tag":"path","attr":{"d":"M9.486 10.607 5 6.12V8a3 3 0 0 0 4.486 2.607zm-7.84-9.253 12 12 .708-.708-12-12-.708.708z"}}]})(props);
 }function BsFillPlayCircleFill (props) {
   return GenIcon({"tag":"svg","attr":{"fill":"currentColor","viewBox":"0 0 16 16"},"child":[{"tag":"path","attr":{"d":"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"}}]})(props);
 }function BsChatQuoteFill (props) {
@@ -17842,16 +17858,16 @@ function LuSettings2 (props) {
 }
 
 var isFirefox = typeof InstallTrigger !== "undefined";
-var getStyles = function (iframeType, isChatOpen, isMobileScreen) {
+var getStyles = function (iframeType, isChatOpen, isMobileScreen, isTestScreen) {
     if (isMobileScreen === void 0) { isMobileScreen = false; }
     switch (iframeType) {
         case IframeType.CHAT_CONTAINER_CLOSED:
             return {
-                border: "none",
+                // border: "none",
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                 width: isMobileScreen ? "100%" : "420px",
                 height: isMobileScreen ? "100%" : "620px",
-                position: "fixed",
+                position: isTestScreen ? "absolute" : "fixed",
                 bottom: isMobileScreen ? "0" : "100px",
                 right: isMobileScreen ? "0" : "30px",
                 borderRadius: isMobileScreen ? "0" : "12px",
@@ -17865,7 +17881,7 @@ var getStyles = function (iframeType, isChatOpen, isMobileScreen) {
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                 width: isMobileScreen ? "100%" : "420px",
                 height: isMobileScreen ? "100%" : "620px",
-                position: "fixed",
+                position: isTestScreen ? "absolute" : "fixed",
                 bottom: isMobileScreen ? "0" : "100px",
                 right: isMobileScreen ? "0" : "30px",
                 borderRadius: isMobileScreen ? "0" : "12px",
@@ -17876,13 +17892,13 @@ var getStyles = function (iframeType, isChatOpen, isMobileScreen) {
             return {
                 display: isChatOpen && isMobileScreen ? "none" : "block",
                 border: "none",
-                width: "54px",
-                height: "54px",
-                position: "fixed",
+                width: "70px",
+                height: "70px",
+                position: isTestScreen ? "absolute" : "fixed",
                 bottom: "28px",
                 right: "24px",
                 borderRadius: "50%",
-                zIndex: "999999999999999999999999"
+                zIndex: "999999999999999999999999",
             };
         default:
             return {
@@ -17892,24 +17908,35 @@ var getStyles = function (iframeType, isChatOpen, isMobileScreen) {
 };
 var IFrame = function (props) {
     var _a, _b, _c;
-    var children = props.children, iframeType = props.iframeType, rest = __rest$1(props, ["children", "iframeType"]);
+    var children = props.children, iframeType = props.iframeType, testRequest = props.testRequest, rest = __rest$1(props, ["children", "iframeType", "testRequest"]);
     var _d = React.useState(null), contentRef = _d[0], setContentRef = _d[1];
-    var _e = useData(), isChatOpen = _e.isChatOpen, setIsMobileScreen = _e.setIsMobileScreen;
-    var _f = React.useState(getStyles(iframeType, isChatOpen, false)), styles = _f[0], setStyles = _f[1];
+    var _e = React.useState(null), contentRefIframe = _e[0], setContentRefIframe = _e[1];
+    //const [contentRef, setContentRef] = useState(null);
+    var handleLoad = function (event) {
+        var iframe = event.target;
+        if (iframe === null || iframe === void 0 ? void 0 : iframe.contentDocument) {
+            setContentRef(iframe.contentDocument.body);
+            setContentRefIframe(iframe.contentDocument);
+        }
+    };
+    var _f = useData(), isChatOpen = _f.isChatOpen, setIsMobileScreen = _f.setIsMobileScreen;
+    var _g = React.useState(getStyles(iframeType, isChatOpen, false, testRequest)), styles = _g[0], setStyles = _g[1];
     var mountNode = (_b = (_a = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body;
     var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
     var addStyles = function () {
         var link = mountNodeDoc.createElement("link");
-        //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+        // link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
         link.href = "https://www.cpstech.de/what2studycss/";
         link.rel = "stylesheet";
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);
     };
     var handleWindowResize = function (event) {
-        var isMobileScreen = window.innerWidth < 600;
-        setStyles(getStyles(iframeType, isChatOpen, isMobileScreen));
-        setIsMobileScreen(isMobileScreen);
+        if (window.innerWidth > 300 && window.innerHeight > 450) {
+            var isMobileScreen = window.innerWidth < 600;
+            setStyles(getStyles(iframeType, isChatOpen, isMobileScreen, testRequest));
+            setIsMobileScreen(isMobileScreen);
+        }
     };
     React.useEffect(function () {
         handleWindowResize();
@@ -17921,12 +17948,41 @@ var IFrame = function (props) {
         };
     }, []);
     React.useEffect(function () {
-        if (mountNode) {
+        if (mountNode && !isFirefox) {
             mountNode.style = "margin: 0";
+            // mountNode.style ="background: linear-gradient(red, yellow);"
             addStyles();
         }
     }, [mountNode]);
-    return (jsxRuntimeExports.jsx("iframe", __assign$1({ style: styles }, rest, { onLoad: isFirefox ? function (e) { return setContentRef(e.target); } : undefined, ref: !isFirefox ? setContentRef : undefined }, { children: mountNode && ReactDOM.createPortal(children, mountNode) })));
+    React.useEffect(function () {
+        if (contentRef && isFirefox) {
+            contentRef.style = "margin: 0";
+            var link = document.createElement("link");
+            //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+            link.href = "https://www.cpstech.de/what2studycss/";
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            contentRefIframe.head.appendChild(link);
+        }
+    }, [contentRef]);
+    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [isFirefox &&
+                jsxRuntimeExports.jsx("iframe", __assign$1({ style: styles, id: "what2studyIDFirefox" }, rest, { 
+                    // onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
+                    onLoad: handleLoad }, { children: contentRef && isFirefox && ReactDOM.createPortal(children, contentRef) })), !isFirefox &&
+                jsxRuntimeExports.jsx("iframe", __assign$1({ id: "what2studyIDChrome", style: styles }, rest, { 
+                    // onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
+                    // onLoad={ handleLoad }
+                    ref: setContentRef }, { children: mountNode && !isFirefox && ReactDOM.createPortal(children, mountNode) }))] })
+    // <iframe
+    //     style={styles}
+    //     {...rest}
+    //     onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
+    //     ref={!isFirefox ? setContentRef : undefined}
+    // >
+    //     {mountNode && createPortal(children, mountNode)}
+    //     {contentRef && isFirefox&& createPortal(children, contentRef)}
+    // </iframe>
+    );
 };
 
 /* eslint-disable */
@@ -18411,13 +18467,48 @@ function I18nextProvider(_ref) {
 }
 
 var PopupItemFilters = function () {
-    var _a = useData(), chatFilters = _a.chatFilters, setChatFilters = _a.setChatFilters;
+    var clientConfig = useData().clientConfig;
     var handleFilterValue = function (e) {
-        var _a;
-        setChatFilters(__assign$1(__assign$1({}, chatFilters), (_a = {}, _a[e.target.name] = e.target.value, _a)));
+        localStorage.setItem("LengthFilter", e.target.value);
+        setLF(Number(e.target.value));
+        // setChatFilters({
+        //     ...chatFilters,
+        //     [e.target.name]: e.target.value,
+        // });
     };
-    var _b = useTranslation("global"), t = _b[0]; _b[1];
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("filters.personality"), className: "popup-contents-filters" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "chip-buttons-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", title: "Reset" }, { children: t("filters.reset") })), jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", title: "Discard Changes" }, { children: t("filters.discard") }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filters-wrapper" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.friendly") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.professional") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "tone", value: chatFilters.tone, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.opinionated") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.neutral") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "sentiment", value: chatFilters.sentiment, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.many") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.no") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "emotiveness", value: chatFilters.emotiveness, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.long") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.short") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "length", value: chatFilters.length, min: 0, max: 1, step: 0.1, onChange: handleFilterValue, className: "form-range" })] }))] }))] })));
+    var _a = React.useState(), lf = _a[0], setLF = _a[1];
+    var _b = React.useState(""), lfValue = _b[0], setLFValue = _b[1];
+    React.useEffect(function () {
+        if (localStorage.getItem("LengthFilter")) {
+            setLF(Number(localStorage.getItem("LengthFilter")));
+        }
+        else {
+            setLF(clientConfig.chatboxBehaviour.length);
+        }
+    }, []);
+    React.useEffect(function () {
+        if (lf) {
+            setLFValue(getValue(lf));
+        }
+    }, [lf]);
+    var _c = useTranslation("global"), t = _c[0]; _c[1];
+    var getValue = function (lf) {
+        {
+            var filter_FF = [{ 1: "very informal", 2: "informal", 3: "business casual ", 4: "casual professional", 5: "professional", 6: "very professional/formal" },
+                { 1: "You do not have an own opinion. Be neutral and do not judge in anyway", 2: "You do not have an own opinion. Be neutral", 3: "Be neutral", 4: "feel free to have an own opinion, but be neutral", 5: "feel free to have an own opinion and maybe judge (politely)", 6: "feel free to have an own opinion and judge as you want" },
+                { 1: "no emojies", 2: "none or sometimes one emoji", 3: "sometimes one or two emojies", 4: "one or two emojies", 5: "some emojies", 6: "a lot of emojies" },
+                { 1: "very short", 2: "short", 3: "variable, but if doubt rather short", 4: "variable, but if doubt rather detailed", 5: "detailed", 6: "very detailed" },
+                { 1: "very much on the specific subject of the asked question", 2: "on the specific subject of the asked question", 3: "maybe sometimes with an additional related information", 4: "sometimes with a few related information, tips or questions", 5: "with some related additional information, tips or questions", 6: "with a lot of related additional information, tips or questions" },
+                { 1: "very funny", 2: "mostly funny", 3: "casually humorous", 4: "neutral", 5: "mildly serious", 6: "very serious" }];
+            if (lf == 0) {
+                return filter_FF[3][1];
+            }
+            else {
+                return filter_FF[3][lf];
+            }
+        }
+    };
+    return (jsxRuntimeExports.jsx(PopupContents, __assign$1({ title: t("filters.personality"), className: "popup-contents-filters" }, { children: jsxRuntimeExports.jsx("div", __assign$1({ className: "filters-wrapper" }, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "filter" }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "slider-filter-datalist" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.short") })), jsxRuntimeExports.jsx("span", __assign$1({ className: "slider-option" }, { children: t("filters.long") }))] })), jsxRuntimeExports.jsx(FormRange$1, { name: "length", defaultValue: lf, min: 1, max: 6, step: 1, onChange: handleFilterValue, className: "form-range" }, lf), jsxRuntimeExports.jsx("br", {}), jsxRuntimeExports.jsxs("p", { children: [" ", t("settings.filterval"), ": ", lfValue] })] })) })) })));
 };
 
 var PopupItemInfo = function () {
@@ -19035,16 +19126,21 @@ var getLanguage = function (language) {
     }
 };
 var PopupItemSettings = function () {
-    var _a = useData(), language = _a.language, setLanguage = _a.setLanguage;
+    var _a = useData(), language = _a.language, setLanguage = _a.setLanguage, setCurrentRoute = _a.setCurrentRoute;
     var _b = useTranslation("global"), t = _b[0], i18n = _b[1];
+    var setPopupItem = useData().setPopupItem;
     var dummyUserAssumptions = [
         t("settings.userAssumption3")
     ];
     var handleLanguage = function (e) {
         setLanguage(e.target.value);
         i18n.changeLanguage(e.target.value.toLowerCase());
+        localStorage.setItem("language", e.target.value.toLowerCase());
     };
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("settings.settings"), className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button" }, { children: "Restart Intro" })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
+    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("settings.settings"), className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", onClick: function () {
+                        setCurrentRoute(ERoute.INTRO);
+                        setPopupItem(EPopupItem.NONE);
+                    } }, { children: t("settings.restart") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
                             return (jsxRuntimeExports.jsxs("span", __assign$1({ className: "app-chip-with-close-btn" }, { children: [assumption, jsxRuntimeExports.jsx("button", __assign$1({ className: "close-btn" }, { children: jsxRuntimeExports.jsx(IoCloseSharp, { className: "close-icon" }) }))] })));
                         }) }))] }))] })));
 };
@@ -19100,12 +19196,11 @@ var IntroPage = function () {
     var _d = useTranslation("global"), t = _d[0]; _d[1];
     React.useEffect(function () {
         if (dummyRequest) {
-            console.log("hum");
             setIntroPage(introPage + 1);
             setCurrentRoute(ERoute.MAIN);
         }
     }, []);
-    return (jsxRuntimeExports.jsx(React.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage1.hello"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage1.iam") })), t("introPage1.built")] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-tochat-button" }, { children: t("introPage1.chat") }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage2.Lets"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.easy") })), t("introPage2.thats"), jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.functions") }))] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text" }, { children: t("introPage2.everything") })) }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
+    return (jsxRuntimeExports.jsx(React.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage1.hello"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage1.iam") })), t("introPage1.built")] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "is-tochat-button", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [t("introPage1.chat"), " "] }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage2.Lets"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.easy") })), t("introPage2.thats"), jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.functions") }))] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text" }, { children: t("introPage2.everything") })) }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
                         return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
                     }, style: {
                         backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
@@ -19122,7 +19217,1844 @@ function IoIosCall (props) {
   return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M405.5 256c0 22.717-4.883 44.362-13.603 63.855l31.88 31.88C439.283 323.33 448 290.653 448 256c0-93.256-64-172.254-149-192v44.978C361 127.632 405.5 186.882 405.5 256zM256 80.458l-51.021 52.48L256 183.957zM420.842 396.885L91.116 67.157l-24 24 90.499 90.413-8.28 10.43H64v128h85.334L256 431.543V280l94.915 94.686C335.795 387.443 318 397.213 299 403.022V448c31-7.172 58.996-22.163 82.315-42.809l39.61 39.693 24-24.043-24.002-24.039-.081.083z"}},{"tag":"path","attr":{"d":"M352.188 256c0-38.399-21.188-72.407-53.188-88.863v59.82l50.801 50.801A100.596 100.596 0 0 0 352.188 256z"}}]})(props);
 }
 
-//const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+var runtime = {exports: {}};
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+runtime.exports;
+
+(function (module) {
+	var runtime = (function (exports) {
+
+	  var Op = Object.prototype;
+	  var hasOwn = Op.hasOwnProperty;
+	  var defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; };
+	  var undefined$1; // More compressible than void 0.
+	  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+	  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+	  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+	  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+	  function define(obj, key, value) {
+	    Object.defineProperty(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	    return obj[key];
+	  }
+	  try {
+	    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+	    define({}, "");
+	  } catch (err) {
+	    define = function(obj, key, value) {
+	      return obj[key] = value;
+	    };
+	  }
+
+	  function wrap(innerFn, outerFn, self, tryLocsList) {
+	    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+	    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+	    var generator = Object.create(protoGenerator.prototype);
+	    var context = new Context(tryLocsList || []);
+
+	    // The ._invoke method unifies the implementations of the .next,
+	    // .throw, and .return methods.
+	    defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) });
+
+	    return generator;
+	  }
+	  exports.wrap = wrap;
+
+	  // Try/catch helper to minimize deoptimizations. Returns a completion
+	  // record like context.tryEntries[i].completion. This interface could
+	  // have been (and was previously) designed to take a closure to be
+	  // invoked without arguments, but in all the cases we care about we
+	  // already have an existing method we want to call, so there's no need
+	  // to create a new function object. We can even get away with assuming
+	  // the method takes exactly one argument, since that happens to be true
+	  // in every case, so we don't have to touch the arguments object. The
+	  // only additional allocation required is the completion record, which
+	  // has a stable shape and so hopefully should be cheap to allocate.
+	  function tryCatch(fn, obj, arg) {
+	    try {
+	      return { type: "normal", arg: fn.call(obj, arg) };
+	    } catch (err) {
+	      return { type: "throw", arg: err };
+	    }
+	  }
+
+	  var GenStateSuspendedStart = "suspendedStart";
+	  var GenStateSuspendedYield = "suspendedYield";
+	  var GenStateExecuting = "executing";
+	  var GenStateCompleted = "completed";
+
+	  // Returning this object from the innerFn has the same effect as
+	  // breaking out of the dispatch switch statement.
+	  var ContinueSentinel = {};
+
+	  // Dummy constructor functions that we use as the .constructor and
+	  // .constructor.prototype properties for functions that return Generator
+	  // objects. For full spec compliance, you may wish to configure your
+	  // minifier not to mangle the names of these two functions.
+	  function Generator() {}
+	  function GeneratorFunction() {}
+	  function GeneratorFunctionPrototype() {}
+
+	  // This is a polyfill for %IteratorPrototype% for environments that
+	  // don't natively support it.
+	  var IteratorPrototype = {};
+	  define(IteratorPrototype, iteratorSymbol, function () {
+	    return this;
+	  });
+
+	  var getProto = Object.getPrototypeOf;
+	  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+	  if (NativeIteratorPrototype &&
+	      NativeIteratorPrototype !== Op &&
+	      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+	    // This environment has a native %IteratorPrototype%; use it instead
+	    // of the polyfill.
+	    IteratorPrototype = NativeIteratorPrototype;
+	  }
+
+	  var Gp = GeneratorFunctionPrototype.prototype =
+	    Generator.prototype = Object.create(IteratorPrototype);
+	  GeneratorFunction.prototype = GeneratorFunctionPrototype;
+	  defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: true });
+	  defineProperty(
+	    GeneratorFunctionPrototype,
+	    "constructor",
+	    { value: GeneratorFunction, configurable: true }
+	  );
+	  GeneratorFunction.displayName = define(
+	    GeneratorFunctionPrototype,
+	    toStringTagSymbol,
+	    "GeneratorFunction"
+	  );
+
+	  // Helper for defining the .next, .throw, and .return methods of the
+	  // Iterator interface in terms of a single ._invoke method.
+	  function defineIteratorMethods(prototype) {
+	    ["next", "throw", "return"].forEach(function(method) {
+	      define(prototype, method, function(arg) {
+	        return this._invoke(method, arg);
+	      });
+	    });
+	  }
+
+	  exports.isGeneratorFunction = function(genFun) {
+	    var ctor = typeof genFun === "function" && genFun.constructor;
+	    return ctor
+	      ? ctor === GeneratorFunction ||
+	        // For the native GeneratorFunction constructor, the best we can
+	        // do is to check its .name property.
+	        (ctor.displayName || ctor.name) === "GeneratorFunction"
+	      : false;
+	  };
+
+	  exports.mark = function(genFun) {
+	    if (Object.setPrototypeOf) {
+	      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+	    } else {
+	      genFun.__proto__ = GeneratorFunctionPrototype;
+	      define(genFun, toStringTagSymbol, "GeneratorFunction");
+	    }
+	    genFun.prototype = Object.create(Gp);
+	    return genFun;
+	  };
+
+	  // Within the body of any async function, `await x` is transformed to
+	  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+	  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+	  // meant to be awaited.
+	  exports.awrap = function(arg) {
+	    return { __await: arg };
+	  };
+
+	  function AsyncIterator(generator, PromiseImpl) {
+	    function invoke(method, arg, resolve, reject) {
+	      var record = tryCatch(generator[method], generator, arg);
+	      if (record.type === "throw") {
+	        reject(record.arg);
+	      } else {
+	        var result = record.arg;
+	        var value = result.value;
+	        if (value &&
+	            typeof value === "object" &&
+	            hasOwn.call(value, "__await")) {
+	          return PromiseImpl.resolve(value.__await).then(function(value) {
+	            invoke("next", value, resolve, reject);
+	          }, function(err) {
+	            invoke("throw", err, resolve, reject);
+	          });
+	        }
+
+	        return PromiseImpl.resolve(value).then(function(unwrapped) {
+	          // When a yielded Promise is resolved, its final value becomes
+	          // the .value of the Promise<{value,done}> result for the
+	          // current iteration.
+	          result.value = unwrapped;
+	          resolve(result);
+	        }, function(error) {
+	          // If a rejected Promise was yielded, throw the rejection back
+	          // into the async generator function so it can be handled there.
+	          return invoke("throw", error, resolve, reject);
+	        });
+	      }
+	    }
+
+	    var previousPromise;
+
+	    function enqueue(method, arg) {
+	      function callInvokeWithMethodAndArg() {
+	        return new PromiseImpl(function(resolve, reject) {
+	          invoke(method, arg, resolve, reject);
+	        });
+	      }
+
+	      return previousPromise =
+	        // If enqueue has been called before, then we want to wait until
+	        // all previous Promises have been resolved before calling invoke,
+	        // so that results are always delivered in the correct order. If
+	        // enqueue has not been called before, then it is important to
+	        // call invoke immediately, without waiting on a callback to fire,
+	        // so that the async generator function has the opportunity to do
+	        // any necessary setup in a predictable way. This predictability
+	        // is why the Promise constructor synchronously invokes its
+	        // executor callback, and why async functions synchronously
+	        // execute code before the first await. Since we implement simple
+	        // async functions in terms of async generators, it is especially
+	        // important to get this right, even though it requires care.
+	        previousPromise ? previousPromise.then(
+	          callInvokeWithMethodAndArg,
+	          // Avoid propagating failures to Promises returned by later
+	          // invocations of the iterator.
+	          callInvokeWithMethodAndArg
+	        ) : callInvokeWithMethodAndArg();
+	    }
+
+	    // Define the unified helper method that is used to implement .next,
+	    // .throw, and .return (see defineIteratorMethods).
+	    defineProperty(this, "_invoke", { value: enqueue });
+	  }
+
+	  defineIteratorMethods(AsyncIterator.prototype);
+	  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
+	    return this;
+	  });
+	  exports.AsyncIterator = AsyncIterator;
+
+	  // Note that simple async functions are implemented on top of
+	  // AsyncIterator objects; they just return a Promise for the value of
+	  // the final result produced by the iterator.
+	  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+	    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+	    var iter = new AsyncIterator(
+	      wrap(innerFn, outerFn, self, tryLocsList),
+	      PromiseImpl
+	    );
+
+	    return exports.isGeneratorFunction(outerFn)
+	      ? iter // If outerFn is a generator, return the full iterator.
+	      : iter.next().then(function(result) {
+	          return result.done ? result.value : iter.next();
+	        });
+	  };
+
+	  function makeInvokeMethod(innerFn, self, context) {
+	    var state = GenStateSuspendedStart;
+
+	    return function invoke(method, arg) {
+	      if (state === GenStateExecuting) {
+	        throw new Error("Generator is already running");
+	      }
+
+	      if (state === GenStateCompleted) {
+	        if (method === "throw") {
+	          throw arg;
+	        }
+
+	        // Be forgiving, per GeneratorResume behavior specified since ES2015:
+	        // ES2015 spec, step 3: https://262.ecma-international.org/6.0/#sec-generatorresume
+	        // Latest spec, step 2: https://tc39.es/ecma262/#sec-generatorresume
+	        return doneResult();
+	      }
+
+	      context.method = method;
+	      context.arg = arg;
+
+	      while (true) {
+	        var delegate = context.delegate;
+	        if (delegate) {
+	          var delegateResult = maybeInvokeDelegate(delegate, context);
+	          if (delegateResult) {
+	            if (delegateResult === ContinueSentinel) continue;
+	            return delegateResult;
+	          }
+	        }
+
+	        if (context.method === "next") {
+	          // Setting context._sent for legacy support of Babel's
+	          // function.sent implementation.
+	          context.sent = context._sent = context.arg;
+
+	        } else if (context.method === "throw") {
+	          if (state === GenStateSuspendedStart) {
+	            state = GenStateCompleted;
+	            throw context.arg;
+	          }
+
+	          context.dispatchException(context.arg);
+
+	        } else if (context.method === "return") {
+	          context.abrupt("return", context.arg);
+	        }
+
+	        state = GenStateExecuting;
+
+	        var record = tryCatch(innerFn, self, context);
+	        if (record.type === "normal") {
+	          // If an exception is thrown from innerFn, we leave state ===
+	          // GenStateExecuting and loop back for another invocation.
+	          state = context.done
+	            ? GenStateCompleted
+	            : GenStateSuspendedYield;
+
+	          if (record.arg === ContinueSentinel) {
+	            continue;
+	          }
+
+	          return {
+	            value: record.arg,
+	            done: context.done
+	          };
+
+	        } else if (record.type === "throw") {
+	          state = GenStateCompleted;
+	          // Dispatch the exception by looping back around to the
+	          // context.dispatchException(context.arg) call above.
+	          context.method = "throw";
+	          context.arg = record.arg;
+	        }
+	      }
+	    };
+	  }
+
+	  // Call delegate.iterator[context.method](context.arg) and handle the
+	  // result, either by returning a { value, done } result from the
+	  // delegate iterator, or by modifying context.method and context.arg,
+	  // setting context.delegate to null, and returning the ContinueSentinel.
+	  function maybeInvokeDelegate(delegate, context) {
+	    var methodName = context.method;
+	    var method = delegate.iterator[methodName];
+	    if (method === undefined$1) {
+	      // A .throw or .return when the delegate iterator has no .throw
+	      // method, or a missing .next method, always terminate the
+	      // yield* loop.
+	      context.delegate = null;
+
+	      // Note: ["return"] must be used for ES3 parsing compatibility.
+	      if (methodName === "throw" && delegate.iterator["return"]) {
+	        // If the delegate iterator has a return method, give it a
+	        // chance to clean up.
+	        context.method = "return";
+	        context.arg = undefined$1;
+	        maybeInvokeDelegate(delegate, context);
+
+	        if (context.method === "throw") {
+	          // If maybeInvokeDelegate(context) changed context.method from
+	          // "return" to "throw", let that override the TypeError below.
+	          return ContinueSentinel;
+	        }
+	      }
+	      if (methodName !== "return") {
+	        context.method = "throw";
+	        context.arg = new TypeError(
+	          "The iterator does not provide a '" + methodName + "' method");
+	      }
+
+	      return ContinueSentinel;
+	    }
+
+	    var record = tryCatch(method, delegate.iterator, context.arg);
+
+	    if (record.type === "throw") {
+	      context.method = "throw";
+	      context.arg = record.arg;
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    var info = record.arg;
+
+	    if (! info) {
+	      context.method = "throw";
+	      context.arg = new TypeError("iterator result is not an object");
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    if (info.done) {
+	      // Assign the result of the finished delegate to the temporary
+	      // variable specified by delegate.resultName (see delegateYield).
+	      context[delegate.resultName] = info.value;
+
+	      // Resume execution at the desired location (see delegateYield).
+	      context.next = delegate.nextLoc;
+
+	      // If context.method was "throw" but the delegate handled the
+	      // exception, let the outer generator proceed normally. If
+	      // context.method was "next", forget context.arg since it has been
+	      // "consumed" by the delegate iterator. If context.method was
+	      // "return", allow the original .return call to continue in the
+	      // outer generator.
+	      if (context.method !== "return") {
+	        context.method = "next";
+	        context.arg = undefined$1;
+	      }
+
+	    } else {
+	      // Re-yield the result returned by the delegate method.
+	      return info;
+	    }
+
+	    // The delegate iterator is finished, so forget it and continue with
+	    // the outer generator.
+	    context.delegate = null;
+	    return ContinueSentinel;
+	  }
+
+	  // Define Generator.prototype.{next,throw,return} in terms of the
+	  // unified ._invoke helper method.
+	  defineIteratorMethods(Gp);
+
+	  define(Gp, toStringTagSymbol, "Generator");
+
+	  // A Generator should always return itself as the iterator object when the
+	  // @@iterator function is called on it. Some browsers' implementations of the
+	  // iterator prototype chain incorrectly implement this, causing the Generator
+	  // object to not be returned from this call. This ensures that doesn't happen.
+	  // See https://github.com/facebook/regenerator/issues/274 for more details.
+	  define(Gp, iteratorSymbol, function() {
+	    return this;
+	  });
+
+	  define(Gp, "toString", function() {
+	    return "[object Generator]";
+	  });
+
+	  function pushTryEntry(locs) {
+	    var entry = { tryLoc: locs[0] };
+
+	    if (1 in locs) {
+	      entry.catchLoc = locs[1];
+	    }
+
+	    if (2 in locs) {
+	      entry.finallyLoc = locs[2];
+	      entry.afterLoc = locs[3];
+	    }
+
+	    this.tryEntries.push(entry);
+	  }
+
+	  function resetTryEntry(entry) {
+	    var record = entry.completion || {};
+	    record.type = "normal";
+	    delete record.arg;
+	    entry.completion = record;
+	  }
+
+	  function Context(tryLocsList) {
+	    // The root entry object (effectively a try statement without a catch
+	    // or a finally block) gives us a place to store values thrown from
+	    // locations where there is no enclosing try statement.
+	    this.tryEntries = [{ tryLoc: "root" }];
+	    tryLocsList.forEach(pushTryEntry, this);
+	    this.reset(true);
+	  }
+
+	  exports.keys = function(val) {
+	    var object = Object(val);
+	    var keys = [];
+	    for (var key in object) {
+	      keys.push(key);
+	    }
+	    keys.reverse();
+
+	    // Rather than returning an object with a next method, we keep
+	    // things simple and return the next function itself.
+	    return function next() {
+	      while (keys.length) {
+	        var key = keys.pop();
+	        if (key in object) {
+	          next.value = key;
+	          next.done = false;
+	          return next;
+	        }
+	      }
+
+	      // To avoid creating an additional object, we just hang the .value
+	      // and .done properties off the next function object itself. This
+	      // also ensures that the minifier will not anonymize the function.
+	      next.done = true;
+	      return next;
+	    };
+	  };
+
+	  function values(iterable) {
+	    if (iterable != null) {
+	      var iteratorMethod = iterable[iteratorSymbol];
+	      if (iteratorMethod) {
+	        return iteratorMethod.call(iterable);
+	      }
+
+	      if (typeof iterable.next === "function") {
+	        return iterable;
+	      }
+
+	      if (!isNaN(iterable.length)) {
+	        var i = -1, next = function next() {
+	          while (++i < iterable.length) {
+	            if (hasOwn.call(iterable, i)) {
+	              next.value = iterable[i];
+	              next.done = false;
+	              return next;
+	            }
+	          }
+
+	          next.value = undefined$1;
+	          next.done = true;
+
+	          return next;
+	        };
+
+	        return next.next = next;
+	      }
+	    }
+
+	    throw new TypeError(typeof iterable + " is not iterable");
+	  }
+	  exports.values = values;
+
+	  function doneResult() {
+	    return { value: undefined$1, done: true };
+	  }
+
+	  Context.prototype = {
+	    constructor: Context,
+
+	    reset: function(skipTempReset) {
+	      this.prev = 0;
+	      this.next = 0;
+	      // Resetting context._sent for legacy support of Babel's
+	      // function.sent implementation.
+	      this.sent = this._sent = undefined$1;
+	      this.done = false;
+	      this.delegate = null;
+
+	      this.method = "next";
+	      this.arg = undefined$1;
+
+	      this.tryEntries.forEach(resetTryEntry);
+
+	      if (!skipTempReset) {
+	        for (var name in this) {
+	          // Not sure about the optimal order of these conditions:
+	          if (name.charAt(0) === "t" &&
+	              hasOwn.call(this, name) &&
+	              !isNaN(+name.slice(1))) {
+	            this[name] = undefined$1;
+	          }
+	        }
+	      }
+	    },
+
+	    stop: function() {
+	      this.done = true;
+
+	      var rootEntry = this.tryEntries[0];
+	      var rootRecord = rootEntry.completion;
+	      if (rootRecord.type === "throw") {
+	        throw rootRecord.arg;
+	      }
+
+	      return this.rval;
+	    },
+
+	    dispatchException: function(exception) {
+	      if (this.done) {
+	        throw exception;
+	      }
+
+	      var context = this;
+	      function handle(loc, caught) {
+	        record.type = "throw";
+	        record.arg = exception;
+	        context.next = loc;
+
+	        if (caught) {
+	          // If the dispatched exception was caught by a catch block,
+	          // then let that catch block handle the exception normally.
+	          context.method = "next";
+	          context.arg = undefined$1;
+	        }
+
+	        return !! caught;
+	      }
+
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        var record = entry.completion;
+
+	        if (entry.tryLoc === "root") {
+	          // Exception thrown outside of any try block that could handle
+	          // it, so set the completion value of the entire function to
+	          // throw the exception.
+	          return handle("end");
+	        }
+
+	        if (entry.tryLoc <= this.prev) {
+	          var hasCatch = hasOwn.call(entry, "catchLoc");
+	          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+	          if (hasCatch && hasFinally) {
+	            if (this.prev < entry.catchLoc) {
+	              return handle(entry.catchLoc, true);
+	            } else if (this.prev < entry.finallyLoc) {
+	              return handle(entry.finallyLoc);
+	            }
+
+	          } else if (hasCatch) {
+	            if (this.prev < entry.catchLoc) {
+	              return handle(entry.catchLoc, true);
+	            }
+
+	          } else if (hasFinally) {
+	            if (this.prev < entry.finallyLoc) {
+	              return handle(entry.finallyLoc);
+	            }
+
+	          } else {
+	            throw new Error("try statement without catch or finally");
+	          }
+	        }
+	      }
+	    },
+
+	    abrupt: function(type, arg) {
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        if (entry.tryLoc <= this.prev &&
+	            hasOwn.call(entry, "finallyLoc") &&
+	            this.prev < entry.finallyLoc) {
+	          var finallyEntry = entry;
+	          break;
+	        }
+	      }
+
+	      if (finallyEntry &&
+	          (type === "break" ||
+	           type === "continue") &&
+	          finallyEntry.tryLoc <= arg &&
+	          arg <= finallyEntry.finallyLoc) {
+	        // Ignore the finally entry if control is not jumping to a
+	        // location outside the try/catch block.
+	        finallyEntry = null;
+	      }
+
+	      var record = finallyEntry ? finallyEntry.completion : {};
+	      record.type = type;
+	      record.arg = arg;
+
+	      if (finallyEntry) {
+	        this.method = "next";
+	        this.next = finallyEntry.finallyLoc;
+	        return ContinueSentinel;
+	      }
+
+	      return this.complete(record);
+	    },
+
+	    complete: function(record, afterLoc) {
+	      if (record.type === "throw") {
+	        throw record.arg;
+	      }
+
+	      if (record.type === "break" ||
+	          record.type === "continue") {
+	        this.next = record.arg;
+	      } else if (record.type === "return") {
+	        this.rval = this.arg = record.arg;
+	        this.method = "return";
+	        this.next = "end";
+	      } else if (record.type === "normal" && afterLoc) {
+	        this.next = afterLoc;
+	      }
+
+	      return ContinueSentinel;
+	    },
+
+	    finish: function(finallyLoc) {
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        if (entry.finallyLoc === finallyLoc) {
+	          this.complete(entry.completion, entry.afterLoc);
+	          resetTryEntry(entry);
+	          return ContinueSentinel;
+	        }
+	      }
+	    },
+
+	    "catch": function(tryLoc) {
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        if (entry.tryLoc === tryLoc) {
+	          var record = entry.completion;
+	          if (record.type === "throw") {
+	            var thrown = record.arg;
+	            resetTryEntry(entry);
+	          }
+	          return thrown;
+	        }
+	      }
+
+	      // The context.catch method must only be called with a location
+	      // argument that corresponds to a known catch block.
+	      throw new Error("illegal catch attempt");
+	    },
+
+	    delegateYield: function(iterable, resultName, nextLoc) {
+	      this.delegate = {
+	        iterator: values(iterable),
+	        resultName: resultName,
+	        nextLoc: nextLoc
+	      };
+
+	      if (this.method === "next") {
+	        // Deliberately forget the last sent value so that we don't
+	        // accidentally pass it on to the delegate.
+	        this.arg = undefined$1;
+	      }
+
+	      return ContinueSentinel;
+	    }
+	  };
+
+	  // Regardless of whether this script is executing as a CommonJS module
+	  // or not, return the runtime object so that we can declare the variable
+	  // regeneratorRuntime in the outer scope, which allows this module to be
+	  // injected easily by `bin/regenerator --include-runtime script.js`.
+	  return exports;
+
+	}(
+	  // If this script is executing as a CommonJS module, use module.exports
+	  // as the regeneratorRuntime namespace. Otherwise create a new empty
+	  // object. Either way, the resulting object will be used to initialize
+	  // the regeneratorRuntime variable at the top of this file.
+	  module.exports 
+	));
+
+	try {
+	  regeneratorRuntime = runtime;
+	} catch (accidentalStrictMode) {
+	  // This module should not be running in strict mode, so the above
+	  // assignment should always work unless something is misconfigured. Just
+	  // in case runtime.js accidentally runs in strict mode, in modern engines
+	  // we can explicitly access globalThis. In older engines we can escape
+	  // strict mode using a global Function call. This could conceivably fail
+	  // if a Content Security Policy forbids using Function, but in that case
+	  // the proper solution is to fix the accidental strict mode problem. If
+	  // you've misconfigured your bundler to force strict mode and applied a
+	  // CSP to forbid Function, and you're not willing to fix either of those
+	  // problems, please detail your unique predicament in a GitHub issue.
+	  if (typeof globalThis === "object") {
+	    globalThis.regeneratorRuntime = runtime;
+	  } else {
+	    Function("r", "regeneratorRuntime = r")(runtime);
+	  }
+	} 
+} (runtime));
+
+runtime.exports;
+
+var lib = {};
+
+var SpeechRecognition$1 = {};
+
+var utils = {};
+
+Object.defineProperty(utils, "__esModule", {
+  value: true
+});
+utils.browserSupportsPolyfills = utils.compareTwoStringsUsingDiceCoefficient = utils.commandToRegExp = utils.concatTranscripts = utils.debounce = void 0;
+
+var debounce = function debounce(func, wait, immediate) {
+  var timeout;
+  return function () {
+    var context = this;
+    var args = arguments;
+
+    var later = function later() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+};
+
+utils.debounce = debounce;
+
+var concatTranscripts = function concatTranscripts() {
+  for (var _len = arguments.length, transcriptParts = new Array(_len), _key = 0; _key < _len; _key++) {
+    transcriptParts[_key] = arguments[_key];
+  }
+
+  return transcriptParts.map(function (t) {
+    return t.trim();
+  }).join(' ').trim();
+}; // The command matching code is a modified version of Backbone.Router by Jeremy Ashkenas, under the MIT license.
+
+
+utils.concatTranscripts = concatTranscripts;
+var optionalParam = /\s*\((.*?)\)\s*/g;
+var optionalRegex = /(\(\?:[^)]+\))\?/g;
+var namedParam = /(\(\?)?:\w+/g;
+var splatParam = /\*/g;
+var escapeRegExp = /[-{}[\]+?.,\\^$|#]/g;
+
+var commandToRegExp = function commandToRegExp(command) {
+  if (command instanceof RegExp) {
+    return new RegExp(command.source, 'i');
+  }
+
+  command = command.replace(escapeRegExp, '\\$&').replace(optionalParam, '(?:$1)?').replace(namedParam, function (match, optional) {
+    return optional ? match : '([^\\s]+)';
+  }).replace(splatParam, '(.*?)').replace(optionalRegex, '\\s*$1?\\s*');
+  return new RegExp('^' + command + '$', 'i');
+}; // this is from https://github.com/aceakash/string-similarity
+
+
+utils.commandToRegExp = commandToRegExp;
+
+var compareTwoStringsUsingDiceCoefficient = function compareTwoStringsUsingDiceCoefficient(first, second) {
+  first = first.replace(/\s+/g, '').toLowerCase();
+  second = second.replace(/\s+/g, '').toLowerCase();
+  if (!first.length && !second.length) return 1; // if both are empty strings
+
+  if (!first.length || !second.length) return 0; // if only one is empty string
+
+  if (first === second) return 1; // identical
+
+  if (first.length === 1 && second.length === 1) return 0; // both are 1-letter strings
+
+  if (first.length < 2 || second.length < 2) return 0; // if either is a 1-letter string
+
+  var firstBigrams = new Map();
+
+  for (var i = 0; i < first.length - 1; i++) {
+    var bigram = first.substring(i, i + 2);
+    var count = firstBigrams.has(bigram) ? firstBigrams.get(bigram) + 1 : 1;
+    firstBigrams.set(bigram, count);
+  }
+
+  var intersectionSize = 0;
+
+  for (var _i = 0; _i < second.length - 1; _i++) {
+    var _bigram = second.substring(_i, _i + 2);
+
+    var _count = firstBigrams.has(_bigram) ? firstBigrams.get(_bigram) : 0;
+
+    if (_count > 0) {
+      firstBigrams.set(_bigram, _count - 1);
+      intersectionSize++;
+    }
+  }
+
+  return 2.0 * intersectionSize / (first.length + second.length - 2);
+};
+
+utils.compareTwoStringsUsingDiceCoefficient = compareTwoStringsUsingDiceCoefficient;
+
+var browserSupportsPolyfills = function browserSupportsPolyfills() {
+  return typeof window !== 'undefined' && window.navigator !== undefined && window.navigator.mediaDevices !== undefined && window.navigator.mediaDevices.getUserMedia !== undefined && (window.AudioContext !== undefined || window.webkitAudioContext !== undefined);
+};
+
+utils.browserSupportsPolyfills = browserSupportsPolyfills;
+
+var actions = {};
+
+var constants = {};
+
+Object.defineProperty(constants, "__esModule", {
+  value: true
+});
+constants.APPEND_TRANSCRIPT = constants.CLEAR_TRANSCRIPT = void 0;
+var CLEAR_TRANSCRIPT = 'CLEAR_TRANSCRIPT';
+constants.CLEAR_TRANSCRIPT = CLEAR_TRANSCRIPT;
+var APPEND_TRANSCRIPT = 'APPEND_TRANSCRIPT';
+constants.APPEND_TRANSCRIPT = APPEND_TRANSCRIPT;
+
+Object.defineProperty(actions, "__esModule", {
+  value: true
+});
+actions.appendTranscript = actions.clearTranscript = void 0;
+
+var _constants$1 = constants;
+
+var clearTranscript = function clearTranscript() {
+  return {
+    type: _constants$1.CLEAR_TRANSCRIPT
+  };
+};
+
+actions.clearTranscript = clearTranscript;
+
+var appendTranscript = function appendTranscript(interimTranscript, finalTranscript) {
+  return {
+    type: _constants$1.APPEND_TRANSCRIPT,
+    payload: {
+      interimTranscript: interimTranscript,
+      finalTranscript: finalTranscript
+    }
+  };
+};
+
+actions.appendTranscript = appendTranscript;
+
+var reducers = {};
+
+Object.defineProperty(reducers, "__esModule", {
+  value: true
+});
+reducers.transcriptReducer = void 0;
+
+var _constants = constants;
+
+var _utils = utils;
+
+var transcriptReducer = function transcriptReducer(state, action) {
+  switch (action.type) {
+    case _constants.CLEAR_TRANSCRIPT:
+      return {
+        interimTranscript: '',
+        finalTranscript: ''
+      };
+
+    case _constants.APPEND_TRANSCRIPT:
+      return {
+        interimTranscript: action.payload.interimTranscript,
+        finalTranscript: (0, _utils.concatTranscripts)(state.finalTranscript, action.payload.finalTranscript)
+      };
+
+    default:
+      throw new Error();
+  }
+};
+
+reducers.transcriptReducer = transcriptReducer;
+
+var RecognitionManager = {};
+
+var isAndroid = {};
+
+(function (exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = void 0;
+
+	var _default = function _default() {
+	  return /(android)/i.test(typeof navigator !== 'undefined' ? navigator.userAgent : '');
+	};
+
+	exports["default"] = _default; 
+} (isAndroid));
+
+var NativeSpeechRecognition = {};
+
+(function (exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = exports.isNative = void 0;
+	var NativeSpeechRecognition = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition || window.oSpeechRecognition);
+
+	var isNative = function isNative(SpeechRecognition) {
+	  return SpeechRecognition === NativeSpeechRecognition;
+	};
+
+	exports.isNative = isNative;
+	var _default = NativeSpeechRecognition;
+	exports["default"] = _default; 
+} (NativeSpeechRecognition));
+
+(function (exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = void 0;
+
+	var _isAndroid = _interopRequireDefault(isAndroid);
+
+	var _utils = utils;
+
+	var _NativeSpeechRecognition = NativeSpeechRecognition;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+	function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+	function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+	var RecognitionManager = /*#__PURE__*/function () {
+	  function RecognitionManager(SpeechRecognition) {
+	    _classCallCheck(this, RecognitionManager);
+
+	    this.recognition = null;
+	    this.pauseAfterDisconnect = false;
+	    this.interimTranscript = '';
+	    this.finalTranscript = '';
+	    this.listening = false;
+	    this.isMicrophoneAvailable = true;
+	    this.subscribers = {};
+
+	    this.onStopListening = function () {};
+
+	    this.previousResultWasFinalOnly = false;
+	    this.resetTranscript = this.resetTranscript.bind(this);
+	    this.startListening = this.startListening.bind(this);
+	    this.stopListening = this.stopListening.bind(this);
+	    this.abortListening = this.abortListening.bind(this);
+	    this.setSpeechRecognition = this.setSpeechRecognition.bind(this);
+	    this.disableRecognition = this.disableRecognition.bind(this);
+	    this.setSpeechRecognition(SpeechRecognition);
+
+	    if ((0, _isAndroid["default"])()) {
+	      this.updateFinalTranscript = (0, _utils.debounce)(this.updateFinalTranscript, 250, true);
+	    }
+	  }
+
+	  _createClass(RecognitionManager, [{
+	    key: "setSpeechRecognition",
+	    value: function setSpeechRecognition(SpeechRecognition) {
+	      var browserSupportsRecogniser = !!SpeechRecognition && ((0, _NativeSpeechRecognition.isNative)(SpeechRecognition) || (0, _utils.browserSupportsPolyfills)());
+
+	      if (browserSupportsRecogniser) {
+	        this.disableRecognition();
+	        this.recognition = new SpeechRecognition();
+	        this.recognition.continuous = false;
+	        this.recognition.interimResults = true;
+	        this.recognition.onresult = this.updateTranscript.bind(this);
+	        this.recognition.onend = this.onRecognitionDisconnect.bind(this);
+	        this.recognition.onerror = this.onError.bind(this);
+	      }
+
+	      this.emitBrowserSupportsSpeechRecognitionChange(browserSupportsRecogniser);
+	    }
+	  }, {
+	    key: "subscribe",
+	    value: function subscribe(id, callbacks) {
+	      this.subscribers[id] = callbacks;
+	    }
+	  }, {
+	    key: "unsubscribe",
+	    value: function unsubscribe(id) {
+	      delete this.subscribers[id];
+	    }
+	  }, {
+	    key: "emitListeningChange",
+	    value: function emitListeningChange(listening) {
+	      var _this = this;
+
+	      this.listening = listening;
+	      Object.keys(this.subscribers).forEach(function (id) {
+	        var onListeningChange = _this.subscribers[id].onListeningChange;
+	        onListeningChange(listening);
+	      });
+	    }
+	  }, {
+	    key: "emitMicrophoneAvailabilityChange",
+	    value: function emitMicrophoneAvailabilityChange(isMicrophoneAvailable) {
+	      var _this2 = this;
+
+	      this.isMicrophoneAvailable = isMicrophoneAvailable;
+	      Object.keys(this.subscribers).forEach(function (id) {
+	        var onMicrophoneAvailabilityChange = _this2.subscribers[id].onMicrophoneAvailabilityChange;
+	        onMicrophoneAvailabilityChange(isMicrophoneAvailable);
+	      });
+	    }
+	  }, {
+	    key: "emitTranscriptChange",
+	    value: function emitTranscriptChange(interimTranscript, finalTranscript) {
+	      var _this3 = this;
+
+	      Object.keys(this.subscribers).forEach(function (id) {
+	        var onTranscriptChange = _this3.subscribers[id].onTranscriptChange;
+	        onTranscriptChange(interimTranscript, finalTranscript);
+	      });
+	    }
+	  }, {
+	    key: "emitClearTranscript",
+	    value: function emitClearTranscript() {
+	      var _this4 = this;
+
+	      Object.keys(this.subscribers).forEach(function (id) {
+	        var onClearTranscript = _this4.subscribers[id].onClearTranscript;
+	        onClearTranscript();
+	      });
+	    }
+	  }, {
+	    key: "emitBrowserSupportsSpeechRecognitionChange",
+	    value: function emitBrowserSupportsSpeechRecognitionChange(browserSupportsSpeechRecognitionChange) {
+	      var _this5 = this;
+
+	      Object.keys(this.subscribers).forEach(function (id) {
+	        var _this5$subscribers$id = _this5.subscribers[id],
+	            onBrowserSupportsSpeechRecognitionChange = _this5$subscribers$id.onBrowserSupportsSpeechRecognitionChange,
+	            onBrowserSupportsContinuousListeningChange = _this5$subscribers$id.onBrowserSupportsContinuousListeningChange;
+	        onBrowserSupportsSpeechRecognitionChange(browserSupportsSpeechRecognitionChange);
+	        onBrowserSupportsContinuousListeningChange(browserSupportsSpeechRecognitionChange);
+	      });
+	    }
+	  }, {
+	    key: "disconnect",
+	    value: function disconnect(disconnectType) {
+	      if (this.recognition && this.listening) {
+	        switch (disconnectType) {
+	          case 'ABORT':
+	            this.pauseAfterDisconnect = true;
+	            this.abort();
+	            break;
+
+	          case 'RESET':
+	            this.pauseAfterDisconnect = false;
+	            this.abort();
+	            break;
+
+	          case 'STOP':
+	          default:
+	            this.pauseAfterDisconnect = true;
+	            this.stop();
+	        }
+	      }
+	    }
+	  }, {
+	    key: "disableRecognition",
+	    value: function disableRecognition() {
+	      if (this.recognition) {
+	        this.recognition.onresult = function () {};
+
+	        this.recognition.onend = function () {};
+
+	        this.recognition.onerror = function () {};
+
+	        if (this.listening) {
+	          this.stopListening();
+	        }
+	      }
+	    }
+	  }, {
+	    key: "onError",
+	    value: function onError(event) {
+	      if (event && event.error && event.error === 'not-allowed') {
+	        this.emitMicrophoneAvailabilityChange(false);
+	        this.disableRecognition();
+	      }
+	    }
+	  }, {
+	    key: "onRecognitionDisconnect",
+	    value: function onRecognitionDisconnect() {
+	      this.onStopListening();
+	      this.listening = false;
+
+	      if (this.pauseAfterDisconnect) {
+	        this.emitListeningChange(false);
+	      } else if (this.recognition) {
+	        if (this.recognition.continuous) {
+	          this.startListening({
+	            continuous: this.recognition.continuous
+	          });
+	        } else {
+	          this.emitListeningChange(false);
+	        }
+	      }
+
+	      this.pauseAfterDisconnect = false;
+	    }
+	  }, {
+	    key: "updateTranscript",
+	    value: function updateTranscript(_ref) {
+	      var results = _ref.results,
+	          resultIndex = _ref.resultIndex;
+	      var currentIndex = resultIndex === undefined ? results.length - 1 : resultIndex;
+	      this.interimTranscript = '';
+	      this.finalTranscript = '';
+
+	      for (var i = currentIndex; i < results.length; ++i) {
+	        if (results[i].isFinal && (!(0, _isAndroid["default"])() || results[i][0].confidence > 0)) {
+	          this.updateFinalTranscript(results[i][0].transcript);
+	        } else {
+	          this.interimTranscript = (0, _utils.concatTranscripts)(this.interimTranscript, results[i][0].transcript);
+	        }
+	      }
+
+	      var isDuplicateResult = false;
+
+	      if (this.interimTranscript === '' && this.finalTranscript !== '') {
+	        if (this.previousResultWasFinalOnly) {
+	          isDuplicateResult = true;
+	        }
+
+	        this.previousResultWasFinalOnly = true;
+	      } else {
+	        this.previousResultWasFinalOnly = false;
+	      }
+
+	      if (!isDuplicateResult) {
+	        this.emitTranscriptChange(this.interimTranscript, this.finalTranscript);
+	      }
+	    }
+	  }, {
+	    key: "updateFinalTranscript",
+	    value: function updateFinalTranscript(newFinalTranscript) {
+	      this.finalTranscript = (0, _utils.concatTranscripts)(this.finalTranscript, newFinalTranscript);
+	    }
+	  }, {
+	    key: "resetTranscript",
+	    value: function resetTranscript() {
+	      this.disconnect('RESET');
+	    }
+	  }, {
+	    key: "startListening",
+	    value: function () {
+	      var _startListening = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+	        var _ref2,
+	            _ref2$continuous,
+	            continuous,
+	            language,
+	            isContinuousChanged,
+	            isLanguageChanged,
+	            _args = arguments;
+
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                _ref2 = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, _ref2$continuous = _ref2.continuous, continuous = _ref2$continuous === void 0 ? false : _ref2$continuous, language = _ref2.language;
+
+	                if (this.recognition) {
+	                  _context.next = 3;
+	                  break;
+	                }
+
+	                return _context.abrupt("return");
+
+	              case 3:
+	                isContinuousChanged = continuous !== this.recognition.continuous;
+	                isLanguageChanged = language && language !== this.recognition.lang;
+
+	                if (!(isContinuousChanged || isLanguageChanged)) {
+	                  _context.next = 11;
+	                  break;
+	                }
+
+	                if (!this.listening) {
+	                  _context.next = 9;
+	                  break;
+	                }
+
+	                _context.next = 9;
+	                return this.stopListening();
+
+	              case 9:
+	                this.recognition.continuous = isContinuousChanged ? continuous : this.recognition.continuous;
+	                this.recognition.lang = isLanguageChanged ? language : this.recognition.lang;
+
+	              case 11:
+	                if (this.listening) {
+	                  _context.next = 22;
+	                  break;
+	                }
+
+	                if (!this.recognition.continuous) {
+	                  this.resetTranscript();
+	                  this.emitClearTranscript();
+	                }
+
+	                _context.prev = 13;
+	                _context.next = 16;
+	                return this.start();
+
+	              case 16:
+	                this.emitListeningChange(true);
+	                _context.next = 22;
+	                break;
+
+	              case 19:
+	                _context.prev = 19;
+	                _context.t0 = _context["catch"](13);
+
+	                // DOMExceptions indicate a redundant microphone start - safe to swallow
+	                if (!(_context.t0 instanceof DOMException)) {
+	                  this.emitMicrophoneAvailabilityChange(false);
+	                }
+
+	              case 22:
+	              case "end":
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this, [[13, 19]]);
+	      }));
+
+	      function startListening() {
+	        return _startListening.apply(this, arguments);
+	      }
+
+	      return startListening;
+	    }()
+	  }, {
+	    key: "abortListening",
+	    value: function () {
+	      var _abortListening = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+	        var _this6 = this;
+
+	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+	          while (1) {
+	            switch (_context2.prev = _context2.next) {
+	              case 0:
+	                this.disconnect('ABORT');
+	                this.emitListeningChange(false);
+	                _context2.next = 4;
+	                return new Promise(function (resolve) {
+	                  _this6.onStopListening = resolve;
+	                });
+
+	              case 4:
+	              case "end":
+	                return _context2.stop();
+	            }
+	          }
+	        }, _callee2, this);
+	      }));
+
+	      function abortListening() {
+	        return _abortListening.apply(this, arguments);
+	      }
+
+	      return abortListening;
+	    }()
+	  }, {
+	    key: "stopListening",
+	    value: function () {
+	      var _stopListening = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+	        var _this7 = this;
+
+	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+	          while (1) {
+	            switch (_context3.prev = _context3.next) {
+	              case 0:
+	                this.disconnect('STOP');
+	                this.emitListeningChange(false);
+	                _context3.next = 4;
+	                return new Promise(function (resolve) {
+	                  _this7.onStopListening = resolve;
+	                });
+
+	              case 4:
+	              case "end":
+	                return _context3.stop();
+	            }
+	          }
+	        }, _callee3, this);
+	      }));
+
+	      function stopListening() {
+	        return _stopListening.apply(this, arguments);
+	      }
+
+	      return stopListening;
+	    }()
+	  }, {
+	    key: "getRecognition",
+	    value: function getRecognition() {
+	      return this.recognition;
+	    }
+	  }, {
+	    key: "start",
+	    value: function () {
+	      var _start = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+	          while (1) {
+	            switch (_context4.prev = _context4.next) {
+	              case 0:
+	                if (!(this.recognition && !this.listening)) {
+	                  _context4.next = 4;
+	                  break;
+	                }
+
+	                _context4.next = 3;
+	                return this.recognition.start();
+
+	              case 3:
+	                this.listening = true;
+
+	              case 4:
+	              case "end":
+	                return _context4.stop();
+	            }
+	          }
+	        }, _callee4, this);
+	      }));
+
+	      function start() {
+	        return _start.apply(this, arguments);
+	      }
+
+	      return start;
+	    }()
+	  }, {
+	    key: "stop",
+	    value: function stop() {
+	      if (this.recognition && this.listening) {
+	        this.recognition.stop();
+	        this.listening = false;
+	      }
+	    }
+	  }, {
+	    key: "abort",
+	    value: function abort() {
+	      if (this.recognition && this.listening) {
+	        this.recognition.abort();
+	        this.listening = false;
+	      }
+	    }
+	  }]);
+
+	  return RecognitionManager;
+	}();
+
+	exports["default"] = RecognitionManager; 
+} (RecognitionManager));
+
+(function (exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = exports.useSpeechRecognition = void 0;
+
+	var _react = React__default["default"];
+
+	var _utils = utils;
+
+	var _actions = actions;
+
+	var _reducers = reducers;
+
+	var _RecognitionManager = _interopRequireDefault(RecognitionManager);
+
+	var _isAndroid = _interopRequireDefault(isAndroid);
+
+	var _NativeSpeechRecognition = _interopRequireDefault(NativeSpeechRecognition);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+	function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+	function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+	function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+	function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+	function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+	function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+	function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+	function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+	function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+	function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+	function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+	function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+	var _browserSupportsSpeechRecognition = !!_NativeSpeechRecognition["default"];
+
+	var _browserSupportsContinuousListening = _browserSupportsSpeechRecognition && !(0, _isAndroid["default"])();
+
+	var recognitionManager;
+
+	var useSpeechRecognition = function useSpeechRecognition() {
+	  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+	      _ref$transcribing = _ref.transcribing,
+	      transcribing = _ref$transcribing === void 0 ? true : _ref$transcribing,
+	      _ref$clearTranscriptO = _ref.clearTranscriptOnListen,
+	      clearTranscriptOnListen = _ref$clearTranscriptO === void 0 ? true : _ref$clearTranscriptO,
+	      _ref$commands = _ref.commands,
+	      commands = _ref$commands === void 0 ? [] : _ref$commands;
+
+	  var _useState = (0, _react.useState)(SpeechRecognition.getRecognitionManager()),
+	      _useState2 = _slicedToArray(_useState, 1),
+	      recognitionManager = _useState2[0];
+
+	  var _useState3 = (0, _react.useState)(_browserSupportsSpeechRecognition),
+	      _useState4 = _slicedToArray(_useState3, 2),
+	      browserSupportsSpeechRecognition = _useState4[0],
+	      setBrowserSupportsSpeechRecognition = _useState4[1];
+
+	  var _useState5 = (0, _react.useState)(_browserSupportsContinuousListening),
+	      _useState6 = _slicedToArray(_useState5, 2),
+	      browserSupportsContinuousListening = _useState6[0],
+	      setBrowserSupportsContinuousListening = _useState6[1];
+
+	  var _useReducer = (0, _react.useReducer)(_reducers.transcriptReducer, {
+	    interimTranscript: recognitionManager.interimTranscript,
+	    finalTranscript: ''
+	  }),
+	      _useReducer2 = _slicedToArray(_useReducer, 2),
+	      _useReducer2$ = _useReducer2[0],
+	      interimTranscript = _useReducer2$.interimTranscript,
+	      finalTranscript = _useReducer2$.finalTranscript,
+	      dispatch = _useReducer2[1];
+
+	  var _useState7 = (0, _react.useState)(recognitionManager.listening),
+	      _useState8 = _slicedToArray(_useState7, 2),
+	      listening = _useState8[0],
+	      setListening = _useState8[1];
+
+	  var _useState9 = (0, _react.useState)(recognitionManager.isMicrophoneAvailable),
+	      _useState10 = _slicedToArray(_useState9, 2),
+	      isMicrophoneAvailable = _useState10[0],
+	      setMicrophoneAvailable = _useState10[1];
+
+	  var commandsRef = (0, _react.useRef)(commands);
+	  commandsRef.current = commands;
+
+	  var dispatchClearTranscript = function dispatchClearTranscript() {
+	    dispatch((0, _actions.clearTranscript)());
+	  };
+
+	  var resetTranscript = (0, _react.useCallback)(function () {
+	    recognitionManager.resetTranscript();
+	    dispatchClearTranscript();
+	  }, [recognitionManager]);
+
+	  var testFuzzyMatch = function testFuzzyMatch(command, input, fuzzyMatchingThreshold) {
+	    var commandToString = _typeof(command) === 'object' ? command.toString() : command;
+	    var commandWithoutSpecials = commandToString.replace(/[&/\\#,+()!$~%.'":*?<>{}]/g, '').replace(/  +/g, ' ').trim();
+	    var howSimilar = (0, _utils.compareTwoStringsUsingDiceCoefficient)(commandWithoutSpecials, input);
+
+	    if (howSimilar >= fuzzyMatchingThreshold) {
+	      return {
+	        command: command,
+	        commandWithoutSpecials: commandWithoutSpecials,
+	        howSimilar: howSimilar,
+	        isFuzzyMatch: true
+	      };
+	    }
+
+	    return null;
+	  };
+
+	  var testMatch = function testMatch(command, input) {
+	    var pattern = (0, _utils.commandToRegExp)(command);
+	    var result = pattern.exec(input);
+
+	    if (result) {
+	      return {
+	        command: command,
+	        parameters: result.slice(1)
+	      };
+	    }
+
+	    return null;
+	  };
+
+	  var matchCommands = (0, _react.useCallback)(function (newInterimTranscript, newFinalTranscript) {
+	    commandsRef.current.forEach(function (_ref2) {
+	      var command = _ref2.command,
+	          callback = _ref2.callback,
+	          _ref2$matchInterim = _ref2.matchInterim,
+	          matchInterim = _ref2$matchInterim === void 0 ? false : _ref2$matchInterim,
+	          _ref2$isFuzzyMatch = _ref2.isFuzzyMatch,
+	          isFuzzyMatch = _ref2$isFuzzyMatch === void 0 ? false : _ref2$isFuzzyMatch,
+	          _ref2$fuzzyMatchingTh = _ref2.fuzzyMatchingThreshold,
+	          fuzzyMatchingThreshold = _ref2$fuzzyMatchingTh === void 0 ? 0.8 : _ref2$fuzzyMatchingTh,
+	          _ref2$bestMatchOnly = _ref2.bestMatchOnly,
+	          bestMatchOnly = _ref2$bestMatchOnly === void 0 ? false : _ref2$bestMatchOnly;
+	      var input = !newFinalTranscript && matchInterim ? newInterimTranscript.trim() : newFinalTranscript.trim();
+	      var subcommands = Array.isArray(command) ? command : [command];
+	      var results = subcommands.map(function (subcommand) {
+	        if (isFuzzyMatch) {
+	          return testFuzzyMatch(subcommand, input, fuzzyMatchingThreshold);
+	        }
+
+	        return testMatch(subcommand, input);
+	      }).filter(function (x) {
+	        return x;
+	      });
+
+	      if (isFuzzyMatch && bestMatchOnly && results.length >= 2) {
+	        results.sort(function (a, b) {
+	          return b.howSimilar - a.howSimilar;
+	        });
+	        var _results$ = results[0],
+	            _command = _results$.command,
+	            commandWithoutSpecials = _results$.commandWithoutSpecials,
+	            howSimilar = _results$.howSimilar;
+	        callback(commandWithoutSpecials, input, howSimilar, {
+	          command: _command,
+	          resetTranscript: resetTranscript
+	        });
+	      } else {
+	        results.forEach(function (result) {
+	          if (result.isFuzzyMatch) {
+	            var _command2 = result.command,
+	                _commandWithoutSpecials = result.commandWithoutSpecials,
+	                _howSimilar = result.howSimilar;
+	            callback(_commandWithoutSpecials, input, _howSimilar, {
+	              command: _command2,
+	              resetTranscript: resetTranscript
+	            });
+	          } else {
+	            var _command3 = result.command,
+	                parameters = result.parameters;
+	            callback.apply(void 0, _toConsumableArray(parameters).concat([{
+	              command: _command3,
+	              resetTranscript: resetTranscript
+	            }]));
+	          }
+	        });
+	      }
+	    });
+	  }, [resetTranscript]);
+	  var handleTranscriptChange = (0, _react.useCallback)(function (newInterimTranscript, newFinalTranscript) {
+	    if (transcribing) {
+	      dispatch((0, _actions.appendTranscript)(newInterimTranscript, newFinalTranscript));
+	    }
+
+	    matchCommands(newInterimTranscript, newFinalTranscript);
+	  }, [matchCommands, transcribing]);
+	  var handleClearTranscript = (0, _react.useCallback)(function () {
+	    if (clearTranscriptOnListen) {
+	      dispatchClearTranscript();
+	    }
+	  }, [clearTranscriptOnListen]);
+	  (0, _react.useEffect)(function () {
+	    var id = SpeechRecognition.counter;
+	    SpeechRecognition.counter += 1;
+	    var callbacks = {
+	      onListeningChange: setListening,
+	      onMicrophoneAvailabilityChange: setMicrophoneAvailable,
+	      onTranscriptChange: handleTranscriptChange,
+	      onClearTranscript: handleClearTranscript,
+	      onBrowserSupportsSpeechRecognitionChange: setBrowserSupportsSpeechRecognition,
+	      onBrowserSupportsContinuousListeningChange: setBrowserSupportsContinuousListening
+	    };
+	    recognitionManager.subscribe(id, callbacks);
+	    return function () {
+	      recognitionManager.unsubscribe(id);
+	    };
+	  }, [transcribing, clearTranscriptOnListen, recognitionManager, handleTranscriptChange, handleClearTranscript]);
+	  var transcript = (0, _utils.concatTranscripts)(finalTranscript, interimTranscript);
+	  return {
+	    transcript: transcript,
+	    interimTranscript: interimTranscript,
+	    finalTranscript: finalTranscript,
+	    listening: listening,
+	    isMicrophoneAvailable: isMicrophoneAvailable,
+	    resetTranscript: resetTranscript,
+	    browserSupportsSpeechRecognition: browserSupportsSpeechRecognition,
+	    browserSupportsContinuousListening: browserSupportsContinuousListening
+	  };
+	};
+
+	exports.useSpeechRecognition = useSpeechRecognition;
+	var SpeechRecognition = {
+	  counter: 0,
+	  applyPolyfill: function applyPolyfill(PolyfillSpeechRecognition) {
+	    if (recognitionManager) {
+	      recognitionManager.setSpeechRecognition(PolyfillSpeechRecognition);
+	    } else {
+	      recognitionManager = new _RecognitionManager["default"](PolyfillSpeechRecognition);
+	    }
+
+	    var browserSupportsPolyfill = !!PolyfillSpeechRecognition && (0, _utils.browserSupportsPolyfills)();
+	    _browserSupportsSpeechRecognition = browserSupportsPolyfill;
+	    _browserSupportsContinuousListening = browserSupportsPolyfill;
+	  },
+	  removePolyfill: function removePolyfill() {
+	    if (recognitionManager) {
+	      recognitionManager.setSpeechRecognition(_NativeSpeechRecognition["default"]);
+	    } else {
+	      recognitionManager = new _RecognitionManager["default"](_NativeSpeechRecognition["default"]);
+	    }
+
+	    _browserSupportsSpeechRecognition = !!_NativeSpeechRecognition["default"];
+	    _browserSupportsContinuousListening = _browserSupportsSpeechRecognition && !(0, _isAndroid["default"])();
+	  },
+	  getRecognitionManager: function getRecognitionManager() {
+	    if (!recognitionManager) {
+	      recognitionManager = new _RecognitionManager["default"](_NativeSpeechRecognition["default"]);
+	    }
+
+	    return recognitionManager;
+	  },
+	  getRecognition: function getRecognition() {
+	    var recognitionManager = SpeechRecognition.getRecognitionManager();
+	    return recognitionManager.getRecognition();
+	  },
+	  startListening: function () {
+	    var _startListening = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+	      var _ref3,
+	          continuous,
+	          language,
+	          recognitionManager,
+	          _args = arguments;
+
+	      return regeneratorRuntime.wrap(function _callee$(_context) {
+	        while (1) {
+	          switch (_context.prev = _context.next) {
+	            case 0:
+	              _ref3 = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, continuous = _ref3.continuous, language = _ref3.language;
+	              recognitionManager = SpeechRecognition.getRecognitionManager();
+	              _context.next = 4;
+	              return recognitionManager.startListening({
+	                continuous: continuous,
+	                language: language
+	              });
+
+	            case 4:
+	            case "end":
+	              return _context.stop();
+	          }
+	        }
+	      }, _callee);
+	    }));
+
+	    function startListening() {
+	      return _startListening.apply(this, arguments);
+	    }
+
+	    return startListening;
+	  }(),
+	  stopListening: function () {
+	    var _stopListening = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+	      var recognitionManager;
+	      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+	        while (1) {
+	          switch (_context2.prev = _context2.next) {
+	            case 0:
+	              recognitionManager = SpeechRecognition.getRecognitionManager();
+	              _context2.next = 3;
+	              return recognitionManager.stopListening();
+
+	            case 3:
+	            case "end":
+	              return _context2.stop();
+	          }
+	        }
+	      }, _callee2);
+	    }));
+
+	    function stopListening() {
+	      return _stopListening.apply(this, arguments);
+	    }
+
+	    return stopListening;
+	  }(),
+	  abortListening: function () {
+	    var _abortListening = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+	      var recognitionManager;
+	      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+	        while (1) {
+	          switch (_context3.prev = _context3.next) {
+	            case 0:
+	              recognitionManager = SpeechRecognition.getRecognitionManager();
+	              _context3.next = 3;
+	              return recognitionManager.abortListening();
+
+	            case 3:
+	            case "end":
+	              return _context3.stop();
+	          }
+	        }
+	      }, _callee3);
+	    }));
+
+	    function abortListening() {
+	      return _abortListening.apply(this, arguments);
+	    }
+
+	    return abortListening;
+	  }(),
+	  browserSupportsSpeechRecognition: function browserSupportsSpeechRecognition() {
+	    return _browserSupportsSpeechRecognition;
+	  },
+	  browserSupportsContinuousListening: function browserSupportsContinuousListening() {
+	    return _browserSupportsContinuousListening;
+	  }
+	};
+	var _default = SpeechRecognition;
+	exports["default"] = _default; 
+} (SpeechRecognition$1));
+
+(function (exports) {
+
+	function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	Object.defineProperty(exports, "useSpeechRecognition", {
+	  enumerable: true,
+	  get: function get() {
+	    return _SpeechRecognition.useSpeechRecognition;
+	  }
+	});
+	exports["default"] = void 0;
+
+	var _SpeechRecognition = _interopRequireWildcard(SpeechRecognition$1);
+
+	function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+	var _default = _SpeechRecognition["default"];
+	exports["default"] = _default; 
+} (lib));
+
+var SpeechRecognition = /*@__PURE__*/getDefaultExportFromCjs(lib);
+
 var chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
 var EMessageSource;
 (function (EMessageSource) {
@@ -19142,88 +21074,145 @@ var isYoutubeURL = function (url) {
 };
 var Main = function (props) {
     var _a = useTranslation("global"), t = _a[0]; _a[1];
-    var _b = useData(), setPopupItem = _b.setPopupItem, isBotVolumeOn = _b.isBotVolumeOn, setIsBotVolumeOn = _b.setIsBotVolumeOn, setCurrentRoute = _b.setCurrentRoute, clientConfig = _b.clientConfig, sessionId = _b.sessionId;
-    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, language = clientConfig.language, dummyRequest = clientConfig.dummyRequest, _c = clientConfig.chatbotLook, textBoxUser = _c.textBoxUser, textBoxChatbotReply = _c.textBoxChatbotReply, UIGroupA = _c.UIGroupA, UIGroupB = _c.UIGroupB;
+    var _b = useData(), setPopupItem = _b.setPopupItem, 
+    // isBotVolumeOn,
+    // setIsBotVolumeOn,
+    setCurrentRoute = _b.setCurrentRoute, clientConfig = _b.clientConfig, sessionId = _b.sessionId, language = _b.language;
+    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, dummyRequest = clientConfig.dummyRequest, _c = clientConfig.chatbotLook, textBoxUser = _c.textBoxUser, textBoxChatbotReply = _c.textBoxChatbotReply, UIGroupA = _c.UIGroupA, UIGroupB = _c.UIGroupB;
     var _d = React.useState(false), isInputFocused = _d[0], setIsInputFocused = _d[1];
-    var _e = React.useState(""), message = _e[0], setMessage = _e[1];
+    var _e = React.useState(false), isMicPressed = _e[0], setMic = _e[1];
+    var _f = React.useState(true), browserNotSupp = _f[0], setBrowserSupp = _f[1];
+    var _g = React.useState(""); _g[0]; _g[1];
+    var _h = React.useState(false), isBotVolumeOn = _h[0], setIsBotVolumeOn = _h[1];
+    var _j = React.useState(window.speechSynthesis.getVoices()), voices = _j[0], setVoices = _j[1];
+    var _k = React.useState(); _k[0]; var setEnVoices = _k[1];
+    var _l = React.useState(); _l[0]; var setDeVoices = _l[1];
+    React.useEffect(function () {
+        setEnVoices(voices === null || voices === void 0 ? void 0 : voices.filter(function (_a) {
+            var lang = _a.lang;
+            return lang === "en-US";
+        }));
+        setDeVoices(voices === null || voices === void 0 ? void 0 : voices.filter(function (_a) {
+            var lang = _a.lang;
+            return lang === "de-DE";
+        }));
+    }, [voices]);
+    var glowCSS = {
+        backgroundColor: UIGroupB.UIGroupBUIBackground,
+        color: UIGroupB.UIGroupBUIHighlight,
+    };
+    ({
+        backgroundColor: UIGroupB.UIGroupBUIBackground,
+        color: UIGroupB.UIGroupBUIHighlight,
+        boxShadow: "0 0 20px #00"
+    });
+    var _m = React.useState(glowCSS); _m[0]; _m[1];
+    var _o = React.useState(false), regen = _o[0], setRegen = _o[1];
+    var _p = React.useState(""), message = _p[0], setMessage = _p[1];
     var initialMessages = function () {
         var res = [];
         if (localStorage.getItem("history") != null) {
             res = JSON.parse(localStorage.getItem("history") || '');
         }
-        if (language == "de") {
-            if (res != '') {
-                return res;
+        if (res != '') {
+            if (res[0].session != sessionId) {
+                return [];
             }
             else {
-                return [
-                    {
-                        source: EMessageSource.BOT,
-                        message: "Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
-                    },
-                ];
+                return res;
             }
         }
         else {
-            if (res != '') {
-                return res;
-            }
-            else {
-                return [
-                    {
-                        source: EMessageSource.BOT,
-                        message: "Welcome to our Student Advisory Service!\nHow can I help you today?",
-                    },
-                ];
-            }
+            return [
+                {
+                    source: EMessageSource.BOT,
+                    message: t("intromsg"),
+                    session: sessionId,
+                },
+            ];
         }
     };
-    var _f = React.useState(initialMessages), messages = _f[0], setMessages = _f[1];
-    var _g = React.useState(false), loading = _g[0], setLoading = _g[1];
+    React.useEffect(function () {
+        if (dummyRequest == true) {
+            setDummyValueCounter(false);
+            setMessages(initialMessages);
+        }
+        else {
+            var res = [];
+            if (localStorage.getItem("history") != null) {
+                res = JSON.parse(localStorage.getItem("history") || '');
+            }
+            if (res.length >= 1) {
+                if (res[0].session != sessionId) {
+                    setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },]);
+                }
+                else {
+                    setMessages(res);
+                }
+            }
+            else {
+                setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },]);
+            }
+        }
+    }, [localStorage.getItem('language')]);
+    var _q = React.useState(initialMessages), messages = _q[0], setMessages = _q[1];
+    var _r = React.useState(false), loading = _r[0], setLoading = _r[1];
     var messagesEndRef = React.useRef(null);
-    // const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
     var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
     var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
-    var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
-    var _h = React.useState(''); _h[0]; var setValue = _h[1];
-    var _j = React.useState(false), dummyValuesSet = _j[0], setDummyValueCounter = _j[1];
+    var _s = React.useState(''); _s[0]; var setValue = _s[1];
+    var _t = React.useState(false), dummyValuesSet = _t[0], setDummyValueCounter = _t[1];
     React.useEffect(function () {
-        if (messages[messages.length - 1].message.trim() != clientConfig.randomQuestion.trim()) {
-            var timeout_1 = setTimeout(function () {
-                if (clientConfig.randomQuestionEnabled) {
-                    setMessages(function (prev) {
-                        return __spreadArray(__spreadArray([], prev, true), [
-                            {
-                                source: EMessageSource.BOT,
-                                message: clientConfig.randomQuestion,
-                                type: EMessageType.TEXT,
-                                url: "",
-                            },
-                        ], false);
-                    });
-                }
-            }, 120000);
-            return function () { return clearTimeout(timeout_1); };
+        if (messages.length > 1) {
+            if (messages[messages.length - 1].message.trim() != clientConfig.randomQuestion.trim()) {
+                var timeout_1 = setTimeout(function () {
+                    if (clientConfig.randomQuestionEnabled) {
+                        setMessages(function (prev) {
+                            return __spreadArray(__spreadArray([], prev, true), [
+                                {
+                                    source: EMessageSource.BOT,
+                                    message: clientConfig.randomQuestion,
+                                    type: EMessageType.TEXT,
+                                    url: "",
+                                },
+                            ], false);
+                        });
+                    }
+                }, 120000);
+                return function () { return clearTimeout(timeout_1); };
+            }
         }
     }, [message]);
-    var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
-        var params, options, resJson, response_1, chatbotID, currentdate, datetime;
+    var handleMessageRegen = function (e) { return __awaiter(void 0, void 0, void 0, function () {
+        var res, arr, userQuestion, params, options, resJson, response_1, chatbotID, currentdate, datetime;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    e === null || e === void 0 ? void 0 : e.preventDefault();
                     setLoading(true);
-                    setMessage("");
-                    if (message.trim() === "")
-                        return [2 /*return*/];
-                    setMessages(__spreadArray(__spreadArray([], messages, true), [{ source: EMessageSource.USER, message: message }], false));
+                    res = [];
+                    if (localStorage.getItem("history") != null) {
+                        res = JSON.parse(localStorage.getItem("history") || '');
+                    }
+                    arr = res;
+                    userQuestion = "";
+                    arr.reverse();
+                    arr.forEach(function (el) {
+                        if (el.source == "USER") {
+                            userQuestion = el.message;
+                        }
+                    });
                     params = {
-                        question: message,
+                        question: userQuestion,
                         botId: chatbotId,
                         sessionId: sessionId,
                         userId: userId,
-                        language: language
+                        language: language,
+                        filter: clientConfig.chatboxBehaviour,
+                        chatHistory: localStorage.getItem("history"),
+                        regen: regen,
+                        randomQuestion: clientConfig.randomQuestion,
+                        customPrompt: clientConfig.customPrompt
                     };
                     options = {
                         method: "POST",
@@ -19256,6 +21245,7 @@ var Main = function (props) {
                     });
                     setValue(response_1.answer);
                     setLoading(false);
+                    setRegen(false);
                     chatbotID = void 0;
                     if ("chatbotId" in props) {
                         chatbotID = props.chatbotId;
@@ -19271,7 +21261,6 @@ var Main = function (props) {
                             method: "POST",
                             headers: {
                                 "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
-                                "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
                             },
                             body: JSON.stringify({
                                 chatbotId: chatbotID,
@@ -19291,6 +21280,158 @@ var Main = function (props) {
                             {
                                 source: EMessageSource.BOT,
                                 message: "Something went wrong! Please try again.",
+                            },
+                        ], false);
+                    });
+                    setLoading(false);
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
+        });
+    }); };
+    var handleUserMessage = function (e) { return __awaiter(void 0, void 0, void 0, function () {
+        var filters, params, options, resJson, response_2, urlsMatch, string, result, mediaMessages, chatbotID, currentdate, datetime;
+        var _a, _b;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    setLoading(true);
+                    if (regen == false) {
+                        e === null || e === void 0 ? void 0 : e.preventDefault();
+                        setMessage("");
+                        if (message.trim() === "")
+                            return [2 /*return*/];
+                    }
+                    setMessages(__spreadArray(__spreadArray([], messages, true), [{ source: EMessageSource.USER, message: message }], false));
+                    filters = clientConfig.chatboxBehaviour;
+                    if (localStorage.getItem("LengthFilter") != undefined) {
+                        filters.length = Number(localStorage.getItem("LengthFilter"));
+                    }
+                    params = {
+                        question: message,
+                        botId: chatbotId,
+                        sessionId: sessionId,
+                        userId: userId,
+                        language: language,
+                        filter: filters,
+                        chatHistory: localStorage.getItem("history"),
+                        regen: regen,
+                        randomQuestion: clientConfig.randomQuestion,
+                        customPrompt: clientConfig.customPrompt
+                    };
+                    options = {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(params),
+                    };
+                    _c.label = 1;
+                case 1:
+                    _c.trys.push([1, 5, , 6]);
+                    return [4 /*yield*/, fetch(chatEndpoint, options)];
+                case 2:
+                    resJson = _c.sent();
+                    return [4 /*yield*/, resJson.json()];
+                case 3:
+                    response_2 = _c.sent();
+                    urlsMatch = [];
+                    if (response_2.answer.indexOf(".mp4") || response_2.answer.indexOf(".mov") || response_2.answer.indexOf(".MOV")) {
+                        string = response_2.answer;
+                        result = string.match(/(http||https)?:\/\/(((?:[a-z0-9\-]+\.)+[a-z]{2,6})||((?:localhost:)+[0-9]{4}))(?:\/[^\/#?]+)+\.(?:jpg|mp4|png|MOV|mov|jpeg)/gi);
+                        if (result != null) {
+                            urlsMatch = result;
+                        }
+                    }
+                    mediaMessages = [];
+                    if (urlsMatch.length > 0) {
+                        urlsMatch.forEach(function (url) {
+                            if (url.endsWith("mp4") || url.endsWith("mov") || url.endsWith("MOV")) {
+                                mediaMessages.push({
+                                    source: EMessageSource.BOT,
+                                    message: "",
+                                    type: EMessageType.VIDEO,
+                                    url: url
+                                });
+                            }
+                            if (url.endsWith("jpg") || url.endsWith("png") || url.endsWith("jpeg")) {
+                                mediaMessages.push({
+                                    source: EMessageSource.BOT,
+                                    message: "",
+                                    type: EMessageType.IMAGE,
+                                    url: url
+                                });
+                            }
+                        });
+                        mediaMessages.push({
+                            source: EMessageSource.BOT,
+                            message: response_2.answer,
+                            type: response_2.type === "image"
+                                ? EMessageType.IMAGE
+                                : response_2.type === "video"
+                                    ? EMessageType.VIDEO
+                                    : EMessageType.TEXT,
+                            url: (_a = response_2.url) !== null && _a !== void 0 ? _a : "",
+                        });
+                        // var arr = [...messages, ...mediaMessages] as IBotMessage[]
+                        // console.log(arr)
+                        // setMessages(arr)
+                        setMessages(function (prev) {
+                            return __spreadArray(__spreadArray([], prev, true), mediaMessages, true);
+                        });
+                    }
+                    else {
+                        setMessages(function (prev) {
+                            var _a;
+                            return __spreadArray(__spreadArray([], prev, true), [
+                                {
+                                    source: EMessageSource.BOT,
+                                    message: response_2.answer,
+                                    type: response_2.type === "image"
+                                        ? EMessageType.IMAGE
+                                        : response_2.type === "video"
+                                            ? EMessageType.VIDEO
+                                            : EMessageType.TEXT,
+                                    url: (_a = response_2.url) !== null && _a !== void 0 ? _a : "",
+                                },
+                            ], false);
+                        });
+                    }
+                    setValue(response_2.answer);
+                    setLoading(false);
+                    setRegen(false);
+                    chatbotID = void 0;
+                    if ("chatbotId" in props) {
+                        chatbotID = props.chatbotId;
+                    }
+                    currentdate = new Date();
+                    datetime = currentdate.getDate() + "/"
+                        + (currentdate.getMonth() + 1) + "/"
+                        + currentdate.getFullYear() + " @ "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
+                    return [4 /*yield*/, fetch("".concat(WHAT2STUDY_BACKEND_URL, "/saveUserMessage"), {
+                            method: "POST",
+                            headers: {
+                                "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                            },
+                            body: JSON.stringify({
+                                chatbotId: chatbotID,
+                                user: message,
+                                bot: response_2.answer,
+                                sessionID: (_b = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)) === null || _b === void 0 ? void 0 : _b.trim(),
+                                timestamp: datetime,
+                            }),
+                        })];
+                case 4:
+                    _c.sent();
+                    return [3 /*break*/, 6];
+                case 5:
+                    _c.sent();
+                    setMessages(function (prev) {
+                        return __spreadArray(__spreadArray([], prev, true), [
+                            {
+                                source: EMessageSource.BOT,
+                                message: t("chaterror"),
                             },
                         ], false);
                     });
@@ -19326,7 +21467,6 @@ var Main = function (props) {
                             method: "POST",
                             headers: {
                                 "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
-                                "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
                             },
                             body: JSON.stringify({
                                 chatbotId: chatbotID,
@@ -19338,6 +21478,16 @@ var Main = function (props) {
                         })];
                 case 1:
                     _b.sent();
+                    setMessages(function (prev) {
+                        return __spreadArray(__spreadArray([], prev, true), [
+                            {
+                                source: EMessageSource.BOT,
+                                message: t("panicmessage"),
+                                type: EMessageType.TEXT,
+                                url: "",
+                            },
+                        ], false);
+                    });
                     return [2 /*return*/];
             }
         });
@@ -19346,11 +21496,126 @@ var Main = function (props) {
         var _a;
         (_a = messagesEndRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
     };
+    // if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    //     return null;
+    //   }
+    var commands = [
+        {
+            command: "reset",
+            callback: function () { return resetTranscript(); },
+        },
+    ];
+    var _u = lib.useSpeechRecognition({ commands: commands }); _u.transcript; var interimTranscript = _u.interimTranscript, finalTranscript = _u.finalTranscript, resetTranscript = _u.resetTranscript, listening = _u.listening;
+    React.useEffect(function () {
+        if (browserNotSupp) {
+            if (finalTranscript !== "") {
+                if (listening) {
+                    console.log("listeing");
+                    setMessage(finalTranscript);
+                    // setMicInputText(finalTranscript)
+                    setMic(false);
+                }
+            }
+            if (interimTranscript != "") {
+                // setMicInputText(interimTranscript)
+                if (listening) {
+                    console.log("listeing");
+                    setMessage(interimTranscript);
+                }
+            }
+        }
+    }, [interimTranscript, finalTranscript, listening]);
+    React.useEffect(function () {
+        if (browserNotSupp) {
+            if (isMicPressed) {
+                var lang = "de-DE";
+                if (clientConfig.language.toLowerCase().startsWith("e")) {
+                    lang = "en-US";
+                }
+                SpeechRecognition.startListening({
+                    continuous: true,
+                    language: lang,
+                });
+            }
+            else {
+                SpeechRecognition.stopListening();
+                resetTranscript();
+            }
+        }
+        if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+            console.log("Your browser does not support speech recognition software! Try Chrome desktop, maybe?");
+            setBrowserSupp(false);
+        }
+        else {
+            setBrowserSupp(true);
+        }
+    }, [isMicPressed]);
+    React.useEffect(function () {
+        if (browserNotSupp) {
+            var value = new SpeechSynthesisUtterance(messages[messages.length - 1].message);
+            var voices_ = speechSynthesis.getVoices();
+            var engVoice = [];
+            var deVoice = [];
+            if (Array.isArray(voices_) && voices_.length > 0) {
+                setVoices(voices_);
+                engVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+                    var lang = _a.lang;
+                    return lang === "en-US";
+                });
+                deVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+                    var lang = _a.lang;
+                    return lang === "de-DE";
+                });
+                setEnVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+                    var lang = _a.lang;
+                    return lang === "en-US";
+                }));
+                setDeVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+                    var lang = _a.lang;
+                    return lang === "de-DE";
+                }));
+            }
+            // value.lang = "de-DE";
+            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("en male");
+                console.log(engVoice[30]);
+                // value.lang = "en-US";
+                value.voice = engVoice[30];
+            }
+            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("en female");
+                // value.lang = "en-US";
+                value.voice = engVoice[16];
+            }
+            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("de male");
+                // value.lang = "de-DE";
+                console.log(deVoice[11]);
+                value.voice = deVoice[11];
+            }
+            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("de female");
+                // value.lang = "de-DE";
+                console.log(deVoice[10]);
+                value.voice = deVoice[10];
+            }
+            if (isBotVolumeOn) {
+                console.log("volume tried");
+                window.speechSynthesis.speak(value);
+            }
+            else {
+                console.log("volume stopped");
+                window.speechSynthesis.cancel();
+                setIsBotVolumeOn(false);
+            }
+        }
+    }, [isBotVolumeOn]);
     React.useEffect(function () {
         scrollToBottom();
         localStorage.removeItem("history");
         if (dummyRequest == false) {
             localStorage.setItem("history", JSON.stringify(messages));
+            localStorage.setItem("historySession", clientConfig.chatbotId);
         }
         if (dummyRequest && dummyValuesSet == false) {
             var msgs = [
@@ -19377,25 +21642,69 @@ var Main = function (props) {
             setDummyValueCounter(true);
         }
     }, [messages]);
-    var breakMsg = function (message) {
+    var breakMsg = function (message, source) {
         var msg = message.split('\n').map(function (str) {
-            var result = str.match(/\bhttps?:\/\/\S+/gi);
+            var result = str.match(/\bhttps:\/\/\S+/gi);
             var theObj;
             // str = "<br></br>"+str+""
             if (result != null) {
+                var toReplaceURL = [];
                 result.forEach(function (el) {
-                    str = str.replace(el, "<a href='" + el + "'>" + el + "</a>");
+                    el = el.replace(").", "");
+                    el = el.replace("(", "");
+                    el = el.replace(")", "");
+                    toReplaceURL.push(el);
                 });
+                if (toReplaceURL.length > 0) {
+                    toReplaceURL.forEach(function (url) {
+                        str = str.replace(url, "<a target='_blank' href='" + url + "'/>" + "Link" + "</a>");
+                    });
+                }
+            }
+            var result_http = str.match(/\bhttp:\/\/\S+/gi);
+            // str = "<br></br>"+str+""
+            if (result_http != null) {
+                var toReplaceURL = [];
+                result_http.forEach(function (el) {
+                    el = el.replace(").", "");
+                    el = el.replace("(", "");
+                    el = el.replace(")", "");
+                    toReplaceURL.push(el);
+                });
+                if (toReplaceURL.length > 0) {
+                    toReplaceURL.forEach(function (url) {
+                        str = str.replace(url, "<a target='_blank' href='" + url + "'/>" + "Link" + "</a>");
+                    });
+                }
             }
             theObj = { __html: str };
-            return jsxRuntimeExports.jsx("div", { dangerouslySetInnerHTML: theObj });
+            return jsxRuntimeExports.jsx("div", { style: source === EMessageSource.BOT
+                    ? {
+                        backgroundColor: textBoxChatbotReply.textBoxChatbotReplyColor,
+                        color: textBoxChatbotReply.textBoxChatbotReplyFontColor,
+                        fontFamily: textBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                    }
+                    : {
+                        backgroundColor: textBoxUser.textBoxUserColor,
+                        color: textBoxUser.textBoxUserFontColor,
+                        fontFamily: textBoxUser.textBoxFontStyle,
+                    }, dangerouslySetInnerHTML: theObj });
         });
         return msg;
     };
     return (jsxRuntimeExports.jsxs(React.Fragment, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "info-talktohuman" }, { children: [jsxRuntimeExports.jsx(IconButton, { className: "info-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, icon: MdInfoOutline, onClick: function () { return setPopupItem(EPopupItem.BOT_INFO); }, "aria-label": "Info", title: "Info", iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
                             backgroundColor: UIGroupB.UIGroupBUIBackground,
                             color: UIGroupB.UIGroupBUIHighlight,
-                        }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: t("lang.lang") })), jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function () { return setIsBotVolumeOn(!isBotVolumeOn); }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
+                        }, onClick: function () {
+                            localStorage.removeItem("history");
+                            setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },]);
+                        } }, { children: t("lang.ClearHistory") })), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
+                            backgroundColor: UIGroupB.UIGroupBUIBackground,
+                            color: UIGroupB.UIGroupBUIHighlight,
+                        }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: t("lang.lang") })), browserNotSupp &&
+                        jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function (e) {
+                                setIsBotVolumeOn(!isBotVolumeOn);
+                            }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
                         var message = _a.message, source = _a.source, feedback = _a.feedback, type = _a.type, url = _a.url;
                         return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper ".concat(source === EMessageSource.BOT
                                 ? "botMessageWrapper"
@@ -19409,7 +21718,7 @@ var Main = function (props) {
                                             backgroundColor: textBoxUser.textBoxUserColor,
                                             color: textBoxUser.textBoxUserFontColor,
                                             fontFamily: textBoxUser.textBoxFontStyle,
-                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" })) : (jsxRuntimeExports.jsx(React.Fragment, {})), jsxRuntimeExports.jsx("div", { children: breakMsg(message) }), source === EMessageSource.BOT && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "Video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }) })))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" }) }))) : (jsxRuntimeExports.jsx(React.Fragment, {})), breakMsg(message, source), source === EMessageSource.BOT && message.toLowerCase().indexOf("rückmeldung") === -1 && message.toLowerCase().indexOf("welcome") === -1 && message.toLowerCase().indexOf("willkommen") === -1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
                                                         if (feedback === true)
                                                             return;
                                                         handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
@@ -19417,30 +21726,84 @@ var Main = function (props) {
                                                         if (feedback === false)
                                                             return;
                                                         handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
-                                                    }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: console.log, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
-                    }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("form", __assign$1({ className: "inputFormWrapper", onSubmit: handleUserMessage }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: BsFillMicFill, onClick: console.log, className: "voice-input-button", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, disabled: dummyRequest != true ? false : true, onChange: function (e) {
+                                                    }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: function () {
+                                                        setRegen(true);
+                                                        handleMessageRegen();
+                                                    }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
+                    }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "inputFormWrapper" }, { children: [browserNotSupp &&
+                        jsxRuntimeExports.jsx(IconButton, { icon: isMicPressed ? BsFillMicFill : BsFillMicMuteFill, onClick: function (e) {
+                                setMic(!isMicPressed);
+                            }, className: "voice-input-button", id: "voiceMicButton", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }, "voiceMicButton"), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, disabled: dummyRequest != true ? false : true, onChange: function (e) {
                             setMessage(e.target.value);
                             setValue("terminate");
-                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ type: "submit", className: "sendButton", disabled: dummyRequest != true ? false : true, style: {
+                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ 
+                        // type="submit"
+                        className: "sendButton", disabled: dummyRequest != true ? false : true, style: {
                             backgroundColor: UIGroupB.UIGroupBUIBackground,
-                        }, onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon", color: UIGroupB.UIGroupBUIHighlight }) }))] }))] }));
+                        }, id: "messageSendButton", onClick: handleUserMessage }, { children: jsxRuntimeExports.jsx(IoSend, { className: "buttonIcon", color: UIGroupB.UIGroupBUIHighlight }) }), "messageSendButton")] }))] }));
 };
 
 var DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-var TalkToHuman = function () {
-    var setCurrentRoute = useData().setCurrentRoute;
-    var _a = React.useState(true), useSavedEmail = _a[0], setUseSavedEmail = _a[1];
-    var _b = React.useState(""), phoneInput = _b[0], setPhoneInput = _b[1];
-    var _c = React.useState({
+var LOCALSTORAGE_SESSION_ID_KEY$1 = "what2studyUserSessionId";
+var TalkToHuman = function (props) {
+    var _a = React.useState(true); _a[0]; _a[1];
+    var _b = React.useState(""), userDescription = _b[0], setDescription = _b[1];
+    var _c = React.useState(""), userEmail = _c[0], setUserEmail = _c[1];
+    var _d = React.useState(""), userMat = _d[0], setUserMat = _d[1];
+    var _e = React.useState(""), userPhone = _e[0], setUserPhone = _e[1];
+    var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
+    var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+    var _f = React.useState({
         day: "Sat",
         time: "09:00",
-    }), preferredDayTime = _c[0], setPreferredDayTime = _c[1];
-    var _d = useTranslation("global"), t = _d[0]; _d[1];
-    return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "talkToHuman-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "navbar" }, { children: jsxRuntimeExports.jsxs("button", __assign$1({ className: "navBackBtn", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [jsxRuntimeExports.jsx(IoChevronBack, { className: "navIcon" }), jsxRuntimeExports.jsx("span", __assign$1({ className: "navText" }, { children: t("talk2human.back") }))] })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-details-wrapper" }, { children: [jsxRuntimeExports.jsxs("a", __assign$1({ className: "contact-detail", href: "tel:+49 9086 4577209" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(IoIosCall, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: "+49 9086 4577209" }))] })), jsxRuntimeExports.jsxs("a", __assign$1({ target: "_blank", className: "contact-detail contact-email", href: "mailto:registration@uni-siegen.de" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(MdEmail, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: "registration@uni-siegen.de" }))] }))] })), jsxRuntimeExports.jsx("div", { className: "divider" }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "tth-data-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.write") })), jsxRuntimeExports.jsx(FloatingLabel$1, __assign$1({ controlId: "floatingTextarea", label: t("talk2human.message"), className: "tth-message" }, { children: jsxRuntimeExports.jsx(Form$1.Control, { as: "textarea", placeholder: t("talk2human.message"), style: { height: "90px" } }) })), jsxRuntimeExports.jsx(Form$1.Check, { name: "send-chat-details", "aria-label": "Send chat details", label: t("talk2human.send"), defaultChecked: true }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.please") })), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: useSavedEmail, onClick: function () { return setUseSavedEmail(true); }, label: jsxRuntimeExports.jsxs(React.Fragment, { children: [t("talk2human.use"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "email-address-saved" }, { children: "somebody.nobody@example.com" }))] }) }), jsxRuntimeExports.jsx(Form$1.Check, { type: "radio", name: "email-address", checked: !useSavedEmail, onClick: function () { return setUseSavedEmail(false); }, label: t("talk2human.different") }), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: t("talk2human.email"), disabled: useSavedEmail })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.would") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "tel", onChange: function (e) { return setPhoneInput(e.target.value); }, value: phoneInput, placeholder: t("talk2human.number") }), phoneInput.trim() !== "" && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "day-time-input-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.best") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "day-wrapper" }, { children: DAYS.map(function (day) { return (jsxRuntimeExports.jsx("span", __assign$1({ className: "day-select ".concat(preferredDayTime.day === day ? "day-selected" : ""), onClick: function () {
+    }), preferredDayTime = _f[0], setPreferredDayTime = _f[1];
+    var _g = useData(); _g.setPopupItem; _g.isBotVolumeOn; _g.setIsBotVolumeOn; var setCurrentRoute = _g.setCurrentRoute, clientConfig = _g.clientConfig; _g.sessionId; _g.language;
+    var _h = useTranslation("global"), t = _h[0]; _h[1];
+    return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "talkToHuman-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "navbar" }, { children: jsxRuntimeExports.jsxs("button", __assign$1({ className: "navBackBtn", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [jsxRuntimeExports.jsx(IoChevronBack, { className: "navIcon" }), jsxRuntimeExports.jsx("span", __assign$1({ className: "navText" }, { children: t("talk2human.back") }))] })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-details-wrapper" }, { children: [jsxRuntimeExports.jsxs("a", __assign$1({ className: "contact-detail" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(IoIosCall, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: clientConfig.phone }))] })), jsxRuntimeExports.jsxs("a", __assign$1({ target: "_blank", className: "contact-detail contact-email", href: "mailto:registration@uni-siegen.de" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(MdEmail, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: clientConfig.email }))] }))] })), jsxRuntimeExports.jsx("div", { className: "divider" }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "tth-data-wrapper" }, { children: [jsxRuntimeExports.jsxs("p", __assign$1({ className: "tth-info-text" }, { children: [clientConfig.nameOfOrg, " ", t("talk2human.write"), ":"] })), jsxRuntimeExports.jsx(FloatingLabel$1, __assign$1({ controlId: "floatingTextarea", label: t("talk2human.message"), className: "tth-message" }, { children: jsxRuntimeExports.jsx(Form$1.Control, { as: "textarea", 
+                            // placeholder={t("talk2human.message")}
+                            defaultValue: clientConfig.talkToaHumanEnabled ? clientConfig.talkToaHuman : "", style: { height: "90px" }, onChange: function (e) { return setDescription(e.target.value); } }) })), jsxRuntimeExports.jsx(Form$1.Check, { name: "send-chat-details", "aria-label": "Send chat details", label: t("talk2human.send"), defaultChecked: true }), clientConfig.matriculationNumber ? jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.matriculation") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: t("talk2human.matPlaceholder"), 
+                                // disabled={useSavedEmail}
+                                onChange: function (e) { return setUserMat(e.target.value); } })] })) : jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.please") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: t("talk2human.email"), 
+                                // disabled={useSavedEmail}
+                                onChange: function (e) { return setUserEmail(e.target.value); } })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.would") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "tel", onChange: function (e) { return setUserPhone(e.target.value); }, value: userPhone, placeholder: t("talk2human.number") }), userPhone.trim() !== "" && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "day-time-input-wrapper" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.best") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "day-wrapper" }, { children: DAYS.map(function (day) { return (jsxRuntimeExports.jsx("span", __assign$1({ className: "day-select ".concat(preferredDayTime.day === day ? "day-selected" : ""), onClick: function () {
                                                 return setPreferredDayTime(__assign$1(__assign$1({}, preferredDayTime), { day: day }));
                                             } }, { children: day }))); }) })), jsxRuntimeExports.jsx(Form$1.Control, { type: "time", value: preferredDayTime.time, onChange: function (e) {
                                             return setPreferredDayTime(__assign$1(__assign$1({}, preferredDayTime), { time: e.target.value }));
-                                        } })] })))] }))] }))] })));
+                                        } })] })))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chip-button-wrapper", style: { height: "100px", alignContent: "center" } }, { children: [jsxRuntimeExports.jsx("img", { src: clientConfig.orgImage, style: { width: "110px" } }), jsxRuntimeExports.jsx("button", __assign$1({ style: { position: "absolute", marginTop: "9%", right: "0" }, className: "app-chip-button", onClick: function () {
+                                    var _a;
+                                    var currentdate = new Date();
+                                    var datetime = currentdate.getDate() + "/"
+                                        + (currentdate.getMonth() + 1) + "/"
+                                        + currentdate.getFullYear() + " @ "
+                                        + currentdate.getHours() + ":"
+                                        + currentdate.getMinutes() + ":"
+                                        + currentdate.getSeconds();
+                                    var res;
+                                    if (localStorage.getItem("history") != null) {
+                                        res = JSON.parse(localStorage.getItem("history") || '');
+                                    }
+                                    var chatbotID;
+                                    if ("chatbotId" in props) {
+                                        chatbotID = props.chatbotId;
+                                    }
+                                    fetch("".concat(WHAT2STUDY_BACKEND_URL, "/sendEmailT"), {
+                                        method: "POST",
+                                        headers: {
+                                            "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                                        },
+                                        body: JSON.stringify({
+                                            chatbotId: chatbotID,
+                                            chat: JSON.stringify(res),
+                                            sessionID: (_a = localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY$1)) === null || _a === void 0 ? void 0 : _a.trim(),
+                                            timestamp: datetime,
+                                            description: userDescription,
+                                            userEmail: userEmail,
+                                            userPhone: userPhone,
+                                            uniEmail: clientConfig.email,
+                                            userMat: userMat
+                                        }),
+                                    });
+                                } }, { children: t("talk2human.submit") }))] }))] }))] })));
 };
 
 var ChatContainer = function (props) {
@@ -19451,14 +21814,14 @@ var ChatContainer = function (props) {
             case ERoute.MAIN:
                 return jsxRuntimeExports.jsx(Main, __assign$1({}, props));
             case ERoute.TALK_TO_HUMAN:
-                return jsxRuntimeExports.jsx(TalkToHuman, {});
+                return jsxRuntimeExports.jsx(TalkToHuman, __assign$1({}, props));
             default:
                 return jsxRuntimeExports.jsx(React.Fragment, {});
         }
     };
     var _a = useData(), isChatOpen = _a.isChatOpen, isMobileScreen = _a.isMobileScreen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute, clientConfig = _a.clientConfig;
-    var _b = clientConfig.chatbotLook, chatbotHeader = _b.chatbotHeader, chatbotBackground = _b.chatbotBackground, chatbotName = clientConfig.chatbotName;
-    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: chatbotName != "" ? chatbotName : "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
+    var _b = clientConfig.chatbotLook, chatbotHeader = _b.chatbotHeader, chatbotBackground = _b.chatbotBackground, chatbotName = clientConfig.chatbotName, testRequest = clientConfig.testRequest;
+    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED, testRequest: testRequest }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: chatbotName != "" ? chatbotName : "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
 };
 
 // THIS FILE IS AUTO GENERATED
@@ -19469,29 +21832,77 @@ function BiChevronDown (props) {
 var OpenChatButton = function (props) {
     var icon = props.icon;
     var _a = useData(), isChatOpen = _a.isChatOpen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, clientConfig = _a.clientConfig;
+    // const styleR = { width: "40px", animation: "3s linear 0s infinite normal none running rotation" }
+    var styleR = {
+        width: "40px",
+        "-webkit-transition": "transform 1s ease",
+        "-moz-transition": "transform 1s ease",
+        "-ms-transition": "transform 1s ease",
+        "-o-transition": "transform 1s ease",
+        transition: "transform 1s ease",
+        transform: "translateX( -1px ) rotateY( 360deg )",
+        "-ms-transform": " translateX( -1px ) rotateY(360deg)",
+        "-webkit-transform": " translateX( -1px ) rotateY(360deg)", /* Chrome, Safari, Opera */
+    };
+    var styleRNot = { width: "40px", animation: "unset" };
+    var _b = React.useState(styleRNot), styleRotate = _b[0], setStyleRotate = _b[1];
     var Icon = !isChatOpen ? icon : BiChevronDown;
-    var chatbotBubbleIcons = clientConfig.chatbotBubbleIcons, chatbotHeader = clientConfig.chatbotLook.chatbotHeader;
+    var chatbotBubbleIcons = clientConfig.chatbotBubbleIcons, chatbotHeader = clientConfig.chatbotLook.chatbotHeader, testRequest = clientConfig.testRequest;
     var handleOpenChatButtonClick = function () {
         setIsChatOpen(!isChatOpen);
         setPopupItem(EPopupItem.NONE);
     };
-    return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: IframeType.CHAT_OPEN_BUTTON }, { children: jsxRuntimeExports.jsx("button", __assign$1({ 
-            // inline styles for button as loading stylesheets takes time on browser (causes to show button without styles)
-            style: __assign$1({ width: "48px", height: "48px", margin: "3px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "".concat(chatbotHeader.chatbotHeaderBackgroundColor), border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
-                ? {
-                    backgroundColor: "#f0f0f0",
-                }
-                : {})), onClick: handleOpenChatButtonClick }, { children: !isChatOpen ? (jsxRuntimeExports.jsx("img", { src: chatbotBubbleIcons, alt: "What2Study", style: { width: "22px" } })) : (jsxRuntimeExports.jsx(Icon, { style: {
-                    fontSize: "22px",
-                    color: "#000000",
-                } })) })) })));
+    React.useEffect(function () {
+        console.log(IframeType.CHAT_OPEN_BUTTON);
+        if (!isChatOpen) {
+            setInterval(function () {
+                console.log('Logs every sec1');
+                setStyleRotate(styleR);
+            }, 5000);
+            setInterval(function () {
+                console.log('Logs every sec2');
+                setStyleRotate(styleRNot);
+            }, 8000);
+        }
+        else {
+            setStyleRotate(styleRNot);
+        }
+    }, [isChatOpen]);
+    return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: IframeType.CHAT_OPEN_BUTTON, testRequest: testRequest }, { children: jsxRuntimeExports.jsxs("div", __assign$1({ style: {
+                margin: "0 auto",
+                position: "relative",
+                overflow: "hidden",
+            } }, { children: [!isChatOpen && jsxRuntimeExports.jsx("div", { style: {
+                        position: "absolute",
+                        display: "block",
+                        top: "-50%",
+                        left: "-50%",
+                        zIndex: "-9",
+                        // display: "block",
+                        height: "200%",
+                        width: "200%",
+                        transform: "rotate(-45deg)",
+                        overflow: "hidden",
+                        background: "linear-gradient(to right, #fff 20%, #fff 20%, #ECD08C 50%, #ECD08C 55%, #fff 70%, #fff 100%)",
+                        backgroundSize: "600% auto",
+                        animation: "shine 1.1s linear infinite"
+                    } }), jsxRuntimeExports.jsx("button", __assign$1({ 
+                    // inline styles for button as loading stylesheets takes time on browser (causes to show button without styles)
+                    style: __assign$1({ width: "62px", height: "62px", margin: "4px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "".concat(chatbotHeader.chatbotHeaderBackgroundColor), border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
+                        ? {
+                            backgroundColor: "#f0f0f0",
+                        }
+                        : {})), onClick: handleOpenChatButtonClick }, { children: !isChatOpen ? (jsxRuntimeExports.jsx("img", { src: chatbotBubbleIcons, alt: "What2Study", style: styleRotate })) : (jsxRuntimeExports.jsx(Icon, { style: {
+                            fontSize: "22px",
+                            color: "#000000",
+                        } })) }))] })) })));
 };
 
 var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
 var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 var ChatClient = function (props) {
-    var _a = useData(), saveClientConfigurations = _a.saveClientConfigurations, isClientConfigFetched = _a.isClientConfigFetched;
+    var _a = useData(), saveClientConfigurations = _a.saveClientConfigurations, isClientConfigFetched = _a.isClientConfigFetched; _a.clientConfig; var language = _a.language;
     var _b = useTranslation("global"); _b[0]; var i18n = _b[1];
     var getChatClientConfiguration = function () { return __awaiter(void 0, void 0, void 0, function () {
         var resJson, response;
@@ -19516,9 +21927,20 @@ var ChatClient = function (props) {
                 case 2:
                     response = _a.sent();
                     i18n.changeLanguage(response.result.language);
+                    if ("testRequest" in props) {
+                        response.result["testRequest"] = props.testRequest;
+                    }
                     return [4 /*yield*/, saveClientConfigurations(response.result)];
                 case 3:
                     _a.sent();
+                    if (localStorage.getItem("chatbotID")) {
+                        localStorage.removeItem("chatbotID");
+                    }
+                    localStorage.setItem("chatbotID", response.result.chatbotId);
+                    if (localStorage.getItem("chatbotID") != localStorage.getItem("historySession")) {
+                        localStorage.removeItem("history");
+                        localStorage.removeItem("historySession");
+                    }
                     return [2 /*return*/];
                 case 4: return [4 /*yield*/, saveClientConfigurations(props)];
                 case 5:
@@ -19529,6 +21951,10 @@ var ChatClient = function (props) {
     }); };
     var getClientConfigWithThrottle = _.throttle(getChatClientConfiguration, 1000);
     React.useEffect(function () {
+        localStorage.setItem("language", language);
+        if (language != undefined) {
+            i18n.changeLanguage(language.toLocaleLowerCase());
+        }
         // TO USE CHAT CLIENT WITH BOT ID AND ACCESS TOKEN
         getClientConfigWithThrottle();
     }, [props]);
@@ -21923,6 +24349,7 @@ instance
     resources: {
         en: {
             global: {
+                "chaterror": "Something went wrong! Please try again.",
                 "introPage1": {
                     "hello": "Hello. It's nice to meet you!",
                     "iam": "I am a chatbot",
@@ -21954,7 +24381,7 @@ instance
                 },
                 "talk2human": {
                     "back": "Back",
-                    "write": "Contact [Name of the organisation]:",
+                    "write": "Contact",
                     "message": "Briefly describe the question/concern here (if it is not obvious from the chat history or if it is not sent at the same time)",
                     "send": "Send chat history",
                     "please": "Enter your email address for contact purposes:",
@@ -21963,7 +24390,10 @@ instance
                     "email": "Enter email address",
                     "would": "Is a phone response preferred?",
                     "number": "Enter contact number",
-                    "best": "What is the best time to call you?"
+                    "best": "What is the best time to call you?",
+                    "submit": "Submit",
+                    "matriculation": "Here you can provide your Matriculatoin number",
+                    "matPlaceholder": "Matriculation nummer eingeben"
                 },
                 "filters": {
                     "personality": "Chatbot Personality",
@@ -21979,7 +24409,8 @@ instance
                     "short": "Short answers"
                 },
                 "lang": {
-                    "lang": "Talk To Human"
+                    "lang": "Talk To Us",
+                    "ClearHistory": "Delete Chat"
                 },
                 "initialChat": "Welcome to our Student Advisory Service!\nHow can I help you today?",
                 "settings": {
@@ -21989,7 +24420,8 @@ instance
                     "user": "Assumptions",
                     "userAssumption1": "Studies Design",
                     "userAssumption2": "22 year old",
-                    "userAssumption3": "Studying at this University"
+                    "userAssumption3": "Studying at this University",
+                    "filterval": "Selection"
                 },
                 "botmsg": {
                     "1": "Welcome to the Student Advisory Service! How can I help you today?",
@@ -21998,13 +24430,16 @@ instance
                 "usermsg": {
                     "1": "Why can't I interact with the chatbot here?",
                     "2": "Ah, ok, thanks!",
-                }
+                },
+                "intromsg": "Welcome to our Student Advisory Service!\nHow can I help you today?",
+                "panicmessage": "Thank you for your feedback. You can submit a detailed feeback via Talk to human button above."
             }
         },
         de: {
             global: {
+                "chaterror": "Ein Fehler ist aufgetreten! Bitte versuchen Sie es erneut.",
                 "introPage1": {
-                    "hello": "Hello,",
+                    "hello": "Hallo,",
                     "iam": "ich bin ein Chatbot",
                     "built": " der dir bei deinem Studium helfen soll! Bevor wir loslegen, ein paar wichtige Fakten.",
                     "play": "Erklärvideo",
@@ -22034,7 +24469,7 @@ instance
                 },
                 "talk2human": {
                     "back": "Zurück",
-                    "write": "[Name of the organisation] kontaktieren:",
+                    "write": "kontaktieren:",
                     "message": "Deine Nachricht",
                     "send": "Chatverlauf senden",
                     "please": "Angabe der E-Mail-Adresse für Kontaktzwecke:",
@@ -22043,7 +24478,10 @@ instance
                     "email": "E-Mail-Adresse eingeben",
                     "would": "Ist eine telefonische Rückmeldung bevorzugt?",
                     "number": "Telefonnummer eingeben",
-                    "best": "Wann kann ich Sie am besten anrufen?"
+                    "best": "Wann kann ich Sie am besten anrufen?",
+                    "submit": "einreichen",
+                    "matriculation": "Hier können Sie Ihre Matrikelnummer angeben",
+                    "matPlaceholder": "Matriculation nummer eingeben"
                 },
                 "filters": {
                     "personality": "Chatbot-Charakter",
@@ -22059,7 +24497,8 @@ instance
                     "short": "Kurze Antworten"
                 },
                 "lang": {
-                    "lang": "Sprich mit uns"
+                    "lang": "Weiterer Klärungsbedarf",
+                    "ClearHistory": "Chat löschen"
                 },
                 "initialChat": "Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
                 "settings": {
@@ -22069,7 +24508,8 @@ instance
                     "user": "Annahmen",
                     "userAssumption1": "Studiert Design",
                     "userAssumption2": "22 Jahre alt",
-                    "userAssumption3": "Studium an dieser Universität"
+                    "userAssumption3": "Studium an dieser Universität",
+                    "filterval": "Auswahl"
                 },
                 "botmsg": {
                     "1": "Herzlich willkommen bei der Studienberatung! Wie kann ich heute behilflich sein?",
@@ -22078,7 +24518,9 @@ instance
                 "usermsg": {
                     "1": "Warum kann ich hier nicht mit dem Chatbot interagieren?",
                     "2": "Ah, ok, danke! ",
-                }
+                },
+                "intromsg": "Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
+                "panicmessage": "Danke für Ihre Rückmeldung. Sie können über die Schaltfläche „Sprich mit uns oben ein detailliertes Feedback abgeben."
             }
         }
     }

@@ -22,7 +22,6 @@ const IntroPage: FC = () => {
     useEffect(()=>{
         if(dummyRequest)
         {
-            console.log("hum")
             setIntroPage(introPage + 1)
             setCurrentRoute(ERoute.MAIN)
         
@@ -63,7 +62,7 @@ const IntroPage: FC = () => {
                             </div>
                             <span className="pt-button-name">{t("introPage1.play")}</span>
                         </button>
-                        <button className="is-tochat-button">{t("introPage1.chat")}</button>
+                        <button className="is-tochat-button"  onClick={() => setCurrentRoute(ERoute.MAIN)}>{t("introPage1.chat")} </button>
                     </div>
                 )}
                 {introPage == 1 && (

@@ -56,7 +56,7 @@ export enum EChatLanguage {
     DE = "de",
 }
 
-const AVAILABLE_FONTS = ["inter", "roboto", "poppins"];
+const AVAILABLE_FONTS = ["inter", "roboto", "poppins", "tinos", "fira sans condensed", "arimo","ibm plex sans","open sans" ];
 
 const getFont = (font: string): string => {
     if (AVAILABLE_FONTS.includes(font?.toLowerCase())) return font;
@@ -70,13 +70,20 @@ const defaultClientConfig = {
     chatbotName: "What 2 Study",
     language:"de",
     chatbotId:"",
+    orgImage:"",
     randomQuestionEnabled: true,
     randomQuestion:"Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
-    talkToaHumanEnabled: true,
-    talkToaHuman:"Wir freuen uns, dass Sie direkt mit uns in Kontakt treten möchten, gerne können Sie hierzu die angegebenen Optionen nutzen. \n\nBitte beachten Sie unsere Öffnungszeiten und gewähren Sie uns nach Möglichkeit Einblick in Ihren Chatverlauf, damit wir direkt sehen können, um welches Problem es sich handelt. Sollte gerade niemand verfügbar sein können wir uns auch auf Wunsch bei Ihnen melden.",
+    talkToaHumanEnabled: true ,
+    customPrompt:"",
+    talkToaHuman:"",
     Narrator:"male",
     dummyRequest:false,
+    testRequest:false,
+    phone:"",
+    email:"",
+    nameOfOrg:"",
     accessToken:"",
+    matriculationNumber:true,
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
     defaultSettings: {
@@ -167,7 +174,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         emotiveness: 0.7,
         length: 0.4,
     });
-    const [language, setLanguage] = useState<EChatLanguage>(EChatLanguage.EN);
+    const [language, setLanguage] = useState<EChatLanguage>(EChatLanguage.DE);
     const [clientConfig, setClientConfig] = useState<IClientConfigurations>(); // config saved by the university in main app
     const [isClientConfigFetched, setIsClientConfigFetched] = useState<boolean>(false);
 
@@ -211,11 +218,19 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             language,
             randomQuestionEnabled,
             randomQuestion,
+            customPrompt,
             talkToaHumanEnabled,
             talkToaHuman,
             dummyRequest,
             Narrator,
+            testRequest,
             chatbotLook = {}, 
+            email,
+            phone,
+            nameOfOrg,
+            matriculationNumber,
+            orgImage
+
         } = data;
 
         const {
@@ -248,11 +263,19 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             universityId: universityId || defaultClientConfig.universityId,
             chatbotName: chatbotName || defaultClientConfig.chatbotName,
             dummyRequest: dummyRequest || defaultClientConfig.dummyRequest,
+            testRequest: testRequest || defaultClientConfig.testRequest,
             language:language || defaultClientConfig.language,
-            randomQuestionEnabled: randomQuestionEnabled|| defaultClientConfig.randomQuestionEnabled,
+            randomQuestionEnabled: randomQuestionEnabled,
+            customPrompt:customPrompt,
+            matriculationNumber: matriculationNumber,
             randomQuestion:randomQuestion|| defaultClientConfig.randomQuestion,
-            talkToaHumanEnabled: talkToaHumanEnabled|| defaultClientConfig.talkToaHumanEnabled,
+            talkToaHumanEnabled: talkToaHumanEnabled,
             talkToaHuman:talkToaHuman|| defaultClientConfig.talkToaHuman,
+            email:email || defaultClientConfig.email,
+            orgImage:orgImage ,
+            phone:phone || defaultClientConfig.phone,
+            nameOfOrg:nameOfOrg||defaultClientConfig.nameOfOrg,
+            
             Narrator:Narrator|| defaultClientConfig.Narrator, 
             chatbotBubbleIcons:
                 typeof chatbotBubbleIcons == "string"
@@ -277,12 +300,12 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             } as IConfigDefaultSettings,
             chatboxBehaviour: {
                 formality:
-                    chatboxBehaviour?.formality || defaultClientConfig.chatboxBehaviour.formality,
-                opinion: chatboxBehaviour?.opinion || defaultClientConfig.chatboxBehaviour.opinion,
-                emotion: chatboxBehaviour?.emotion || defaultClientConfig.chatboxBehaviour.emotion,
-                length: chatboxBehaviour?.length || defaultClientConfig.chatboxBehaviour.length,
-                topics: chatboxBehaviour?.topics || defaultClientConfig.chatboxBehaviour.topics,
-                tone: chatboxBehaviour?.tone || defaultClientConfig.chatboxBehaviour.tone,
+                    chatboxBehaviour?.formality ,
+                opinion: chatboxBehaviour?.opinion ,
+                emotion: chatboxBehaviour?.emotion ,
+                length: chatboxBehaviour?.length ,
+                topics: chatboxBehaviour?.topics ,
+                tone: chatboxBehaviour?.tone ,
                 chatbotBehaviourName:
                     chatboxBehaviour?.chatbotBehaviourName ||
                     defaultClientConfig.chatboxBehaviour.chatbotBehaviourName,

@@ -14,15 +14,35 @@ interface IDayTime {
     time: string;
 }
 
-const TalkToHuman: FC = () => {
-    const { setCurrentRoute } = useData();
+export const LOCALSTORAGE_SESSION_ID_KEY = "what2studyUserSessionId";
+
+const TalkToHuman:FC = (props) => {
 
     const [useSavedEmail, setUseSavedEmail] = useState<boolean>(true);
-    const [phoneInput, setPhoneInput] = useState<string>("");
+
+    const [userDescription, setDescription] = useState<string>("");
+
+    const [userEmail, setUserEmail] = useState<string>("");
+
+    const [userMat, setUserMat] = useState<string>("");
+
+    const [userPhone, setUserPhone] = useState<string>("");
+    const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
+    const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
+    const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
     const [preferredDayTime, setPreferredDayTime] = useState<IDayTime>({
         day: "Sat",
         time: "09:00",
     });
+    const {
+        setPopupItem,
+        isBotVolumeOn,
+        setIsBotVolumeOn,
+        setCurrentRoute,
+        clientConfig,
+        sessionId,
+        language
+    } = useData();
     const [t, i18n] = useTranslation("global");
     return (
         <div className="talkToHuman-wrapper">
@@ -34,11 +54,11 @@ const TalkToHuman: FC = () => {
             </div>
             {/* <div className="divider"></div> */}
             <div className="contact-details-wrapper">
-                <a className="contact-detail" href="tel:+49 9086 4577209">
+                <a className="contact-detail" >
                     <div className="contact-icon-wrapper">
                         <IoIosCall className="contact-icon" />
                     </div>
-                    <span className="contact-text">+49 9086 4577209</span>
+                    <span className="contact-text">{clientConfig.phone}</span>
                 </a>
                 <a
                     target="_blank"
@@ -48,13 +68,13 @@ const TalkToHuman: FC = () => {
                     <div className="contact-icon-wrapper">
                         <MdEmail className="contact-icon" />
                     </div>
-                    <span className="contact-text">registration@uni-siegen.de</span>
+                    <span className="contact-text">{clientConfig.email}</span>
                 </a>
             </div>
             <div className="divider"></div>
             <div className="tth-data-wrapper">
                 <p className="tth-info-text">
-                {t("talk2human.write")}
+                {clientConfig.nameOfOrg} {t("talk2human.write")}:
                 </p>
                 <FloatingLabel
                     controlId="floatingTextarea"
@@ -63,8 +83,12 @@ const TalkToHuman: FC = () => {
                 >
                     <Form.Control
                         as="textarea"
-                        placeholder={t("talk2human.message")}
+                        // placeholder={t("talk2human.message")}
+                        defaultValue={clientConfig.talkToaHumanEnabled ? clientConfig.talkToaHuman :"" }
                         style={{ height: "90px" }}
+                        onChange={(e) => setDescription(e.target.value)}
+                       
+
                     />
                 </FloatingLabel>
                 <Form.Check
@@ -73,11 +97,22 @@ const TalkToHuman: FC = () => {
                     label={t("talk2human.send")}
                     defaultChecked
                 />
+                { clientConfig.matriculationNumber ? <div className="contact-email">
+                    <p className="tth-info-text">
+                    {t("talk2human.matriculation")}
+                    </p>
+                    <Form.Control
+                        type="text"
+                        placeholder={t("talk2human.matPlaceholder")}
+                        // disabled={useSavedEmail}
+                        onChange={(e) => setUserMat(e.target.value)}
+                    />
+                </div> : <></>}
                 <div className="contact-email">
                     <p className="tth-info-text">
                     {t("talk2human.please")}
                     </p>
-                    <Form.Check
+                    {/* <Form.Check
                         type="radio"
                         name="email-address"
                         checked={useSavedEmail}
@@ -86,7 +121,7 @@ const TalkToHuman: FC = () => {
                             <Fragment>
                                 {t("talk2human.use")}{" "}
                                 <span className="email-address-saved">
-                                    somebody.nobody@example.com
+                                 nicht vorgesehen
                                 </span>
                             </Fragment>
                         }
@@ -97,22 +132,23 @@ const TalkToHuman: FC = () => {
                         checked={!useSavedEmail}
                         onClick={() => setUseSavedEmail(false)}
                         label={t("talk2human.different")}
-                    />
+                    /> */}
                     <Form.Control
                         type="text"
                         placeholder={t("talk2human.email")}
-                        disabled={useSavedEmail}
+                        // disabled={useSavedEmail}
+                        onChange={(e) => setUserEmail(e.target.value)}
                     />
                 </div>
                 <div className="contact-email">
                     <p className="tth-info-text">{t("talk2human.would")}</p>
                     <Form.Control
                         type="tel"
-                        onChange={(e) => setPhoneInput(e.target.value)}
-                        value={phoneInput}
+                        onChange={(e) => setUserPhone(e.target.value)}
+                        value={userPhone}
                         placeholder={t("talk2human.number")}
                     />
-                    {phoneInput.trim() !== "" && (
+                    {userPhone.trim() !== "" && (
                         <div className="day-time-input-wrapper">
                             <p className="tth-info-text">{t("talk2human.best")}</p>
                             <div className="day-wrapper">
@@ -142,6 +178,45 @@ const TalkToHuman: FC = () => {
                         </div>
                     )}
                 </div>
+                <div className="chip-button-wrapper" style={{height:"100px",  alignContent: "center"}}>
+                <img src={clientConfig.orgImage} style={{ width:"110px"}}></img>
+                <button style={{ position:"absolute", marginTop:"9%", right:"0"}} className="app-chip-button" 
+                 onClick={() =>{
+                    const currentdate = new Date();
+                    const datetime = currentdate.getDate() + "/"
+                        + (currentdate.getMonth() + 1) + "/"
+                        + currentdate.getFullYear() + " @ "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
+                        var res 
+                        if (localStorage.getItem("history") != null) { res = JSON.parse(localStorage.getItem("history") || '') }
+
+                        let chatbotID
+                        if ("chatbotId" in props) {
+                            chatbotID = props.chatbotId
+                        }
+                    fetch(`${WHAT2STUDY_BACKEND_URL}/sendEmailT`, {
+                        method: "POST",
+                        headers: {
+                            "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                        },
+                        body: JSON.stringify({
+                            chatbotId: chatbotID,
+                            chat: JSON.stringify(res),
+                            sessionID: localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim(),
+                            timestamp: datetime,
+                            description: userDescription,
+                            userEmail:userEmail,
+                            userPhone:userPhone,
+                            uniEmail: clientConfig.email,
+                            userMat:  userMat
+                        }),
+                    });
+                }
+                }
+                >{t("talk2human.submit")}</button>
+            </div>
             </div>
         </div>
     );

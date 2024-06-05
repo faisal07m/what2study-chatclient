@@ -3,6 +3,7 @@
 import { IIframeProps, IframeType } from "constants/types";
 import { useData } from "hooks";
 
+import { EPopupItem, ERoute, useData } from "hooks";
 import { FC, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -11,22 +12,25 @@ const isFirefox = typeof InstallTrigger !== "undefined";
 const getStyles = (
     iframeType: IframeType,
     isChatOpen: boolean,
-    isMobileScreen: boolean = false
+    isMobileScreen: boolean = false,
+    isTestScreen:boolean
 ) => {
     switch (iframeType) {
         case IframeType.CHAT_CONTAINER_CLOSED:
             return {
-                border: "none",
+                // border: "none",
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                 width: isMobileScreen ? "100%" : "420px",
                 height: isMobileScreen ? "100%" : "620px",
-                position: "fixed",
+                position: isTestScreen ? "absolute" : "fixed",
                 bottom: isMobileScreen ? "0" : "100px",
                 right: isMobileScreen ? "0" : "30px",
                 borderRadius: isMobileScreen ? "0" : "12px",
                 backgroundColor: "#fff",
                 display: "none",
                 zIndex:"999999999999999999999999"
+            
+                
             };
 
         case IframeType.CHAT_CONTAINER_OPEN:
@@ -35,7 +39,8 @@ const getStyles = (
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
                 width: isMobileScreen ? "100%" : "420px",
                 height: isMobileScreen ? "100%" : "620px",
-                position: "fixed",
+                
+                position: isTestScreen ? "absolute" : "fixed",
                 bottom: isMobileScreen ? "0" : "100px",
                 right: isMobileScreen ? "0" : "30px",
                 borderRadius: isMobileScreen ? "0" : "12px",
@@ -47,13 +52,14 @@ const getStyles = (
             return {
                 display: isChatOpen && isMobileScreen ? "none" : "block",
                 border: "none",
-                width: "54px",
-                height: "54px",
-                position: "fixed",
+                width: "70px",
+                height: "70px",
+                
+                position: isTestScreen ? "absolute" : "fixed",
                 bottom: "28px",
                 right: "24px",
                 borderRadius: "50%",
-                zIndex:"999999999999999999999999"
+                zIndex:"999999999999999999999999",
             };
 
         default:
@@ -62,22 +68,42 @@ const getStyles = (
             };
     }
 };
+// border: "0.35rem solid",
+                // "--d": "2500ms",
+                // "--angle": "90deg",
+                // "--gradX": "100%",
+                // "--gradY": "50%",
+                // "--c1": "rgba(168, 239, 255, 1)",
+                // "--c2": "rgba(168, 239, 255, 0.1)",
+    //   borderImage: "conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 30",
+    //   animation: "borderRotate var(--d) linear infinite forwards",
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
 export const IFrame: FC<IIframeProps> = (props) => {
-    const { children, iframeType, ...rest } = props;
-
-    const [contentRef, setContentRef] = useState(null);
+    const { children, iframeType,testRequest, ...rest} = props;
+    const [ contentRef, setContentRef ] = useState< HTMLElement | null >(
+		null
+	);
+    const [ contentRefIframe, setContentRefIframe ] = useState< HTMLElement | null >(
+		null
+	);
+    //const [contentRef, setContentRef] = useState(null);
+    const handleLoad = ( event: React.SyntheticEvent< HTMLIFrameElement > ) => {
+        const iframe = event.target as HTMLIFrameElement;
+        if ( iframe?.contentDocument ) {
+            setContentRef( iframe.contentDocument.body );
+            setContentRefIframe(iframe.contentDocument)
+        }
+    };
     const { isChatOpen, setIsMobileScreen } = useData();
-    const [styles, setStyles] = useState(getStyles(iframeType, isChatOpen, false));
+    const [styles, setStyles] = useState(getStyles(iframeType, isChatOpen, false,testRequest));
 
     const mountNode = contentRef?.contentWindow?.document?.body;
     const mountNodeDoc = contentRef?.contentWindow?.document;
-
     const addStyles = () => {
         const link = mountNodeDoc.createElement("link");
-        //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+        // link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
         link.href = "https://www.cpstech.de/what2studycss/";
         link.rel = "stylesheet";
         link.type = "text/css";
@@ -85,9 +111,11 @@ export const IFrame: FC<IIframeProps> = (props) => {
     };
 
     const handleWindowResize = (event) => {
+        if(window.innerWidth >300 && window.innerHeight>450){
         const isMobileScreen = window.innerWidth < 600;
-        setStyles(getStyles(iframeType, isChatOpen, isMobileScreen));
+        setStyles(getStyles(iframeType, isChatOpen, isMobileScreen,testRequest));
         setIsMobileScreen(isMobileScreen);
+        }
     };
 
     useEffect(() => {
@@ -102,11 +130,24 @@ export const IFrame: FC<IIframeProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (mountNode) {
+        if (mountNode && !isFirefox) {
             mountNode.style = "margin: 0";
+            // mountNode.style ="background: linear-gradient(red, yellow);"
             addStyles();
         }
     }, [mountNode]);
+    useEffect(() => {
+        if (contentRef && isFirefox) {
+            contentRef.style = "margin: 0";
+            const link = document.createElement("link");
+            //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+            link.href = "https://www.cpstech.de/what2studycss/";
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            contentRefIframe.head.appendChild(link);
+        }
+    }, [contentRef]);
+   
 
     if (isDevelopment) {
         return (
@@ -117,13 +158,47 @@ export const IFrame: FC<IIframeProps> = (props) => {
     }
 
     return (
+        <>
+        { isFirefox &&  
         <iframe
             style={styles}
+            id="what2studyIDFirefox"
             {...rest}
-            onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
-            ref={!isFirefox ? setContentRef : undefined}
+            // onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
+            onLoad={ handleLoad }
+            // ref={ setContentRef }
         >
-            {mountNode && createPortal(children, mountNode)}
-        </iframe>
+            {/* {mountNode && !isFirefox && createPortal(children, mountNode)} */}
+            {/* <link rel="stylesheet" href="https://www.cpstech.de/what2studycss/" type="text/css"></link> */}
+            {contentRef && isFirefox&& createPortal(children, contentRef)}
+            
+            
+        </iframe> }
+
+        {!isFirefox&&  
+        <iframe
+        id="what2studyIDChrome"
+            style={styles}
+            {...rest}
+            // onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
+            // onLoad={ handleLoad }
+            ref={ setContentRef }
+        >
+            {mountNode && !isFirefox && createPortal(children, mountNode)}
+            {/* {contentRef && isFirefox&& createPortal(children, contentRef)} */}
+            
+        </iframe> }
+        </>
+       
+
+        // <iframe
+        //     style={styles}
+        //     {...rest}
+        //     onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
+        //     ref={!isFirefox ? setContentRef : undefined}
+        // >
+        //     {mountNode && createPortal(children, mountNode)}
+        //     {contentRef && isFirefox&& createPortal(children, contentRef)}
+        // </iframe>
     );
 };

@@ -3,12 +3,14 @@ import { EPopupItem, ERoute, useData } from "hooks";
 import IconButton from "utilities/IconButton";
 
 import { FC, Fragment, Key, SyntheticEvent, useEffect, useRef, useState } from "react";
-import { BsFillMicFill } from "react-icons/bs";
+import { BsFillMicFill, BsFillMicMuteFill } from "react-icons/bs";
 import { IoMdVolumeHigh, IoMdVolumeOff } from "react-icons/io";
 
 import { IoSend } from "react-icons/io5";
+import 'regenerator-runtime/runtime'
 import {
     MdInfoOutline,
+    MdOutlineHistory,
     MdOutlineThumbDownOffAlt,
     MdOutlineThumbUpOffAlt,
     MdOutlineWarningAmber,
@@ -16,10 +18,17 @@ import {
     MdThumbDownAlt,
     MdThumbUpAlt,
 } from "react-icons/md";
+import SpeechRecognition, {
+    useSpeechRecognition,
+} from "react-speech-recognition";
+
 import { RiUser6Fill } from "react-icons/ri";
 
 import { useTranslation } from 'react-i18next';
-//const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+import { config } from "process";
+import ChatClient from "components/ChatClient";
+
+const chatEndpoint_ = "http://127.0.0.1:5009/chatbot/";
 
 const chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
 
@@ -40,6 +49,7 @@ interface IBotMessage {
     feedback?: boolean;
     type?: EMessageType;
     url?: string;
+    session?: string;
 }
 
 
@@ -50,104 +60,160 @@ const isYoutubeURL = (url = ""): boolean => {
 };
 
 const Main: FC = (props) => {
-
     const [t, i18n] = useTranslation("global");
     const {
         setPopupItem,
-        isBotVolumeOn,
-        setIsBotVolumeOn,
+        // isBotVolumeOn,
+        // setIsBotVolumeOn,
         setCurrentRoute,
         clientConfig,
         sessionId,
+        language
     } = useData();
     const {
         chatbotProfileImage,
         chatbotId,
         userId,
-        language,
         dummyRequest,
         chatbotLook: { textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB },
     } = clientConfig;
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
+    const [isMicPressed, setMic] = useState<boolean>(false);
+    const [browserNotSupp, setBrowserSupp] = useState<boolean>(true);
+    const [micInputText, setMicInputText] = useState<string>("");
+    const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(false);
+    const [voices, setVoices] = useState<Array<SpeechSynthesisVoice>>(window.speechSynthesis.getVoices());
+    const [availableEngVoices, setEnVoices] = useState<Array<SpeechSynthesisVoice>>();
+    const [availableDeVoices, setDeVoices] = useState<Array<SpeechSynthesisVoice>>();
+
+    useEffect(() => {
+        setEnVoices(voices?.filter(({ lang }) => lang === "en-US"))
+        setDeVoices(voices?.filter(({ lang }) => lang === "de-DE"))
+
+    }, [voices])
+
+    const glowCSS = {
+        backgroundColor: UIGroupB.UIGroupBUIBackground,
+        color: UIGroupB.UIGroupBUIHighlight,
+    }
+    const afterGlowCSS = {
+        backgroundColor: UIGroupB.UIGroupBUIBackground,
+        color: UIGroupB.UIGroupBUIHighlight,
+        boxShadow: "0 0 20px #00"
+    }
+    const [defaultTalkToHumanCSS, setDefaultTOH] = useState<any>(glowCSS);
+
+
+    const [regen, setRegen] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
     const initialMessages = () => {
         var res = []
-        if (localStorage.getItem("history") != null) { res = JSON.parse(localStorage.getItem("history") || '') }
+        if (localStorage.getItem("history") != null) {
+            res = JSON.parse(localStorage.getItem("history") || '')
+        }
 
-        if (language == "de") {
-            if (res != '') {
+        if (res != '') {
+            if (res[0].session != sessionId) {
+                return []
+            }
+            else {
                 return res
             }
-            else {
-                return [
-                    {
-                        source: EMessageSource.BOT,
-                        message: "Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
-                    },
-                ];
-            }
+            return res
         }
         else {
-            if (res != '') {
-                return res;
-
-            }
-            else {
-                return [
-                    {
-                        source: EMessageSource.BOT,
-                        message: "Welcome to our Student Advisory Service!\nHow can I help you today?",
-                    },
-                ]
-            }
+            return [
+                {
+                    source: EMessageSource.BOT,
+                    message: t("intromsg"),
+                    session: sessionId,
+                },
+            ];
         }
     }
+    useEffect(() => {
+        if (dummyRequest == true) {
+            setDummyValueCounter(false)
+            setMessages(initialMessages)
+        }
+        else {
+            var res = []
+            if (localStorage.getItem("history") != null) { res = JSON.parse(localStorage.getItem("history") || '') }
+
+            if (res.length >= 1) {
+                if (res[0].session != sessionId) {
+                    setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },])
+                }
+                else {
+                    setMessages(res)
+                }
+            }
+            else {
+                setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },])
+            }
+
+        }
+
+    }, [localStorage.getItem('language')]);
+
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    // const WHAT2STUDY_BACKEND_URL = "http://localhost:1339/what2study/parse/functions";
+    const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
     const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
     const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
-    const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
     const [value, setValue] = useState('')
 
     const [dummyValuesSet, setDummyValueCounter] = useState<boolean>(false)
     useEffect(() => {
-        if (messages[messages.length - 1].message.trim()!= clientConfig.randomQuestion.trim()){
-            const timeout = setTimeout(() => {
-                if (clientConfig.randomQuestionEnabled) {
-                    setMessages((prev) => {
-                        return [
-                            ...prev,
-                            {
-                                source: EMessageSource.BOT,
-                                message: clientConfig.randomQuestion,
-                                type: EMessageType.TEXT,
-                                url: "",
-                            },
-                        ];
-                    });
-                }
-            }, 120000)
-    
-            return () => clearTimeout(timeout)
-        }  
+        if (messages.length > 1) {
+            if (messages[messages.length - 1].message.trim() != clientConfig.randomQuestion.trim()) {
+                const timeout = setTimeout(() => {
+                    if (clientConfig.randomQuestionEnabled) {
+                        setMessages((prev) => {
+                            return [
+                                ...prev,
+                                {
+                                    source: EMessageSource.BOT,
+                                    message: clientConfig.randomQuestion,
+                                    type: EMessageType.TEXT,
+                                    url: "",
+                                },
+                            ];
+                        });
+                    }
+                }, 120000)
+
+                return () => clearTimeout(timeout)
+            }
+        }
 
     }, [message])
 
-    const handleUserMessage = async (e: SyntheticEvent): Promise<void> => {
-        e?.preventDefault();
-        setLoading(true);
-        setMessage("");
-        if (message.trim() === "") return;
-        setMessages([...messages, { source: EMessageSource.USER, message }]);
+    const handleMessageRegen = async (e: any) => {
+        setLoading(true)
 
+        var res = []
+        if (localStorage.getItem("history") != null) { res = JSON.parse(localStorage.getItem("history") || '') }
+        var arr = res
+        var userQuestion = ""
+        arr.reverse()
+        arr.forEach((el: any) => {
+            if (el.source == "USER") {
+                userQuestion = el.message
+            }
+        });
         const params = {
-            question: message,
+            question: userQuestion,
             botId: chatbotId,
-            sessionId,
+            sessionId: sessionId,
             userId: userId,
-            language: language
+            language: language,
+            filter: clientConfig.chatboxBehaviour,
+            chatHistory: localStorage.getItem("history"),
+            regen: regen,
+            randomQuestion: clientConfig.randomQuestion,
+            customPrompt: clientConfig.customPrompt
         };
         const options = {
             method: "POST",
@@ -173,8 +239,10 @@ const Main: FC = (props) => {
                     },
                 ];
             });
+
             setValue(response.answer)
             setLoading(false);
+            setRegen(false)
 
             let chatbotID
             if ("chatbotId" in props) {
@@ -191,7 +259,6 @@ const Main: FC = (props) => {
                 method: "POST",
                 headers: {
                     "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
-                    "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
                 },
                 body: JSON.stringify({
                     chatbotId: chatbotID,
@@ -213,10 +280,156 @@ const Main: FC = (props) => {
             });
             setLoading(false);
         }
+    }
+
+    const handleUserMessage = async (e: SyntheticEvent): Promise<void> => {
+        setLoading(true);
+
+        if (regen == false) {
+            e?.preventDefault();
+            setMessage("");
+            if (message.trim() === "") return;
+        }
+        setMessages([...messages, { source: EMessageSource.USER, message }]);
+        var filters = clientConfig.chatboxBehaviour
+        if (localStorage.getItem("LengthFilter") != undefined) {
+            filters.length = Number(localStorage.getItem("LengthFilter"))
+
+        }
+        const params = {
+            question: message,
+            botId: chatbotId,
+            sessionId: sessionId,
+            userId: userId,
+            language: language,
+            filter: filters,
+            chatHistory: localStorage.getItem("history"),
+            regen: regen,
+            randomQuestion: clientConfig.randomQuestion,
+            customPrompt: clientConfig.customPrompt
+        };
+        const options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(params),
+        };
+        try {
+            const resJson = await fetch(chatEndpoint, options);
+            const response = await resJson.json();
+            var urlsMatch = []
+            if (response.answer.indexOf(".mp4") || response.answer.indexOf(".mov") || response.answer.indexOf(".MOV")) {
+                var string = response.answer
+                var result = string.match(/(http||https)?:\/\/(((?:[a-z0-9\-]+\.)+[a-z]{2,6})||((?:localhost:)+[0-9]{4}))(?:\/[^\/#?]+)+\.(?:jpg|mp4|png|MOV|mov|jpeg)/gi)
+                if (result != null) { urlsMatch = result }
+            }
+            var mediaMessages = [] as IBotMessage[]
+            if (urlsMatch.length > 0) {
+                urlsMatch.forEach((url: string) => {
+                    if (url.endsWith("mp4") || url.endsWith("mov") || url.endsWith("MOV")) {
+                        mediaMessages.push({
+                            source: EMessageSource.BOT,
+                            message: "",
+                            type: EMessageType.VIDEO,
+                            url: url
+                        })
+                    }
+                    if (url.endsWith("jpg") || url.endsWith("png") || url.endsWith("jpeg")) {
+                        mediaMessages.push({
+                            source: EMessageSource.BOT,
+                            message: "",
+                            type: EMessageType.IMAGE,
+                            url: url
+                        })
+                    }
+                }
+
+                );
+                mediaMessages.push({
+                    source: EMessageSource.BOT,
+                    message: response.answer,
+                    type:
+                        response.type === "image"
+                            ? EMessageType.IMAGE
+                            : response.type === "video"
+                                ? EMessageType.VIDEO
+                                : EMessageType.TEXT,
+                    url: response.url ?? "",
+                })
+                // var arr = [...messages, ...mediaMessages] as IBotMessage[]
+                // console.log(arr)
+
+                // setMessages(arr)
+                setMessages((prev) => {
+                    return [
+                        ...prev,
+                        ...mediaMessages
+                    ];
+                });
+
+            }
+            else {
+                setMessages((prev) => {
+                    return [
+                        ...prev,
+                        {
+                            source: EMessageSource.BOT,
+                            message: response.answer,
+                            type:
+                                response.type === "image"
+                                    ? EMessageType.IMAGE
+                                    : response.type === "video"
+                                        ? EMessageType.VIDEO
+                                        : EMessageType.TEXT,
+                            url: response.url ?? "",
+                        },
+                    ];
+                });
+            }
+
+            setValue(response.answer)
+            setLoading(false);
+            setRegen(false)
+
+            let chatbotID
+            if ("chatbotId" in props) {
+                chatbotID = props.chatbotId
+            }
+            const currentdate = new Date();
+            const datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1) + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            const responseSaveMSG = await fetch(`${WHAT2STUDY_BACKEND_URL}/saveUserMessage`, {
+                method: "POST",
+                headers: {
+                    "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
+                },
+                body: JSON.stringify({
+                    chatbotId: chatbotID,
+                    user: message,
+                    bot: response.answer,
+                    sessionID: localStorage.getItem(LOCALSTORAGE_SESSION_ID_KEY)?.trim(),
+                    timestamp: datetime,
+                }),
+            });
+        } catch (error) {
+            setMessages((prev) => {
+                return [
+                    ...prev,
+                    {
+                        source: EMessageSource.BOT,
+                        message: t("chaterror"),
+                    },
+                ];
+            });
+            setLoading(false);
+        }
     };
 
     const handleMessageFeedback = async (msg: string, feedback: boolean) => {
-
+        let i = 0
         const messagesWithFeedback = [...messages];
         const newMessages = messagesWithFeedback.map((msgObj) =>
             msgObj.message == msg
@@ -242,7 +455,6 @@ const Main: FC = (props) => {
             method: "POST",
             headers: {
                 "X-Parse-Application-Id": WHAT2STUDY_X_PARSE_APP_ID,
-                "X-Parse-Master-Key": WHAT2STUDY_X_PARSE_MASTERKEY,
             },
             body: JSON.stringify({
                 chatbotId: chatbotID,
@@ -253,19 +465,176 @@ const Main: FC = (props) => {
 
             }),
         });
+        setMessages((prev) => {
+            return [
+                ...prev,
+                {
+                    source: EMessageSource.BOT,
+                    message: t("panicmessage"),
+                    type: EMessageType.TEXT,
+                    url: "",
+                },
+            ];
+        });
 
     };
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
+    // if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    //     return null;
+    //   }
+
+
+    const commands = [
+        {
+            command: "reset",
+            callback: () => resetTranscript(),
+        },
+    ];
+    const {
+        transcript,
+        interimTranscript,
+        finalTranscript,
+        resetTranscript,
+        listening,
+    } = useSpeechRecognition({ commands });
+
+    useEffect(() => {
+       
+        if (browserNotSupp) {
+            if (finalTranscript !== "") {
+               
+                if (listening) {
+                    console.log("listeing")
+                    setMessage(finalTranscript)
+                    // setMicInputText(finalTranscript)
+                    setMic(false)
+               
+                }
+
+            }
+            if (interimTranscript != "") {
+                // setMicInputText(interimTranscript)
+                if (listening) {
+                    console.log("listeing")
+                    setMessage(interimTranscript)
+               
+                }
+
+
+            }
+        }
+    }, [interimTranscript, finalTranscript, listening]);
+
+
+
+
+    useEffect(() => {
+        if (browserNotSupp) {
+            if (isMicPressed) {
+                var lang = "de-DE"
+                if (clientConfig.language.toLowerCase().startsWith("e")) {
+                    lang = "en-US";
+                }
+
+                SpeechRecognition.startListening({
+                    continuous: true,
+                    language: lang,
+                });
+            }
+            else {
+                SpeechRecognition.stopListening()
+                resetTranscript()
+            }
+        }
+        if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+            console.log(
+                "Your browser does not support speech recognition software! Try Chrome desktop, maybe?",
+            );
+            setBrowserSupp(false)
+        }
+        else {
+            setBrowserSupp(true)
+
+        }
+
+    }, [isMicPressed])
+
+    useEffect(() => {
+        if (browserNotSupp) {
+            var value = new SpeechSynthesisUtterance(messages[messages.length - 1].message);
+            var voices_ = speechSynthesis.getVoices()
+            var engVoice: Array<SpeechSynthesisVoice> = []
+            var deVoice: Array<SpeechSynthesisVoice> = []
+            if (Array.isArray(voices_) && voices_.length > 0) {
+                setVoices(voices_)
+                engVoice = voices_?.filter(({ lang }) => lang === "en-US")
+                deVoice = voices_?.filter(({ lang }) => lang === "de-DE")
+                setEnVoices(voices_?.filter(({ lang }) => lang === "en-US"))
+                setDeVoices(voices_?.filter(({ lang }) => lang === "de-DE"))
+            }
+            // value.lang = "de-DE";
+            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("en male")
+                console.log(engVoice[30])
+
+                // value.lang = "en-US";
+                value.voice = engVoice[30]
+
+            }
+            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("en female")
+
+                // value.lang = "en-US";
+                value.voice = engVoice[16]
+
+
+            }
+            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("de male")
+                // value.lang = "de-DE";
+                console.log(deVoice[11])
+                value.voice = deVoice[11]
+
+
+            }
+            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
+                console.log("de female")
+
+                // value.lang = "de-DE";
+
+                console.log(deVoice[10])
+                value.voice = deVoice[10]
+
+
+            }
+
+            if (isBotVolumeOn) {
+                console.log("volume tried")
+                window.speechSynthesis.speak(value);
+            }
+            else {
+                console.log("volume stopped")
+                window.speechSynthesis.cancel();
+                setIsBotVolumeOn(false)
+            }
+        }
+
+    }, [isBotVolumeOn])
 
     useEffect(() => {
         scrollToBottom();
         localStorage.removeItem("history")
-        if(dummyRequest== false)
-        {localStorage.setItem("history", JSON.stringify(messages))}
-        if (dummyRequest && dummyValuesSet==false) { 
+        if (dummyRequest == false) {
+
+            localStorage.setItem("history", JSON.stringify(messages))
+
+            localStorage.setItem("historySession", clientConfig.chatbotId)
+
+        }
+        if (dummyRequest && dummyValuesSet == false) {
             var msgs = [
                 {
                     source: EMessageSource.BOT,
@@ -284,28 +653,70 @@ const Main: FC = (props) => {
                     message: t("usermsg.2"),
                 },
             ]
-            setMessages([]) 
+            setMessages([])
             setMessages(msgs)
             localStorage.removeItem("history")
             setDummyValueCounter(true)
-    }
+        }
 
     }, [messages]);
 
-    const breakMsg = (message: string) => {
+    const breakMsg = (message: string, source: string) => {
 
         var msg = message.split('\n').map((str: any) => {
-            var result = str.match(/\bhttps?:\/\/\S+/gi)
+            var result = str.match(/\bhttps:\/\/\S+/gi)
             let theObj
             // str = "<br></br>"+str+""
             if (result != null) {
+                var toReplaceURL: any[] = []
                 result.forEach((el: any) => {
-                    str = str.replace(el, "<a href='" + el + "'>" + el + "</a>")
+                    el = el.replace(").", "");
+                    el = el.replace("(", "");
+                    el = el.replace(")", "");
+                    toReplaceURL.push(el)
+                });
+                if (toReplaceURL.length > 0) {
+                    toReplaceURL.forEach(url => {
+                        str = str.replace(url, "<a target='_blank' href='" + url + "'/>" + "Link" + "</a>")
+
+                    });
+                }
+            }
+            var result_http = str.match(/\bhttp:\/\/\S+/gi)
+            // str = "<br></br>"+str+""
+            if (result_http != null) {
+                var toReplaceURL: any[] = []
+
+                result_http.forEach((el: any) => {
+                    el = el.replace(").", "");
+                    el = el.replace("(", "");
+                    el = el.replace(")", "");
+                    toReplaceURL.push(el)
 
                 });
+                if (toReplaceURL.length > 0) {
+                    toReplaceURL.forEach(url => {
+                        str = str.replace(url, "<a target='_blank' href='" + url + "'/>" + "Link" + "</a>")
+
+                    });
+                }
             }
             theObj = { __html: str };
-            return <div dangerouslySetInnerHTML={theObj} />
+            return <div style={
+                source === EMessageSource.BOT
+                    ? {
+                        backgroundColor:
+                            textBoxChatbotReply.textBoxChatbotReplyColor,
+                        color: textBoxChatbotReply.textBoxChatbotReplyFontColor,
+                        fontFamily:
+                            textBoxChatbotReply.textBoxChatboxReplyFontStyle,
+                    }
+                    : {
+                        backgroundColor: textBoxUser.textBoxUserColor,
+                        color: textBoxUser.textBoxUserFontColor,
+                        fontFamily: textBoxUser.textBoxFontStyle,
+                    }
+            } dangerouslySetInnerHTML={theObj} />
 
         }
 
@@ -332,19 +743,39 @@ const Main: FC = (props) => {
                         backgroundColor: UIGroupB.UIGroupBUIBackground,
                         color: UIGroupB.UIGroupBUIHighlight,
                     }}
+                    onClick={() => {
+                        localStorage.removeItem("history")
+                        setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },])
+                    }}
+
+                >
+                    {t("lang.ClearHistory")}
+                </button>
+
+                <button
+                    className="talk-to-human-btn"
+                    style={{
+                        backgroundColor: UIGroupB.UIGroupBUIBackground,
+                        color: UIGroupB.UIGroupBUIHighlight,
+                    }}
                     onClick={() => setCurrentRoute(ERoute.TALK_TO_HUMAN)}
                 >
                     {t("lang.lang")}
                 </button>
-                <IconButton
-                    className="volume-button"
-                    icon={isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff}
-                    onClick={() => setIsBotVolumeOn(!isBotVolumeOn)}
-                    aria-label="Volume"
-                    title={isBotVolumeOn ? "Mute" : "Play"}
-                    style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
-                    iconColor={UIGroupA.UIGroupAUIHighlight}
-                />
+                {browserNotSupp &&
+
+                    <IconButton
+                        className="volume-button"
+                        icon={isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff}
+                        onClick={(e) => {
+                            setIsBotVolumeOn(!isBotVolumeOn)
+
+                        }}
+                        aria-label="Volume"
+                        title={isBotVolumeOn ? "Mute" : "Play"}
+                        style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
+                        iconColor={UIGroupA.UIGroupAUIHighlight}
+                    />}
             </div>
             <div className="chatContainer">
                 {messages.map(({ message, source, feedback, type, url }: any, index: Key | null | undefined) => (
@@ -386,26 +817,32 @@ const Main: FC = (props) => {
                                 isYoutubeURL(url) ? (
                                     <iframe
                                         src={url}
-                                        title="YouTube video player"
+                                        title="Video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowFullScreen
                                         className="bot-msg-ytvideo"
                                     />
                                 ) : (
-                                    <video
-                                        src={url}
-                                        className="bot-msg-video"
-                                        controls
-                                        disablePictureInPicture={false}
-                                    />
+                                    <a href={url} target="_blank">
+                                        <video
+                                            src={url}
+                                            className="bot-msg-video"
+                                            controls
+                                            disablePictureInPicture={false}
+                                        />
+                                    </a>
                                 )
                             ) : type === EMessageType.IMAGE ? (
-                                <img src={url} className="bot-msg-img" alt="img" />
+                                <a href={url} target="_blank">
+
+                                    <img src={url} className="bot-msg-img" alt="img" />
+                                </a>
                             ) : (
                                 <Fragment />
                             )}
-                            <div>{breakMsg(message)}</div>
-                            {source === EMessageSource.BOT && (
+                            {breakMsg(message, source)}
+
+                            {source === EMessageSource.BOT && message.toLowerCase().indexOf("rückmeldung") === -1 && message.toLowerCase().indexOf("welcome") === -1 && message.toLowerCase().indexOf("willkommen") === -1 && (
                                 <div className="bot-msg-actions-wrapper">
                                     {/* <button
                                         title="Report"
@@ -469,7 +906,10 @@ const Main: FC = (props) => {
                                     <button
                                         title="Regenrate Response"
                                         className="action-button"
-                                        onClick={console.log}
+                                        onClick={() => {
+                                            setRegen(true)
+                                            handleMessageRegen("regen")
+                                        }}
                                         style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
                                     >
                                         <MdReplay
@@ -502,14 +942,19 @@ const Main: FC = (props) => {
                 )}
                 <div ref={messagesEndRef} />
             </div>
-            <form className="inputFormWrapper" onSubmit={handleUserMessage}>
-                <IconButton
-                    icon={BsFillMicFill}
-                    onClick={console.log}
-                    className="voice-input-button"
-                    style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
-                    iconColor={UIGroupA.UIGroupAUIHighlight}
-                />
+            <div className="inputFormWrapper" >
+                {browserNotSupp &&
+                    <IconButton
+                        icon={isMicPressed ? BsFillMicFill : BsFillMicMuteFill}
+                        onClick={(e) => {
+                            setMic(!isMicPressed)
+                        }}
+                        className="voice-input-button"
+                        id="voiceMicButton"
+                        key="voiceMicButton"
+                        style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
+                        iconColor={UIGroupA.UIGroupAUIHighlight}
+                    />}
                 <input
                     className={`inputField ${isInputFocused ? "inputFieldFocused" : ""}`}
                     type="text"
@@ -523,17 +968,19 @@ const Main: FC = (props) => {
                     onBlur={() => setIsInputFocused(false)}
                 />
                 <button
-                    type="submit"
+                    // type="submit"
                     className="sendButton"
                     disabled={dummyRequest != true ? false : true}
                     style={{
                         backgroundColor: UIGroupB.UIGroupBUIBackground,
                     }}
+                    id="messageSendButton"
+                    key="messageSendButton"
                     onClick={handleUserMessage}
                 >
                     <IoSend className="buttonIcon" color={UIGroupB.UIGroupBUIHighlight} />
                 </button>
-            </form>
+            </div>
         </Fragment>
     );
 };

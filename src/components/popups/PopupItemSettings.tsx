@@ -1,4 +1,4 @@
-import { EChatLanguage, useData } from "hooks";
+import { EChatLanguage, ERoute, useData } from "hooks";
 
 import { ChangeEvent, FC } from "react";
 import { FormSelect } from "react-bootstrap";
@@ -9,6 +9,8 @@ import { PopupContents } from "./PopupScreen";
 import { useTranslation } from 'react-i18next';
 import ReactCountryFlag from "react-country-flag"
 
+
+import { EPopupItem } from "hooks";
 const getLanguage = (language: EChatLanguage) => {
     switch (language) {
         case EChatLanguage.EN:
@@ -24,20 +26,27 @@ const getLanguage = (language: EChatLanguage) => {
 
 
 const PopupItemSettings: FC = () => {
-    const { language, setLanguage } = useData();
+    const { language, setLanguage, setCurrentRoute } = useData();
     const [t, i18n] = useTranslation("global");
+    const { setPopupItem } = useData();
     const dummyUserAssumptions = [
         t("settings.userAssumption3")
       ];
     const handleLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
         setLanguage(e.target.value as EChatLanguage);
         i18n.changeLanguage(e.target.value.toLowerCase());
+        localStorage.setItem("language", e.target.value.toLowerCase())
     };
 
     return (
         <PopupContents title={t("settings.settings")} className="popup-settings-wrapper">
             <div className="chip-button-wrapper">
-                <button className="app-chip-button">Restart Intro</button>
+                <button className="app-chip-button" 
+                  onClick={() => {
+                    setCurrentRoute(ERoute.INTRO)
+                    setPopupItem(EPopupItem.NONE)
+                }}
+                >{t("settings.restart")}</button>
             </div>
             <div className="setting-block language-select-wrapper">
                 <span className="block-title">{t("settings.language")}</span>

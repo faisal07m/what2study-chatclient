@@ -10,6 +10,7 @@ export interface IOpenChatButtonProps {
 export interface IIframeProps {
     children: ReactNode;
     iframeType: IframeType;
+    testRequest:boolean;
 }
 
 export interface IChatContainerProps {

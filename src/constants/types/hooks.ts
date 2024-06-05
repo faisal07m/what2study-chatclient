@@ -92,14 +92,19 @@ export interface IClientConfigurations {
     objectId: string;
     chatbotId: string;
     userId: string;
+    nameOfOrg:string;
     universityId: string;
     language:string;
     randomQuestionEnabled: boolean;
     randomQuestion:string;
+    customPrompt:string
     talkToaHumanEnabled: boolean;
     talkToaHuman:string;
     Narrator:string;
+    phone:string;
+    email:string;
     dummyRequest:boolean;
+    testRequest:boolean;
     accessToken: string;
     chatbotName: string;
     chatbotBubbleIcons: string;
@@ -109,4 +114,7 @@ export interface IClientConfigurations {
     chatbotReplies: IConfigChatbotReplies;
     chatbotContact: IConfigChatbotContact;
     chatbotLook: IConfigChatbotLook;
+    matriculationNumber:boolean;
+    orgImage:string;
+
 }

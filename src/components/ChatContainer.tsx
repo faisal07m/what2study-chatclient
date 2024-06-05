@@ -26,7 +26,7 @@ const ChatContainer: FC = (props) => {
                 return <Main {...props}/>;
     
             case ERoute.TALK_TO_HUMAN:
-                return <TalkToHuman />;
+                return <TalkToHuman  {...props}/>;
     
             default:
                 return <Fragment />;
@@ -37,7 +37,8 @@ const ChatContainer: FC = (props) => {
 
     const {
         chatbotLook: { chatbotHeader, chatbotBackground },
-        chatbotName
+        chatbotName,
+        testRequest
     } = clientConfig;
 
     return (
@@ -45,6 +46,7 @@ const ChatContainer: FC = (props) => {
             iframeType={
                 isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED
             }
+            testRequest={testRequest}
         >
             <PopupScreen />
             <div

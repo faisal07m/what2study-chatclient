@@ -8,13 +8,13 @@ import ChatContainer from "./ChatContainer";
 import OpenChatButton from "./OpenChatButton";
 
 import { useTranslation } from 'react-i18next';
-const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+const WHAT2STUDY_BACKEND_URL= "https://www.cpstech.de/functions";
 const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
 const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
 const ChatClient: FC = (props) => {
-    const { saveClientConfigurations, isClientConfigFetched } = useData();
+    const { saveClientConfigurations, isClientConfigFetched ,clientConfig, language} = useData();
 
     const [t, i18n] = useTranslation("global");
     const getChatClientConfiguration = async () => {
@@ -30,9 +30,23 @@ const ChatClient: FC = (props) => {
                     chatbotId: props.chatbotId,
                 }),
             });
-            const response = await resJson.json();
+            var response = await resJson.json();
             i18n.changeLanguage(response.result.language)
+            if("testRequest" in props)
+            {
+                response.result["testRequest"] = props.testRequest
+            }
             await saveClientConfigurations(response.result);
+            if(localStorage.getItem("chatbotID")){
+                localStorage.removeItem("chatbotID")
+            }
+           
+           
+            localStorage.setItem("chatbotID", response.result.chatbotId)
+            if(localStorage.getItem("chatbotID") != localStorage.getItem("historySession")){
+                localStorage.removeItem("history")
+                localStorage.removeItem("historySession")
+            }
             return;
         }
         await saveClientConfigurations(props);
@@ -41,9 +55,11 @@ const ChatClient: FC = (props) => {
     const getClientConfigWithThrottle = _.throttle(getChatClientConfiguration, 1000);
 
     useEffect(() => {
+        localStorage.setItem("language", language)
+        if(language != undefined)
+        {i18n.changeLanguage(language.toLocaleLowerCase());}
         // TO USE CHAT CLIENT WITH BOT ID AND ACCESS TOKEN
         getClientConfigWithThrottle();
-        
     }, [props]);
 
     if (isClientConfigFetched)

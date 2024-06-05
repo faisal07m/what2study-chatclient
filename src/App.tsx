@@ -23,6 +23,7 @@ i18next
         resources: {
             en: {
                 global: {
+                    "chaterror":"Something went wrong! Please try again.",
                     "introPage1": {
                         "hello": "Hello. It's nice to meet you!",
                         "iam": "I am a chatbot",
@@ -54,7 +55,7 @@ i18next
                     },
                     "talk2human": {
                         "back": "Back",
-                        "write": "Contact [Name of the organisation]:",
+                        "write": "Contact",
                         "message": "Briefly describe the question/concern here (if it is not obvious from the chat history or if it is not sent at the same time)",
                         "send": "Send chat history",
                         "please": "Enter your email address for contact purposes:",
@@ -63,7 +64,11 @@ i18next
                         "email": "Enter email address",
                         "would": "Is a phone response preferred?",
                         "number": "Enter contact number",
-                        "best": "What is the best time to call you?"
+                        "best": "What is the best time to call you?",
+                        "submit":"Submit",
+                        "matriculation":"Here you can provide your Matriculatoin number",
+                        "matPlaceholder":"Matriculation nummer eingeben"
+                    
                     },
                     "filters": {
                         "personality": "Chatbot Personality",
@@ -79,7 +84,9 @@ i18next
                         "short": "Short answers"
                     },
                     "lang":{
-                        "lang":"Talk To Human"
+                        "lang":"Talk To Us",
+                        "ClearHistory":"Delete Chat"
+                
                     },
                     "initialChat":"Welcome to our Student Advisory Service!\nHow can I help you today?",
                     "settings": {
@@ -89,7 +96,8 @@ i18next
                         "user": "Assumptions",
                         "userAssumption1": "Studies Design",
                         "userAssumption2": "22 year old",
-                        "userAssumption3": "Studying at this University"
+                        "userAssumption3": "Studying at this University",
+                        "filterval":"Selection"
                     },
                     "botmsg":{
                         "1":"Welcome to the Student Advisory Service! How can I help you today?",
@@ -97,13 +105,16 @@ i18next
                         "usermsg":{
                         "1":"Why can't I interact with the chatbot here?",
                         "2":"Ah, ok, thanks!",
-                        }
+                        },
+                        "intromsg":"Welcome to our Student Advisory Service!\nHow can I help you today?",
+                        "panicmessage":"Thank you for your feedback. You can submit a detailed feeback via Talk to human button above."
                 }
             },
             de: {
                 global: {
+                    "chaterror":"Ein Fehler ist aufgetreten! Bitte versuchen Sie es erneut.",
                     "introPage1": {
-                        "hello": "Hello,",
+                        "hello": "Hallo,",
                         "iam": "ich bin ein Chatbot",
                         "built": " der dir bei deinem Studium helfen soll! Bevor wir loslegen, ein paar wichtige Fakten.",
                         "play": "Erklärvideo",
@@ -133,7 +144,7 @@ i18next
                     },
                     "talk2human": {
                         "back": "Zurück",
-                        "write": "[Name of the organisation] kontaktieren:",
+                        "write": "kontaktieren:",
                         "message": "Deine Nachricht",
                         "send": "Chatverlauf senden",
                         "please": "Angabe der E-Mail-Adresse für Kontaktzwecke:",
@@ -142,7 +153,10 @@ i18next
                         "email": "E-Mail-Adresse eingeben",
                         "would": "Ist eine telefonische Rückmeldung bevorzugt?",
                         "number": "Telefonnummer eingeben",
-                        "best": "Wann kann ich Sie am besten anrufen?"
+                        "best": "Wann kann ich Sie am besten anrufen?",
+                        "submit":"einreichen",
+                        "matriculation":"Hier können Sie Ihre Matrikelnummer angeben",
+                        "matPlaceholder":"Matriculation nummer eingeben"
                     },
                     "filters": {
                         "personality": "Chatbot-Charakter",
@@ -158,7 +172,8 @@ i18next
                         "short": "Kurze Antworten"
                     },
                     "lang":{
-                        "lang":"Sprich mit uns"
+                        "lang":"Weiterer Klärungsbedarf",
+                        "ClearHistory":"Chat löschen"
                     },
                     "initialChat":"Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
                     "settings": {
@@ -168,7 +183,9 @@ i18next
                         "user": "Annahmen",
                         "userAssumption1": "Studiert Design",
                         "userAssumption2": "22 Jahre alt",
-                        "userAssumption3": "Studium an dieser Universität"
+                        "userAssumption3": "Studium an dieser Universität",
+                        "filterval":"Auswahl"
+                 
                     },
                     "botmsg":{
                     "1":"Herzlich willkommen bei der Studienberatung! Wie kann ich heute behilflich sein?",
@@ -177,7 +194,11 @@ i18next
                     "usermsg":{
                     "1":"Warum kann ich hier nicht mit dem Chatbot interagieren?",
                     "2":"Ah, ok, danke! ",
-                    }
+                    },
+                    "intromsg":"Herzlich willkommen bei unserer Studienberatung!\nWie kann ich Ihnen heute behilflich sein?",
+                    "panicmessage":"Danke für Ihre Rückmeldung. Sie können über die Schaltfläche „Sprich mit uns oben ein detailliertes Feedback abgeben."
+             
+           
                 }
             }
         }
