@@ -11,7 +11,8 @@ npm i  --legacy-peer-deps
 ```bash
 npm run build
 npm run serve
-``` 
+```
+3. Go to webportal repository (https://github.com/faisal07m/what2studyWebsite.git) and start it locally. Then login to create a chatbot and interact with it in the chatclient option from the menu. Make sure a chatbot is published otherwise you wont see any chatbot in the chat client page.
 
 #### To view the chat client on any website:
 
