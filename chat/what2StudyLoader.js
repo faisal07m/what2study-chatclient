@@ -42,9 +42,9 @@ const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
         //     top.What2Study({ accessToken: token, chatbotId: bot_id });
         // }
         if (window.What2Study) {
-            window.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJyTm9qTGFRQThCIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxNTc1ODM5MX0.jy-juj-U6_m2EJkR4NEJpAXGcBq1hqe3e6B2NjzzYZ0", chatbotId: "rNojLaQA8B" });
+            window.What2Study({ accessToken: "", chatbotId: "" });
         } else if (top.What2Study) {
-            top.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJyTm9qTGFRQThCIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxNTc1ODM5MX0.jy-juj-U6_m2EJkR4NEJpAXGcBq1hqe3e6B2NjzzYZ0", chatbotId: "rNojLaQA8B" });
+            top.What2Study({ accessToken: "", chatbotId: "" });
         }
        
 

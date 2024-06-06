@@ -10,8 +10,8 @@ import OpenChatButton from "./OpenChatButton";
 import { useTranslation } from 'react-i18next';
 import { LOCALSTORAGE_SESSION_ID_KEY } from "App";
 import { v4 as uuidv4 } from "uuid";
-const WHAT2STUDY_BACKEND_URL= "https://www.cpstech.de/functions";
-const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
+const WHAT2STUDY_BACKEND_URL_= "https://www.cpstech.de/functions";
+const WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
 const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 const WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 
@@ -47,8 +47,6 @@ const ChatClient: FC = (props) => {
            
            
             localStorage.setItem("chatbotID", response.result.chatbotId)
-            console.log(oldChatID)
-            console.log(response.result.chatbotId)
             if(oldChatID!= response.result.chatbotId){
                 const newSessionId = uuidv4();
                 if(newSessionId!=null)

@@ -17899,8 +17899,8 @@ var IFrame = function (props) {
     var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
     var addStyles = function () {
         var link = mountNodeDoc.createElement("link");
-        // link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
-        link.href = "https://www.cpstech.de/what2studycss/";
+        link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+        //link.href = "https://www.cpstech.de/what2studycss/";
         link.rel = "stylesheet";
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);
@@ -17932,8 +17932,8 @@ var IFrame = function (props) {
         if (contentRef && isFirefox) {
             contentRef.style = "margin: 0";
             var link = document.createElement("link");
-            //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
-            link.href = "https://www.cpstech.de/what2studycss/";
+            link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+            // link.href = "https://www.cpstech.de/what2studycss/";
             link.rel = "stylesheet";
             link.type = "text/css";
             contentRefIframe.head.appendChild(link);
@@ -21029,7 +21029,7 @@ var NativeSpeechRecognition = {};
 
 var SpeechRecognition = /*@__PURE__*/getDefaultExportFromCjs(lib);
 
-var chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
+var chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 var EMessageSource;
 (function (EMessageSource) {
     EMessageSource["BOT"] = "BOT";
@@ -21132,7 +21132,7 @@ var Main = function (props) {
     var _q = useState(initialMessages), messages = _q[0], setMessages = _q[1];
     var _r = useState(false), loading = _r[0], setLoading = _r[1];
     var messagesEndRef = useRef(null);
-    var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+    var WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
     var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     var _s = useState(''); _s[0]; var setValue = _s[1];
     var _t = useState(false), dummyValuesSet = _t[0], setDummyValueCounter = _t[1];
@@ -21484,7 +21484,6 @@ var Main = function (props) {
         if (browserNotSupp) {
             if (finalTranscript !== "") {
                 if (listening) {
-                    console.log("listeing");
                     setMessage(finalTranscript);
                     // setMicInputText(finalTranscript)
                     setMic(false);
@@ -21493,7 +21492,6 @@ var Main = function (props) {
             if (interimTranscript != "") {
                 // setMicInputText(interimTranscript)
                 if (listening) {
-                    console.log("listeing");
                     setMessage(interimTranscript);
                 }
             }
@@ -21550,44 +21548,24 @@ var Main = function (props) {
                 }));
             }
             // value.lang = "de-DE";
-            console.log(clientConfig.language);
-            console.log(clientConfig.language.toLowerCase().startsWith("e"));
-            console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"));
-            console.log(clientConfig.defaultSettings.narrator);
-            console.log(engVoice);
-            console.log(deVoice);
             if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
-                console.log("en male");
-                console.log(engVoice[0]);
-                // value.lang = "en-US";
                 value.voice = engVoice[0];
             }
             if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
-                console.log("en female");
-                // value.lang = "en-US";
                 value.voice = engVoice[30];
             }
             if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
-                console.log("de male");
-                // value.lang = "de-DE";
-                console.log(deVoice[6]);
                 value.voice = deVoice[6];
             }
             if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
-                console.log("de female");
-                // value.lang = "de-DE";
-                console.log(deVoice[11]);
                 value.voice = deVoice[11];
             }
             // if(clientConfig.defaultSettings.narrator == ""){
             // }
             if (isBotVolumeOn) {
-                console.log("volume tried");
-                console.log(value);
                 window.speechSynthesis.speak(value);
             }
             else {
-                console.log("volume stopped");
                 window.speechSynthesis.cancel();
                 setIsBotVolumeOn(false);
             }
@@ -21836,14 +21814,11 @@ var OpenChatButton = function (props) {
         setPopupItem(EPopupItem.NONE);
     };
     useEffect(function () {
-        console.log(IframeType.CHAT_OPEN_BUTTON);
         if (!isChatOpen) {
             setInterval(function () {
-                console.log('Logs every sec1');
                 setStyleRotate(styleR);
             }, 5000);
             setInterval(function () {
-                console.log('Logs every sec2');
                 setStyleRotate(styleRNot);
             }, 8000);
         }
@@ -21881,7 +21856,7 @@ var OpenChatButton = function (props) {
                         } })) }))] })) })));
 };
 
-var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+var WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
 var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 var ChatClient = function (props) {
@@ -21921,8 +21896,6 @@ var ChatClient = function (props) {
                         localStorage.removeItem("chatbotID");
                     }
                     localStorage.setItem("chatbotID", response.result.chatbotId);
-                    console.log(oldChatID);
-                    console.log(response.result.chatbotId);
                     if (oldChatID != response.result.chatbotId) {
                         newSessionId = v4();
                         if (newSessionId != null) {

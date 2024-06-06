@@ -28,9 +28,9 @@ import { useTranslation } from 'react-i18next';
 import { config } from "process";
 import ChatClient from "components/ChatClient";
 
-const chatEndpoint_ = "http://127.0.0.1:5009/chatbot/";
+const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 
-const chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
+const chatEndpoint_ = "https://www.cpstech.de/chatbotLLM/";
 
 enum EMessageSource {
     BOT = "BOT",
@@ -159,8 +159,8 @@ const Main: FC = (props) => {
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
-    const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+    const WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
+    const WHAT2STUDY_BACKEND_URL_ = "https://www.cpstech.de/functions";
     const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     const [value, setValue] = useState('')
 
@@ -507,7 +507,6 @@ const Main: FC = (props) => {
             if (finalTranscript !== "") {
                
                 if (listening) {
-                    console.log("listeing")
                     setMessage(finalTranscript)
                     // setMicInputText(finalTranscript)
                     setMic(false)
@@ -518,7 +517,6 @@ const Main: FC = (props) => {
             if (interimTranscript != "") {
                 // setMicInputText(interimTranscript)
                 if (listening) {
-                    console.log("listeing")
                     setMessage(interimTranscript)
                
                 }
@@ -576,42 +574,22 @@ const Main: FC = (props) => {
                 setDeVoices(voices_?.filter(({ lang }) => lang === "de-DE"))
             }
             // value.lang = "de-DE";
-            console.log(clientConfig.language)
-            console.log(clientConfig.language.toLowerCase().startsWith("e"))
-            console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
-            console.log(clientConfig.defaultSettings.narrator)
-            console.log(engVoice)
-            console.log(deVoice)
+           
             if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") ) {
-                console.log("en male")
-                console.log(engVoice[0])
-
-                // value.lang = "en-US";
                 value.voice = engVoice[0]
 
             }
             if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") ) {
-                console.log("en female")
-
-                // value.lang = "en-US";
                 value.voice = engVoice[30]
 
 
             }
             if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") ) {
-                console.log("de male")
-                // value.lang = "de-DE";
-                console.log(deVoice[6])
                 value.voice = deVoice[6]
 
 
             }
             if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") ) {
-                console.log("de female")
-
-                // value.lang = "de-DE";
-
-                console.log(deVoice[11])
                 value.voice = deVoice[11]
 
 
@@ -621,12 +599,9 @@ const Main: FC = (props) => {
             // }
 
             if (isBotVolumeOn) {
-                console.log("volume tried")
-                console.log(value)
                 window.speechSynthesis.speak(value);
             }
             else {
-                console.log("volume stopped")
                 window.speechSynthesis.cancel();
                 setIsBotVolumeOn(false)
             }

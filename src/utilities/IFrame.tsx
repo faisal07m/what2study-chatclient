@@ -103,8 +103,8 @@ export const IFrame: FC<IIframeProps> = (props) => {
     const mountNodeDoc = contentRef?.contentWindow?.document;
     const addStyles = () => {
         const link = mountNodeDoc.createElement("link");
-        // link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
-        link.href = "https://www.cpstech.de/what2studycss/";
+        link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+        //link.href = "https://www.cpstech.de/what2studycss/";
         link.rel = "stylesheet";
         link.type = "text/css";
         mountNodeDoc.head.appendChild(link);
@@ -140,8 +140,8 @@ export const IFrame: FC<IIframeProps> = (props) => {
         if (contentRef && isFirefox) {
             contentRef.style = "margin: 0";
             const link = document.createElement("link");
-            //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
-            link.href = "https://www.cpstech.de/what2studycss/";
+            link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+            // link.href = "https://www.cpstech.de/what2studycss/";
             link.rel = "stylesheet";
             link.type = "text/css";
             contentRefIframe.head.appendChild(link);

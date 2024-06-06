@@ -38,16 +38,12 @@ const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
     };
 
     useEffect(()=>{
-        console.log(IframeType.CHAT_OPEN_BUTTON)
-        
         if(!isChatOpen){
             const interval = setInterval(() => {
-                console.log('Logs every sec1');
                 setStyleRotate(styleR)
 
               }, 5000);
               const interval2 = setInterval(() => {
-                console.log('Logs every sec2');
                 setStyleRotate(styleRNot)
 
               }, 8000);
