@@ -1,24 +1,17 @@
 ### what2study - chat client
 
-#### To run the project:
-
+#### To run Locally with the webportal (https://github.com/faisal07m/what2studyWebsite.git)
 1. Install dependencies:
 
 ```bash
-npm i
+npm i  --legacy-peer-deps
 ```
 
-2. Start the dev servers:
-
+2. Run build and serve command to serve js and css for the chat client
 ```bash
-npm start
-```
-
-3. View in browser:
-
-**Copy the path** of the file `./chat/demo.html` and paste in browser to view the chat client.
-
----
+npm run build
+npm run serve
+``` 
 
 #### To view the chat client on any website:
 
