@@ -8,6 +8,8 @@ import ChatContainer from "./ChatContainer";
 import OpenChatButton from "./OpenChatButton";
 
 import { useTranslation } from 'react-i18next';
+import { LOCALSTORAGE_SESSION_ID_KEY } from "App";
+import { v4 as uuidv4 } from "uuid";
 const WHAT2STUDY_BACKEND_URL= "https://www.cpstech.de/functions";
 const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
 const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
@@ -37,12 +39,23 @@ const ChatClient: FC = (props) => {
                 response.result["testRequest"] = props.testRequest
             }
             await saveClientConfigurations(response.result);
+            var oldChatID
             if(localStorage.getItem("chatbotID")){
+                oldChatID=localStorage.getItem("chatbotID")
                 localStorage.removeItem("chatbotID")
             }
            
            
             localStorage.setItem("chatbotID", response.result.chatbotId)
+            console.log(oldChatID)
+            console.log(response.result.chatbotId)
+            if(oldChatID!= response.result.chatbotId){
+                const newSessionId = uuidv4();
+                if(newSessionId!=null)
+                {localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
+                localStorage.removeItem("history")
+                localStorage.removeItem("historySession")}
+            }
             if(localStorage.getItem("chatbotID") != localStorage.getItem("historySession")){
                 localStorage.removeItem("history")
                 localStorage.removeItem("historySession")

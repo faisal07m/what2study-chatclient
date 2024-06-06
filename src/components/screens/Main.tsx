@@ -563,7 +563,7 @@ const Main: FC = (props) => {
     }, [isMicPressed])
 
     useEffect(() => {
-        if (browserNotSupp) {
+        if (browserNotSupp && messages.length>0) {
             var value = new SpeechSynthesisUtterance(messages[messages.length - 1].message);
             var voices_ = speechSynthesis.getVoices()
             var engVoice: Array<SpeechSynthesisVoice> = []
@@ -576,43 +576,53 @@ const Main: FC = (props) => {
                 setDeVoices(voices_?.filter(({ lang }) => lang === "de-DE"))
             }
             // value.lang = "de-DE";
-            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+            console.log(clientConfig.language)
+            console.log(clientConfig.language.toLowerCase().startsWith("e"))
+            console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
+            console.log(clientConfig.defaultSettings.narrator)
+            console.log(engVoice)
+            console.log(deVoice)
+            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") ) {
                 console.log("en male")
-                console.log(engVoice[30])
+                console.log(engVoice[0])
+
+                // value.lang = "en-US";
+                value.voice = engVoice[0]
+
+            }
+            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") ) {
+                console.log("en female")
 
                 // value.lang = "en-US";
                 value.voice = engVoice[30]
 
-            }
-            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
-                console.log("en female")
-
-                // value.lang = "en-US";
-                value.voice = engVoice[16]
-
 
             }
-            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") ) {
                 console.log("de male")
                 // value.lang = "de-DE";
+                console.log(deVoice[6])
+                value.voice = deVoice[6]
+
+
+            }
+            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") ) {
+                console.log("de female")
+
+                // value.lang = "de-DE";
+
                 console.log(deVoice[11])
                 value.voice = deVoice[11]
 
 
             }
-            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
-                console.log("de female")
-
-                // value.lang = "de-DE";
-
-                console.log(deVoice[10])
-                value.voice = deVoice[10]
-
-
-            }
+            // if(clientConfig.defaultSettings.narrator == ""){
+            
+            // }
 
             if (isBotVolumeOn) {
                 console.log("volume tried")
+                console.log(value)
                 window.speechSynthesis.speak(value);
             }
             else {

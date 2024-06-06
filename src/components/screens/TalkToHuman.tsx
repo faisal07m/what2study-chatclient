@@ -179,7 +179,7 @@ const TalkToHuman:FC = (props) => {
                     )}
                 </div>
                 <div className="chip-button-wrapper" style={{height:"100px",  alignContent: "center"}}>
-                <img src={clientConfig.orgImage} style={{ width:"110px"}}></img>
+                    {clientConfig.orgImage ? <img src={clientConfig.orgImage} style={{ width:"110px"}}></img>: <img src={clientConfig.orgImage} style={{ width:"110px", visibility:"hidden"}}></img>}
                 <button style={{ position:"absolute", marginTop:"9%", right:"0"}} className="app-chip-button" 
                  onClick={() =>{
                     const currentdate = new Date();

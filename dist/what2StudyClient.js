@@ -21957,7 +21957,7 @@
 	        }
 	    }, [isMicPressed]);
 	    reactExports.useEffect(function () {
-	        if (browserNotSupp) {
+	        if (browserNotSupp && messages.length > 0) {
 	            var value = new SpeechSynthesisUtterance(messages[messages.length - 1].message);
 	            var voices_ = speechSynthesis.getVoices();
 	            var engVoice = [];
@@ -21982,31 +21982,40 @@
 	                }));
 	            }
 	            // value.lang = "de-DE";
-	            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+	            console.log(clientConfig.language);
+	            console.log(clientConfig.language.toLowerCase().startsWith("e"));
+	            console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"));
+	            console.log(clientConfig.defaultSettings.narrator);
+	            console.log(engVoice);
+	            console.log(deVoice);
+	            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
 	                console.log("en male");
-	                console.log(engVoice[30]);
+	                console.log(engVoice[0]);
+	                // value.lang = "en-US";
+	                value.voice = engVoice[0];
+	            }
+	            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+	                console.log("en female");
 	                // value.lang = "en-US";
 	                value.voice = engVoice[30];
 	            }
-	            if (clientConfig.language.toLowerCase().startsWith("e") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
-	                console.log("en female");
-	                // value.lang = "en-US";
-	                value.voice = engVoice[16];
-	            }
-	            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") || clientConfig.defaultSettings.narrator == "")) {
+	            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
 	                console.log("de male");
+	                // value.lang = "de-DE";
+	                console.log(deVoice[6]);
+	                value.voice = deVoice[6];
+	            }
+	            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+	                console.log("de female");
 	                // value.lang = "de-DE";
 	                console.log(deVoice[11]);
 	                value.voice = deVoice[11];
 	            }
-	            if (clientConfig.language.toLowerCase().startsWith("d") && (clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") || clientConfig.defaultSettings.narrator == "")) {
-	                console.log("de female");
-	                // value.lang = "de-DE";
-	                console.log(deVoice[10]);
-	                value.voice = deVoice[10];
-	            }
+	            // if(clientConfig.defaultSettings.narrator == ""){
+	            // }
 	            if (isBotVolumeOn) {
 	                console.log("volume tried");
+	                console.log(value);
 	                window.speechSynthesis.speak(value);
 	            }
 	            else {
@@ -22175,7 +22184,7 @@
 	                                                return setPreferredDayTime(__assign$1(__assign$1({}, preferredDayTime), { day: day }));
 	                                            } }, { children: day }))); }) })), jsxRuntimeExports.jsx(Form$1.Control, { type: "time", value: preferredDayTime.time, onChange: function (e) {
 	                                            return setPreferredDayTime(__assign$1(__assign$1({}, preferredDayTime), { time: e.target.value }));
-	                                        } })] })))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chip-button-wrapper", style: { height: "100px", alignContent: "center" } }, { children: [jsxRuntimeExports.jsx("img", { src: clientConfig.orgImage, style: { width: "110px" } }), jsxRuntimeExports.jsx("button", __assign$1({ style: { position: "absolute", marginTop: "9%", right: "0" }, className: "app-chip-button", onClick: function () {
+	                                        } })] })))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chip-button-wrapper", style: { height: "100px", alignContent: "center" } }, { children: [clientConfig.orgImage ? jsxRuntimeExports.jsx("img", { src: clientConfig.orgImage, style: { width: "110px" } }) : jsxRuntimeExports.jsx("img", { src: clientConfig.orgImage, style: { width: "110px", visibility: "hidden" } }), jsxRuntimeExports.jsx("button", __assign$1({ style: { position: "absolute", marginTop: "9%", right: "0" }, className: "app-chip-button", onClick: function () {
 	                                    var _a;
 	                                    var currentdate = new Date();
 	                                    var datetime = currentdate.getDate() + "/"
@@ -22311,7 +22320,7 @@
 	    var _a = useData(), saveClientConfigurations = _a.saveClientConfigurations, isClientConfigFetched = _a.isClientConfigFetched; _a.clientConfig; var language = _a.language;
 	    var _b = useTranslation("global"); _b[0]; var i18n = _b[1];
 	    var getChatClientConfiguration = function () { return __awaiter(void 0, void 0, void 0, function () {
-	        var resJson, response;
+	        var resJson, response, oldChatID, newSessionId;
 	        return __generator(this, function (_a) {
 	            switch (_a.label) {
 	                case 0:
@@ -22340,9 +22349,20 @@
 	                case 3:
 	                    _a.sent();
 	                    if (localStorage.getItem("chatbotID")) {
+	                        oldChatID = localStorage.getItem("chatbotID");
 	                        localStorage.removeItem("chatbotID");
 	                    }
 	                    localStorage.setItem("chatbotID", response.result.chatbotId);
+	                    console.log(oldChatID);
+	                    console.log(response.result.chatbotId);
+	                    if (oldChatID != response.result.chatbotId) {
+	                        newSessionId = v4();
+	                        if (newSessionId != null) {
+	                            localStorage.setItem(LOCALSTORAGE_SESSION_ID_KEY, newSessionId);
+	                            localStorage.removeItem("history");
+	                            localStorage.removeItem("historySession");
+	                        }
+	                    }
 	                    if (localStorage.getItem("chatbotID") != localStorage.getItem("historySession")) {
 	                        localStorage.removeItem("history");
 	                        localStorage.removeItem("historySession");
