@@ -38,7 +38,9 @@ i18next
                         "thats": " That's why I want to give you as much information as possible about my",
                         "functions": " functions and procedures.",
                         "everything": "Everything we discuss here is confidential; no one will be informed of the subject of this discussion unless you have given your explicit consent (e.g. when submitting a request via the \"Talk to us\" function). In order to improve the quality of the answers, anonymized answers will be evaluated in an initial test phase.",
-                        "okay": "Okay"
+                        "okay": "Okay",
+                        "datenSecutiry":"For more information, please read our full ",
+                        "datenSecurityLink":"privacy policy."
                     },
                     "infoPopup": {
                         "welcome": "Welcome to What2Study!",
@@ -127,7 +129,10 @@ i18next
                         "thats": " Deshalb möchte ich so gut wie möglich über meine",
                         "functions": " Funktionen und Vorgehensweisen informieren.",
                         "everything": "Alles, was wir hier besprechen, ist vertraulich, niemand wird über den Inhalt hier in Kenntnis gesetzt, es sei denn, es liegt eine ausdrückliche Zustimmung zur Weitergabe vor (z.B.: bei Weiterleitung einer Anfrage über die Funktion \"Sprich mit uns\"). Um die Qualität der Antworten zu verbessern, werden in einer ersten Testphase anonymisierte Antworten ausgewertet.",
-                        "okay": "Okay"
+                        "okay": "Okay",
+                        "datenSecutiry":"Für weitere Informationen lesen Sie bitte unsere ",
+                        "datenSecurityLink":"vollständige Datenschutzerklärung."
+                
                     },
                     "infoPopup": {
                         "welcome": "Willkommen bei What2Study!",
@@ -147,14 +152,14 @@ i18next
                         "write": "kontaktieren:",
                         "message": "Deine Nachricht",
                         "send": "Chatverlauf senden",
-                        "please": "Angabe der E-Mail-Adresse für Kontaktzwecke:",
+                        "please": "E-Mail-Adresse für Kontaktzwecke angeben:",
                         "use": "Gespeichtere E-Mail-Adresse verwenden: ",
                         "different": "Andere E-Mail-Adresse verwenden: ",
                         "email": "E-Mail-Adresse eingeben",
-                        "would": "Ist eine telefonische Rückmeldung bevorzugt?",
+                        "would": "Wünschen Sie eine telefonische Rückmeldung?",
                         "number": "Telefonnummer eingeben",
                         "best": "Wann kann ich Sie am besten anrufen?",
-                        "submit":"einreichen",
+                        "submit":"Einreichen",
                         "matriculation":"Hier können Sie Ihre Matrikelnummer angeben",
                         "matPlaceholder":"Matriculation nummer eingeben"
                     },

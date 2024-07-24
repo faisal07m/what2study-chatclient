@@ -1,4 +1,5 @@
 import { LOCALSTORAGE_SESSION_ID_KEY } from "App";
+import ChatClient from "components/ChatClient";
 import {
     EThemes,
     IClientConfigurations,
@@ -56,7 +57,7 @@ export enum EChatLanguage {
     DE = "de",
 }
 
-const AVAILABLE_FONTS = ["inter", "roboto", "poppins", "tinos", "fira sans condensed", "arimo","ibm plex sans","open sans" ];
+const AVAILABLE_FONTS = ["inter", "roboto", "poppins", "tinos", "fira sans condensed", "arimo", "ibm plex sans", "open sans"];
 
 const getFont = (font: string): string => {
     if (AVAILABLE_FONTS.includes(font?.toLowerCase())) return font;
@@ -68,22 +69,26 @@ const defaultClientConfig = {
     userId: "",
     universityId: "U5xHMAMerU",
     chatbotName: "What 2 Study",
-    language:"de",
-    chatbotId:"",
-    orgImage:"",
+    language: "de",
+    chatbotId: "",
+    orgImage: "",
     randomQuestionEnabled: true,
-    randomQuestion:"Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
-    talkToaHumanEnabled: true ,
-    customPrompt:"",
-    talkToaHuman:"",
-    Narrator:"male",
-    dummyRequest:false,
-    testRequest:false,
-    phone:"",
-    email:"",
-    nameOfOrg:"",
-    accessToken:"",
-    matriculationNumber:true,
+    randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
+    talkToaHumanEnabled: true,
+    customPrompt: "",
+    talkToaHuman: "",
+    Narrator: "male",
+    dummyRequest: false,
+    testRequest: false,
+    phone: "",
+    email: "",
+    nameOfOrg: "",
+    accessToken: "",
+    welcomeMsgDE: 'Hallo, ich bin ein Chatbot der dir bei deinem Studium helfen soll! Bevor wir loslegen, ein paar wichtige Fakten.',
+    welcomeMsgEN: "Hello. It's nice to meet you! I am a chatbot built to help you with your studies! Before we get started, here are a few important facts.",
+    introScreenInfoDE: 'Geben Sie die erste Nachricht ein, die vom Chatbot angezeigt werden soll',
+    introScreenInfoEN: 'Welcome to the Student Advisory Service! How can I help you today?',
+    matriculationNumber: true,
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
     defaultSettings: {
@@ -139,11 +144,12 @@ const defaultClientConfig = {
 } as IClientConfigurations;
 
 const doesImageExists = async (url: string): Promise<boolean> => {
-    if(url.length>1){
+    if (url.length > 1) {
         return true
     }
-    else{
-        return  false}
+    else {
+        return false
+    }
     // try {
     //     const res = await fetch(url, {
     //         method: "POST",
@@ -224,12 +230,16 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             dummyRequest,
             Narrator,
             testRequest,
-            chatbotLook = {}, 
+            chatbotLook = {},
             email,
             phone,
             nameOfOrg,
             matriculationNumber,
-            orgImage
+            orgImage,
+            welcomeMsgDE,
+            welcomeMsgEN,
+            introScreenInfoDE,
+            introScreenInfoEN
 
         } = data;
 
@@ -264,19 +274,23 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             chatbotName: chatbotName || defaultClientConfig.chatbotName,
             dummyRequest: dummyRequest || defaultClientConfig.dummyRequest,
             testRequest: testRequest || defaultClientConfig.testRequest,
-            language:language || defaultClientConfig.language,
+            language: language || defaultClientConfig.language,
             randomQuestionEnabled: randomQuestionEnabled,
-            customPrompt:customPrompt,
+            customPrompt: customPrompt,
+            welcomeMsgDE:welcomeMsgDE,
+          welcomeMsgEN:welcomeMsgEN,
+          introScreenInfoDE:introScreenInfoDE,
+          introScreenInfoEN:introScreenInfoEN,
             matriculationNumber: matriculationNumber,
-            randomQuestion:randomQuestion|| defaultClientConfig.randomQuestion,
+            randomQuestion: randomQuestion || defaultClientConfig.randomQuestion,
             talkToaHumanEnabled: talkToaHumanEnabled,
-            talkToaHuman:talkToaHuman|| defaultClientConfig.talkToaHuman,
-            email:email || defaultClientConfig.email,
-            orgImage:orgImage ,
-            phone:phone || defaultClientConfig.phone,
-            nameOfOrg:nameOfOrg||defaultClientConfig.nameOfOrg,
-            
-            Narrator:Narrator|| defaultClientConfig.Narrator, 
+            talkToaHuman: talkToaHuman || defaultClientConfig.talkToaHuman,
+            email: email || defaultClientConfig.email,
+            orgImage: orgImage,
+            phone: phone || defaultClientConfig.phone,
+            nameOfOrg: nameOfOrg || defaultClientConfig.nameOfOrg,
+
+            Narrator: Narrator || defaultClientConfig.Narrator,
             chatbotBubbleIcons:
                 typeof chatbotBubbleIcons == "string"
                     ? (await doesImageExists(chatbotBubbleIcons))
@@ -300,12 +314,12 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             } as IConfigDefaultSettings,
             chatboxBehaviour: {
                 formality:
-                    chatboxBehaviour?.formality ,
-                opinion: chatboxBehaviour?.opinion ,
-                emotion: chatboxBehaviour?.emotion ,
-                length: chatboxBehaviour?.length ,
-                topics: chatboxBehaviour?.topics ,
-                tone: chatboxBehaviour?.tone ,
+                    chatboxBehaviour?.formality,
+                opinion: chatboxBehaviour?.opinion,
+                emotion: chatboxBehaviour?.emotion,
+                length: chatboxBehaviour?.length,
+                topics: chatboxBehaviour?.topics,
+                tone: chatboxBehaviour?.tone,
                 chatbotBehaviourName:
                     chatboxBehaviour?.chatbotBehaviourName ||
                     defaultClientConfig.chatboxBehaviour.chatbotBehaviourName,
@@ -357,7 +371,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
                         dTextBoxChatbotReply.textBoxChatbotReplyFontColor,
                     textBoxChatboxReplyFontStyle: getFont(
                         textBoxChatbotReply?.textBoxChatboxReplyFontStyle ||
-                            dTextBoxChatbotReply.textBoxChatboxReplyFontStyle
+                        dTextBoxChatbotReply.textBoxChatboxReplyFontStyle
                     ),
                 } as ISubConfigLookBotTextBox,
                 UIGroupA: {

@@ -159,8 +159,8 @@ const Main: FC = (props) => {
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
-    const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+    const WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
+    const WHAT2STUDY_BACKEND_URL_ = "https://www.cpstech.de/functions";
     const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     const [value, setValue] = useState('')
 
@@ -507,7 +507,6 @@ const Main: FC = (props) => {
             if (finalTranscript !== "") {
                
                 if (listening) {
-                    console.log("listeing")
                     setMessage(finalTranscript)
                     // setMicInputText(finalTranscript)
                     setMic(false)
@@ -518,7 +517,6 @@ const Main: FC = (props) => {
             if (interimTranscript != "") {
                 // setMicInputText(interimTranscript)
                 if (listening) {
-                    console.log("listeing")
                     setMessage(interimTranscript)
                
                 }
@@ -976,6 +974,12 @@ const Main: FC = (props) => {
                     }}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
+                    onKeyDown={(e) => {
+                        if (e.key == "Enter") {
+                            console.log('enter')
+                            handleUserMessage(e)
+                        }
+                    }}
                 />
                 <button
                     // type="submit"

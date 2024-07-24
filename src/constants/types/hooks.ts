@@ -116,5 +116,9 @@ export interface IClientConfigurations {
     chatbotLook: IConfigChatbotLook;
     matriculationNumber:boolean;
     orgImage:string;
+    welcomeMsgDE:string;
+    welcomeMsgEN:string;
+    introScreenInfoDE:string;
+    introScreenInfoEN:string;
 
 }

@@ -250,6 +250,10 @@ var defaultClientConfig = {
     email: "",
     nameOfOrg: "",
     accessToken: "",
+    welcomeMsgDE: 'Hallo, ich bin ein Chatbot der dir bei deinem Studium helfen soll! Bevor wir loslegen, ein paar wichtige Fakten.',
+    welcomeMsgEN: "Hello. It's nice to meet you! I am a chatbot built to help you with your studies! Before we get started, here are a few important facts.",
+    introScreenInfoDE: 'Geben Sie die erste Nachricht ein, die vom Chatbot angezeigt werden soll',
+    introScreenInfoEN: 'Welcome to the Student Advisory Service! How can I help you today?',
     matriculationNumber: true,
     chatbotBubbleIcons: "https://i.ibb.co/w007JNQ/default-bubble-icon.png",
     chatbotProfileImage: "https://i.ibb.co/xSJZqy2/default-profile-icon.png",
@@ -360,13 +364,13 @@ var DataProvider = function (props) {
     var saveClientConfigurations = function (data) {
         if (data === void 0) { data = {}; }
         return __awaiter(void 0, void 0, void 0, function () {
-            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, customPrompt, talkToaHumanEnabled, talkToaHuman, dummyRequest, Narrator, testRequest, _a, chatbotLook, email, phone, nameOfOrg, matriculationNumber, orgImage, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
+            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, customPrompt, talkToaHumanEnabled, talkToaHuman, dummyRequest, Narrator, testRequest, _a, chatbotLook, email, phone, nameOfOrg, matriculationNumber, orgImage, welcomeMsgDE, welcomeMsgEN, introScreenInfoDE, introScreenInfoEN, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
             var _e;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
                         setLanguage(data.language);
-                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, customPrompt = data.customPrompt, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, testRequest = data.testRequest, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a, email = data.email, phone = data.phone, nameOfOrg = data.nameOfOrg, matriculationNumber = data.matriculationNumber, orgImage = data.orgImage;
+                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, customPrompt = data.customPrompt, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, testRequest = data.testRequest, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a, email = data.email, phone = data.phone, nameOfOrg = data.nameOfOrg, matriculationNumber = data.matriculationNumber, orgImage = data.orgImage, welcomeMsgDE = data.welcomeMsgDE, welcomeMsgEN = data.welcomeMsgEN, introScreenInfoDE = data.introScreenInfoDE, introScreenInfoEN = data.introScreenInfoEN;
                         _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
                         chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
                         _e = {
@@ -381,6 +385,10 @@ var DataProvider = function (props) {
                             language: language || defaultClientConfig.language,
                             randomQuestionEnabled: randomQuestionEnabled,
                             customPrompt: customPrompt,
+                            welcomeMsgDE: welcomeMsgDE,
+                            welcomeMsgEN: welcomeMsgEN,
+                            introScreenInfoDE: introScreenInfoDE,
+                            introScreenInfoEN: introScreenInfoEN,
                             matriculationNumber: matriculationNumber,
                             randomQuestion: randomQuestion || defaultClientConfig.randomQuestion,
                             talkToaHumanEnabled: talkToaHumanEnabled,
@@ -17913,13 +17921,16 @@ var IFrame = function (props) {
         }
     };
     useEffect(function () {
+        // setIsChatOpenTemp(isChatOpen)
+        localStorage.setItem("iframeType", iframeType.toString());
+        localStorage.setItem("isChatOpen", isChatOpen);
         handleWindowResize();
     }, [iframeType, isChatOpen]);
     useEffect(function () {
-        window.addEventListener("resize", handleWindowResize);
-        return function () {
-            window.removeEventListener("resize", handleWindowResize);
-        };
+        // window.addEventListener("resize", handleWindowResize2);
+        // return () => {
+        //     window.removeEventListener("resize", handleWindowResize2);
+        // };
     }, []);
     useEffect(function () {
         if (mountNode && !isFirefox) {
@@ -17940,9 +17951,7 @@ var IFrame = function (props) {
         }
     }, [contentRef]);
     return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [isFirefox &&
-                jsxRuntimeExports.jsx("iframe", __assign$1({ style: styles, id: "what2studyIDFirefox" }, rest, { 
-                    // onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
-                    onLoad: handleLoad }, { children: contentRef && isFirefox && createPortal(children, contentRef) })), !isFirefox &&
+                jsxRuntimeExports.jsx("iframe", __assign$1({ style: styles, id: "what2studyIDFirefox" }, rest, { onLoad: handleLoad }, { children: contentRef && isFirefox && createPortal(children, contentRef) })), !isFirefox &&
                 jsxRuntimeExports.jsx("iframe", __assign$1({ id: "what2studyIDChrome", style: styles }, rest, { 
                     // onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
                     // onLoad={ handleLoad }
@@ -18487,7 +18496,9 @@ var PopupItemFilters = function () {
 
 var PopupItemInfo = function () {
     var _a = useTranslation("global"), t = _a[0]; _a[1];
-    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("infoPopup.welcome"), className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: [t("infoPopup.what2study"), " ", jsxRuntimeExports.jsxs("span", { children: [" ", t("infoPopup.chatbot")] }), " ", t("infoPopup.that"), jsxRuntimeExports.jsx("span", { children: t("infoPopup.studies") }), "."] })), jsxRuntimeExports.jsx("p", __assign$1({ className: "info-text-title" }, { children: t("infoPopup.please") })), jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text" }, { children: [t("infoPopup.isnot"), jsxRuntimeExports.jsx("span", { children: t("infoPopup.person") }), t("infoPopup.many"), jsxRuntimeExports.jsx("span", { children: t("infoPopup.cant") }), " ", t("infoPopup.every")] }))] })));
+    var _b = useData(); _b.setCurrentRoute; var clientConfig = _b.clientConfig;
+    clientConfig.chatbotProfileImage; clientConfig.chatbotLook.chatbotHeader; clientConfig.dummyRequest; clientConfig.language; var nameOfOrg = clientConfig.nameOfOrg; clientConfig.introScreenInfoDE; clientConfig.introScreenInfoEN; clientConfig.welcomeMsgDE; clientConfig.welcomeMsgEN;
+    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Informationen zum " + nameOfOrg, className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("ol", __assign$1({ className: "info-text", style: { textAlign: "justify" } }, { children: [jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Automatisierte Interaktion:" }), " What2Study ist ein automatisiertes System und keine reale Person."] }), jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Entwicklungsprozess:" }), " Viele Personen waren an der Entwicklung beteiligt, und der Chatbot wurde ausgiebig getestet, um die Genauigkeit und Hilfreichkeit der Antworten zu gew\u00E4hrleisten. Dennoch k\u00F6nnen wir nicht garantieren, dass jede Antwort des Chatbots korrekt ist."] }), jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Eigene Verantwortung: " }), "Wir empfehlen, insbesondere wichtige Informationen selbst zu \u00FCberpr\u00FCfen, bevor Entscheidungen getroffen werden."] })] })), jsxRuntimeExports.jsx("br", {}), jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text", style: { textAlign: "justify" } }, { children: ["Diese Datenschutzklausel informiert Sie \u00FCber die Nutzung und Grenzen des Chatbots. F\u00FCr weitere Informationen zur Datenverarbeitung und Datensicherheit lesen Sie bitte unsere ", jsxRuntimeExports.jsx("a", __assign$1({ href: "https://cpstech.de/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })), "."] }))] })));
 };
 
 var propTypes$2 = {exports: {}};
@@ -19166,15 +19177,27 @@ var IntroPage = function () {
     var _a = useData(), setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig;
     var _b = useState(0), introPage = _b[0], setIntroPage = _b[1];
     var _c = useState(false), isVideoOpen = _c[0], setIsVideoOpen = _c[1];
-    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader, dummyRequest = clientConfig.dummyRequest;
+    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader, dummyRequest = clientConfig.dummyRequest, language = clientConfig.language, introScreenInfoDE = clientConfig.introScreenInfoDE, introScreenInfoEN = clientConfig.introScreenInfoEN, welcomeMsgDE = clientConfig.welcomeMsgDE, welcomeMsgEN = clientConfig.welcomeMsgEN;
     var _d = useTranslation("global"), t = _d[0]; _d[1];
+    function paragraphsWelcomeElements() {
+        var numberOfLineBreaks = (welcomeMsgDE.match(/\n/g) || []).length;
+        console.log(numberOfLineBreaks);
+        console.log(welcomeMsgDE.split("\n"));
+        var messageType = welcomeMsgEN;
+        if (language.toLocaleLowerCase().startsWith("de")) {
+            messageType = welcomeMsgDE;
+        }
+        var filtered = messageType.split("\n").filter(function (el) { return el != ""; });
+        console.log(filtered);
+        return (jsxRuntimeExports.jsxs("div", { children: [filtered.map(function (store) { return (jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: store })) }))); }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-infoBlock2" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.datenSecutiry") })), jsxRuntimeExports.jsx("span", { children: jsxRuntimeExports.jsx("a", __assign$1({ href: "https://cpstech.de/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })) })] }))] }));
+    }
     useEffect(function () {
         if (dummyRequest) {
             setIntroPage(introPage + 1);
             setCurrentRoute(ERoute.MAIN);
         }
     }, []);
-    return (jsxRuntimeExports.jsx(Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage1.hello"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage1.iam") })), t("introPage1.built")] })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "is-tochat-button", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [t("introPage1.chat"), " "] }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsxs("p", __assign$1({ className: "is-block-text" }, { children: [t("introPage2.Lets"), " ", jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.easy") })), t("introPage2.thats"), jsxRuntimeExports.jsx("span", __assign$1({ className: "is-block-bold" }, { children: t("introPage2.functions") }))] })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text" }, { children: t("introPage2.everything") })) }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
+    return (jsxRuntimeExports.jsx(Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper", style: { height: "85%" } }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { maxHeight: "200px", overflowY: "auto", padding: "15px", scrollbarWidth: "thin", wordWrap: "break-word" } }, { children: language.toLocaleLowerCase().startsWith("d") ? introScreenInfoDE : introScreenInfoEN })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "is-tochat-button", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [t("introPage1.chat"), " "] }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper", style: { height: "85%" } }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ style: { minHeight: "-webkit-fill-available", overflowY: "auto", padding: "15px" } }, { children: paragraphsWelcomeElements() }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
                         return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
                     }, style: {
                         backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
@@ -21132,7 +21155,7 @@ var Main = function (props) {
     var _q = useState(initialMessages), messages = _q[0], setMessages = _q[1];
     var _r = useState(false), loading = _r[0], setLoading = _r[1];
     var messagesEndRef = useRef(null);
-    var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+    var WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
     var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     var _s = useState(''); _s[0]; var setValue = _s[1];
     var _t = useState(false), dummyValuesSet = _t[0], setDummyValueCounter = _t[1];
@@ -21484,7 +21507,6 @@ var Main = function (props) {
         if (browserNotSupp) {
             if (finalTranscript !== "") {
                 if (listening) {
-                    console.log("listeing");
                     setMessage(finalTranscript);
                     // setMicInputText(finalTranscript)
                     setMic(false);
@@ -21493,7 +21515,6 @@ var Main = function (props) {
             if (interimTranscript != "") {
                 // setMicInputText(interimTranscript)
                 if (listening) {
-                    console.log("listeing");
                     setMessage(interimTranscript);
                 }
             }
@@ -21719,7 +21740,12 @@ var Main = function (props) {
                             }, className: "voice-input-button", id: "voiceMicButton", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }, "voiceMicButton"), jsxRuntimeExports.jsx("input", { className: "inputField ".concat(isInputFocused ? "inputFieldFocused" : ""), type: "text", value: message, disabled: dummyRequest != true ? false : true, onChange: function (e) {
                             setMessage(e.target.value);
                             setValue("terminate");
-                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); } }), jsxRuntimeExports.jsx("button", __assign$1({ 
+                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); }, onKeyDown: function (e) {
+                            if (e.key == "Enter") {
+                                console.log('enter');
+                                handleUserMessage(e);
+                            }
+                        } }), jsxRuntimeExports.jsx("button", __assign$1({ 
                         // type="submit"
                         className: "sendButton", disabled: dummyRequest != true ? false : true, style: {
                             backgroundColor: UIGroupB.UIGroupBUIBackground,
@@ -21742,9 +21768,9 @@ var TalkToHuman = function (props) {
     }), preferredDayTime = _f[0], setPreferredDayTime = _f[1];
     var _g = useData(); _g.setPopupItem; _g.isBotVolumeOn; _g.setIsBotVolumeOn; var setCurrentRoute = _g.setCurrentRoute, clientConfig = _g.clientConfig; _g.sessionId; _g.language;
     var _h = useTranslation("global"), t = _h[0]; _h[1];
-    return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "talkToHuman-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "navbar" }, { children: jsxRuntimeExports.jsxs("button", __assign$1({ className: "navBackBtn", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [jsxRuntimeExports.jsx(IoChevronBack, { className: "navIcon" }), jsxRuntimeExports.jsx("span", __assign$1({ className: "navText" }, { children: t("talk2human.back") }))] })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-details-wrapper" }, { children: [jsxRuntimeExports.jsxs("a", __assign$1({ className: "contact-detail" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(IoIosCall, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: clientConfig.phone }))] })), jsxRuntimeExports.jsxs("a", __assign$1({ target: "_blank", className: "contact-detail contact-email", href: "mailto:registration@uni-siegen.de" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(MdEmail, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: clientConfig.email }))] }))] })), jsxRuntimeExports.jsx("div", { className: "divider" }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "tth-data-wrapper" }, { children: [jsxRuntimeExports.jsxs("p", __assign$1({ className: "tth-info-text" }, { children: [clientConfig.nameOfOrg, " ", t("talk2human.write"), ":"] })), jsxRuntimeExports.jsx(FloatingLabel$1, __assign$1({ controlId: "floatingTextarea", label: t("talk2human.message"), className: "tth-message" }, { children: jsxRuntimeExports.jsx(Form$1.Control, { as: "textarea", 
-                            // placeholder={t("talk2human.message")}
-                            defaultValue: clientConfig.talkToaHumanEnabled ? clientConfig.talkToaHuman : "", style: { height: "90px" }, onChange: function (e) { return setDescription(e.target.value); } }) })), jsxRuntimeExports.jsx(Form$1.Check, { name: "send-chat-details", "aria-label": "Send chat details", label: t("talk2human.send"), defaultChecked: true }), clientConfig.matriculationNumber ? jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.matriculation") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: t("talk2human.matPlaceholder"), 
+    return (jsxRuntimeExports.jsxs("div", __assign$1({ className: "talkToHuman-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "navbar" }, { children: jsxRuntimeExports.jsxs("button", __assign$1({ className: "navBackBtn", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [jsxRuntimeExports.jsx(IoChevronBack, { className: "navIcon" }), jsxRuntimeExports.jsx("span", __assign$1({ className: "navText" }, { children: t("talk2human.back") }))] })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-details-wrapper" }, { children: [jsxRuntimeExports.jsxs("a", __assign$1({ className: "contact-detail" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(IoIosCall, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: clientConfig.phone }))] })), jsxRuntimeExports.jsxs("a", __assign$1({ target: "_blank", className: "contact-detail contact-email", href: "mailto:registration@uni-siegen.de" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "contact-icon-wrapper" }, { children: jsxRuntimeExports.jsx(MdEmail, { className: "contact-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "contact-text" }, { children: clientConfig.email }))] }))] })), jsxRuntimeExports.jsx("div", { className: "divider" }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "tth-data-wrapper" }, { children: [jsxRuntimeExports.jsxs("p", __assign$1({ className: "tth-info-text" }, { children: [clientConfig.nameOfOrg, " ", t("talk2human.write")] })), jsxRuntimeExports.jsx(Form$1.Control, { as: "textarea", 
+                        // placeholder={t("talk2human.message")}
+                        placeholder: clientConfig.talkToaHumanEnabled ? clientConfig.talkToaHuman : "", style: { height: "170px" }, onChange: function (e) { return setDescription(e.target.value); } }), jsxRuntimeExports.jsx(Form$1.Check, { name: "send-chat-details", "aria-label": "Send chat details", label: t("talk2human.send"), defaultChecked: true }), clientConfig.matriculationNumber ? jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.matriculation") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: t("talk2human.matPlaceholder"), 
                                 // disabled={useSavedEmail}
                                 onChange: function (e) { return setUserMat(e.target.value); } })] })) : jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "contact-email" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "tth-info-text" }, { children: t("talk2human.please") })), jsxRuntimeExports.jsx(Form$1.Control, { type: "text", placeholder: t("talk2human.email"), 
                                 // disabled={useSavedEmail}
@@ -21839,11 +21865,9 @@ var OpenChatButton = function (props) {
         console.log(IframeType.CHAT_OPEN_BUTTON);
         if (!isChatOpen) {
             setInterval(function () {
-                console.log('Logs every sec1');
                 setStyleRotate(styleR);
             }, 5000);
             setInterval(function () {
-                console.log('Logs every sec2');
                 setStyleRotate(styleRNot);
             }, 8000);
         }
@@ -24358,7 +24382,9 @@ instance
                     "thats": " That's why I want to give you as much information as possible about my",
                     "functions": " functions and procedures.",
                     "everything": "Everything we discuss here is confidential; no one will be informed of the subject of this discussion unless you have given your explicit consent (e.g. when submitting a request via the \"Talk to us\" function). In order to improve the quality of the answers, anonymized answers will be evaluated in an initial test phase.",
-                    "okay": "Okay"
+                    "okay": "Okay",
+                    "datenSecutiry": "For more information, please read our full ",
+                    "datenSecurityLink": "privacy policy."
                 },
                 "infoPopup": {
                     "welcome": "Welcome to What2Study!",
@@ -24446,7 +24472,9 @@ instance
                     "thats": " Deshalb möchte ich so gut wie möglich über meine",
                     "functions": " Funktionen und Vorgehensweisen informieren.",
                     "everything": "Alles, was wir hier besprechen, ist vertraulich, niemand wird über den Inhalt hier in Kenntnis gesetzt, es sei denn, es liegt eine ausdrückliche Zustimmung zur Weitergabe vor (z.B.: bei Weiterleitung einer Anfrage über die Funktion \"Sprich mit uns\"). Um die Qualität der Antworten zu verbessern, werden in einer ersten Testphase anonymisierte Antworten ausgewertet.",
-                    "okay": "Okay"
+                    "okay": "Okay",
+                    "datenSecutiry": "Für weitere Informationen lesen Sie bitte unsere ",
+                    "datenSecurityLink": "vollständige Datenschutzerklärung."
                 },
                 "infoPopup": {
                     "welcome": "Willkommen bei What2Study!",
@@ -24466,14 +24494,14 @@ instance
                     "write": "kontaktieren:",
                     "message": "Deine Nachricht",
                     "send": "Chatverlauf senden",
-                    "please": "Angabe der E-Mail-Adresse für Kontaktzwecke:",
+                    "please": "E-Mail-Adresse für Kontaktzwecke angeben:",
                     "use": "Gespeichtere E-Mail-Adresse verwenden: ",
                     "different": "Andere E-Mail-Adresse verwenden: ",
                     "email": "E-Mail-Adresse eingeben",
-                    "would": "Ist eine telefonische Rückmeldung bevorzugt?",
+                    "would": "Wünschen Sie eine telefonische Rückmeldung?",
                     "number": "Telefonnummer eingeben",
                     "best": "Wann kann ich Sie am besten anrufen?",
-                    "submit": "einreichen",
+                    "submit": "Einreichen",
                     "matriculation": "Hier können Sie Ihre Matrikelnummer angeben",
                     "matPlaceholder": "Matriculation nummer eingeben"
                 },

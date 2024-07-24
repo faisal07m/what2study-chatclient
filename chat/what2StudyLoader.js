@@ -18,7 +18,7 @@ const WHAT2STUDY_CONTAINER = "what2studyChatclientWrapper";
 const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
 
 (function () {
-    // const what2StudyClientSrc = "https://cpstech.de/what2StudyClient";
+    //  const what2StudyClientSrc = "https://cpstech.de/what2StudyClient";
     const what2StudyClientSrc = "http://localhost:7777/dist/what2StudyClient.js";
 
     const getUrlParams = (url) => {
@@ -41,10 +41,13 @@ const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
         // } else if (top.What2Study) {
         //     top.What2Study({ accessToken: token, chatbotId: bot_id });
         // }
+        console.log(window.What2Study)
+        console.log(top.What2Study)
         if (window.What2Study) {
-            window.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJyTm9qTGFRQThCIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxNTc1ODM5MX0.jy-juj-U6_m2EJkR4NEJpAXGcBq1hqe3e6B2NjzzYZ0", chatbotId: "rNojLaQA8B" });
+            window.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJtMlJHTWpxYmhpIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcyMDcwMTgzMn0.sMtSY2oUGfksX5hbquM68gKyT3OJYK_KnAjnEHUYsDA", chatbotId: "m2RGMjqbhi" });
         } else if (top.What2Study) {
-            top.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJyTm9qTGFRQThCIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxNTc1ODM5MX0.jy-juj-U6_m2EJkR4NEJpAXGcBq1hqe3e6B2NjzzYZ0", chatbotId: "rNojLaQA8B" });
+            console.log("here")
+            top.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJtMlJHTWpxYmhpIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcyMDcwMTgzMn0.sMtSY2oUGfksX5hbquM68gKyT3OJYK_KnAjnEHUYsDA", chatbotId: "m2RGMjqbhi" });
         }
        
 
@@ -81,6 +84,6 @@ const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
 
 
 // inject = document.createElement('script');
-// inject.src = "https://cpstech.de/what2StudyLoader/?bot_id=rNojLaQA8B&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJyTm9qTGFRQThCIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxNTc1ODM5MX0.jy-juj-U6_m2EJkR4NEJpAXGcBq1hqe3e6B2NjzzYZ0";
+// inject.src = "https://cpstech.de/what2StudyLoader/?bot_id=FK2Dpel3yb&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJGSzJEcGVsM3liIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcxODgxMTU4N30.iN97xVODtlkHp9KQ9CP_Dw5sHh8Vmik7raw_0cTAb7g";
 // inject.id="initLoader"
 // document.getElementsByTagName('head')[0].appendChild(inject);

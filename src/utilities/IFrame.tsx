@@ -98,7 +98,6 @@ export const IFrame: FC<IIframeProps> = (props) => {
     };
     const { isChatOpen, setIsMobileScreen } = useData();
     const [styles, setStyles] = useState(getStyles(iframeType, isChatOpen, false,testRequest));
-
     const mountNode = contentRef?.contentWindow?.document?.body;
     const mountNodeDoc = contentRef?.contentWindow?.document;
     const addStyles = () => {
@@ -113,24 +112,28 @@ export const IFrame: FC<IIframeProps> = (props) => {
     const handleWindowResize = (event) => {
         if(window.innerWidth >300 && window.innerHeight>450){
         const isMobileScreen = window.innerWidth < 600;
-        setStyles(getStyles(iframeType, isChatOpen, isMobileScreen,testRequest));
-        setIsMobileScreen(isMobileScreen);
+         setStyles(getStyles(iframeType, isChatOpen, isMobileScreen,testRequest));
+              setIsMobileScreen(isMobileScreen);
         }
     };
 
+   
     useEffect(() => {
+        // setIsChatOpenTemp(isChatOpen)
+        localStorage.setItem("iframeType", iframeType.toString())
+        localStorage.setItem("isChatOpen", isChatOpen)
         handleWindowResize();
     }, [iframeType, isChatOpen]);
 
     useEffect(() => {
-        window.addEventListener("resize", handleWindowResize);
-        return () => {
-            window.removeEventListener("resize", handleWindowResize);
-        };
+        // window.addEventListener("resize", handleWindowResize2);
+        // return () => {
+        //     window.removeEventListener("resize", handleWindowResize2);
+        // };
     }, []);
 
     useEffect(() => {
-        if (mountNode && !isFirefox) {
+       if (mountNode && !isFirefox) {
             mountNode.style = "margin: 0";
             // mountNode.style ="background: linear-gradient(red, yellow);"
             addStyles();
@@ -159,21 +162,20 @@ export const IFrame: FC<IIframeProps> = (props) => {
 
     return (
         <>
+        
         { isFirefox &&  
         <iframe
             style={styles}
             id="what2studyIDFirefox"
             {...rest}
-            // onLoad={isFirefox ? (e) => setContentRef(e.target) : undefined}
             onLoad={ handleLoad }
-            // ref={ setContentRef }
         >
-            {/* {mountNode && !isFirefox && createPortal(children, mountNode)} */}
-            {/* <link rel="stylesheet" href="https://www.cpstech.de/what2studycss/" type="text/css"></link> */}
+           
             {contentRef && isFirefox&& createPortal(children, contentRef)}
             
             
         </iframe> }
+
 
         {!isFirefox&&  
         <iframe

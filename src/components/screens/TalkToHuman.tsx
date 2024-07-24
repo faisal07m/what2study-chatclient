@@ -74,23 +74,18 @@ const TalkToHuman:FC = (props) => {
             <div className="divider"></div>
             <div className="tth-data-wrapper">
                 <p className="tth-info-text">
-                {clientConfig.nameOfOrg} {t("talk2human.write")}:
+                {clientConfig.nameOfOrg} {t("talk2human.write")}
                 </p>
-                <FloatingLabel
-                    controlId="floatingTextarea"
-                    label={t("talk2human.message")}
-                    className="tth-message"
-                >
+               
                     <Form.Control
                         as="textarea"
                         // placeholder={t("talk2human.message")}
-                        defaultValue={clientConfig.talkToaHumanEnabled ? clientConfig.talkToaHuman :"" }
-                        style={{ height: "90px" }}
+                        placeholder={clientConfig.talkToaHumanEnabled ? clientConfig.talkToaHuman :"" }
+                        style={{ height: "170px" }}
                         onChange={(e) => setDescription(e.target.value)}
                        
 
                     />
-                </FloatingLabel>
                 <Form.Check
                     name="send-chat-details"
                     aria-label="Send chat details"
