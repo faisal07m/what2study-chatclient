@@ -44,11 +44,10 @@ const ChatClient: FC = (props) => {
                 oldChatID=localStorage.getItem("chatbotID")
                 localStorage.removeItem("chatbotID")
             }
-           
+            localStorage.setItem("language", response.result.language)
+      
            
             localStorage.setItem("chatbotID", response.result.chatbotId)
-            console.log(oldChatID)
-            console.log(response.result.chatbotId)
             if(oldChatID!= response.result.chatbotId){
                 const newSessionId = uuidv4();
                 if(newSessionId!=null)

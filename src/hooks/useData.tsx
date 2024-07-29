@@ -181,6 +181,10 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         length: 0.4,
     });
     const [language, setLanguage] = useState<EChatLanguage>(EChatLanguage.DE);
+
+    const [welcomeMsgDE, setwelcomeMsgDE] = useState<string>("");
+
+    const [welcomeMsgEN, setwelcomeMsgEN] = useState<string>("");
     const [clientConfig, setClientConfig] = useState<IClientConfigurations>(); // config saved by the university in main app
     const [isClientConfigFetched, setIsClientConfigFetched] = useState<boolean>(false);
 
@@ -208,6 +212,11 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
 
     const saveClientConfigurations = async (data: any = {}) => {
         setLanguage(data.language)
+        setwelcomeMsgDE(data.welcomeMsgDE)
+        setwelcomeMsgEN(data.welcomeMsgEN)
+        console.log("data reqeust")
+        console.log(data)
+        
         const {
             objectId,
             chatbotId,
@@ -413,6 +422,10 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setChatFilters,
         language,
         setLanguage,
+        welcomeMsgDE,
+        setwelcomeMsgDE,
+        welcomeMsgEN,
+        setwelcomeMsgEN,
         clientConfig: clientConfig ?? defaultClientConfig,
         isClientConfigFetched,
         saveClientConfigurations,

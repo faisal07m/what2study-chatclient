@@ -1,6 +1,6 @@
 {
     "name": "what2study-chatclient",
-    "version": "4.0.2",
+    "version": "4.1.2",
     "main": "build/index.cjs.js",
     "module": "build/index.esm.js",
     "files": [

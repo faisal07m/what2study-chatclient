@@ -41,8 +41,6 @@ const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
         // } else if (top.What2Study) {
         //     top.What2Study({ accessToken: token, chatbotId: bot_id });
         // }
-        console.log(window.What2Study)
-        console.log(top.What2Study)
         if (window.What2Study) {
             window.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJtMlJHTWpxYmhpIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcyMDcwMTgzMn0.sMtSY2oUGfksX5hbquM68gKyT3OJYK_KnAjnEHUYsDA", chatbotId: "m2RGMjqbhi" });
         } else if (top.What2Study) {

@@ -28,10 +28,6 @@ import { useTranslation } from 'react-i18next';
 import { config } from "process";
 import ChatClient from "components/ChatClient";
 
-const chatEndpoint_ = "http://127.0.0.1:5009/chatbot/";
-
-const chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
-
 enum EMessageSource {
     BOT = "BOT",
     USER = "USER",
@@ -60,6 +56,60 @@ const isYoutubeURL = (url = ""): boolean => {
 };
 
 const Main: FC = (props) => {
+    const initialMessages = () => {
+        var res = []
+        if (localStorage.getItem("history") != null) {
+            res = JSON.parse(localStorage.getItem("history") || '')
+        }
+
+        if (res != '') {
+            if (res[0].session != sessionId) {
+                return []
+            }
+            else {
+                return res
+            }
+            return res
+        }
+        else {
+                console.log(welcomeMsgDE)
+         var message
+            if(localStorage.getItem("language") == "en"){
+             
+                message= [
+                    {
+                        source: EMessageSource.BOT,
+                        message: welcomeMsgEN,
+                        session: sessionId,
+                    },
+                ];
+            }
+            if(localStorage.getItem("language") == "de"){
+           
+              
+                message= [
+                    {
+                        source: EMessageSource.BOT,
+                        message: welcomeMsgDE,
+                        session: sessionId,
+                    },
+                ];
+            }
+            return message
+            
+        }
+    }
+    const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
+    const [loading, setLoading] = useState<boolean>(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
+    const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+    const chatEndpoint_ = "http://127.0.0.1:5009/chatbot/";
+    const chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
+    const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
+    const [value, setValue] = useState('')
+    const [dummyValuesSet, setDummyValueCounter] = useState<boolean>(false)
+   
     const [t, i18n] = useTranslation("global");
     const {
         setPopupItem,
@@ -76,6 +126,8 @@ const Main: FC = (props) => {
         userId,
         dummyRequest,
         chatbotLook: { textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB },
+        welcomeMsgDE,
+        welcomeMsgEN
     } = clientConfig;
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
     const [isMicPressed, setMic] = useState<boolean>(false);
@@ -106,31 +158,7 @@ const Main: FC = (props) => {
 
     const [regen, setRegen] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
-    const initialMessages = () => {
-        var res = []
-        if (localStorage.getItem("history") != null) {
-            res = JSON.parse(localStorage.getItem("history") || '')
-        }
-
-        if (res != '') {
-            if (res[0].session != sessionId) {
-                return []
-            }
-            else {
-                return res
-            }
-            return res
-        }
-        else {
-            return [
-                {
-                    source: EMessageSource.BOT,
-                    message: t("intromsg"),
-                    session: sessionId,
-                },
-            ];
-        }
-    }
+    
     useEffect(() => {
         if (dummyRequest == true) {
             setDummyValueCounter(false)
@@ -142,29 +170,46 @@ const Main: FC = (props) => {
 
             if (res.length >= 1) {
                 if (res[0].session != sessionId) {
-                    setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },])
+                   
+                    if(localStorage.getItem("language") == "en"){
+                        setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },])
+                    }
+                    if(localStorage.getItem("language") == "de"){
+               
+                        setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },])
+                 
+                    }
+                   
                 }
                 else {
+                    if(localStorage.getItem("language") == "en"){
+                       res[0]={ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId }
+                    }
+                    if(localStorage.getItem("language") == "de"){
+               
+                        res[0]={ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId }
+                  
+                    }
                     setMessages(res)
                 }
             }
             else {
-                setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },])
+               
+                if(localStorage.getItem("language") == "en"){
+                    setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },])
+                }
+                if(localStorage.getItem("language") == "de"){
+               
+                    setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },])
+             
+                }
+               
             }
 
         }
 
     }, [localStorage.getItem('language')]);
 
-    const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
-    const [loading, setLoading] = useState<boolean>(false);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
-    const WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
-    const WHAT2STUDY_BACKEND_URL_ = "https://www.cpstech.de/functions";
-    const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
-    const [value, setValue] = useState('')
-
-    const [dummyValuesSet, setDummyValueCounter] = useState<boolean>(false)
     useEffect(() => {
         if (messages.length > 1) {
             if (messages[messages.length - 1].message.trim() != clientConfig.randomQuestion.trim()) {
@@ -574,12 +619,12 @@ const Main: FC = (props) => {
                 setDeVoices(voices_?.filter(({ lang }) => lang === "de-DE"))
             }
             // value.lang = "de-DE";
-            console.log(clientConfig.language)
-            console.log(clientConfig.language.toLowerCase().startsWith("e"))
-            console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
-            console.log(clientConfig.defaultSettings.narrator)
-            console.log(engVoice)
-            console.log(deVoice)
+            // console.log(clientConfig.language)
+            // console.log(clientConfig.language.toLowerCase().startsWith("e"))
+            // console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
+            // console.log(clientConfig.defaultSettings.narrator)
+            // console.log(engVoice)
+            // console.log(deVoice)
             if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") ) {
                 console.log("en male")
                 console.log(engVoice[0])
@@ -643,10 +688,19 @@ const Main: FC = (props) => {
 
         }
         if (dummyRequest && dummyValuesSet == false) {
+            var botFirstDummyMessage= ""
+            if(localStorage.getItem("language") == "en"){
+                botFirstDummyMessage = welcomeMsgEN
+            }
+            if(localStorage.getItem("language") == "de"){
+       
+                botFirstDummyMessage = welcomeMsgDE
+       
+            }
             var msgs = [
                 {
                     source: EMessageSource.BOT,
-                    message: t("botmsg.1"),
+                    message: botFirstDummyMessage,
                 },
                 {
                     source: EMessageSource.USER,
@@ -753,7 +807,13 @@ const Main: FC = (props) => {
                     }}
                     onClick={() => {
                         localStorage.removeItem("history")
-                        setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },])
+                        if(localStorage.getItem("language") == "en"){
+                            setMessages([{ source: EMessageSource.BOT, message:welcomeMsgEN, session: sessionId },])
+                        }
+                        else{
+                            setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },])
+               
+                        }
                     }}
 
                 >
@@ -848,7 +908,7 @@ const Main: FC = (props) => {
                             ) : (
                                 <Fragment />
                             )}
-                            {breakMsg(message, source)}
+                            {message && breakMsg(message, source)}
 
                             {source === EMessageSource.BOT && message.toLowerCase().indexOf("rückmeldung") === -1 && message.toLowerCase().indexOf("welcome") === -1 && message.toLowerCase().indexOf("willkommen") === -1 && (
                                 <div className="bot-msg-actions-wrapper">

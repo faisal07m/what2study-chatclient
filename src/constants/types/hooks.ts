@@ -21,6 +21,11 @@ export interface IUseData {
     setChatFilters: (value: IChatFilters) => void;
     language: EChatLanguage;
     setLanguage: (value: EChatLanguage) => void;
+    welcomeMsgDE: string;
+    setwelcomeMsgDE: (value: string) => void;
+    welcomeMsgEN: string;
+    setwelcomeMsgEN: (value: string) => void;
+    
     clientConfig: IClientConfigurations;
     isClientConfigFetched: boolean;
     saveClientConfigurations: (value: any) => Promise<void>;

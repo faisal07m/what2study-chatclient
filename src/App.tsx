@@ -33,11 +33,9 @@ i18next
                         "okay": "Okay"
                     },
                     "introPage2": {
-                        "Lets": "Let's start with the basics! It's important to me that working with me is ",
-                        "easy": "easy and safe",
-                        "thats": " That's why I want to give you as much information as possible about my",
-                        "functions": " functions and procedures.",
-                        "everything": "Everything we discuss here is confidential; no one will be informed of the subject of this discussion unless you have given your explicit consent (e.g. when submitting a request via the \"Talk to us\" function). In order to improve the quality of the answers, anonymized answers will be evaluated in an initial test phase.",
+                        "Lets": "Let's start with the basics! Working with me is easy and safe. Here is important information about my functions and procedures:",
+                        "everything1": 'Confidentiality: All information discussed here is confidential. The content will not be passed on unless explicit consent has been given for it to be passed on (e.g. when forwarding an inquiry via the “Further clarification required” function).',
+                        "everything2": 'Data evaluation for improvement: To improve the answers, anonymized data is evaluated in an initial test phase. This data is used exclusively to optimize the quality of the service.',
                         "okay": "Okay",
                         "datenSecutiry":"For more information, please read our full ",
                         "datenSecurityLink":"privacy policy."
@@ -124,11 +122,12 @@ i18next
                         "okay": "Weiter"
                     },
                     "introPage2": {
-                        "Lets": "Fangen wir mit den Grundlagen an! Es ist mir wichtig, dass der Umgang mit mir ",
+                        "Lets": "Lassen Sie uns mit den Grundlagen beginnen! Der Umgang mit mir ist einfach und sicher. Hier sind wichtige Informationen über meine Funktionen und Vorgehensweisen:",
                         "easy": "einfach und sicher ist.",
                         "thats": " Deshalb möchte ich so gut wie möglich über meine",
                         "functions": " Funktionen und Vorgehensweisen informieren.",
-                        "everything": "Alles, was wir hier besprechen, ist vertraulich, niemand wird über den Inhalt hier in Kenntnis gesetzt, es sei denn, es liegt eine ausdrückliche Zustimmung zur Weitergabe vor (z.B.: bei Weiterleitung einer Anfrage über die Funktion \"Sprich mit uns\"). Um die Qualität der Antworten zu verbessern, werden in einer ersten Testphase anonymisierte Antworten ausgewertet.",
+                        "everything1": 'Vertraulichkeit: Alle hier besprochenen Informationen sind vertraulich. Der Inhalt wird nicht weitergegeben, es sei denn, es liegt eine ausdrückliche Zustimmung zur Weitergabe vor (z.B. bei Weiterleitung einer Anfrage über die Funktion "Weiterer Klärungsbedarf").',
+                        "everything2":"Datenauswertung zur Verbesserung: Zur Verbesserung der Antworten werden in einer ersten Testphase anonymisierte Daten ausgewertet. Diese Daten dienen ausschließlich dazu, die Qualität der Serviceleistung zu optimieren.",
                         "okay": "Okay",
                         "datenSecutiry":"Für weitere Informationen lesen Sie bitte unsere ",
                         "datenSecurityLink":"vollständige Datenschutzerklärung."

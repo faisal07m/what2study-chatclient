@@ -111,7 +111,7 @@ export const IFrame: FC<IIframeProps> = (props) => {
 
     const handleWindowResize = (event) => {
         if(window.innerWidth >300 && window.innerHeight>450){
-        const isMobileScreen = window.innerWidth < 600;
+        const isMobileScreen = window.innerWidth < 680;
          setStyles(getStyles(iframeType, isChatOpen, isMobileScreen,testRequest));
               setIsMobileScreen(isMobileScreen);
         }
@@ -143,7 +143,7 @@ export const IFrame: FC<IIframeProps> = (props) => {
         if (contentRef && isFirefox) {
             contentRef.style = "margin: 0";
             const link = document.createElement("link");
-            //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+            // link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
             link.href = "https://www.cpstech.de/what2studycss/";
             link.rel = "stylesheet";
             link.type = "text/css";

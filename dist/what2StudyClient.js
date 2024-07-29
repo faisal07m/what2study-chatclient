@@ -766,8 +766,10 @@
 	        length: 0.4,
 	    }), chatFilters = _h[0], setChatFilters = _h[1];
 	    var _j = reactExports.useState(EChatLanguage.DE), language = _j[0], setLanguage = _j[1];
-	    var _k = reactExports.useState(), clientConfig = _k[0], setClientConfig = _k[1]; // config saved by the university in main app
-	    var _l = reactExports.useState(false), isClientConfigFetched = _l[0], setIsClientConfigFetched = _l[1];
+	    var _k = reactExports.useState(""), welcomeMsgDE = _k[0], setwelcomeMsgDE = _k[1];
+	    var _l = reactExports.useState(""), welcomeMsgEN = _l[0], setwelcomeMsgEN = _l[1];
+	    var _m = reactExports.useState(), clientConfig = _m[0], setClientConfig = _m[1]; // config saved by the university in main app
+	    var _o = reactExports.useState(false), isClientConfigFetched = _o[0], setIsClientConfigFetched = _o[1];
 	    var generateNewSession = function (showIntroScreen) {
 	        if (showIntroScreen === void 0) { showIntroScreen = true; }
 	        var newSessionId = v4();
@@ -802,6 +804,10 @@
 	                switch (_f.label) {
 	                    case 0:
 	                        setLanguage(data.language);
+	                        setwelcomeMsgDE(data.welcomeMsgDE);
+	                        setwelcomeMsgEN(data.welcomeMsgEN);
+	                        console.log("data reqeust");
+	                        console.log(data);
 	                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, customPrompt = data.customPrompt, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, testRequest = data.testRequest, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a, email = data.email, phone = data.phone, nameOfOrg = data.nameOfOrg, matriculationNumber = data.matriculationNumber, orgImage = data.orgImage, welcomeMsgDE = data.welcomeMsgDE, welcomeMsgEN = data.welcomeMsgEN, introScreenInfoDE = data.introScreenInfoDE, introScreenInfoEN = data.introScreenInfoEN;
 	                        _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
 	                        chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
@@ -944,6 +950,10 @@
 	        setChatFilters: setChatFilters,
 	        language: language,
 	        setLanguage: setLanguage,
+	        welcomeMsgDE: welcomeMsgDE,
+	        setwelcomeMsgDE: setwelcomeMsgDE,
+	        welcomeMsgEN: welcomeMsgEN,
+	        setwelcomeMsgEN: setwelcomeMsgEN,
 	        clientConfig: clientConfig !== null && clientConfig !== void 0 ? clientConfig : defaultClientConfig,
 	        isClientConfigFetched: isClientConfigFetched,
 	        saveClientConfigurations: saveClientConfigurations,
@@ -18347,7 +18357,7 @@
 	    };
 	    var handleWindowResize = function (event) {
 	        if (window.innerWidth > 300 && window.innerHeight > 450) {
-	            var isMobileScreen = window.innerWidth < 600;
+	            var isMobileScreen = window.innerWidth < 680;
 	            setStyles(getStyles(iframeType, isChatOpen, isMobileScreen, testRequest));
 	            setIsMobileScreen(isMobileScreen);
 	        }
@@ -18375,7 +18385,7 @@
 	        if (contentRef && isFirefox) {
 	            contentRef.style = "margin: 0";
 	            var link = document.createElement("link");
-	            //link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
+	            // link.href = "http://localhost:7777/dist/what2StudyClientStyles.css";
 	            link.href = "https://www.cpstech.de/what2studycss/";
 	            link.rel = "stylesheet";
 	            link.type = "text/css";
@@ -18913,13 +18923,25 @@
 	                { 1: "You do not have an own opinion. Be neutral and do not judge in anyway", 2: "You do not have an own opinion. Be neutral", 3: "Be neutral", 4: "feel free to have an own opinion, but be neutral", 5: "feel free to have an own opinion and maybe judge (politely)", 6: "feel free to have an own opinion and judge as you want" },
 	                { 1: "no emojies", 2: "none or sometimes one emoji", 3: "sometimes one or two emojies", 4: "one or two emojies", 5: "some emojies", 6: "a lot of emojies" },
 	                { 1: "very short", 2: "short", 3: "variable, but if doubt rather short", 4: "variable, but if doubt rather detailed", 5: "detailed", 6: "very detailed" },
+	                { 1: "sehr kurz", 2: "kurz", 3: "eher kurz", 4: "eher lang/detailliert", 5: "lang/detailliert", 6: "sehr lang/detailliert" },
 	                { 1: "very much on the specific subject of the asked question", 2: "on the specific subject of the asked question", 3: "maybe sometimes with an additional related information", 4: "sometimes with a few related information, tips or questions", 5: "with some related additional information, tips or questions", 6: "with a lot of related additional information, tips or questions" },
 	                { 1: "very funny", 2: "mostly funny", 3: "casually humorous", 4: "neutral", 5: "mildly serious", 6: "very serious" }];
+	            var Applicationlang = localStorage.getItem("language");
 	            if (lf == 0) {
-	                return filter_FF[3][1];
+	                if (Applicationlang == "de") {
+	                    return filter_FF[4][1];
+	                }
+	                else {
+	                    return filter_FF[3][1];
+	                }
 	            }
 	            else {
-	                return filter_FF[3][lf];
+	                if (Applicationlang == "de") {
+	                    return filter_FF[4][lf];
+	                }
+	                else {
+	                    return filter_FF[3][lf];
+	                }
 	            }
 	        }
 	    };
@@ -19609,27 +19631,25 @@
 	    var _a = useData(), setCurrentRoute = _a.setCurrentRoute, clientConfig = _a.clientConfig;
 	    var _b = reactExports.useState(0), introPage = _b[0], setIntroPage = _b[1];
 	    var _c = reactExports.useState(false), isVideoOpen = _c[0], setIsVideoOpen = _c[1];
-	    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader, dummyRequest = clientConfig.dummyRequest, language = clientConfig.language, introScreenInfoDE = clientConfig.introScreenInfoDE, introScreenInfoEN = clientConfig.introScreenInfoEN, welcomeMsgDE = clientConfig.welcomeMsgDE, welcomeMsgEN = clientConfig.welcomeMsgEN;
+	    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotHeader = clientConfig.chatbotLook.chatbotHeader, dummyRequest = clientConfig.dummyRequest, language = clientConfig.language, introScreenInfoDE = clientConfig.introScreenInfoDE, introScreenInfoEN = clientConfig.introScreenInfoEN; clientConfig.welcomeMsgDE; clientConfig.welcomeMsgEN;
 	    var _d = useTranslation("global"), t = _d[0]; _d[1];
-	    function paragraphsWelcomeElements() {
-	        var numberOfLineBreaks = (welcomeMsgDE.match(/\n/g) || []).length;
-	        console.log(numberOfLineBreaks);
-	        console.log(welcomeMsgDE.split("\n"));
-	        var messageType = welcomeMsgEN;
-	        if (language.toLocaleLowerCase().startsWith("de")) {
-	            messageType = welcomeMsgDE;
+	    var _e = reactExports.useState(language.toLocaleLowerCase()), langSelection = _e[0], setLangSelection = _e[1];
+	    reactExports.useEffect(function () {
+	        console.log("language selectoin changed");
+	        console.log(localStorage.getItem('language'));
+	        if (localStorage.getItem('language') != null && localStorage.getItem('language') != undefined) {
+	            var lang = localStorage.getItem('language');
+	            if (lang != null)
+	                setLangSelection(lang);
 	        }
-	        var filtered = messageType.split("\n").filter(function (el) { return el != ""; });
-	        console.log(filtered);
-	        return (jsxRuntimeExports.jsxs("div", { children: [filtered.map(function (store) { return (jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: store })) }))); }), jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-infoBlock2" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.datenSecutiry") })), jsxRuntimeExports.jsx("span", { children: jsxRuntimeExports.jsx("a", __assign$1({ href: "https://cpstech.de/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })) })] }))] }));
-	    }
+	    }, [localStorage.getItem('language')]);
 	    reactExports.useEffect(function () {
 	        if (dummyRequest) {
 	            setIntroPage(introPage + 1);
 	            setCurrentRoute(ERoute.MAIN);
 	        }
 	    }, []);
-	    return (jsxRuntimeExports.jsx(reactExports.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper", style: { height: "85%" } }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { maxHeight: "200px", overflowY: "auto", padding: "15px", scrollbarWidth: "thin", wordWrap: "break-word" } }, { children: language.toLocaleLowerCase().startsWith("d") ? introScreenInfoDE : introScreenInfoEN })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "is-tochat-button", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [t("introPage1.chat"), " "] }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper", style: { height: "85%" } }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ style: { minHeight: "-webkit-fill-available", overflowY: "auto", padding: "15px" } }, { children: paragraphsWelcomeElements() }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
+	    return (jsxRuntimeExports.jsx(reactExports.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper", style: { height: "85%" } }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { maxHeight: "200px", overflowY: "auto", padding: "15px", scrollbarWidth: "thin", wordWrap: "break-word" } }, { children: langSelection.startsWith("d") ? introScreenInfoDE : introScreenInfoEN })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "is-tochat-button", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [t("introPage1.chat"), " "] }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsxs("div", __assign$1({ style: { minHeight: "-webkit-fill-available", overflowY: "auto", padding: "15px" } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.Lets") })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.everything1") })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.everything2") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-infoBlock2" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.datenSecutiry") })), jsxRuntimeExports.jsx("span", { children: jsxRuntimeExports.jsx("a", __assign$1({ href: "http://localhost:3000/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })) })] }))] }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
 	                        return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
 	                    }, style: {
 	                        backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
@@ -21484,7 +21504,6 @@
 
 	var SpeechRecognition = /*@__PURE__*/getDefaultExportFromCjs(lib);
 
-	var chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
 	var EMessageSource;
 	(function (EMessageSource) {
 	    EMessageSource["BOT"] = "BOT";
@@ -21502,20 +21521,65 @@
 	    return ytRegEx.test(url);
 	};
 	var Main = function (props) {
-	    var _a = useTranslation("global"), t = _a[0]; _a[1];
-	    var _b = useData(), setPopupItem = _b.setPopupItem, 
+	    var initialMessages = function () {
+	        var res = [];
+	        if (localStorage.getItem("history") != null) {
+	            res = JSON.parse(localStorage.getItem("history") || '');
+	        }
+	        if (res != '') {
+	            if (res[0].session != sessionId) {
+	                return [];
+	            }
+	            else {
+	                return res;
+	            }
+	        }
+	        else {
+	            console.log(welcomeMsgDE);
+	            var message;
+	            if (localStorage.getItem("language") == "en") {
+	                message = [
+	                    {
+	                        source: EMessageSource.BOT,
+	                        message: welcomeMsgEN,
+	                        session: sessionId,
+	                    },
+	                ];
+	            }
+	            if (localStorage.getItem("language") == "de") {
+	                message = [
+	                    {
+	                        source: EMessageSource.BOT,
+	                        message: welcomeMsgDE,
+	                        session: sessionId,
+	                    },
+	                ];
+	            }
+	            return message;
+	        }
+	    };
+	    var _a = reactExports.useState(initialMessages), messages = _a[0], setMessages = _a[1];
+	    var _b = reactExports.useState(false), loading = _b[0], setLoading = _b[1];
+	    var messagesEndRef = reactExports.useRef(null);
+	    var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+	    var chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
+	    var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
+	    var _c = reactExports.useState(''); _c[0]; var setValue = _c[1];
+	    var _d = reactExports.useState(false), dummyValuesSet = _d[0], setDummyValueCounter = _d[1];
+	    var _e = useTranslation("global"), t = _e[0]; _e[1];
+	    var _f = useData(), setPopupItem = _f.setPopupItem, 
 	    // isBotVolumeOn,
 	    // setIsBotVolumeOn,
-	    setCurrentRoute = _b.setCurrentRoute, clientConfig = _b.clientConfig, sessionId = _b.sessionId, language = _b.language;
-	    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, dummyRequest = clientConfig.dummyRequest, _c = clientConfig.chatbotLook, textBoxUser = _c.textBoxUser, textBoxChatbotReply = _c.textBoxChatbotReply, UIGroupA = _c.UIGroupA, UIGroupB = _c.UIGroupB;
-	    var _d = reactExports.useState(false), isInputFocused = _d[0], setIsInputFocused = _d[1];
-	    var _e = reactExports.useState(false), isMicPressed = _e[0], setMic = _e[1];
-	    var _f = reactExports.useState(true), browserNotSupp = _f[0], setBrowserSupp = _f[1];
-	    var _g = reactExports.useState(""); _g[0]; _g[1];
-	    var _h = reactExports.useState(false), isBotVolumeOn = _h[0], setIsBotVolumeOn = _h[1];
-	    var _j = reactExports.useState(window.speechSynthesis.getVoices()), voices = _j[0], setVoices = _j[1];
-	    var _k = reactExports.useState(); _k[0]; var setEnVoices = _k[1];
-	    var _l = reactExports.useState(); _l[0]; var setDeVoices = _l[1];
+	    setCurrentRoute = _f.setCurrentRoute, clientConfig = _f.clientConfig, sessionId = _f.sessionId, language = _f.language;
+	    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, dummyRequest = clientConfig.dummyRequest, _g = clientConfig.chatbotLook, textBoxUser = _g.textBoxUser, textBoxChatbotReply = _g.textBoxChatbotReply, UIGroupA = _g.UIGroupA, UIGroupB = _g.UIGroupB, welcomeMsgDE = clientConfig.welcomeMsgDE, welcomeMsgEN = clientConfig.welcomeMsgEN;
+	    var _h = reactExports.useState(false), isInputFocused = _h[0], setIsInputFocused = _h[1];
+	    var _j = reactExports.useState(false), isMicPressed = _j[0], setMic = _j[1];
+	    var _k = reactExports.useState(true), browserNotSupp = _k[0], setBrowserSupp = _k[1];
+	    var _l = reactExports.useState(""); _l[0]; _l[1];
+	    var _m = reactExports.useState(false), isBotVolumeOn = _m[0], setIsBotVolumeOn = _m[1];
+	    var _o = reactExports.useState(window.speechSynthesis.getVoices()), voices = _o[0], setVoices = _o[1];
+	    var _p = reactExports.useState(); _p[0]; var setEnVoices = _p[1];
+	    var _q = reactExports.useState(); _q[0]; var setDeVoices = _q[1];
 	    reactExports.useEffect(function () {
 	        setEnVoices(voices === null || voices === void 0 ? void 0 : voices.filter(function (_a) {
 	            var lang = _a.lang;
@@ -21535,32 +21599,9 @@
 	        color: UIGroupB.UIGroupBUIHighlight,
 	        boxShadow: "0 0 20px #00"
 	    });
-	    var _m = reactExports.useState(glowCSS); _m[0]; _m[1];
-	    var _o = reactExports.useState(false), regen = _o[0], setRegen = _o[1];
-	    var _p = reactExports.useState(""), message = _p[0], setMessage = _p[1];
-	    var initialMessages = function () {
-	        var res = [];
-	        if (localStorage.getItem("history") != null) {
-	            res = JSON.parse(localStorage.getItem("history") || '');
-	        }
-	        if (res != '') {
-	            if (res[0].session != sessionId) {
-	                return [];
-	            }
-	            else {
-	                return res;
-	            }
-	        }
-	        else {
-	            return [
-	                {
-	                    source: EMessageSource.BOT,
-	                    message: t("intromsg"),
-	                    session: sessionId,
-	                },
-	            ];
-	        }
-	    };
+	    var _r = reactExports.useState(glowCSS); _r[0]; _r[1];
+	    var _s = reactExports.useState(false), regen = _s[0], setRegen = _s[1];
+	    var _t = reactExports.useState(""), message = _t[0], setMessage = _t[1];
 	    reactExports.useEffect(function () {
 	        if (dummyRequest == true) {
 	            setDummyValueCounter(false);
@@ -21573,24 +21614,33 @@
 	            }
 	            if (res.length >= 1) {
 	                if (res[0].session != sessionId) {
-	                    setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },]);
+	                    if (localStorage.getItem("language") == "en") {
+	                        setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },]);
+	                    }
+	                    if (localStorage.getItem("language") == "de") {
+	                        setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },]);
+	                    }
 	                }
 	                else {
+	                    if (localStorage.getItem("language") == "en") {
+	                        res[0] = { source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId };
+	                    }
+	                    if (localStorage.getItem("language") == "de") {
+	                        res[0] = { source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId };
+	                    }
 	                    setMessages(res);
 	                }
 	            }
 	            else {
-	                setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },]);
+	                if (localStorage.getItem("language") == "en") {
+	                    setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },]);
+	                }
+	                if (localStorage.getItem("language") == "de") {
+	                    setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },]);
+	                }
 	            }
 	        }
 	    }, [localStorage.getItem('language')]);
-	    var _q = reactExports.useState(initialMessages), messages = _q[0], setMessages = _q[1];
-	    var _r = reactExports.useState(false), loading = _r[0], setLoading = _r[1];
-	    var messagesEndRef = reactExports.useRef(null);
-	    var WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
-	    var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
-	    var _s = reactExports.useState(''); _s[0]; var setValue = _s[1];
-	    var _t = reactExports.useState(false), dummyValuesSet = _t[0], setDummyValueCounter = _t[1];
 	    reactExports.useEffect(function () {
 	        if (messages.length > 1) {
 	            if (messages[messages.length - 1].message.trim() != clientConfig.randomQuestion.trim()) {
@@ -22003,12 +22053,12 @@
 	                }));
 	            }
 	            // value.lang = "de-DE";
-	            console.log(clientConfig.language);
-	            console.log(clientConfig.language.toLowerCase().startsWith("e"));
-	            console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"));
-	            console.log(clientConfig.defaultSettings.narrator);
-	            console.log(engVoice);
-	            console.log(deVoice);
+	            // console.log(clientConfig.language)
+	            // console.log(clientConfig.language.toLowerCase().startsWith("e"))
+	            // console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
+	            // console.log(clientConfig.defaultSettings.narrator)
+	            // console.log(engVoice)
+	            // console.log(deVoice)
 	            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
 	                console.log("en male");
 	                console.log(engVoice[0]);
@@ -22054,10 +22104,17 @@
 	            localStorage.setItem("historySession", clientConfig.chatbotId);
 	        }
 	        if (dummyRequest && dummyValuesSet == false) {
+	            var botFirstDummyMessage = "";
+	            if (localStorage.getItem("language") == "en") {
+	                botFirstDummyMessage = welcomeMsgEN;
+	            }
+	            if (localStorage.getItem("language") == "de") {
+	                botFirstDummyMessage = welcomeMsgDE;
+	            }
 	            var msgs = [
 	                {
 	                    source: EMessageSource.BOT,
-	                    message: t("botmsg.1"),
+	                    message: botFirstDummyMessage,
 	                },
 	                {
 	                    source: EMessageSource.USER,
@@ -22133,7 +22190,12 @@
 	                            color: UIGroupB.UIGroupBUIHighlight,
 	                        }, onClick: function () {
 	                            localStorage.removeItem("history");
-	                            setMessages([{ source: EMessageSource.BOT, message: t("intromsg"), session: sessionId },]);
+	                            if (localStorage.getItem("language") == "en") {
+	                                setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },]);
+	                            }
+	                            else {
+	                                setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },]);
+	                            }
 	                        } }, { children: t("lang.ClearHistory") })), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
 	                            backgroundColor: UIGroupB.UIGroupBUIBackground,
 	                            color: UIGroupB.UIGroupBUIHighlight,
@@ -22154,7 +22216,7 @@
 	                                            backgroundColor: textBoxUser.textBoxUserColor,
 	                                            color: textBoxUser.textBoxUserFontColor,
 	                                            fontFamily: textBoxUser.textBoxFontStyle,
-	                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "Video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }) })))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" }) }))) : (jsxRuntimeExports.jsx(reactExports.Fragment, {})), breakMsg(message, source), source === EMessageSource.BOT && message.toLowerCase().indexOf("rückmeldung") === -1 && message.toLowerCase().indexOf("welcome") === -1 && message.toLowerCase().indexOf("willkommen") === -1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+	                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "Video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }) })))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" }) }))) : (jsxRuntimeExports.jsx(reactExports.Fragment, {})), message && breakMsg(message, source), source === EMessageSource.BOT && message.toLowerCase().indexOf("rückmeldung") === -1 && message.toLowerCase().indexOf("welcome") === -1 && message.toLowerCase().indexOf("willkommen") === -1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
 	                                                        if (feedback === true)
 	                                                            return;
 	                                                        handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
@@ -22262,7 +22324,7 @@
 	    };
 	    var _a = useData(), isChatOpen = _a.isChatOpen, isMobileScreen = _a.isMobileScreen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute, clientConfig = _a.clientConfig;
 	    var _b = clientConfig.chatbotLook, chatbotHeader = _b.chatbotHeader, chatbotBackground = _b.chatbotBackground, chatbotName = clientConfig.chatbotName, testRequest = clientConfig.testRequest;
-	    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED, testRequest: testRequest }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: chatbotName != "" ? chatbotName : "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
+	    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED, testRequest: testRequest }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: chatbotName != "" ? chatbotName : "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper", style: { fontSize: "auto" } }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
 	};
 
 	// THIS FILE IS AUTO GENERATED
@@ -22376,9 +22438,8 @@
 	                        oldChatID = localStorage.getItem("chatbotID");
 	                        localStorage.removeItem("chatbotID");
 	                    }
+	                    localStorage.setItem("language", response.result.language);
 	                    localStorage.setItem("chatbotID", response.result.chatbotId);
-	                    console.log(oldChatID);
-	                    console.log(response.result.chatbotId);
 	                    if (oldChatID != response.result.chatbotId) {
 	                        newSessionId = v4();
 	                        if (newSessionId != null) {
@@ -24809,11 +24870,9 @@
 	                    "okay": "Okay"
 	                },
 	                "introPage2": {
-	                    "Lets": "Let's start with the basics! It's important to me that working with me is ",
-	                    "easy": "easy and safe",
-	                    "thats": " That's why I want to give you as much information as possible about my",
-	                    "functions": " functions and procedures.",
-	                    "everything": "Everything we discuss here is confidential; no one will be informed of the subject of this discussion unless you have given your explicit consent (e.g. when submitting a request via the \"Talk to us\" function). In order to improve the quality of the answers, anonymized answers will be evaluated in an initial test phase.",
+	                    "Lets": "Let's start with the basics! Working with me is easy and safe. Here is important information about my functions and procedures:",
+	                    "everything1": 'Confidentiality: All information discussed here is confidential. The content will not be passed on unless explicit consent has been given for it to be passed on (e.g. when forwarding an inquiry via the “Further clarification required” function).',
+	                    "everything2": 'Data evaluation for improvement: To improve the answers, anonymized data is evaluated in an initial test phase. This data is used exclusively to optimize the quality of the service.',
 	                    "okay": "Okay",
 	                    "datenSecutiry": "For more information, please read our full ",
 	                    "datenSecurityLink": "privacy policy."
@@ -24899,11 +24958,12 @@
 	                    "okay": "Weiter"
 	                },
 	                "introPage2": {
-	                    "Lets": "Fangen wir mit den Grundlagen an! Es ist mir wichtig, dass der Umgang mit mir ",
+	                    "Lets": "Lassen Sie uns mit den Grundlagen beginnen! Der Umgang mit mir ist einfach und sicher. Hier sind wichtige Informationen über meine Funktionen und Vorgehensweisen:",
 	                    "easy": "einfach und sicher ist.",
 	                    "thats": " Deshalb möchte ich so gut wie möglich über meine",
 	                    "functions": " Funktionen und Vorgehensweisen informieren.",
-	                    "everything": "Alles, was wir hier besprechen, ist vertraulich, niemand wird über den Inhalt hier in Kenntnis gesetzt, es sei denn, es liegt eine ausdrückliche Zustimmung zur Weitergabe vor (z.B.: bei Weiterleitung einer Anfrage über die Funktion \"Sprich mit uns\"). Um die Qualität der Antworten zu verbessern, werden in einer ersten Testphase anonymisierte Antworten ausgewertet.",
+	                    "everything1": 'Vertraulichkeit: Alle hier besprochenen Informationen sind vertraulich. Der Inhalt wird nicht weitergegeben, es sei denn, es liegt eine ausdrückliche Zustimmung zur Weitergabe vor (z.B. bei Weiterleitung einer Anfrage über die Funktion "Weiterer Klärungsbedarf").',
+	                    "everything2": "Datenauswertung zur Verbesserung: Zur Verbesserung der Antworten werden in einer ersten Testphase anonymisierte Daten ausgewertet. Diese Daten dienen ausschließlich dazu, die Qualität der Serviceleistung zu optimieren.",
 	                    "okay": "Okay",
 	                    "datenSecutiry": "Für weitere Informationen lesen Sie bitte unsere ",
 	                    "datenSecurityLink": "vollständige Datenschutzerklärung."

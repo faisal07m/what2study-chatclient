@@ -69,7 +69,7 @@ const ChatContainer: FC = (props) => {
                             {chatbotName !="" ? chatbotName: "What2Study"}
                         </h1>
                     </div>
-                    <div className="settings-wrapper">
+                    <div className="settings-wrapper"  style={{fontSize:"auto"}} >
                         <IconButton
                             icon={LuSettings2}
                             onClick={() => setPopupItem(EPopupItem.FILTERS)}

@@ -21,7 +21,7 @@
   align-items: center;
 }
 .chatContainerWrapper .header-wrapper .header .header-icon {
-  font-size: 24px;
+  font-size: auto;
   margin-right: 10px;
 }
 .chatContainerWrapper .header-wrapper .header .header-title {
