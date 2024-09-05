@@ -5,7 +5,8 @@ import IconButton from "utilities/IconButton";
 import { FC, Fragment, Key, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { BsFillMicFill, BsFillMicMuteFill } from "react-icons/bs";
 import { IoMdVolumeHigh, IoMdVolumeOff } from "react-icons/io";
-
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { IoSend } from "react-icons/io5";
 import 'regenerator-runtime/runtime'
 import {
@@ -72,11 +73,10 @@ const Main: FC = (props) => {
             return res
         }
         else {
-                console.log(welcomeMsgDE)
-         var message
-            if(localStorage.getItem("language") == "en"){
-             
-                message= [
+            var message
+            if (localStorage.getItem("language") == "en") {
+
+                message = [
                     {
                         source: EMessageSource.BOT,
                         message: welcomeMsgEN,
@@ -84,10 +84,10 @@ const Main: FC = (props) => {
                     },
                 ];
             }
-            if(localStorage.getItem("language") == "de"){
-           
-              
-                message= [
+            if (localStorage.getItem("language") == "de") {
+
+
+                message = [
                     {
                         source: EMessageSource.BOT,
                         message: welcomeMsgDE,
@@ -96,20 +96,21 @@ const Main: FC = (props) => {
                 ];
             }
             return message
-            
+
         }
     }
     const [messages, setMessages] = useState<IBotMessage[]>(initialMessages);
     const [loading, setLoading] = useState<boolean>(false);
+    const [toggleSound, setTogSound] = useState<boolean>(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const WHAT2STUDY_BACKEND_URL_ = "http://localhost:1349/what2study/parse/functions";
-    const WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
-    const chatEndpoint_ = "http://127.0.0.1:5009/chatbot/";
-    const chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
+    // const WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
+    const WHAT2STUDY_BACKEND_URL= "https://www.cpstech.de/functions";
+    // const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
+    const chatEndpoint= "https://www.cpstech.de/chatbotLLM/";
     const WHAT2STUDY_X_PARSE_APP_ID = "what2study";
     const [value, setValue] = useState('')
     const [dummyValuesSet, setDummyValueCounter] = useState<boolean>(false)
-   
+
     const [t, i18n] = useTranslation("global");
     const {
         setPopupItem,
@@ -133,7 +134,7 @@ const Main: FC = (props) => {
     const [isMicPressed, setMic] = useState<boolean>(false);
     const [browserNotSupp, setBrowserSupp] = useState<boolean>(true);
     const [micInputText, setMicInputText] = useState<string>("");
-    const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(false);
+    const [isBotVolumeOn, setIsBotVolumeOn] = useState<boolean>(clientConfig.AudioNarration);
     const [voices, setVoices] = useState<Array<SpeechSynthesisVoice>>(window.speechSynthesis.getVoices());
     const [availableEngVoices, setEnVoices] = useState<Array<SpeechSynthesisVoice>>();
     const [availableDeVoices, setDeVoices] = useState<Array<SpeechSynthesisVoice>>();
@@ -158,7 +159,7 @@ const Main: FC = (props) => {
 
     const [regen, setRegen] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
-    
+
     useEffect(() => {
         if (dummyRequest == true) {
             setDummyValueCounter(false)
@@ -170,40 +171,40 @@ const Main: FC = (props) => {
 
             if (res.length >= 1) {
                 if (res[0].session != sessionId) {
-                   
-                    if(localStorage.getItem("language") == "en"){
+
+                    if (localStorage.getItem("language") == "en") {
                         setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },])
                     }
-                    if(localStorage.getItem("language") == "de"){
-               
+                    if (localStorage.getItem("language") == "de") {
+
                         setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },])
-                 
+
                     }
-                   
+
                 }
                 else {
-                    if(localStorage.getItem("language") == "en"){
-                       res[0]={ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId }
+                    if (localStorage.getItem("language") == "en") {
+                        res[0] = { source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId }
                     }
-                    if(localStorage.getItem("language") == "de"){
-               
-                        res[0]={ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId }
-                  
+                    if (localStorage.getItem("language") == "de") {
+
+                        res[0] = { source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId }
+
                     }
                     setMessages(res)
                 }
             }
             else {
-               
-                if(localStorage.getItem("language") == "en"){
+
+                if (localStorage.getItem("language") == "en") {
                     setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },])
                 }
-                if(localStorage.getItem("language") == "de"){
-               
+                if (localStorage.getItem("language") == "de") {
+
                     setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },])
-             
+
                 }
-               
+
             }
 
         }
@@ -235,19 +236,42 @@ const Main: FC = (props) => {
 
     }, [message])
 
-    const handleMessageRegen = async (e: any) => {
+    const handleMessageRegen = async (e: any, message:string) => {
         setLoading(true)
 
         var res = []
         if (localStorage.getItem("history") != null) { res = JSON.parse(localStorage.getItem("history") || '') }
         var arr = res
         var userQuestion = ""
-        arr.reverse()
-        arr.forEach((el: any) => {
+        // arr=  arr.reverse()
+        var index = arr.findIndex((x: { message: string; }) => x.message.toLowerCase().trim() ==message.toLowerCase().trim());
+        let i = 0
+        if(arr[index -1])
+        {
+            // userQuestion= arr[index-1].message
+            for ( i = index; i >0; i--) {
+                
+                if(arr[i])
+                    if (arr[i].source == "USER") {
+                        userQuestion = arr[i].message
+                        break
+                    }
+            }
+        }
+        else{
+            arr.forEach((el: any) => {
             if (el.source == "USER") {
                 userQuestion = el.message
             }
         });
+       
+        }
+        // arr.forEach((el: any) => {
+        //     if (el.source == "USER") {
+        //         userQuestion = el.message
+        //     }
+        // });
+      
         const params = {
             question: userQuestion,
             botId: chatbotId,
@@ -258,7 +282,9 @@ const Main: FC = (props) => {
             chatHistory: localStorage.getItem("history"),
             regen: regen,
             randomQuestion: clientConfig.randomQuestion,
-            customPrompt: clientConfig.customPrompt
+            customPrompt: clientConfig.customPrompt,
+            defaultPrompt: clientConfig.defaultPrompt,
+            promptSelection:clientConfig.promptSelection
         };
         const options = {
             method: "POST",
@@ -351,7 +377,9 @@ const Main: FC = (props) => {
             chatHistory: localStorage.getItem("history"),
             regen: regen,
             randomQuestion: clientConfig.randomQuestion,
-            customPrompt: clientConfig.customPrompt
+            customPrompt: clientConfig.customPrompt,
+            defaultPrompt: clientConfig.defaultPrompt,
+            promptSelection:clientConfig.promptSelection
         };
         const options = {
             method: "POST",
@@ -434,6 +462,10 @@ const Main: FC = (props) => {
             setValue(response.answer)
             setLoading(false);
             setRegen(false)
+            if (clientConfig.AudioNarration == true && isBotVolumeOn == true) {
+                window.speechSynthesis.cancel();
+                runAudio(response.answer)
+            }
 
             let chatbotID
             if ("chatbotId" in props) {
@@ -471,6 +503,7 @@ const Main: FC = (props) => {
             });
             setLoading(false);
         }
+        
     };
 
     const handleMessageFeedback = async (msg: string, feedback: boolean) => {
@@ -547,15 +580,15 @@ const Main: FC = (props) => {
     } = useSpeechRecognition({ commands });
 
     useEffect(() => {
-       
+
         if (browserNotSupp) {
             if (finalTranscript !== "") {
-               
+
                 if (listening) {
                     setMessage(finalTranscript)
                     // setMicInputText(finalTranscript)
                     setMic(false)
-               
+
                 }
 
             }
@@ -563,7 +596,7 @@ const Main: FC = (props) => {
                 // setMicInputText(interimTranscript)
                 if (listening) {
                     setMessage(interimTranscript)
-               
+
                 }
 
 
@@ -605,9 +638,17 @@ const Main: FC = (props) => {
 
     }, [isMicPressed])
 
-    useEffect(() => {
-        if (browserNotSupp && messages.length>0) {
-            var value = new SpeechSynthesisUtterance(messages[messages.length - 1].message);
+    function runAudio(answer:string) {
+
+        if (browserNotSupp && messages.length > 0) {
+            if(messages[messages.length -1]?.message)
+            {
+                if(answer=="")
+            {
+                var value = new SpeechSynthesisUtterance(messages[messages.length -1]?.message);
+            }
+            else{
+                var value = new SpeechSynthesisUtterance(answer);}
             var voices_ = speechSynthesis.getVoices()
             var engVoice: Array<SpeechSynthesisVoice> = []
             var deVoice: Array<SpeechSynthesisVoice> = []
@@ -623,9 +664,7 @@ const Main: FC = (props) => {
             // console.log(clientConfig.language.toLowerCase().startsWith("e"))
             // console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
             // console.log(clientConfig.defaultSettings.narrator)
-            // console.log(engVoice)
-            // console.log(deVoice)
-            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") ) {
+            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
                 console.log("en male")
                 console.log(engVoice[0])
 
@@ -633,7 +672,7 @@ const Main: FC = (props) => {
                 value.voice = engVoice[0]
 
             }
-            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") ) {
+            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
                 console.log("en female")
 
                 // value.lang = "en-US";
@@ -641,15 +680,15 @@ const Main: FC = (props) => {
 
 
             }
-            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m") ) {
+            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
                 console.log("de male")
                 // value.lang = "de-DE";
                 console.log(deVoice[6])
-                value.voice = deVoice[6]
+                value.voice = deVoice[11]
 
 
             }
-            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f") ) {
+            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
                 console.log("de female")
 
                 // value.lang = "de-DE";
@@ -660,7 +699,7 @@ const Main: FC = (props) => {
 
             }
             // if(clientConfig.defaultSettings.narrator == ""){
-            
+
             // }
 
             if (isBotVolumeOn) {
@@ -674,6 +713,12 @@ const Main: FC = (props) => {
                 setIsBotVolumeOn(false)
             }
         }
+        }
+    }
+
+    useEffect(() => {
+        
+        runAudio("")
 
     }, [isBotVolumeOn])
 
@@ -688,14 +733,14 @@ const Main: FC = (props) => {
 
         }
         if (dummyRequest && dummyValuesSet == false) {
-            var botFirstDummyMessage= ""
-            if(localStorage.getItem("language") == "en"){
+            var botFirstDummyMessage = ""
+            if (localStorage.getItem("language") == "en") {
                 botFirstDummyMessage = welcomeMsgEN
             }
-            if(localStorage.getItem("language") == "de"){
-       
+            if (localStorage.getItem("language") == "de") {
+
                 botFirstDummyMessage = welcomeMsgDE
-       
+
             }
             var msgs = [
                 {
@@ -763,6 +808,11 @@ const Main: FC = (props) => {
                     });
                 }
             }
+            str = str.replaceAll("*","")
+
+            str = str.replaceAll("[","")
+
+            str = str.replaceAll("]"," ")
             theObj = { __html: str };
             return <div style={
                 source === EMessageSource.BOT
@@ -778,7 +828,9 @@ const Main: FC = (props) => {
                         color: textBoxUser.textBoxUserFontColor,
                         fontFamily: textBoxUser.textBoxFontStyle,
                     }
-            } dangerouslySetInnerHTML={theObj} />
+            }  dangerouslySetInnerHTML={theObj}/> 
+            {/* <Markdown remarkPlugins={[remarkGfm]}>{str}</Markdown></div> */}
+            {/* // dangerouslySetInnerHTML={theObj} */}
 
         }
 
@@ -807,12 +859,12 @@ const Main: FC = (props) => {
                     }}
                     onClick={() => {
                         localStorage.removeItem("history")
-                        if(localStorage.getItem("language") == "en"){
-                            setMessages([{ source: EMessageSource.BOT, message:welcomeMsgEN, session: sessionId },])
+                        if (localStorage.getItem("language") == "en") {
+                            setMessages([{ source: EMessageSource.BOT, message: welcomeMsgEN, session: sessionId },])
                         }
-                        else{
+                        else {
                             setMessages([{ source: EMessageSource.BOT, message: welcomeMsgDE, session: sessionId },])
-               
+
                         }
                     }}
 
@@ -828,7 +880,7 @@ const Main: FC = (props) => {
                     }}
                     onClick={() => setCurrentRoute(ERoute.TALK_TO_HUMAN)}
                 >
-                    {t("lang.lang")}
+                    {(clientConfig.langWeiterMain != "" && clientConfig.langWeiterMain!= undefined) ? clientConfig.langWeiterMain : t("lang.lang")}
                 </button>
                 {browserNotSupp &&
 
@@ -910,8 +962,90 @@ const Main: FC = (props) => {
                             )}
                             {message && breakMsg(message, source)}
 
-                            {source === EMessageSource.BOT && message.toLowerCase().indexOf("rückmeldung") === -1 && message.toLowerCase().indexOf("welcome") === -1 && message.toLowerCase().indexOf("willkommen") === -1 && (
+                            {message && source === EMessageSource.BOT && message?.toLowerCase().indexOf("rückmeldung") === -1 && message?.toLowerCase().indexOf("welcome") === -1 && message?.toLowerCase().indexOf("willkommen") === -1 && (
                                 <div className="bot-msg-actions-wrapper">
+                                    {browserNotSupp &&
+
+                                        <IconButton
+                                            className="action-button"
+                                            icon={IoMdVolumeHigh}
+                                            onClick={(e) => {
+                                                setTogSound(!toggleSound)
+                                                if (browserNotSupp && messages.length > 0) {
+                                                    window.speechSynthesis.cancel();
+                                                    var value = new SpeechSynthesisUtterance(message);
+                                                    var voices_ = speechSynthesis.getVoices()
+                                                    var engVoice: Array<SpeechSynthesisVoice> = []
+                                                    var deVoice: Array<SpeechSynthesisVoice> = []
+                                                    if (Array.isArray(voices_) && voices_.length > 0) {
+                                                        setVoices(voices_)
+                                                        engVoice = voices_?.filter(({ lang }) => lang === "en-US")
+                                                        deVoice = voices_?.filter(({ lang }) => lang === "de-DE")
+                                                        setEnVoices(voices_?.filter(({ lang }) => lang === "en-US"))
+                                                        setDeVoices(voices_?.filter(({ lang }) => lang === "de-DE"))
+                                                    }
+                                                    // value.lang = "de-DE";
+                                                    // console.log(clientConfig.language)
+                                                    // console.log(clientConfig.language.toLowerCase().startsWith("e"))
+                                                    // console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
+                                                    // console.log(clientConfig.defaultSettings.narrator)
+                                                    console.log(engVoice)
+                                                    console.log(deVoice)
+                                                    if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
+                                                        console.log("en male")
+                                                        console.log(engVoice[0])
+
+                                                        // value.lang = "en-US";
+                                                        value.voice = engVoice[0]
+
+                                                    }
+                                                    if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+                                                        console.log("en female")
+
+                                                        // value.lang = "en-US";
+                                                        value.voice = engVoice[30]
+
+
+                                                    }
+                                                    if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
+                                                        console.log("de male")
+                                                        // value.lang = "de-DE";
+                                                        console.log(deVoice[6])
+                                                        value.voice = deVoice[11]
+
+
+                                                    }
+                                                    if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+                                                        console.log("de female")
+
+                                                        // value.lang = "de-DE";
+
+                                                        console.log(deVoice[11])
+                                                        value.voice = deVoice[11]
+
+
+                                                    }
+                                                    // if(clientConfig.defaultSettings.narrator == ""){
+
+                                                    // }
+                                                    console.log("my firs toggle")
+                                                    console.log(toggleSound)
+                                                    if (toggleSound == true) {
+
+                                                        window.speechSynthesis.speak(value);
+                                                    }
+                                                    else {
+                                                        window.speechSynthesis.cancel();
+                                                    }
+
+                                                }
+
+                                            }}
+                                            aria-label="Volume"
+                                            title={isBotVolumeOn ? "Mute" : "Play"}
+                                            style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
+                                            iconColor={UIGroupA.UIGroupAUIHighlight}
+                                        />}
                                     {/* <button
                                         title="Report"
                                         className="action-button"
@@ -976,7 +1110,7 @@ const Main: FC = (props) => {
                                         className="action-button"
                                         onClick={() => {
                                             setRegen(true)
-                                            handleMessageRegen("regen")
+                                            handleMessageRegen("regen", message)
                                         }}
                                         style={{ backgroundColor: UIGroupA.UIGroupAUIBackground }}
                                     >
@@ -1036,7 +1170,6 @@ const Main: FC = (props) => {
                     onBlur={() => setIsInputFocused(false)}
                     onKeyDown={(e) => {
                         if (e.key == "Enter") {
-                            console.log('enter')
                             handleUserMessage(e)
                         }
                     }}

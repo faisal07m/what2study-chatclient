@@ -59,6 +59,10 @@
   width: 28px;
   height: 28px;
 }
+.info-talktohuman .volume-button2 {
+  width: 25px;
+  height: 25px;
+}
 
 .chatContainer {
   flex: 1;
@@ -457,7 +461,7 @@
   background-color: #0c8de9;
   color: #ffffff;
   padding: 6px;
-  margin-left: 43%;
+  margin-left: 48%;
 }
 .introScreen-wrapper .video-wrapper {
   position: fixed;

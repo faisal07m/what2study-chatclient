@@ -38,7 +38,6 @@ const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
     };
 
     useEffect(()=>{
-        console.log(IframeType.CHAT_OPEN_BUTTON)
         
         if(!isChatOpen){
             const interval = setInterval(() => {
@@ -56,7 +55,8 @@ const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
     },[isChatOpen])
 
     return (
-        <IFrame iframeType={IframeType.CHAT_OPEN_BUTTON} testRequest={testRequest} >
+        <IFrame iframeType={IframeType.CHAT_OPEN_BUTTON} testRequest={testRequest}    windowType= {clientConfig.windowtype}
+        >
               {/* <div className='speech-bubble'  id="speechWhat2Study">Klick mich</div> */}
            {/* <div style={{
            background: "linear-gradient(red, yellow)",
@@ -89,6 +89,7 @@ const OpenChatButton: FC<IOpenChatButtonProps> = (props) => {
  
            <button
                 // inline styles for button as loading stylesheets takes time on browser (causes to show button without styles)
+                id="chatBtnBubble"
                 style={{
                     width: "62px",
                     height: "62px",

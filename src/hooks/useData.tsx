@@ -76,12 +76,18 @@ const defaultClientConfig = {
     randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
     talkToaHumanEnabled: true,
     customPrompt: "",
+    defaultPrompt:"",
+    promptSelection:false,
     talkToaHuman: "",
     Narrator: "male",
+    AudioNarration:false,
     dummyRequest: false,
     testRequest: false,
+    introVideo: "",
     phone: "",
     email: "",
+    langWeiterMain: "",
+    windowtype:"min",
     nameOfOrg: "",
     accessToken: "",
     welcomeMsgDE: 'Hallo, ich bin ein Chatbot der dir bei deinem Studium helfen soll! Bevor wir loslegen, ein paar wichtige Fakten.',
@@ -214,9 +220,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
         setLanguage(data.language)
         setwelcomeMsgDE(data.welcomeMsgDE)
         setwelcomeMsgEN(data.welcomeMsgEN)
-        console.log("data reqeust")
-        console.log(data)
-        
+      
         const {
             objectId,
             chatbotId,
@@ -224,6 +228,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             universityId,
             accessToken,
             chatbotName,
+            windowtype,
             chatbotBubbleIcons,
             chatbotProfileImage,
             defaultSettings,
@@ -234,6 +239,8 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             randomQuestionEnabled,
             randomQuestion,
             customPrompt,
+            defaultPrompt,
+            promptSelection,
             talkToaHumanEnabled,
             talkToaHuman,
             dummyRequest,
@@ -248,7 +255,10 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             welcomeMsgDE,
             welcomeMsgEN,
             introScreenInfoDE,
-            introScreenInfoEN
+            introScreenInfoEN,
+            introVideo,
+            langWeiterMain,
+            AudioNarration
 
         } = data;
 
@@ -279,6 +289,7 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             chatbotId: chatbotId || defaultClientConfig.chatbotId,
             userId: userId || defaultClientConfig.userId,
             accessToken: accessToken || defaultClientConfig.accessToken,
+            windowtype: windowtype || defaultClientConfig.windowtype,
             universityId: universityId || defaultClientConfig.universityId,
             chatbotName: chatbotName || defaultClientConfig.chatbotName,
             dummyRequest: dummyRequest || defaultClientConfig.dummyRequest,
@@ -286,10 +297,15 @@ export const DataProvider: FC<DataProviderProps> = (props) => {
             language: language || defaultClientConfig.language,
             randomQuestionEnabled: randomQuestionEnabled,
             customPrompt: customPrompt,
-            welcomeMsgDE:welcomeMsgDE,
-          welcomeMsgEN:welcomeMsgEN,
-          introScreenInfoDE:introScreenInfoDE,
-          introScreenInfoEN:introScreenInfoEN,
+            defaultPrompt:defaultPrompt,
+            promptSelection:promptSelection || defaultClientConfig.promptSelection,
+            introVideo: introVideo,
+            langWeiterMain: langWeiterMain,
+            AudioNarration:AudioNarration|| defaultClientConfig.AudioNarration,
+            welcomeMsgDE: welcomeMsgDE,
+            welcomeMsgEN: welcomeMsgEN,
+            introScreenInfoDE: introScreenInfoDE,
+            introScreenInfoEN: introScreenInfoEN,
             matriculationNumber: matriculationNumber,
             randomQuestion: randomQuestion || defaultClientConfig.randomQuestion,
             talkToaHumanEnabled: talkToaHumanEnabled,

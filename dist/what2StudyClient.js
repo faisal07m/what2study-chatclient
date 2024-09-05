@@ -674,12 +674,18 @@
 	    randomQuestion: "Unsicher, welche Fragen man mir stellen kann? Frag mich doch zu:\n\nWelche Studiengänge bietet die Universität an?\nWie lauten die Zulassungsvoraussetzungen für den Studiengang XYZ?\nWie bewerbe ich mich für ein Studium?",
 	    talkToaHumanEnabled: true,
 	    customPrompt: "",
+	    defaultPrompt: "",
+	    promptSelection: false,
 	    talkToaHuman: "",
 	    Narrator: "male",
+	    AudioNarration: false,
 	    dummyRequest: false,
 	    testRequest: false,
+	    introVideo: "",
 	    phone: "",
 	    email: "",
+	    langWeiterMain: "",
+	    windowtype: "min",
 	    nameOfOrg: "",
 	    accessToken: "",
 	    welcomeMsgDE: 'Hallo, ich bin ein Chatbot der dir bei deinem Studium helfen soll! Bevor wir loslegen, ein paar wichtige Fakten.',
@@ -798,7 +804,7 @@
 	    var saveClientConfigurations = function (data) {
 	        if (data === void 0) { data = {}; }
 	        return __awaiter(void 0, void 0, void 0, function () {
-	            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, customPrompt, talkToaHumanEnabled, talkToaHuman, dummyRequest, Narrator, testRequest, _a, chatbotLook, email, phone, nameOfOrg, matriculationNumber, orgImage, welcomeMsgDE, welcomeMsgEN, introScreenInfoDE, introScreenInfoEN, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
+	            var objectId, chatbotId, userId, universityId, accessToken, chatbotName, windowtype, chatbotBubbleIcons, chatbotProfileImage, defaultSettings, chatboxBehaviour, chatbotReplies, chatbotContact, language, randomQuestionEnabled, randomQuestion, customPrompt, defaultPrompt, promptSelection, talkToaHumanEnabled, talkToaHuman, dummyRequest, Narrator, testRequest, _a, chatbotLook, email, phone, nameOfOrg, matriculationNumber, orgImage, welcomeMsgDE, welcomeMsgEN, introScreenInfoDE, introScreenInfoEN, introVideo, langWeiterMain, AudioNarration, _b, dChatbotHeader, dChatbotBackground, dTextBoxUser, dTextBoxChatbotReply, dUIGroupA, dUIGroupB, dChatbotLookName, chatbotHeader, chatbotBackground, textBoxUser, textBoxChatbotReply, UIGroupA, UIGroupB, chatbotLookName, config, _c, _d;
 	            var _e;
 	            return __generator(this, function (_f) {
 	                switch (_f.label) {
@@ -806,9 +812,7 @@
 	                        setLanguage(data.language);
 	                        setwelcomeMsgDE(data.welcomeMsgDE);
 	                        setwelcomeMsgEN(data.welcomeMsgEN);
-	                        console.log("data reqeust");
-	                        console.log(data);
-	                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, customPrompt = data.customPrompt, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, testRequest = data.testRequest, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a, email = data.email, phone = data.phone, nameOfOrg = data.nameOfOrg, matriculationNumber = data.matriculationNumber, orgImage = data.orgImage, welcomeMsgDE = data.welcomeMsgDE, welcomeMsgEN = data.welcomeMsgEN, introScreenInfoDE = data.introScreenInfoDE, introScreenInfoEN = data.introScreenInfoEN;
+	                        objectId = data.objectId, chatbotId = data.chatbotId, userId = data.userId, universityId = data.universityId, accessToken = data.accessToken, chatbotName = data.chatbotName, windowtype = data.windowtype, chatbotBubbleIcons = data.chatbotBubbleIcons, chatbotProfileImage = data.chatbotProfileImage, defaultSettings = data.defaultSettings, chatboxBehaviour = data.chatboxBehaviour, chatbotReplies = data.chatbotReplies, chatbotContact = data.chatbotContact, language = data.language, randomQuestionEnabled = data.randomQuestionEnabled, randomQuestion = data.randomQuestion, customPrompt = data.customPrompt, defaultPrompt = data.defaultPrompt, promptSelection = data.promptSelection, talkToaHumanEnabled = data.talkToaHumanEnabled, talkToaHuman = data.talkToaHuman, dummyRequest = data.dummyRequest, Narrator = data.Narrator, testRequest = data.testRequest, _a = data.chatbotLook, chatbotLook = _a === void 0 ? {} : _a, email = data.email, phone = data.phone, nameOfOrg = data.nameOfOrg, matriculationNumber = data.matriculationNumber, orgImage = data.orgImage, welcomeMsgDE = data.welcomeMsgDE, welcomeMsgEN = data.welcomeMsgEN, introScreenInfoDE = data.introScreenInfoDE, introScreenInfoEN = data.introScreenInfoEN, introVideo = data.introVideo, langWeiterMain = data.langWeiterMain, AudioNarration = data.AudioNarration;
 	                        _b = defaultClientConfig.chatbotLook, dChatbotHeader = _b.chatbotHeader, dChatbotBackground = _b.chatbotBackground, dTextBoxUser = _b.textBoxUser, dTextBoxChatbotReply = _b.textBoxChatbotReply, dUIGroupA = _b.UIGroupA, dUIGroupB = _b.UIGroupB, dChatbotLookName = _b.chatbotLookName;
 	                        chatbotHeader = chatbotLook.chatbotHeader, chatbotBackground = chatbotLook.chatbotBackground, textBoxUser = chatbotLook.textBoxUser, textBoxChatbotReply = chatbotLook.textBoxChatbotReply, UIGroupA = chatbotLook.UIGroupA, UIGroupB = chatbotLook.UIGroupB, chatbotLookName = chatbotLook.chatbotLookName;
 	                        _e = {
@@ -816,6 +820,7 @@
 	                            chatbotId: chatbotId || defaultClientConfig.chatbotId,
 	                            userId: userId || defaultClientConfig.userId,
 	                            accessToken: accessToken || defaultClientConfig.accessToken,
+	                            windowtype: windowtype || defaultClientConfig.windowtype,
 	                            universityId: universityId || defaultClientConfig.universityId,
 	                            chatbotName: chatbotName || defaultClientConfig.chatbotName,
 	                            dummyRequest: dummyRequest || defaultClientConfig.dummyRequest,
@@ -823,6 +828,11 @@
 	                            language: language || defaultClientConfig.language,
 	                            randomQuestionEnabled: randomQuestionEnabled,
 	                            customPrompt: customPrompt,
+	                            defaultPrompt: defaultPrompt,
+	                            promptSelection: promptSelection || defaultClientConfig.promptSelection,
+	                            introVideo: introVideo,
+	                            langWeiterMain: langWeiterMain,
+	                            AudioNarration: AudioNarration || defaultClientConfig.AudioNarration,
 	                            welcomeMsgDE: welcomeMsgDE,
 	                            welcomeMsgEN: welcomeMsgEN,
 	                            introScreenInfoDE: introScreenInfoDE,
@@ -18266,8 +18276,6 @@
 	// THIS FILE IS AUTO GENERATED
 	function IoChevronBack (props) {
 	  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"fill":"none","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"48","d":"M328 112L184 256l144 144"}}]})(props);
-	}function IoCloseSharp (props) {
-	  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"}}]})(props);
 	}function IoClose (props) {
 	  return GenIcon({"tag":"svg","attr":{"viewBox":"0 0 512 512"},"child":[{"tag":"path","attr":{"d":"M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z"}}]})(props);
 	}function IoSend (props) {
@@ -18282,7 +18290,7 @@
 	}
 
 	var isFirefox = typeof InstallTrigger !== "undefined";
-	var getStyles = function (iframeType, isChatOpen, isMobileScreen, isTestScreen) {
+	var getStyles = function (iframeType, isChatOpen, isMobileScreen, isTestScreen, isFullScreen) {
 	    if (isMobileScreen === void 0) { isMobileScreen = false; }
 	    switch (iframeType) {
 	        case IframeType.CHAT_CONTAINER_CLOSED:
@@ -18303,7 +18311,7 @@
 	            return {
 	                border: "none",
 	                boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-	                width: isMobileScreen ? "100%" : "420px",
+	                width: isFullScreen == "full" && isMobileScreen ? "800px" : isFullScreen == "min" && isMobileScreen ? "100%" : "420px",
 	                height: isMobileScreen ? "100%" : "620px",
 	                position: isTestScreen ? "absolute" : "fixed",
 	                bottom: isMobileScreen ? "0" : "100px",
@@ -18332,7 +18340,7 @@
 	};
 	var IFrame = function (props) {
 	    var _a, _b, _c;
-	    var children = props.children, iframeType = props.iframeType, testRequest = props.testRequest, rest = __rest$1(props, ["children", "iframeType", "testRequest"]);
+	    var children = props.children, iframeType = props.iframeType, testRequest = props.testRequest, windowType = props.windowType, rest = __rest$1(props, ["children", "iframeType", "testRequest", "windowType"]);
 	    var _d = reactExports.useState(null), contentRef = _d[0], setContentRef = _d[1];
 	    var _e = reactExports.useState(null), contentRefIframe = _e[0], setContentRefIframe = _e[1];
 	    //const [contentRef, setContentRef] = useState(null);
@@ -18344,7 +18352,7 @@
 	        }
 	    };
 	    var _f = useData(), isChatOpen = _f.isChatOpen, setIsMobileScreen = _f.setIsMobileScreen;
-	    var _g = reactExports.useState(getStyles(iframeType, isChatOpen, false, testRequest)), styles = _g[0], setStyles = _g[1];
+	    var _g = reactExports.useState(), styles = _g[0], setStyles = _g[1];
 	    var mountNode = (_b = (_a = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _a === void 0 ? void 0 : _a.document) === null || _b === void 0 ? void 0 : _b.body;
 	    var mountNodeDoc = (_c = contentRef === null || contentRef === void 0 ? void 0 : contentRef.contentWindow) === null || _c === void 0 ? void 0 : _c.document;
 	    var addStyles = function () {
@@ -18358,8 +18366,14 @@
 	    var handleWindowResize = function (event) {
 	        if (window.innerWidth > 300 && window.innerHeight > 450) {
 	            var isMobileScreen = window.innerWidth < 680;
-	            setStyles(getStyles(iframeType, isChatOpen, isMobileScreen, testRequest));
-	            setIsMobileScreen(isMobileScreen);
+	            if (windowType == "min") {
+	                setStyles(getStyles(iframeType, isChatOpen, isMobileScreen, testRequest, windowType));
+	                setIsMobileScreen(isMobileScreen);
+	            }
+	            else {
+	                setStyles(getStyles(iframeType, isChatOpen, true, testRequest, windowType));
+	                setIsMobileScreen(true);
+	            }
 	        }
 	    };
 	    reactExports.useEffect(function () {
@@ -18373,6 +18387,12 @@
 	        // return () => {
 	        //     window.removeEventListener("resize", handleWindowResize2);
 	        // };
+	        if (windowType == "min") {
+	            getStyles(iframeType, isChatOpen, false, testRequest, windowType);
+	        }
+	        else {
+	            getStyles(iframeType, isChatOpen, true, testRequest, windowType);
+	        }
 	    }, []);
 	    reactExports.useEffect(function () {
 	        if (mountNode && !isFirefox) {
@@ -18928,7 +18948,7 @@
 	                { 1: "very funny", 2: "mostly funny", 3: "casually humorous", 4: "neutral", 5: "mildly serious", 6: "very serious" }];
 	            var Applicationlang = localStorage.getItem("language");
 	            if (lf == 0) {
-	                if (Applicationlang == "de") {
+	                if (Applicationlang === null || Applicationlang === void 0 ? void 0 : Applicationlang.trim().startsWith("de")) {
 	                    return filter_FF[4][1];
 	                }
 	                else {
@@ -18936,7 +18956,7 @@
 	                }
 	            }
 	            else {
-	                if (Applicationlang == "de") {
+	                if (Applicationlang === null || Applicationlang === void 0 ? void 0 : Applicationlang.trim().startsWith("de")) {
 	                    return filter_FF[4][lf];
 	                }
 	                else {
@@ -18951,8 +18971,8 @@
 	var PopupItemInfo = function () {
 	    var _a = useTranslation("global"), t = _a[0]; _a[1];
 	    var _b = useData(); _b.setCurrentRoute; var clientConfig = _b.clientConfig;
-	    clientConfig.chatbotProfileImage; clientConfig.chatbotLook.chatbotHeader; clientConfig.dummyRequest; clientConfig.language; var nameOfOrg = clientConfig.nameOfOrg; clientConfig.introScreenInfoDE; clientConfig.introScreenInfoEN; clientConfig.welcomeMsgDE; clientConfig.welcomeMsgEN;
-	    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Informationen zum " + nameOfOrg, className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("ol", __assign$1({ className: "info-text", style: { textAlign: "justify" } }, { children: [jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Automatisierte Interaktion:" }), " What2Study ist ein automatisiertes System und keine reale Person."] }), jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Entwicklungsprozess:" }), " Viele Personen waren an der Entwicklung beteiligt, und der Chatbot wurde ausgiebig getestet, um die Genauigkeit und Hilfreichkeit der Antworten zu gew\u00E4hrleisten. Dennoch k\u00F6nnen wir nicht garantieren, dass jede Antwort des Chatbots korrekt ist."] }), jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Eigene Verantwortung: " }), "Wir empfehlen, insbesondere wichtige Informationen selbst zu \u00FCberpr\u00FCfen, bevor Entscheidungen getroffen werden."] })] })), jsxRuntimeExports.jsx("br", {}), jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text", style: { textAlign: "justify" } }, { children: ["Diese Datenschutzklausel informiert Sie \u00FCber die Nutzung und Grenzen des Chatbots. F\u00FCr weitere Informationen zur Datenverarbeitung und Datensicherheit lesen Sie bitte unsere ", jsxRuntimeExports.jsx("a", __assign$1({ href: "https://cpstech.de/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })), "."] }))] })));
+	    clientConfig.chatbotProfileImage; clientConfig.chatbotLook.chatbotHeader; clientConfig.dummyRequest; clientConfig.language; clientConfig.nameOfOrg; clientConfig.introScreenInfoDE; clientConfig.introScreenInfoEN; clientConfig.welcomeMsgDE; clientConfig.welcomeMsgEN;
+	    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: "Informationen zu/m " + clientConfig.chatbotName, className: "popup-infobox" }, { children: [jsxRuntimeExports.jsxs("ol", __assign$1({ className: "info-text", style: { textAlign: "justify" } }, { children: [jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Automatisierte Interaktion:" }), " ", clientConfig.chatbotName, " ist ein automatisiertes System und keine reale Person."] }), jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Entwicklungsprozess:" }), " Viele Personen waren an der Entwicklung beteiligt, und der Chatbot wurde ausgiebig getestet, um die Genauigkeit und Hilfreichkeit der Antworten zu gew\u00E4hrleisten. Dennoch k\u00F6nnen wir nicht garantieren, dass jede Antwort des Chatbots korrekt ist."] }), jsxRuntimeExports.jsxs("li", { children: [" ", jsxRuntimeExports.jsx("strong", { children: "Eigene Verantwortung: " }), "Wir empfehlen, insbesondere wichtige Informationen selbst zu \u00FCberpr\u00FCfen, bevor Entscheidungen getroffen werden."] })] })), jsxRuntimeExports.jsx("br", {}), jsxRuntimeExports.jsxs("p", __assign$1({ className: "info-text", style: { textAlign: "justify" } }, { children: ["Diese Datenschutzklausel informiert Sie \u00FCber die Nutzung und Grenzen des Chatbots. F\u00FCr weitere Informationen zur Datenverarbeitung und Datensicherheit lesen Sie bitte unsere ", jsxRuntimeExports.jsx("a", __assign$1({ href: "https://cpstech.de/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })), "."] }))] })));
 	};
 
 	var propTypes$2 = {exports: {}};
@@ -19568,7 +19588,7 @@
 	    var _a = useData(), language = _a.language, setLanguage = _a.setLanguage, setCurrentRoute = _a.setCurrentRoute;
 	    var _b = useTranslation("global"), t = _b[0], i18n = _b[1];
 	    var setPopupItem = useData().setPopupItem;
-	    var dummyUserAssumptions = [
+	    [
 	        t("settings.userAssumption3")
 	    ];
 	    var handleLanguage = function (e) {
@@ -19579,9 +19599,7 @@
 	    return (jsxRuntimeExports.jsxs(PopupContents, __assign$1({ title: t("settings.settings"), className: "popup-settings-wrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "chip-button-wrapper" }, { children: jsxRuntimeExports.jsx("button", __assign$1({ className: "app-chip-button", onClick: function () {
 	                        setCurrentRoute(ERoute.INTRO);
 	                        setPopupItem(EPopupItem.NONE);
-	                    } }, { children: t("settings.restart") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block user-assumptions" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.user") })), jsxRuntimeExports.jsx("div", __assign$1({ className: "chips-wrapper" }, { children: dummyUserAssumptions.map(function (assumption) {
-	                            return (jsxRuntimeExports.jsxs("span", __assign$1({ className: "app-chip-with-close-btn" }, { children: [assumption, jsxRuntimeExports.jsx("button", __assign$1({ className: "close-btn" }, { children: jsxRuntimeExports.jsx(IoCloseSharp, { className: "close-icon" }) }))] })));
-	                        }) }))] }))] })));
+	                    } }, { children: t("settings.restart") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "setting-block language-select-wrapper" }, { children: [jsxRuntimeExports.jsx("span", __assign$1({ className: "block-title" }, { children: t("settings.language") })), jsxRuntimeExports.jsx(FormSelect$1, __assign$1({ value: language, size: "sm", className: "language-select", onChange: handleLanguage }, { children: Object.values(EChatLanguage).map(function (lang) { return (jsxRuntimeExports.jsx("option", __assign$1({ value: lang }, { children: getLanguage(lang) }))); }) }))] }))] })));
 	};
 
 	var PopupContents = function (props) {
@@ -19635,8 +19653,6 @@
 	    var _d = useTranslation("global"), t = _d[0]; _d[1];
 	    var _e = reactExports.useState(language.toLocaleLowerCase()), langSelection = _e[0], setLangSelection = _e[1];
 	    reactExports.useEffect(function () {
-	        console.log("language selectoin changed");
-	        console.log(localStorage.getItem('language'));
 	        if (localStorage.getItem('language') != null && localStorage.getItem('language') != undefined) {
 	            var lang = localStorage.getItem('language');
 	            if (lang != null)
@@ -19649,7 +19665,8 @@
 	            setCurrentRoute(ERoute.MAIN);
 	        }
 	    }, []);
-	    return (jsxRuntimeExports.jsx(reactExports.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "200", src: "https://www.youtube.com/embed/p2rgGbp36K0", title: "YouTube video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper", style: { height: "85%" } }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { maxHeight: "200px", overflowY: "auto", padding: "15px", scrollbarWidth: "thin", wordWrap: "break-word" } }, { children: langSelection.startsWith("d") ? introScreenInfoDE : introScreenInfoEN })) })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "is-tochat-button", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [t("introPage1.chat"), " "] }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsxs("div", __assign$1({ style: { minHeight: "-webkit-fill-available", overflowY: "auto", padding: "15px" } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.Lets") })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.everything1") })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.everything2") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-infoBlock2" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.datenSecutiry") })), jsxRuntimeExports.jsx("span", { children: jsxRuntimeExports.jsx("a", __assign$1({ href: "http://localhost:3000/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })) })] }))] }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
+	    return (jsxRuntimeExports.jsx(reactExports.Fragment, { children: jsxRuntimeExports.jsxs("div", __assign$1({ className: "introScreen-wrapper" }, { children: [isVideoOpen && clientConfig.introVideo != "" && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "video-wrapper" }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: MdCancel, onClick: function () { return setIsVideoOpen(false); } }), jsxRuntimeExports.jsx("iframe", { width: "100%", height: "90%", src: clientConfig.introVideo, title: "Intro Video", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true })] }))), introPage == 0 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper", style: { height: "85%" } }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { maxHeight: "200px", overflowY: "auto", padding: "15px", scrollbarWidth: "thin", wordWrap: "break-word" } }, { children: langSelection.startsWith("d") ? introScreenInfoDE : introScreenInfoEN })) })), clientConfig.introVideo != "" &&
+	                            jsxRuntimeExports.jsxs("button", __assign$1({ className: "play-tutorial-button", onClick: function () { return setIsVideoOpen(true); } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "pt-iconWrapper" }, { children: jsxRuntimeExports.jsx(BsFillPlayCircleFill, { className: "pt-icon" }) })), jsxRuntimeExports.jsx("span", __assign$1({ className: "pt-button-name" }, { children: t("introPage1.play") }))] })), jsxRuntimeExports.jsxs("button", __assign$1({ className: "is-tochat-button", onClick: function () { return setCurrentRoute(ERoute.MAIN); } }, { children: [t("introPage1.chat"), " "] }))] }))), introPage == 1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-contentWrapper" }, { children: [jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, className: "is-icon", alt: "Bot Icon" }), jsxRuntimeExports.jsxs("div", __assign$1({ style: { minHeight: "-webkit-fill-available", overflowY: "auto", padding: "15px" } }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.Lets") })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.everything1") })) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "is-infoBlock2" }, { children: jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.everything2") })) })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "is-infoBlock2" }, { children: [jsxRuntimeExports.jsx("p", __assign$1({ className: "is-block-text", style: { width: "320px", wordWrap: "break-word" } }, { children: t("introPage2.datenSecutiry") })), jsxRuntimeExports.jsx("span", { children: jsxRuntimeExports.jsx("a", __assign$1({ href: "https://cpstech.de/what2study/datasecurity", target: "_blank" }, { children: t("introPage2.datenSecurityLink") })) })] }))] }))] }))), jsxRuntimeExports.jsx("button", __assign$1({ className: "is-okayNextButton", onClick: function () {
 	                        return introPage < 1 ? setIntroPage(introPage + 1) : setCurrentRoute(ERoute.MAIN);
 	                    }, style: {
 	                        backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor,
@@ -21535,7 +21552,6 @@
 	            }
 	        }
 	        else {
-	            console.log(welcomeMsgDE);
 	            var message;
 	            if (localStorage.getItem("language") == "en") {
 	                message = [
@@ -21560,26 +21576,29 @@
 	    };
 	    var _a = reactExports.useState(initialMessages), messages = _a[0], setMessages = _a[1];
 	    var _b = reactExports.useState(false), loading = _b[0], setLoading = _b[1];
+	    var _c = reactExports.useState(true), toggleSound = _c[0], setTogSound = _c[1];
 	    var messagesEndRef = reactExports.useRef(null);
+	    // const WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
 	    var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+	    // const chatEndpoint = "http://127.0.0.1:5009/chatbot/";
 	    var chatEndpoint = "https://www.cpstech.de/chatbotLLM/";
 	    var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
-	    var _c = reactExports.useState(''); _c[0]; var setValue = _c[1];
-	    var _d = reactExports.useState(false), dummyValuesSet = _d[0], setDummyValueCounter = _d[1];
-	    var _e = useTranslation("global"), t = _e[0]; _e[1];
-	    var _f = useData(), setPopupItem = _f.setPopupItem, 
+	    var _d = reactExports.useState(''); _d[0]; var setValue = _d[1];
+	    var _e = reactExports.useState(false), dummyValuesSet = _e[0], setDummyValueCounter = _e[1];
+	    var _f = useTranslation("global"), t = _f[0]; _f[1];
+	    var _g = useData(), setPopupItem = _g.setPopupItem, 
 	    // isBotVolumeOn,
 	    // setIsBotVolumeOn,
-	    setCurrentRoute = _f.setCurrentRoute, clientConfig = _f.clientConfig, sessionId = _f.sessionId, language = _f.language;
-	    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, dummyRequest = clientConfig.dummyRequest, _g = clientConfig.chatbotLook, textBoxUser = _g.textBoxUser, textBoxChatbotReply = _g.textBoxChatbotReply, UIGroupA = _g.UIGroupA, UIGroupB = _g.UIGroupB, welcomeMsgDE = clientConfig.welcomeMsgDE, welcomeMsgEN = clientConfig.welcomeMsgEN;
-	    var _h = reactExports.useState(false), isInputFocused = _h[0], setIsInputFocused = _h[1];
-	    var _j = reactExports.useState(false), isMicPressed = _j[0], setMic = _j[1];
-	    var _k = reactExports.useState(true), browserNotSupp = _k[0], setBrowserSupp = _k[1];
-	    var _l = reactExports.useState(""); _l[0]; _l[1];
-	    var _m = reactExports.useState(false), isBotVolumeOn = _m[0], setIsBotVolumeOn = _m[1];
-	    var _o = reactExports.useState(window.speechSynthesis.getVoices()), voices = _o[0], setVoices = _o[1];
-	    var _p = reactExports.useState(); _p[0]; var setEnVoices = _p[1];
-	    var _q = reactExports.useState(); _q[0]; var setDeVoices = _q[1];
+	    setCurrentRoute = _g.setCurrentRoute, clientConfig = _g.clientConfig, sessionId = _g.sessionId, language = _g.language;
+	    var chatbotProfileImage = clientConfig.chatbotProfileImage, chatbotId = clientConfig.chatbotId, userId = clientConfig.userId, dummyRequest = clientConfig.dummyRequest, _h = clientConfig.chatbotLook, textBoxUser = _h.textBoxUser, textBoxChatbotReply = _h.textBoxChatbotReply, UIGroupA = _h.UIGroupA, UIGroupB = _h.UIGroupB, welcomeMsgDE = clientConfig.welcomeMsgDE, welcomeMsgEN = clientConfig.welcomeMsgEN;
+	    var _j = reactExports.useState(false), isInputFocused = _j[0], setIsInputFocused = _j[1];
+	    var _k = reactExports.useState(false), isMicPressed = _k[0], setMic = _k[1];
+	    var _l = reactExports.useState(true), browserNotSupp = _l[0], setBrowserSupp = _l[1];
+	    var _m = reactExports.useState(""); _m[0]; _m[1];
+	    var _o = reactExports.useState(clientConfig.AudioNarration), isBotVolumeOn = _o[0], setIsBotVolumeOn = _o[1];
+	    var _p = reactExports.useState(window.speechSynthesis.getVoices()), voices = _p[0], setVoices = _p[1];
+	    var _q = reactExports.useState(); _q[0]; var setEnVoices = _q[1];
+	    var _r = reactExports.useState(); _r[0]; var setDeVoices = _r[1];
 	    reactExports.useEffect(function () {
 	        setEnVoices(voices === null || voices === void 0 ? void 0 : voices.filter(function (_a) {
 	            var lang = _a.lang;
@@ -21599,9 +21618,9 @@
 	        color: UIGroupB.UIGroupBUIHighlight,
 	        boxShadow: "0 0 20px #00"
 	    });
-	    var _r = reactExports.useState(glowCSS); _r[0]; _r[1];
-	    var _s = reactExports.useState(false), regen = _s[0], setRegen = _s[1];
-	    var _t = reactExports.useState(""), message = _t[0], setMessage = _t[1];
+	    var _s = reactExports.useState(glowCSS); _s[0]; _s[1];
+	    var _t = reactExports.useState(false), regen = _t[0], setRegen = _t[1];
+	    var _u = reactExports.useState(""), message = _u[0], setMessage = _u[1];
 	    reactExports.useEffect(function () {
 	        if (dummyRequest == true) {
 	            setDummyValueCounter(false);
@@ -21662,8 +21681,8 @@
 	            }
 	        }
 	    }, [message]);
-	    var handleMessageRegen = function (e) { return __awaiter(void 0, void 0, void 0, function () {
-	        var res, arr, userQuestion, params, options, resJson, response_1, chatbotID, currentdate, datetime;
+	    var handleMessageRegen = function (e, message) { return __awaiter(void 0, void 0, void 0, function () {
+	        var res, arr, userQuestion, index, i, params, options, resJson, response_1, chatbotID, currentdate, datetime;
 	        var _a;
 	        return __generator(this, function (_b) {
 	            switch (_b.label) {
@@ -21675,12 +21694,25 @@
 	                    }
 	                    arr = res;
 	                    userQuestion = "";
-	                    arr.reverse();
-	                    arr.forEach(function (el) {
-	                        if (el.source == "USER") {
-	                            userQuestion = el.message;
+	                    index = arr.findIndex(function (x) { return x.message.toLowerCase().trim() == message.toLowerCase().trim(); });
+	                    i = 0;
+	                    if (arr[index - 1]) {
+	                        // userQuestion= arr[index-1].message
+	                        for (i = index; i > 0; i--) {
+	                            if (arr[i])
+	                                if (arr[i].source == "USER") {
+	                                    userQuestion = arr[i].message;
+	                                    break;
+	                                }
 	                        }
-	                    });
+	                    }
+	                    else {
+	                        arr.forEach(function (el) {
+	                            if (el.source == "USER") {
+	                                userQuestion = el.message;
+	                            }
+	                        });
+	                    }
 	                    params = {
 	                        question: userQuestion,
 	                        botId: chatbotId,
@@ -21691,7 +21723,9 @@
 	                        chatHistory: localStorage.getItem("history"),
 	                        regen: regen,
 	                        randomQuestion: clientConfig.randomQuestion,
-	                        customPrompt: clientConfig.customPrompt
+	                        customPrompt: clientConfig.customPrompt,
+	                        defaultPrompt: clientConfig.defaultPrompt,
+	                        promptSelection: clientConfig.promptSelection
 	                    };
 	                    options = {
 	                        method: "POST",
@@ -21796,7 +21830,9 @@
 	                        chatHistory: localStorage.getItem("history"),
 	                        regen: regen,
 	                        randomQuestion: clientConfig.randomQuestion,
-	                        customPrompt: clientConfig.customPrompt
+	                        customPrompt: clientConfig.customPrompt,
+	                        defaultPrompt: clientConfig.defaultPrompt,
+	                        promptSelection: clientConfig.promptSelection
 	                    };
 	                    options = {
 	                        method: "POST",
@@ -21877,6 +21913,10 @@
 	                    setValue(response_2.answer);
 	                    setLoading(false);
 	                    setRegen(false);
+	                    if (clientConfig.AudioNarration == true && isBotVolumeOn == true) {
+	                        window.speechSynthesis.cancel();
+	                        runAudio(response_2.answer);
+	                    }
 	                    chatbotID = void 0;
 	                    if ("chatbotId" in props) {
 	                        chatbotID = props.chatbotId;
@@ -21984,7 +22024,7 @@
 	            callback: function () { return resetTranscript(); },
 	        },
 	    ];
-	    var _u = lib.useSpeechRecognition({ commands: commands }); _u.transcript; var interimTranscript = _u.interimTranscript, finalTranscript = _u.finalTranscript, resetTranscript = _u.resetTranscript, listening = _u.listening;
+	    var _v = lib.useSpeechRecognition({ commands: commands }); _v.transcript; var interimTranscript = _v.interimTranscript, finalTranscript = _v.finalTranscript, resetTranscript = _v.resetTranscript, listening = _v.listening;
 	    reactExports.useEffect(function () {
 	        if (browserNotSupp) {
 	            if (finalTranscript !== "") {
@@ -22027,74 +22067,83 @@
 	            setBrowserSupp(true);
 	        }
 	    }, [isMicPressed]);
-	    reactExports.useEffect(function () {
+	    function runAudio(answer) {
+	        var _a, _b;
 	        if (browserNotSupp && messages.length > 0) {
-	            var value = new SpeechSynthesisUtterance(messages[messages.length - 1].message);
-	            var voices_ = speechSynthesis.getVoices();
-	            var engVoice = [];
-	            var deVoice = [];
-	            if (Array.isArray(voices_) && voices_.length > 0) {
-	                setVoices(voices_);
-	                engVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
-	                    var lang = _a.lang;
-	                    return lang === "en-US";
-	                });
-	                deVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
-	                    var lang = _a.lang;
-	                    return lang === "de-DE";
-	                });
-	                setEnVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
-	                    var lang = _a.lang;
-	                    return lang === "en-US";
-	                }));
-	                setDeVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
-	                    var lang = _a.lang;
-	                    return lang === "de-DE";
-	                }));
-	            }
-	            // value.lang = "de-DE";
-	            // console.log(clientConfig.language)
-	            // console.log(clientConfig.language.toLowerCase().startsWith("e"))
-	            // console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
-	            // console.log(clientConfig.defaultSettings.narrator)
-	            // console.log(engVoice)
-	            // console.log(deVoice)
-	            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
-	                console.log("en male");
-	                console.log(engVoice[0]);
-	                // value.lang = "en-US";
-	                value.voice = engVoice[0];
-	            }
-	            if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
-	                console.log("en female");
-	                // value.lang = "en-US";
-	                value.voice = engVoice[30];
-	            }
-	            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
-	                console.log("de male");
+	            if ((_a = messages[messages.length - 1]) === null || _a === void 0 ? void 0 : _a.message) {
+	                if (answer == "") {
+	                    var value = new SpeechSynthesisUtterance((_b = messages[messages.length - 1]) === null || _b === void 0 ? void 0 : _b.message);
+	                }
+	                else {
+	                    var value = new SpeechSynthesisUtterance(answer);
+	                }
+	                var voices_ = speechSynthesis.getVoices();
+	                var engVoice = [];
+	                var deVoice = [];
+	                if (Array.isArray(voices_) && voices_.length > 0) {
+	                    setVoices(voices_);
+	                    engVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                        var lang = _a.lang;
+	                        return lang === "en-US";
+	                    });
+	                    deVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                        var lang = _a.lang;
+	                        return lang === "de-DE";
+	                    });
+	                    setEnVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                        var lang = _a.lang;
+	                        return lang === "en-US";
+	                    }));
+	                    setDeVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                        var lang = _a.lang;
+	                        return lang === "de-DE";
+	                    }));
+	                }
 	                // value.lang = "de-DE";
-	                console.log(deVoice[6]);
-	                value.voice = deVoice[6];
-	            }
-	            if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
-	                console.log("de female");
-	                // value.lang = "de-DE";
-	                console.log(deVoice[11]);
-	                value.voice = deVoice[11];
-	            }
-	            // if(clientConfig.defaultSettings.narrator == ""){
-	            // }
-	            if (isBotVolumeOn) {
-	                console.log("volume tried");
-	                console.log(value);
-	                window.speechSynthesis.speak(value);
-	            }
-	            else {
-	                console.log("volume stopped");
-	                window.speechSynthesis.cancel();
-	                setIsBotVolumeOn(false);
+	                // console.log(clientConfig.language)
+	                // console.log(clientConfig.language.toLowerCase().startsWith("e"))
+	                // console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
+	                // console.log(clientConfig.defaultSettings.narrator)
+	                if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
+	                    console.log("en male");
+	                    console.log(engVoice[0]);
+	                    // value.lang = "en-US";
+	                    value.voice = engVoice[0];
+	                }
+	                if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+	                    console.log("en female");
+	                    // value.lang = "en-US";
+	                    value.voice = engVoice[30];
+	                }
+	                if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
+	                    console.log("de male");
+	                    // value.lang = "de-DE";
+	                    console.log(deVoice[6]);
+	                    value.voice = deVoice[11];
+	                }
+	                if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+	                    console.log("de female");
+	                    // value.lang = "de-DE";
+	                    console.log(deVoice[11]);
+	                    value.voice = deVoice[11];
+	                }
+	                // if(clientConfig.defaultSettings.narrator == ""){
+	                // }
+	                if (isBotVolumeOn) {
+	                    console.log("volume tried");
+	                    console.log(value);
+	                    window.speechSynthesis.speak(value);
+	                }
+	                else {
+	                    console.log("volume stopped");
+	                    window.speechSynthesis.cancel();
+	                    setIsBotVolumeOn(false);
+	                }
 	            }
 	        }
+	    }
+	    reactExports.useEffect(function () {
+	        runAudio("");
 	    }, [isBotVolumeOn]);
 	    reactExports.useEffect(function () {
 	        scrollToBottom();
@@ -22170,6 +22219,9 @@
 	                    });
 	                }
 	            }
+	            str = str.replaceAll("*", "");
+	            str = str.replaceAll("[", "");
+	            str = str.replaceAll("]", " ");
 	            theObj = { __html: str };
 	            return jsxRuntimeExports.jsx("div", { style: source === EMessageSource.BOT
 	                    ? {
@@ -22199,7 +22251,7 @@
 	                        } }, { children: t("lang.ClearHistory") })), jsxRuntimeExports.jsx("button", __assign$1({ className: "talk-to-human-btn", style: {
 	                            backgroundColor: UIGroupB.UIGroupBUIBackground,
 	                            color: UIGroupB.UIGroupBUIHighlight,
-	                        }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: t("lang.lang") })), browserNotSupp &&
+	                        }, onClick: function () { return setCurrentRoute(ERoute.TALK_TO_HUMAN); } }, { children: (clientConfig.langWeiterMain != "" && clientConfig.langWeiterMain != undefined) ? clientConfig.langWeiterMain : t("lang.lang") })), browserNotSupp &&
 	                        jsxRuntimeExports.jsx(IconButton, { className: "volume-button", icon: isBotVolumeOn ? IoMdVolumeHigh : IoMdVolumeOff, onClick: function (e) {
 	                                setIsBotVolumeOn(!isBotVolumeOn);
 	                            }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainer" }, { children: [messages.map(function (_a, index) {
@@ -22216,7 +22268,76 @@
 	                                            backgroundColor: textBoxUser.textBoxUserColor,
 	                                            color: textBoxUser.textBoxUserFontColor,
 	                                            fontFamily: textBoxUser.textBoxFontStyle,
-	                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "Video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }) })))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" }) }))) : (jsxRuntimeExports.jsx(reactExports.Fragment, {})), message && breakMsg(message, source), source === EMessageSource.BOT && message.toLowerCase().indexOf("rückmeldung") === -1 && message.toLowerCase().indexOf("welcome") === -1 && message.toLowerCase().indexOf("willkommen") === -1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
+	                                        } }, { children: [type === EMessageType.VIDEO ? (isYoutubeURL(url) ? (jsxRuntimeExports.jsx("iframe", { src: url, title: "Video player", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowFullScreen: true, className: "bot-msg-ytvideo" })) : (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("video", { src: url, className: "bot-msg-video", controls: true, disablePictureInPicture: false }) })))) : type === EMessageType.IMAGE ? (jsxRuntimeExports.jsx("a", __assign$1({ href: url, target: "_blank" }, { children: jsxRuntimeExports.jsx("img", { src: url, className: "bot-msg-img", alt: "img" }) }))) : (jsxRuntimeExports.jsx(reactExports.Fragment, {})), message && breakMsg(message, source), message && source === EMessageSource.BOT && (message === null || message === void 0 ? void 0 : message.toLowerCase().indexOf("rückmeldung")) === -1 && (message === null || message === void 0 ? void 0 : message.toLowerCase().indexOf("welcome")) === -1 && (message === null || message === void 0 ? void 0 : message.toLowerCase().indexOf("willkommen")) === -1 && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "bot-msg-actions-wrapper" }, { children: [browserNotSupp &&
+	                                                    jsxRuntimeExports.jsx(IconButton, { className: "action-button", icon: IoMdVolumeHigh, onClick: function (e) {
+	                                                            setTogSound(!toggleSound);
+	                                                            if (browserNotSupp && messages.length > 0) {
+	                                                                window.speechSynthesis.cancel();
+	                                                                var value = new SpeechSynthesisUtterance(message);
+	                                                                var voices_ = speechSynthesis.getVoices();
+	                                                                var engVoice = [];
+	                                                                var deVoice = [];
+	                                                                if (Array.isArray(voices_) && voices_.length > 0) {
+	                                                                    setVoices(voices_);
+	                                                                    engVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                                                                        var lang = _a.lang;
+	                                                                        return lang === "en-US";
+	                                                                    });
+	                                                                    deVoice = voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                                                                        var lang = _a.lang;
+	                                                                        return lang === "de-DE";
+	                                                                    });
+	                                                                    setEnVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                                                                        var lang = _a.lang;
+	                                                                        return lang === "en-US";
+	                                                                    }));
+	                                                                    setDeVoices(voices_ === null || voices_ === void 0 ? void 0 : voices_.filter(function (_a) {
+	                                                                        var lang = _a.lang;
+	                                                                        return lang === "de-DE";
+	                                                                    }));
+	                                                                }
+	                                                                // value.lang = "de-DE";
+	                                                                // console.log(clientConfig.language)
+	                                                                // console.log(clientConfig.language.toLowerCase().startsWith("e"))
+	                                                                // console.log(clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m"))
+	                                                                // console.log(clientConfig.defaultSettings.narrator)
+	                                                                console.log(engVoice);
+	                                                                console.log(deVoice);
+	                                                                if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
+	                                                                    console.log("en male");
+	                                                                    console.log(engVoice[0]);
+	                                                                    // value.lang = "en-US";
+	                                                                    value.voice = engVoice[0];
+	                                                                }
+	                                                                if (clientConfig.language.toLowerCase().startsWith("e") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+	                                                                    console.log("en female");
+	                                                                    // value.lang = "en-US";
+	                                                                    value.voice = engVoice[30];
+	                                                                }
+	                                                                if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("m")) {
+	                                                                    console.log("de male");
+	                                                                    // value.lang = "de-DE";
+	                                                                    console.log(deVoice[6]);
+	                                                                    value.voice = deVoice[11];
+	                                                                }
+	                                                                if (clientConfig.language.toLowerCase().startsWith("d") && clientConfig.defaultSettings.narrator.toLowerCase().startsWith("f")) {
+	                                                                    console.log("de female");
+	                                                                    // value.lang = "de-DE";
+	                                                                    console.log(deVoice[11]);
+	                                                                    value.voice = deVoice[11];
+	                                                                }
+	                                                                // if(clientConfig.defaultSettings.narrator == ""){
+	                                                                // }
+	                                                                console.log("my firs toggle");
+	                                                                console.log(toggleSound);
+	                                                                if (toggleSound == true) {
+	                                                                    window.speechSynthesis.speak(value);
+	                                                                }
+	                                                                else {
+	                                                                    window.speechSynthesis.cancel();
+	                                                                }
+	                                                            }
+	                                                        }, "aria-label": "Volume", title: isBotVolumeOn ? "Mute" : "Play", style: { backgroundColor: UIGroupA.UIGroupAUIBackground }, iconColor: UIGroupA.UIGroupAUIHighlight }), jsxRuntimeExports.jsx("button", __assign$1({ title: "Like", className: "action-button", onClick: function () {
 	                                                        if (feedback === true)
 	                                                            return;
 	                                                        handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : true);
@@ -22226,7 +22347,7 @@
 	                                                        handleMessageFeedback(message, typeof feedback !== "undefined" ? !feedback : false);
 	                                                    }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: feedback === false ? (jsxRuntimeExports.jsx(MdThumbDownAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) : (jsxRuntimeExports.jsx(MdOutlineThumbDownOffAlt, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight })) })), jsxRuntimeExports.jsx("button", __assign$1({ title: "Regenrate Response", className: "action-button", onClick: function () {
 	                                                        setRegen(true);
-	                                                        handleMessageRegen();
+	                                                        handleMessageRegen("regen", message);
 	                                                    }, style: { backgroundColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx(MdReplay, { className: "action-icon", color: UIGroupA.UIGroupAUIHighlight }) }))] })))] })), source === EMessageSource.USER && (jsxRuntimeExports.jsx("div", __assign$1({ className: "user-iconWrapper" }, { children: jsxRuntimeExports.jsx(RiUser6Fill, { className: "userIcon" }) })))] }), index));
 	                    }), loading && (jsxRuntimeExports.jsxs("div", __assign$1({ className: "messageWrapper botMessageWrapper" }, { children: [jsxRuntimeExports.jsx("div", __assign$1({ className: "bot-iconWrapper", style: { borderColor: UIGroupA.UIGroupAUIBackground } }, { children: jsxRuntimeExports.jsx("img", { src: chatbotProfileImage, alt: "bot", className: "bot-iconImg" }) })), jsxRuntimeExports.jsx("div", __assign$1({ className: "typing-anim-wrapper" }, { children: jsxRuntimeExports.jsx("div", { className: "typing-dot-pulse" }) }))] }))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "inputFormWrapper" }, { children: [browserNotSupp &&
 	                        jsxRuntimeExports.jsx(IconButton, { icon: isMicPressed ? BsFillMicFill : BsFillMicMuteFill, onClick: function (e) {
@@ -22236,7 +22357,6 @@
 	                            setValue("terminate");
 	                        }, onFocus: function () { return setIsInputFocused(true); }, onBlur: function () { return setIsInputFocused(false); }, onKeyDown: function (e) {
 	                            if (e.key == "Enter") {
-	                                console.log('enter');
 	                                handleUserMessage(e);
 	                            }
 	                        } }), jsxRuntimeExports.jsx("button", __assign$1({ 
@@ -22324,7 +22444,7 @@
 	    };
 	    var _a = useData(), isChatOpen = _a.isChatOpen, isMobileScreen = _a.isMobileScreen, setIsChatOpen = _a.setIsChatOpen, setPopupItem = _a.setPopupItem, currentRoute = _a.currentRoute, clientConfig = _a.clientConfig;
 	    var _b = clientConfig.chatbotLook, chatbotHeader = _b.chatbotHeader, chatbotBackground = _b.chatbotBackground, chatbotName = clientConfig.chatbotName, testRequest = clientConfig.testRequest;
-	    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED, testRequest: testRequest }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: chatbotName != "" ? chatbotName : "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper", style: { fontSize: "auto" } }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
+	    return (jsxRuntimeExports.jsxs(IFrame, __assign$1({ iframeType: isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED, testRequest: testRequest, windowType: clientConfig.windowtype }, { children: [jsxRuntimeExports.jsx(PopupScreen, {}), jsxRuntimeExports.jsxs("div", __assign$1({ className: "chatContainerWrapper", style: { backgroundColor: chatbotBackground.chatbotBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header-wrapper", style: { backgroundColor: chatbotHeader.chatbotHeaderBackgroundColor } }, { children: [jsxRuntimeExports.jsxs("div", __assign$1({ className: "header" }, { children: [jsxRuntimeExports.jsx(GiGraduateCap, { className: "header-icon", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }), jsxRuntimeExports.jsx("h1", __assign$1({ className: "header-title", style: { color: chatbotHeader.chatbotHeaderIconFontColor } }, { children: chatbotName != "" ? chatbotName : "What2Study" }))] })), jsxRuntimeExports.jsxs("div", __assign$1({ className: "settings-wrapper", style: { fontSize: "auto" } }, { children: [jsxRuntimeExports.jsx(IconButton, { icon: LuSettings2, onClick: function () { return setPopupItem(EPopupItem.FILTERS); }, "aria-label": "Filters", title: "Filters", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), jsxRuntimeExports.jsx(IconButton, { icon: IoSettingsSharp, onClick: function () { return setPopupItem(EPopupItem.SETTINGS); }, "aria-label": "Settings", title: "Settings", iconColor: chatbotHeader.chatbotHeaderIconFontColor }), isMobileScreen && (jsxRuntimeExports.jsx(IconButton, { icon: IoClose, onClick: function () { return setIsChatOpen(false); }, "aria-label": "Close", title: "Close", iconColor: chatbotHeader.chatbotHeaderIconFontColor }))] }))] })), getScreenAsPerRoute(currentRoute)] }))] })));
 	};
 
 	// THIS FILE IS AUTO GENERATED
@@ -22356,7 +22476,6 @@
 	        setPopupItem(EPopupItem.NONE);
 	    };
 	    reactExports.useEffect(function () {
-	        console.log(IframeType.CHAT_OPEN_BUTTON);
 	        if (!isChatOpen) {
 	            setInterval(function () {
 	                setStyleRotate(styleR);
@@ -22369,7 +22488,7 @@
 	            setStyleRotate(styleRNot);
 	        }
 	    }, [isChatOpen]);
-	    return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: IframeType.CHAT_OPEN_BUTTON, testRequest: testRequest }, { children: jsxRuntimeExports.jsxs("div", __assign$1({ style: {
+	    return (jsxRuntimeExports.jsx(IFrame, __assign$1({ iframeType: IframeType.CHAT_OPEN_BUTTON, testRequest: testRequest, windowType: clientConfig.windowtype }, { children: jsxRuntimeExports.jsxs("div", __assign$1({ style: {
 	                margin: "0 auto",
 	                position: "relative",
 	                overflow: "hidden",
@@ -22389,7 +22508,7 @@
 	                        animation: "shine 1.1s linear infinite"
 	                    } }), jsxRuntimeExports.jsx("button", __assign$1({ 
 	                    // inline styles for button as loading stylesheets takes time on browser (causes to show button without styles)
-	                    style: __assign$1({ width: "62px", height: "62px", margin: "4px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "".concat(chatbotHeader.chatbotHeaderBackgroundColor), border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
+	                    id: "chatBtnBubble", style: __assign$1({ width: "62px", height: "62px", margin: "4px", boxShadow: "0px 2px 3px 0px #9b9b9b", backgroundColor: "".concat(chatbotHeader.chatbotHeaderBackgroundColor), border: "none", borderRadius: "50%", cursor: "pointer" }, (isChatOpen
 	                        ? {
 	                            backgroundColor: "#f0f0f0",
 	                        }
@@ -22400,6 +22519,7 @@
 	};
 
 	var WHAT2STUDY_BACKEND_URL = "https://www.cpstech.de/functions";
+	// const WHAT2STUDY_BACKEND_URL = "http://localhost:1349/what2study/parse/functions";
 	var WHAT2STUDY_X_PARSE_APP_ID = "what2study";
 	var WHAT2STUDY_X_PARSE_MASTERKEY = "what2studyMaster";
 	var ChatClient = function (props) {
@@ -22431,6 +22551,8 @@
 	                    if ("testRequest" in props) {
 	                        response.result["testRequest"] = props.testRequest;
 	                    }
+	                    if ("windowtype" in props)
+	                        response.result["windowtype"] = props.windowtype;
 	                    return [4 /*yield*/, saveClientConfigurations(response.result)];
 	                case 3:
 	                    _a.sent();
@@ -22453,7 +22575,10 @@
 	                        localStorage.removeItem("historySession");
 	                    }
 	                    return [2 /*return*/];
-	                case 4: return [4 /*yield*/, saveClientConfigurations(props)];
+	                case 4:
+	                    if ("windowtype" in props)
+	                        response.result["windowtype"] = props.windowtype;
+	                    return [4 /*yield*/, saveClientConfigurations(props)];
 	                case 5:
 	                    _a.sent();
 	                    return [2 /*return*/];

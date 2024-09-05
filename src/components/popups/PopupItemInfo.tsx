@@ -22,9 +22,9 @@ const PopupItemInfo: FC = () => {
         welcomeMsgEN
     } = clientConfig;
     return (
-        <PopupContents title={"Informationen zum "+nameOfOrg}className="popup-infobox">
+        <PopupContents title={"Informationen zu/m "+clientConfig.chatbotName}className="popup-infobox">
             <ol className="info-text" style={{textAlign:"justify"}}>
-                <li> <strong>Automatisierte Interaktion:</strong> What2Study ist ein automatisiertes System und keine reale Person.</li>
+                <li> <strong>Automatisierte Interaktion:</strong> {clientConfig.chatbotName} ist ein automatisiertes System und keine reale Person.</li>
                 <li> <strong>Entwicklungsprozess:</strong> Viele Personen waren an der Entwicklung beteiligt, und der Chatbot wurde ausgiebig getestet, um die Genauigkeit und Hilfreichkeit der Antworten zu gewährleisten. Dennoch können wir nicht garantieren, dass jede Antwort des Chatbots korrekt ist.</li>
                 <li> <strong>Eigene Verantwortung: </strong>Wir empfehlen, insbesondere wichtige Informationen selbst zu überprüfen, bevor Entscheidungen getroffen werden.
 </li>

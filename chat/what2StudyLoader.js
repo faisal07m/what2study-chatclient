@@ -42,10 +42,10 @@ const WHAT2STUDY_SCRIPT = "what2studyChatclientScript";
         //     top.What2Study({ accessToken: token, chatbotId: bot_id });
         // }
         if (window.What2Study) {
-            window.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJtMlJHTWpxYmhpIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcyMDcwMTgzMn0.sMtSY2oUGfksX5hbquM68gKyT3OJYK_KnAjnEHUYsDA", chatbotId: "m2RGMjqbhi" });
+            window.What2Study({ windowtype:"full", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJnVzlYOVoySzJIIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcyMTQyOTUxMH0.QW1GHprvviaRxNvlQ1OM1BR5ZjHK4WUTjT612IaFJlI", chatbotId: "gW9X9Z2K2H" });
         } else if (top.What2Study) {
             console.log("here")
-            top.What2Study({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJtMlJHTWpxYmhpIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcyMDcwMTgzMn0.sMtSY2oUGfksX5hbquM68gKyT3OJYK_KnAjnEHUYsDA", chatbotId: "m2RGMjqbhi" });
+            top.What2Study({ windowtype:"full",accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGF0Ym90SWQiOiJnVzlYOVoySzJIIiwicHVycG9zZSI6ImNoYXRib3RJbnRlZ3JhdGlvbiIsImlhdCI6MTcyMTQyOTUxMH0.QW1GHprvviaRxNvlQ1OM1BR5ZjHK4WUTjT612IaFJlI", chatbotId: "gW9X9Z2K2H" });
         }
        
 

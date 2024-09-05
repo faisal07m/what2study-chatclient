@@ -13,7 +13,8 @@ const getStyles = (
     iframeType: IframeType,
     isChatOpen: boolean,
     isMobileScreen: boolean = false,
-    isTestScreen:boolean
+    isTestScreen:boolean,
+    isFullScreen:string,
 ) => {
     switch (iframeType) {
         case IframeType.CHAT_CONTAINER_CLOSED:
@@ -37,7 +38,7 @@ const getStyles = (
             return {
                 border: "none",
                 boxShadow: "#32325d40 0px 50px 100px -20px, #0000004d 0px 30px 60px -30px",
-                width: isMobileScreen ? "100%" : "420px",
+                width: isFullScreen=="full" && isMobileScreen ? "800px": isFullScreen=="min" && isMobileScreen ? "100%"  : "420px",
                 height: isMobileScreen ? "100%" : "620px",
                 
                 position: isTestScreen ? "absolute" : "fixed",
@@ -81,7 +82,7 @@ const getStyles = (
 const isDevelopment = process.env.NODE_ENV === "development";
 
 export const IFrame: FC<IIframeProps> = (props) => {
-    const { children, iframeType,testRequest, ...rest} = props;
+    const { children, iframeType,testRequest, windowType, ...rest} = props;
     const [ contentRef, setContentRef ] = useState< HTMLElement | null >(
 		null
 	);
@@ -97,7 +98,7 @@ export const IFrame: FC<IIframeProps> = (props) => {
         }
     };
     const { isChatOpen, setIsMobileScreen } = useData();
-    const [styles, setStyles] = useState(getStyles(iframeType, isChatOpen, false,testRequest));
+    const [styles, setStyles] = useState();
     const mountNode = contentRef?.contentWindow?.document?.body;
     const mountNodeDoc = contentRef?.contentWindow?.document;
     const addStyles = () => {
@@ -112,8 +113,15 @@ export const IFrame: FC<IIframeProps> = (props) => {
     const handleWindowResize = (event) => {
         if(window.innerWidth >300 && window.innerHeight>450){
         const isMobileScreen = window.innerWidth < 680;
-         setStyles(getStyles(iframeType, isChatOpen, isMobileScreen,testRequest));
+        if( windowType =="min")
+       
+{         setStyles(getStyles(iframeType, isChatOpen, isMobileScreen,testRequest,windowType));
               setIsMobileScreen(isMobileScreen);
+            }
+            else{
+                setStyles(getStyles(iframeType, isChatOpen, true,testRequest,windowType));
+                setIsMobileScreen(true);
+            }
         }
     };
 
@@ -122,7 +130,8 @@ export const IFrame: FC<IIframeProps> = (props) => {
         // setIsChatOpenTemp(isChatOpen)
         localStorage.setItem("iframeType", iframeType.toString())
         localStorage.setItem("isChatOpen", isChatOpen)
-        handleWindowResize();
+       
+        handleWindowResize()
     }, [iframeType, isChatOpen]);
 
     useEffect(() => {
@@ -130,6 +139,13 @@ export const IFrame: FC<IIframeProps> = (props) => {
         // return () => {
         //     window.removeEventListener("resize", handleWindowResize2);
         // };
+        if( windowType =="min"){
+            getStyles(iframeType, isChatOpen, false,testRequest,windowType)
+        }
+        else{
+            getStyles(iframeType, isChatOpen, true,testRequest,windowType)
+        
+        }
     }, []);
 
     useEffect(() => {

@@ -11,6 +11,8 @@ export interface IIframeProps {
     children: ReactNode;
     iframeType: IframeType;
     testRequest:boolean;
+    windowType:string;
+     
 }
 
 export interface IChatContainerProps {

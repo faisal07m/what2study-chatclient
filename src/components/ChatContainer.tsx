@@ -13,6 +13,7 @@ import PopupScreen from "./popups/PopupScreen";
 import IntroPage from "./screens/IntroPage";
 import Main from "./screens/Main";
 import TalkToHuman from "./screens/TalkToHuman";
+import ChatClient from "./ChatClient";
 
 
 
@@ -47,6 +48,7 @@ const ChatContainer: FC = (props) => {
                 isChatOpen ? IframeType.CHAT_CONTAINER_OPEN : IframeType.CHAT_CONTAINER_CLOSED
             }
             testRequest={testRequest}
+            windowType= {clientConfig.windowtype}
         >
             <PopupScreen />
             <div

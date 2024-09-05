@@ -102,17 +102,22 @@ export interface IClientConfigurations {
     language:string;
     randomQuestionEnabled: boolean;
     randomQuestion:string;
-    customPrompt:string
+    customPrompt:string;
+    defaultPrompt:string;
+    promptSelection:boolean;
     talkToaHumanEnabled: boolean;
     talkToaHuman:string;
     Narrator:string;
+    introVideo:string;
     phone:string;
     email:string;
     dummyRequest:boolean;
     testRequest:boolean;
     accessToken: string;
     chatbotName: string;
+    langWeiterMain:string;
     chatbotBubbleIcons: string;
+    AudioNarration:boolean;
     chatbotProfileImage: string;
     defaultSettings: IConfigDefaultSettings;
     chatboxBehaviour: IConfigChatbotBehaviour;
@@ -125,5 +130,6 @@ export interface IClientConfigurations {
     welcomeMsgEN:string;
     introScreenInfoDE:string;
     introScreenInfoEN:string;
+    windowtype:string;
 
 }

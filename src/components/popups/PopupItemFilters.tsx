@@ -31,8 +31,9 @@ const PopupItemFilters: FC = () => {
         }
     }, [])
     useEffect(() => {
-        if (lf) { setLFValue(getValue(lf)) }
-
+        if (lf) { 
+            setLFValue(getValue(lf)) }
+            
     }, [lf])
     const [t, i18n] = useTranslation("global");
     const marks: SliderMarks = {
@@ -62,21 +63,27 @@ const PopupItemFilters: FC = () => {
             { 1: "very funny", 2: "mostly funny", 3: "casually humorous", 4: "neutral", 5: "mildly serious", 6: "very serious" }]
 
             var Applicationlang = localStorage.getItem("language")
-
+           
             if (lf == 0) {
-                if (Applicationlang == "de") {
+                if (Applicationlang?.trim().startsWith("de")) {
+           
+
                     return filter_FF[4][1]
                 }
                 else {
+           
+
                     return filter_FF[3][1]
 
                 }
             }
             else {
-                if (Applicationlang == "de") {
+                if (Applicationlang?.trim().startsWith("de")) {
+                  
                     return filter_FF[4][lf]
                 }
                 else {
+                  
                     return filter_FF[3][lf]
 
                 }

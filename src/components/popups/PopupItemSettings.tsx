@@ -63,7 +63,7 @@ const PopupItemSettings: FC = () => {
                     ))}
                 </FormSelect>
             </div>
-            <div className="setting-block user-assumptions">
+            {/* <div className="setting-block user-assumptions">
                 <span className="block-title">{t("settings.user")}</span>
                 <div className="chips-wrapper">
                     {dummyUserAssumptions.map((assumption) => {
@@ -77,7 +77,7 @@ const PopupItemSettings: FC = () => {
                         );
                     })}
                 </div>
-            </div>
+            </div> */}
         </PopupContents>
     );
 };
