@@ -1,4 +1,5 @@
 ### what2study - chat client
+<img width="449" alt="Screenshot 2024-11-26 at 11 11 41" src="https://github.com/user-attachments/assets/68f3b2a6-448f-4d96-972b-cfa66e0ef09c">
 
 #### To run the project:
 
